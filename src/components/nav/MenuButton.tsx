@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { motion } from 'framer-motion';
 
+type Props = {
+    isOpen: boolean;
+    setIsOpen: (isOpen : boolean) => void;
+}
 
+export default function MenuButton(props : Props) {
 
-export default function MenuButton() {
-
-  const[isOpen, setIsOpen] = useState(false);
   const[isHovered, setIsHovered] = useState(false);
 
   const menuBarVariants = (index : number) => {
@@ -44,20 +46,21 @@ export default function MenuButton() {
   }
 
   return (
-    <div className='nav-btn menu-btn' onMouseLeave={() => setIsHovered(!isHovered)} onMouseEnter={() => setIsHovered(!isHovered)} onClick={() => setIsOpen(!isOpen)}>
+    <div className='nav-btn menu-btn' onMouseLeave={() => setIsHovered(false)} onMouseEnter={() => setIsHovered(true)} onClick={() => props.setIsOpen(!props.isOpen)}>
 
         <motion.div className="bar" 
         variants={menuBarVariants(0)} 
         initial="default"
-        animate={isOpen ? "close" : isHovered ? "hover" : "default"} />
+        animate={props.isOpen ? "close" : isHovered ? "hover" : "default"} />
         <motion.div className="bar" 
         variants={menuBarVariants(1)} 
         initial="default"
-        animate={isOpen ? "close" : isHovered ? "hover" : "default"} />
+        animate={props.isOpen ? "close" : isHovered ? "hover" : "default"} />
         <motion.div className="bar" 
         variants={menuBarVariants(2)} 
         initial="default"
-        animate={isOpen ? "close" : isHovered ? "hover" : "default"} />
+        animate={props.isOpen ? "close" : isHovered ? "hover" : "default"} />
+
     </div>
   )
 }
