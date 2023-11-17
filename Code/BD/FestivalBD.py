@@ -59,7 +59,7 @@ class FestivalBD:
     def delete_festival_by_name(self, festival):
         try:
             query = text("DELETE FROM festival WHERE nomF = :nomF")
-            result = self.connexion.get_connexion().execute(query, {"nomF": festival.get_nomF()})
+            self.connexion.get_connexion().execute(query, {"nomF": festival.get_nomF()})
             print(f"Le festival {festival.get_nomF()} a été supprimé")
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:

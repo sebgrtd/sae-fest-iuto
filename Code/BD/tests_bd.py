@@ -1,5 +1,6 @@
 from BD import *
 from FestivalBD import *
+from Type_BilletBD import *
 
 # classe Festival
 
@@ -974,15 +975,43 @@ def test_get_festival_by_ville():
     assert festival.get_dateDebutF() == festival_3.get_dateDebutF()
     assert festival.get_dateFinF() == festival_3.get_dateFinF()
     
-def test_inserer_festival():
+def test_insert_festival():
     festival = Festival(9, 'Festival 5', 'Ville 5', '2023-08-01', '2023-08-05')
     festival_bd.insert_festival(festival)
     assert festival.get_nomF() == 'Festival 5'
     assert festival.get_villeF() == 'Ville 5'
     assert festival.get_dateDebutF() == datetime.strptime('2023-08-01', '%Y-%m-%d').date()
     assert festival.get_dateFinF() == datetime.strptime('2023-08-05', '%Y-%m-%d').date()
+    
+def test_delete_festival():
+    festival = Festival(9, 'Festival 5', 'Ville 5', '2023-08-01', '2023-08-05')
+    festival_bd.insert_festival(festival)
+    festival_bd.delete_festival_by_name(festival)
+    assert festival not in festival_bd.get_all_festivals()
 
-festival_6 = Festival(6, 'Festival 6', 'Ville 6', '2023-08-01', '2023-08-05')
-# festival_bd.insert_festival(festival_6)
+# Type_BillletBD
 
-festival_bd.delete_festival_by_name(festival_6)
+type_billet_bd = Type_BilletBD(connexion_bd)
+type_billet_1 = Type_Billet(1, 3)
+
+def test_get_all_types_billets():
+    types_billets = type_billet_bd.get_all_types_billets()
+    types_billets_de_bd = [(t.get_idType(), t.get_duree()) for t in types_billets]
+    types_billets_python = [t for t in types_billets_de_bd]
+    assert types_billets_de_bd == types_billets_python
+    
+def test_get_type_billet_by_id():
+    type_billet = type_billet_bd.get_type_billet_by_id(1)
+    assert type_billet.get_idType() == type_billet_1.get_idType()
+    assert type_billet.get_duree() == type_billet_1.get_duree()
+
+def test_insert_type_billet():
+    type_billet = Type_Billet(9, 3)
+    type_billet_bd.insert_type_billet(type_billet)
+    assert type_billet.get_duree() == 3
+
+def test_delete_type_billet():
+    type_billet = Type_Billet(9, 3)
+    type_billet_bd.insert_type_billet(type_billet)
+    type_billet_bd.delete_type_billet_by_duree(type_billet)
+    assert type_billet not in type_billet_bd.get_all_types_billets()
