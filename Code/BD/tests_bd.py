@@ -1,6 +1,7 @@
 from BD import *
 from FestivalBD import *
 from Type_BilletBD import *
+from SpectateurBD import *
 
 # classe Festival
 
@@ -1015,3 +1016,56 @@ def test_delete_type_billet():
     type_billet_bd.insert_type_billet(type_billet)
     type_billet_bd.delete_type_billet_by_duree(type_billet)
     assert type_billet not in type_billet_bd.get_all_types_billets()
+    
+# SpectateurBD
+
+spectateur_bd = SpectateurBD(connexion_bd)
+spectateur_1 = Spectateur(1, 'Spectateur 1', 'Prénom 1', 'Adresse 1', 'email1@example.com', 'mdp1')
+
+def test_get_all_spectateurs():
+    spectateurs = spectateur_bd.get_all_spectateurs()
+    spectateurs_de_bd = [(s.get_idS(), s.get_nomS(), s.get_prenomS(), s.get_adresseS(), s.get_emailS(), s.get_mdpS()) for s in spectateurs]
+    spectateurs_python = [s for s in spectateurs_de_bd]
+    assert spectateurs_de_bd == spectateurs_python
+    
+def test_get_spectateur_by_id():
+    spectateur = spectateur_bd.get_spectateur_by_id(1)
+    assert spectateur.get_idS() == spectateur_1.get_idS()
+    assert spectateur.get_nomS() == spectateur_1.get_nomS()
+    assert spectateur.get_prenomS() == spectateur_1.get_prenomS()
+    assert spectateur.get_adresseS() == spectateur_1.get_adresseS()
+    assert spectateur.get_emailS() == spectateur_1.get_emailS()
+    assert spectateur.get_mdpS() == spectateur_1.get_mdpS()
+    
+def test_get_spectateur_by_email():
+    spectateur = spectateur_bd.get_spectateur_by_email('email1@example.com')
+    assert spectateur.get_idS() == spectateur_1.get_idS()
+    assert spectateur.get_nomS() == spectateur_1.get_nomS()
+    assert spectateur.get_prenomS() == spectateur_1.get_prenomS()
+    assert spectateur.get_adresseS() == spectateur_1.get_adresseS()
+    assert spectateur.get_emailS() == spectateur_1.get_emailS()
+    assert spectateur.get_mdpS() == spectateur_1.get_mdpS()
+    
+def test_get_all_emails():
+    emails = spectateur_bd.get_all_emails()
+    emails_de_bd = [e for e in emails]
+    emails_python = [e for e in emails_de_bd]
+    assert emails_de_bd == emails_python
+    
+    
+def test_insert_spectateur():
+    spectateur = Spectateur(9, 'Spectateur 5', 'Prénom 5', 'Adresse 5', 'email@example.com', 'mdp5')
+    spectateur_bd.insert_spectateur(spectateur)
+    assert spectateur.get_nomS() == 'Spectateur 5'
+    assert spectateur.get_prenomS() == 'Prénom 5'
+    assert spectateur.get_adresseS() == 'Adresse 5'
+    assert spectateur.get_emailS() == 'email@example.com'
+    assert spectateur.get_mdpS() == 'mdp5'
+    
+def test_delete_spectateur():
+    spectateur = Spectateur(9, 'Spectateur 5', 'Prénom 5', 'Adresse 5', 'email@example.com', 'mdp5')
+    spectateur_bd.insert_spectateur(spectateur)
+    spectateur_bd.delete_spectateur_by_email(spectateur)
+    assert spectateur not in spectateur_bd.get_all_spectateurs()
+                
+spectateur_bd.insert_spectateur(Spectateur(9, 'Spectateur 5', 'Prénom 5', 'Adresse 5', 'email1@example.com', "mdp9"))
