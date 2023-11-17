@@ -52,12 +52,8 @@ class SpectateurBD:
             query = text("INSERT INTO SPECTATEUR (nomS, prenomS, adresseS, emailS, mdpS) VALUES (:nomS, :prenomS, :adresseS, :emailS, :mdpS)")
             result = self.connexion.get_connexion().execute(query, {"nomS": spectateur.get_nomS(), "prenomS": spectateur.get_prenomS(), "adresseS": spectateur.get_adresseS(), "emailS": spectateur.get_emailS(), "mdpS": spectateur.get_mdpS()})
             spectateur_id = result.lastrowid
-            if spectateur.get_emailS() in self.get_all_emails():
-                self.connexion.get_connexion().rollback()
-                print("L'email est déjà associé à un compte")
-            else:
-                self.connexion.get_connexion().commit()
-                print(f"Le spectateur {spectateur.get_nomS()} a été ajouté avec l'id {spectateur_id}")
+            self.connexion.get_connexion().commit()
+            print(f"Le spectateur {spectateur.get_nomS()} a été ajouté avec l'id {spectateur_id}")
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
