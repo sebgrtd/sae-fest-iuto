@@ -372,36 +372,12 @@ begin
 end |
 delimiter ;
 
--- -- Trigger pour vérifier si la jauge du lieu est dépassée avant une mise à jour sur LIEU
--- DELIMITER |
--- CREATE OR REPLACE TRIGGER jaugeLieuDepassee BEFORE UPDATE ON LIEU
--- FOR EACH ROW
--- BEGIN
---     DECLARE jaugeLieu INT;
---     SELECT jaugeL INTO jaugeLieu FROM LIEU WHERE idL = NEW.idL;
---     IF (jaugeLieu < (SELECT COUNT(*) FROM BILLET WHERE idL = NEW.idL)) THEN
---         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "L'événement est complet, l'achat d'un billet n'est plus disponible";
---     ELSE
---         UPDATE LIEU SET jaugeL = jaugeL - 1 WHERE idL = NEW.idL;
---     END IF;
--- END |
--- DELIMITER ;
-
--- -- Trigger pour vérifier si le nombre de membres dépasse la limite de places de l'hébergement avant une insertion dans GROUPE
--- DELIMITER |
--- CREATE OR REPLACE TRIGGER placeDisponibleHebergement BEFORE INSERT ON GROUPE
--- FOR EACH ROW
--- BEGIN
---     DECLARE limitePlacesHebergement INT;
---     DECLARE nbMembresGroupe INT;
---     SELECT COUNT(*) INTO nbMembresGroupe FROM MEMBRE_GROUPE WHERE idG = NEW.idG;
---     SELECT limitePlacesH INTO limitePlacesHebergement FROM HEBERGEMENT WHERE idH = NEW.idH;
---     IF limitePlacesHebergement < nbMembresGroupe THEN
---         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "L'hébergement n'a pas assez de places pour contenir chaque membre du groupe";
---     ELSE
---         INSERT INTO GROUPE VALUES (NEW.idG, NEW.idH, NEW.nomG, NEW.descriptionG);
---     END IF;
--- END |
--- DELIMITER ;
-
-
+delimiter |
+create or replace trigger emailDejaUtilise before insert on SPECTATEUR
+for each row
+begin
+    if exists (select 1 from SPECTATEUR where emailS = new.emailS) then
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Cet email est déjà associé à un compte";
+    end if;
+end |
+delimiter ;
