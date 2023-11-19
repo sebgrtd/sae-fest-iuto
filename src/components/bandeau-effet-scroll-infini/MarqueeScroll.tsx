@@ -14,22 +14,27 @@ export default function MarqueeScroll(props: Props) {
     useEffect(() => {
     
         setTailleArtistes(lesArtistesRef.current?.offsetWidth || 0)
-
+        console.log(lesArtistesRef.current?.offsetWidth)
     }, [lesArtistesRef])
     
 
     const infiniteMarqueeVariants = {
         animate: {
-            x: -tailleArtistes*2,
+            x: -1903*2,
             transition: {
                 x: {
                     repeat: Infinity,
                     repeatType: 'loop',
-                    duration: 15,
+                    duration: 5,
                     ease: 'linear'
                 }
             }
         },
+    }
+
+    const handleLoad = () => {
+        console.log("test")
+        setTailleArtistes(lesArtistesRef.current?.offsetWidth || 0)
     }
 
     return (
@@ -45,7 +50,8 @@ export default function MarqueeScroll(props: Props) {
                     return (
                         <div 
                         key={index}
-                        className='container'>
+                        className='container'
+                        onLoad={handleLoad}>
 
                             <span className='nom-artiste'>{artiste}</span>
 
