@@ -5,6 +5,7 @@ import { easeOut } from 'framer-motion/dom';
 
 type Props = {
     isCart? : boolean
+    setIsOpen: (isOpen : boolean) => void;
 }
 
 export default function NavButton(props:Props) {
@@ -32,6 +33,7 @@ export default function NavButton(props:Props) {
     variants={bgVariants}
     initial='default'
     whileHover="hover"
+    onClick={() => props.setIsOpen(true)}
     >
         
         {props.isCart ?
