@@ -3,6 +3,7 @@ import './components/nav/Navbar'
 import Navbar from './components/nav/Navbar'
 import { AnimatePresence } from 'framer-motion'
 import { Route, Routes } from 'react-router-dom'
+import Accueil from './pages/Accueil/Accueil'
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
       <AnimatePresence>
 
         <Routes>
-            <Route path="/" />
+            <Route path="/" element={<Accueil />} />
             <Route path="/programmation" />
             <Route path="/billeterie" />
             <Route path="/faq"/>

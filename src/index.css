@@ -304,3 +304,61 @@ body{
   right:3rem;
   cursor: pointer;
 }
+
+/* ajouté */
+
+#Accueil {
+  height: 130vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#Accueil .img-container{
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index: -1;
+}
+
+#Accueil img{
+  object-fit: cover;
+  left:-5%;
+  bottom: -5%;
+  object-position: center;
+  position: absolute;
+  height: 110%;
+  width: 110%;
+  z-index: -10;
+  filter: blur(16px);
+} 
+
+#Accueil .marquee{
+  overflow-x:hidden ;
+  position: absolute;
+  bottom: 12vh;
+  width: 100%;
+  border-top: 0.22375rem solid var(--color-orange);
+  border-bottom: 0.22375rem solid var(--color-orange);
+  z-index: -1;
+}
+
+#Accueil .marquee .les-artistes{
+  display: flex;
+  gap: 1rem;
+}
+
+#Accueil .marquee .container{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+#Accueil .marquee .nom-artiste{
+  font-family: 'TuskerGrotesk';
+  font-weight: bold;
+  text-wrap: nowrap;
+  font-size: 6.25rem;
+  color:transparent;
+  -webkit-text-stroke: 0.22375rem var(--color-orange);
+}
