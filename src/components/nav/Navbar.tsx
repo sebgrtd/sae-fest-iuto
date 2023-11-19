@@ -6,10 +6,13 @@ import NavButton from './NavButton'
 import NavLink from './NavLink'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import MenuConnexion from '../../side-menus/MenuConnexion'
 
 export default function Navbar() {
   const[isOpen, setIsOpen] = useState(false);
-
+  const[menuConnexionOpen, setMenuConnexionOpen] = useState(false);
+  const[menuCartOpen, setMenuCartOpen] = useState(false);
+  
   const current = window.location.pathname;
 
   const menuVariants = {
@@ -86,10 +89,11 @@ export default function Navbar() {
       <Link to="/" className='logo'>
         <img src="/logo.svg" alt="logo"/>
       </Link>
+      <MenuConnexion isOpen={menuConnexionOpen} setIsOpen={setMenuConnexionOpen}/>
       <div className='btns'>
         <div className="nav-btns">
-          <NavButton/>
-          <NavButton isCart/>
+          <NavButton setIsOpen={setMenuConnexionOpen}/>
+          <NavButton isCart setIsOpen={setMenuCartOpen}/>
         </div>
         <MenuButton setIsOpen={setIsOpen} isOpen={isOpen}/>
       </div>
