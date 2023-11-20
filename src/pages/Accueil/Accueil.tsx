@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 
 type Props = {
   isNavInFocus : boolean;
+  setIsNavTransparent: (isNavTransparent : boolean) => void;
 }
 
 export default function (props: Props) {
@@ -49,7 +50,7 @@ export default function (props: Props) {
               <h1>Rendez vous pour la 3ème <br></br>édition du FEST IUT'O</h1>
             </div>
 
-            <Button text='Reserver' />
+            <Button text='BILLETERIE' />
           </div>
           
           <MarqueeScroll artistes={lesArtistes} />

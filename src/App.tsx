@@ -8,15 +8,16 @@ import { useState } from 'react'
 
 function App() {
   const [isNavInFocus, setIsNavInFocus] = useState(false)
+  const[isNavTransparent, setIsNavTransparent] = useState(true);
 
   return (
     <>
-      <Navbar setNavInFocus={setIsNavInFocus}/>
+      <Navbar setNavInFocus={setIsNavInFocus} isTransparent={isNavTransparent}/>
 
       <AnimatePresence>
 
         <Routes>
-            <Route path="/" element={<Accueil isNavInFocus={isNavInFocus} />} />
+            <Route path="/" element={<Accueil isNavInFocus={isNavInFocus} setIsNavTransparent={setIsNavTransparent}  />} />
             <Route path="/programmation" />
             <Route path="/billeterie" />
             <Route path="/faq"/>

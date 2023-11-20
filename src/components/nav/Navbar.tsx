@@ -10,6 +10,7 @@ import MenuConnexion from './side-menus/MenuConnexion'
 
 type Props = {
   setNavInFocus : (isNavInFocus : boolean) => void;
+  isTransparent : boolean,
 }
 
 export default function Navbar(props : Props) {
@@ -85,7 +86,7 @@ export default function Navbar(props : Props) {
   }
 
   return (
-    <div id='Navbar'>
+    <div id='Navbar' style={props.isTransparent ? {backgroundColor: "transparent"} : {backgroundColor: "#19212C"}}>
       <motion.div className="menu"
       variants={menuVariants}
       initial="closed"

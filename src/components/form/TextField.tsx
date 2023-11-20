@@ -12,6 +12,7 @@ export default function TextField(props: Props) {
   const[currentText, setCurrentText] = useState("");
   const[isFocused, setIsFocused] = useState(false);
   const labelRef = useRef<HTMLLabelElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const leTexte = e.target.value;
@@ -24,6 +25,7 @@ export default function TextField(props: Props) {
         top:"50%",
         y:"-50%",
         scale:1,
+        cursor:"text",
         transition:{
             duration: 0.5,
             ease: [1, -0.02, 0,1]
@@ -33,6 +35,7 @@ export default function TextField(props: Props) {
         top:"-1rem",
         y:"0%",
         scale: 0.8,
+        cursor:"default",
         transition:{
             duration: 0.5,
             ease: [1, -0.02, 0,1]
@@ -86,11 +89,13 @@ export default function TextField(props: Props) {
         variants={labelVariants}
         initial="default"
         animate={isFocused || currentText !== "" ? "animate" : "default"}
+        onClick={() => inputRef.current?.focus()}
         >{props.text}</motion.label>
 
         <input name="text" 
         type="text" 
         defaultValue=""
+        ref={inputRef}
         onChange={handleTextChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

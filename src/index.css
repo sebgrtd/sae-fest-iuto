@@ -52,7 +52,6 @@ body{
 }
 
 #Navbar{
-  background-color: var(--color-dark);
   height:12vh;
   width: 100%; 
   position: fixed;
