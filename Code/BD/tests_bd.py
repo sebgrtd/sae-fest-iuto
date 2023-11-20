@@ -3,6 +3,7 @@ from FestivalBD import *
 from Type_BilletBD import *
 from SpectateurBD import *
 from BilletBD import *
+from LieuBD import *
 
 # classe Festival
 
@@ -1072,7 +1073,7 @@ def test_delete_spectateur():
 # Classe BilletBD
 
 billet_bd = BilletBD(connexion_bd)
-billet_1 = Billet(1, festival_1, type_billet_1, spectateur_1, 50, '2023-08-01')
+billet_1 = Billet(1, festival_1, type_billet_1, spectateur_1, 80, '2023-08-01')
 
 def test_get_billets_spectateur():
     billets = billet_bd.get_billets_spectateur(festival_1, type_billet_1, spectateur_1)
@@ -1094,3 +1095,34 @@ def test_delete_billet():
     billet_bd.insert_billet(billet)
     billet_bd.delete_billet_by_id_spectateur(billet, spectateur_1.get_idS())
     assert billet not in billet_bd.get_billets_spectateur(festival_1, type_billet_1, spectateur_1)
+    
+# LieuBD
+
+lieu_bd = LieuBD(connexion_bd)
+lieu_1 = Lieu(1, festival_1, 'Lieu 1', 'Adresse Lieu 1', 1000)
+lieu_2 = Lieu(9, festival_1, 'Lieu 15', 'Adresse Lieu 15', 2000)
+
+def test_get_all_lieux():
+    lieux = lieu_bd.get_all_lieux(festival_1)
+    lieux_de_bd = [(l.get_idL(), l.get_idFestival(), l.get_nomL(), l.get_adresseL(), l.get_jaugeL()) for l in lieux]
+    lieux_python = [l for l in lieux_de_bd]
+    assert lieux_de_bd == lieux_python
+    
+def test_get_lieu_by_adresse():
+    lieu = lieu_bd.get_lieu_by_adresse(festival_1, 'Adresse Lieu 1')
+    assert lieu.get_idL() == lieu_1.get_idL()
+    assert lieu.get_idFestival() == lieu_1.get_idFestival()
+    assert lieu.get_nomL() == lieu_1.get_nomL()
+    assert lieu.get_adresseL() == lieu_1.get_adresseL()
+    assert lieu.get_jaugeL() == lieu_1.get_jaugeL()
+    
+def test_insert_lieu():
+    lieu = Lieu(8, festival_1, 'Lieu 5', 'Adresse Lieu 5', 1000)
+    lieu_bd.insert_lieu(lieu)
+    assert lieu.get_idFestival() == festival_1.get_idF()
+    assert lieu.get_nomL() == 'Lieu 5'
+    assert lieu.get_adresseL() == 'Adresse Lieu 5'
+    assert lieu.get_jaugeL() == 1000
+
+# lieu_bd.insert_lieu(lieu_2)
+lieu_bd.delete_lieu_by_nom(lieu_2 ,'Lieu 15')
