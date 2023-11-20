@@ -25,7 +25,6 @@
 
 :root {
   font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
 
   color-scheme: light dark;
   --color-orange: #E45A3B;
@@ -53,7 +52,6 @@ body{
 }
 
 #Navbar{
-  background-color: var(--color-dark);
   height:12vh;
   width: 100%; 
   position: fixed;
@@ -61,6 +59,7 @@ body{
   align-items: center;
   padding: 0 3.6875rem;
   justify-content: space-between;
+  z-index: 100;
 }
 
 #Navbar .logo{
@@ -152,7 +151,7 @@ body{
 
 #Navbar .side-menu{
   position: absolute;
-  width: 35vw;
+  width: 42rem;
   height: 100vh;
   background-color:var(--color-light);
   color:var(--color-orange);
@@ -249,7 +248,7 @@ body{
   background-color: var(--color-light);
 }
 
-#Navbar .side-menu form .btn{
+.btn{
   background-color: var(--color-orange);
   border: 2px solid var(--color-orange);
   font-family: "TuskerGrotesk";
@@ -266,7 +265,7 @@ body{
   cursor: pointer;
 }
 
-#Navbar .side-menu form .btn input{
+.btn input{
   background-color: transparent;
   border:none;
   font-size: inherit;
@@ -276,7 +275,7 @@ body{
   z-index: 2;
 }
 
-#Navbar .side-menu form .btn img{
+.btn img{
   position: absolute;
   right: 2rem;
   top: 50%;
@@ -284,7 +283,7 @@ body{
   z-index: 1;
 }
 
-#Navbar .side-menu form .btn .anim-rectangle{
+.btn .anim-rectangle{
   width: 4rem;
   height: 3rem;
   background-color: var(--color-yellow);
@@ -308,20 +307,61 @@ body{
 /* ajouté */
 
 #Accueil {
-  height: 130vh;
+  height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#Accueil .content{
+  position:relative;
+  top:10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rem;
+}
+
+#Accueil .content .main-content{
+  display: flex;
+  flex-direction: column;
+  gap: 4.25rem;
+}
+
+#Accueil .content .texts{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap:1.625rem;
+}
+
+#Accueil .content .texts h2{
+  font-size: 1.625rem;
+  color:var(--color-yellow);
+  font-weight: 700;
+}
+
+#Accueil .content .texts h1{
+  font-size: 4.25rem;
+  color: var(--color-light);
+  font-weight: 800;
 }
 
 #Accueil .img-container{
+  top:0;
+  left:0;
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  position: relative;
-  z-index: -1;
+  position: absolute;
+  z-index: -2;
 }
 
-#Accueil img{
+#Accueil .img-container img{
   object-fit: cover;
   left:-5%;
   bottom: -5%;
@@ -335,8 +375,6 @@ body{
 
 #Accueil .marquee{
   overflow-x:hidden ;
-  position: absolute;
-  bottom: 12vh;
   width: 100%;
   border-top: 0.22375rem solid var(--color-orange);
   border-bottom: 0.22375rem solid var(--color-orange);
@@ -361,4 +399,35 @@ body{
   font-size: 6.25rem;
   color:transparent;
   -webkit-text-stroke: 0.22375rem var(--color-orange);
+}
+
+
+/* fais des media queries qui ne changent que le fontsize du body */
+
+/* Point de rupture pour les écrans LG */
+@media (max-width: 1199px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Point de rupture pour les écrans MD */
+@media (max-width: 991px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+/* Point de rupture pour les écrans SM */
+@media (max-width: 767px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+/* Point de rupture pour les écrans XS */
+@media (max-width: 576px) {
+  html {
+    font-size: 8px;
+  }
 }
