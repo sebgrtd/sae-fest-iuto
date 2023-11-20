@@ -1,4 +1,4 @@
-from BD import Spectateur, Festival, Type_Billet, Billet
+from BD import Billet
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
 from sqlalchemy.exc import SQLAlchemyError
