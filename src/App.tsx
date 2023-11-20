@@ -4,16 +4,19 @@ import Navbar from './components/nav/Navbar'
 import { AnimatePresence } from 'framer-motion'
 import { Route, Routes } from 'react-router-dom'
 import Accueil from './pages/Accueil/Accueil'
+import { useState } from 'react'
 
 function App() {
+  const [isNavInFocus, setIsNavInFocus] = useState(false)
+
   return (
     <>
-      <Navbar/>
+      <Navbar setNavInFocus={setIsNavInFocus}/>
 
       <AnimatePresence>
 
         <Routes>
-            <Route path="/" element={<Accueil />} />
+            <Route path="/" element={<Accueil isNavInFocus={isNavInFocus} />} />
             <Route path="/programmation" />
             <Route path="/billeterie" />
             <Route path="/faq"/>

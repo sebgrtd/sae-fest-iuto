@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {useState} from 'react';
-import TextField from '../components/form/TextField';
-import Button from '../components/form/Button';
+import TextField from '../../form/TextField';
+import Button from '../../form/Button';
 
 type Props = {
   isOpen: boolean;
@@ -20,7 +20,7 @@ export default function MenuConnexion(props: Props) {
 
   const menuVariants = {
     hidden:{
-      x: "35vw",
+      x: "42rem",
       transition:{
         duration: 0.5,
         ease: [1, -0.02, 0,1]

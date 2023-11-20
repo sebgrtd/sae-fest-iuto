@@ -5,14 +5,23 @@ import { Link } from 'react-router-dom'
 import NavButton from './NavButton'
 import NavLink from './NavLink'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
-import MenuConnexion from '../../side-menus/MenuConnexion'
+import { useState, useEffect } from 'react'
+import MenuConnexion from './side-menus/MenuConnexion'
 
-export default function Navbar() {
+type Props = {
+  setNavInFocus : (isNavInFocus : boolean) => void;
+}
+
+export default function Navbar(props : Props) {
   const[isOpen, setIsOpen] = useState(false);
   const[menuConnexionOpen, setMenuConnexionOpen] = useState(false);
   const[menuCartOpen, setMenuCartOpen] = useState(false);
   
+  useEffect(() => {
+    props.setNavInFocus(menuConnexionOpen)
+  }, [menuConnexionOpen])
+  
+
   const current = window.location.pathname;
 
   const menuVariants = {
@@ -92,8 +101,8 @@ export default function Navbar() {
       <MenuConnexion isOpen={menuConnexionOpen} setIsOpen={setMenuConnexionOpen}/>
       <div className='btns'>
         <div className="nav-btns">
-          <NavButton setIsOpen={setMenuConnexionOpen}/>
-          <NavButton isCart setIsOpen={setMenuCartOpen}/>
+          <NavButton setIsOpen={setMenuConnexionOpen} />
+          <NavButton isCart setIsOpen={setMenuCartOpen} />
         </div>
         <MenuButton setIsOpen={setIsOpen} isOpen={isOpen}/>
       </div>
