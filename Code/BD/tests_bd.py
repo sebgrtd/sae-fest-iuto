@@ -1123,6 +1123,9 @@ def test_insert_lieu():
     assert lieu.get_nomL() == 'Lieu 5'
     assert lieu.get_adresseL() == 'Adresse Lieu 5'
     assert lieu.get_jaugeL() == 1000
-
-# lieu_bd.insert_lieu(lieu_2)
-lieu_bd.delete_lieu_by_nom(lieu_2 ,'Lieu 15')
+    
+def test_delete_lieu():
+    lieu = Lieu(8, festival_1, 'Lieu 5', 'Adresse Lieu 5', 1000)
+    lieu_bd.insert_lieu(lieu)
+    lieu_bd.delete_lieu_by_nom(lieu, 'Lieu 5')
+    assert lieu not in lieu_bd.get_all_lieux(festival_1)
