@@ -68,7 +68,7 @@ class Spectateur:
     
 
 class Billet:
-    def __init__(self, idB: int, festival: Festival, type_billet: Type_Billet, spectateur: Spectateur, prix: float, dateAchat: str):
+    def __init__(self, idB: int, festival: Festival, type_billet: Type_Billet, spectateur: Spectateur, prix: int, dateAchat: str):
         self._idB = idB
         self._festival = festival
         self._type_billet = type_billet

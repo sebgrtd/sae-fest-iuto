@@ -2,6 +2,7 @@ from BD import *
 from FestivalBD import *
 from Type_BilletBD import *
 from SpectateurBD import *
+from BilletBD import *
 
 # classe Festival
 
@@ -189,8 +190,8 @@ def test_type_mdpS2():
     
 # classe Billet
 
-billet1 = Billet(1, festival1, type_billet1, spectateur1, 10.0, "2021-05-01")
-billet2 = Billet(2, festival2, type_billet2, spectateur2, 20.0, "2021-05-02")
+billet1 = Billet(1, festival1, type_billet1, spectateur1, 10, "2021-05-01")
+billet2 = Billet(2, festival2, type_billet2, spectateur2, 20, "2021-05-02")
 
 def test_get_idB():
     assert billet1.get_idB() == 1
@@ -205,7 +206,7 @@ def test_get_idSpectateur():
     assert billet1.get_idSpectateur() == spectateur1.get_idS()
     
 def test_get_prix():
-    assert billet1.get_prix() == 10.0
+    assert billet1.get_prix() == 10
     
 def test_get_dateAchat():
     assert billet1.get_dateAchat() == datetime.strptime("2021-05-01", '%Y-%m-%d').date()
@@ -223,7 +224,7 @@ def test_idSpectateur2():
     assert billet2.get_idSpectateur() == spectateur2.get_idS()
     
 def test_prix2():
-    assert billet2.get_prix() == 20.0
+    assert billet2.get_prix() == 20
     
 def test_dateAchat2():
     assert billet2.get_dateAchat() == datetime.strptime("2021-05-02", '%Y-%m-%d').date()
@@ -253,7 +254,7 @@ def test_type_idSpectateur():
     assert isinstance(billet1.get_idSpectateur(), int)
     
 def test_type_prix():
-    assert isinstance(billet1.get_prix(), float)
+    assert isinstance(billet1.get_prix(), int)
     
 def test_type_dateAchat():
     assert isinstance(billet1.get_dateAchat(), date)
@@ -271,7 +272,7 @@ def test_type_idSpectateur2():
     assert isinstance(billet2.get_idSpectateur(), int)
     
 def test_type_prix2():
-    assert isinstance(billet2.get_prix(), float)
+    assert isinstance(billet2.get_prix(), int)
     
 def test_type_dateAchat2():
     assert isinstance(billet2.get_dateAchat(), date)
@@ -1068,4 +1069,28 @@ def test_delete_spectateur():
     spectateur_bd.delete_spectateur_by_email(spectateur)
     assert spectateur not in spectateur_bd.get_all_spectateurs()
                 
-spectateur_bd.insert_spectateur(Spectateur(9, 'Spectateur 5', 'Prénom 5', 'Adresse 5', 'email1@example.com', "mdp9"))
+# Classe BilletBD
+
+billet_bd = BilletBD(connexion_bd)
+billet_1 = Billet(1, festival_1, type_billet_1, spectateur_1, 50, '2023-08-01')
+
+def test_get_billets_spectateur():
+    billets = billet_bd.get_billets_spectateur(festival_1, type_billet_1, spectateur_1)
+    billets_de_bd = [(b.get_idB(), b.get_idFestival(), b.get_idType(), b.get_idSpectateur(), b.get_prix(), b.get_dateAchat()) for b in billets]
+    billets_python = [b for b in billets_de_bd]
+    assert billets_de_bd == billets_python
+    
+def test_insert_billet():
+    billet = Billet(9, festival_1, type_billet_1, spectateur_1, 50, '2023-08-01')
+    billet_bd.insert_billet(billet)
+    assert billet.get_idFestival() == festival_1.get_idF()
+    assert billet.get_idType() == type_billet_1.get_idType()
+    assert billet.get_idSpectateur() == spectateur_1.get_idS()
+    assert billet.get_prix() == 50
+    assert billet.get_dateAchat() == datetime.strptime('2023-08-01', '%Y-%m-%d').date()
+    
+def test_delete_billet():
+    billet = Billet(9, festival_1, type_billet_1, spectateur_1, 50, '2023-08-01')
+    billet_bd.insert_billet(billet)
+    billet_bd.delete_billet_by_id_spectateur(billet, spectateur_1.get_idS())
+    assert billet not in billet_bd.get_billets_spectateur(festival_1, type_billet_1, spectateur_1)
