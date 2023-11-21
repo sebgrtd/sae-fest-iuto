@@ -7,6 +7,7 @@ import NavLink from './NavLink'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import MenuConnexion from './side-menus/MenuConnexion'
+import MenuPanier from './side-menus/Panier/MenuPanier'
 
 type Props = {
   setNavInFocus : (isNavInFocus : boolean) => void;
@@ -19,8 +20,8 @@ export default function Navbar(props : Props) {
   const[menuCartOpen, setMenuCartOpen] = useState(false);
   
   useEffect(() => {
-    props.setNavInFocus(menuConnexionOpen)
-  }, [menuConnexionOpen])
+    props.setNavInFocus(menuConnexionOpen || menuCartOpen)
+  }, [menuConnexionOpen, menuCartOpen])
   
 
   const current = window.location.pathname;
@@ -100,6 +101,7 @@ export default function Navbar(props : Props) {
         <img src="/logo.svg" alt="logo"/>
       </Link>
       <MenuConnexion isOpen={menuConnexionOpen} setIsOpen={setMenuConnexionOpen}/>
+      <MenuPanier isOpen={menuCartOpen} setIsOpen={setMenuCartOpen}/>
       <div className='btns'>
         <div className="nav-btns">
           <NavButton setIsOpen={setMenuConnexionOpen} />
