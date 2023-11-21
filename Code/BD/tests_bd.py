@@ -4,6 +4,7 @@ from Type_BilletBD import *
 from SpectateurBD import *
 from BilletBD import *
 from LieuBD import *
+from HebergementBD import *
 
 # classe Festival
 
@@ -1129,3 +1130,35 @@ def test_delete_lieu():
     lieu_bd.insert_lieu(lieu)
     lieu_bd.delete_lieu_by_nom(lieu, 'Lieu 5')
     assert lieu not in lieu_bd.get_all_lieux(festival_1)
+    
+# HebergementBD
+
+hebergement_bd = HebergementBD(connexion_bd)
+hebergement_1 = Hebergement(1, 'Hébergement 1', 100, 'Adresse Hébergement 1')
+
+def test_get_all_hebergements():
+    hebergements = hebergement_bd.get_all_hebergements()
+    hebergements_de_bd = [(h.get_idH(), h.get_nomH(), h.get_limitePlacesH(), h.get_adresseH()) for h in hebergements]
+    hebergements_python = [h for h in hebergements_de_bd]
+    assert hebergements_de_bd == hebergements_python
+    
+def test_get_hebergement_by_adresse():
+    hebergement = hebergement_bd.get_hebergement_by_adresse('Adresse Hébergement 1')
+    assert hebergement.get_idH() == hebergement_1.get_idH()
+    assert hebergement.get_nomH() == hebergement_1.get_nomH()
+    assert hebergement.get_limitePlacesH() == hebergement_1.get_limitePlacesH()
+    assert hebergement.get_adresseH() == hebergement_1.get_adresseH()
+    
+def test_insert_hebergement():
+    hebergement = Hebergement(8, 'Hébergement 5', 100, 'Adresse Hébergement 5')
+    hebergement_bd.insert_hebergement(hebergement)
+    assert hebergement.get_nomH() == 'Hébergement 5'
+    assert hebergement.get_limitePlacesH() == 100
+    assert hebergement.get_adresseH() == 'Adresse Hébergement 5'
+    
+def test_delete_hebergement():
+    hebergement = Hebergement(8, 'Hébergement 5', 100, 'Adresse Hébergement 5')
+    hebergement_bd.insert_hebergement(hebergement)
+    hebergement_bd.delete_hebergement_by_nom(hebergement, 'Hébergement 5')
+    assert hebergement not in hebergement_bd.get_all_hebergements()
+    
