@@ -77,6 +77,7 @@ CREATE TABLE MEMBRE_GROUPE (
     idG INT NOT NULL,
     nomMG VARCHAR(50) NOT NULL,
     prenomMG VARCHAR(50) NOT NULL,
+    nomDeSceneMG VARCHAR(50) NOT NULL,
     PRIMARY KEY (idMG)
 );
 
@@ -342,7 +343,7 @@ delimiter |
 create or replace trigger memeNomPrenomMembreGroupe before insert on MEMBRE_GROUPE
 for each row
 begin
-    if exists (select 1 from MEMBRE_GROUPE where idG = new.idG and nomMG = new.nomMG and prenomMG = new.prenomMG) then
+    if exists (select 1 from MEMBRE_GROUPE where idG = new.idG and nomMG = new.nomMG and prenomMG = new.prenomMG and nomDeSceneMG = new.nomDeSceneMG) then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Un membre avec le même nom et prénom existe déjà dans ce groupe";
     end if;
 end |

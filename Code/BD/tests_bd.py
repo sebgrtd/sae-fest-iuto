@@ -563,8 +563,8 @@ def test_type_descriptionG2():
     
 # classe Membre_Groupe
 
-membre_groupe1 = Membre_Groupe(1, groupe1.get_idG(), "Dupont", "Jean")
-membre_groupe2 = Membre_Groupe(2, groupe2.get_idG(), "Martin", "Pierre")
+membre_groupe1 = Membre_Groupe(1, groupe1.get_idG(), "Dupont", "Jean", "nomDeScene1")
+membre_groupe2 = Membre_Groupe(2, groupe2.get_idG(), "Martin", "Pierre", "nomDeScene2")
 
 def test_get_idMG():
     assert membre_groupe1.get_idMG() == 1
@@ -578,6 +578,9 @@ def test_get_nomMG():
 def test_get_prenomMG():
     assert membre_groupe1.get_prenomMG() == "Jean"
     
+def test_get_nomDeSceneMG():
+    assert membre_groupe1.get_nomDeSceneMG() == "nomDeScene1"
+    
 def test_idMG2():
     assert membre_groupe2.get_idMG() == 2
     
@@ -589,6 +592,9 @@ def test_nomMG2():
     
 def test_prenomMG2():
     assert membre_groupe2.get_prenomMG() == "Pierre"
+    
+def test_nomDeSceneMG2():
+    assert membre_groupe2.get_nomDeSceneMG() == "nomDeScene2"
     
 def test_type_idMG():
     assert isinstance(membre_groupe1.get_idMG(), int)
@@ -613,6 +619,12 @@ def test_type_nomMG2():
     
 def test_type_prenomMG2():
     assert isinstance(membre_groupe2.get_prenomMG(), str)
+    
+def test_type_nomDeSceneMG():
+    assert isinstance(membre_groupe1.get_nomDeSceneMG(), str)
+    
+def test_type_nomDeSceneMG2():
+    assert isinstance(membre_groupe2.get_nomDeSceneMG(), str)
     
 # classe Instrument
 
@@ -1182,16 +1194,42 @@ def test_delete_hebergement():
 # GroupeBD
 
 groupe_bd = GroupeBD(connexion_bd)
-groupe_1 = Groupe(1, hebergement_1.get_idH(), 'Groupe 1', 'Description Groupe 1')
+groupe_1 = Groupe(11, hebergement_1.get_idH(), 'Test', 'Desc')
+
+def test_get_all_groupes():
+    groupes = groupe_bd.get_all_groupes()
+    groupes_de_bd = [(g.get_idG(), g.get_nomG(), g.get_descriptionG()) for g in groupes]
+    groupes_python = [g for g in groupes_de_bd]
+    assert groupes_de_bd == groupes_python
 
 # Membre_GroupeBD
 
-groupe_3 = Groupe(3, hebergement_3.get_idH(), 'Groupe 3', 'Description Groupe 3')
+groupe_3 = Groupe(1, 1, 'Vladimir Cauchemar', 'Desc')
 
 membre_groupe_bd = Membre_GroupeBD(connexion_bd)
 
 def test_get_all_artistes_of_groupe():
     artistes = membre_groupe_bd.get_artistes_of_groupe(groupe_3.get_idG())
-    artistes_de_bd = [(a.get_idMG(), a.get_idGroupe(), a.get_nomMG(), a.get_prenomMG()) for a in artistes]
+    artistes_de_bd = [(a.get_idMG(), a.get_idGroupe(), a.get_nomMG(), a.get_prenomMG(), a.get_nomDeSceneMG()) for a in artistes]
     artistes_python = [a for a in artistes_de_bd]
     assert artistes_de_bd == artistes_python
+
+def test_get_all_artistes():
+    artistes = membre_groupe_bd.get_all_artistes()
+    artistes_de_bd = [(a.get_idMG(), a.get_idGroupe(), a.get_nomMG(), a.get_prenomMG(), a.get_nomDeSceneMG()) for a in artistes]
+    artistes_python = [a for a in artistes_de_bd]
+    assert artistes_de_bd == artistes_python
+    
+def test_insert_membre_groupe():
+    membre_groupe = Membre_Groupe(8, groupe_3.get_idG(), 'Test', 'Test', 'Test')
+    membre_groupe_bd.insert_membre_groupe(membre_groupe)
+    assert membre_groupe.get_idGroupe() == groupe_3.get_idG()
+    assert membre_groupe.get_nomMG() == 'Test'
+    assert membre_groupe.get_prenomMG() == 'Test'
+    assert membre_groupe.get_nomDeSceneMG() == 'Test'
+    
+def test_delete_membre_groupe():
+    membre_groupe = Membre_Groupe(8, groupe_3.get_idG(), 'Test', 'Test', 'Test')
+    membre_groupe_bd.insert_membre_groupe(membre_groupe)
+    membre_groupe_bd.delete_membre_groupe_by_name_scene(membre_groupe, 'Test')
+    assert membre_groupe not in membre_groupe_bd.get_all_artistes()

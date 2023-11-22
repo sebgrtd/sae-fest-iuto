@@ -192,11 +192,12 @@ class Groupe:
     
 
 class Membre_Groupe:
-    def __init__(self, idMG: int, idG, nomMG: str, prenomMG: str):
+    def __init__(self, idMG: int, idG, nomMG: str, prenomMG: str, nomDeSceneMG: str):
         self._idMG = idMG
         self._idG = idG
         self._nomMG = nomMG
         self._prenomMG = prenomMG
+        self._nomDeSceneMG = nomDeSceneMG
         
     def get_idMG(self):
         return self._idMG
@@ -210,15 +211,19 @@ class Membre_Groupe:
     def get_prenomMG(self):
         return self._prenomMG
     
+    def get_nomDeSceneMG(self):
+        return self._nomDeSceneMG
+    
     def __repr__(self):
-        return f"({self._idMG}, {self._idG}, {self._nomMG}, {self._prenomMG})"
+        return f"({self._idMG}, {self._idG}, {self._nomMG}, {self._prenomMG}, {self._nomDeSceneMG})"
     
     def to_dict(self):
         return {
             "idMG": self._idMG,
             "idG": self._idG,
             "nomMG": self._nomMG,
-            "prenomMG": self._prenomMG
+            "prenomMG": self._prenomMG,
+            "nomDeSceneMG": self._nomDeSceneMG
         }
     
 class Instrument:
