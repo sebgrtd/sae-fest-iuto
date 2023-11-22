@@ -45,3 +45,4 @@ class HebergementBD:
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
+            

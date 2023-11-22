@@ -5,6 +5,8 @@ from SpectateurBD import *
 from BilletBD import *
 from LieuBD import *
 from HebergementBD import *
+from GroupeBD import *
+from Membre_GroupeBD import *
 
 # classe Festival
 
@@ -192,8 +194,8 @@ def test_type_mdpS2():
     
 # classe Billet
 
-billet1 = Billet(1, festival1, type_billet1, spectateur1, 10, "2021-05-01")
-billet2 = Billet(2, festival2, type_billet2, spectateur2, 20, "2021-05-02")
+billet1 = Billet(1, festival1.get_idF(), type_billet1.get_idType(), spectateur1.get_idS(), 10, "2021-05-01")
+billet2 = Billet(2, festival2.get_idF(), type_billet2.get_idType(), spectateur2.get_idS(), 20, "2021-05-02")
 
 def test_get_idB():
     assert billet1.get_idB() == 1
@@ -281,8 +283,8 @@ def test_type_dateAchat2():
     
 # classe Lieu
 
-lieu1 = Lieu(1, festival1, "lieu1", "adresse1", 1000)
-lieu2 = Lieu(2, festival2, "lieu2", "adresse2", 2000)
+lieu1 = Lieu(1, festival1.get_idF(), "lieu1", "adresse1", 1000)
+lieu2 = Lieu(2, festival2.get_idF(), "lieu2", "adresse2", 2000)
 
 def test_get_idL():
     assert lieu1.get_idL() == 1
@@ -411,8 +413,8 @@ def test_type_adresseH2():
     
 # classe Programmer
 
-programmer1 = Programmer(festival1, lieu1, hebergement1, "2021-05-01", "10:00", "2021-05-02", "10:00")
-programmer2 = Programmer(festival2, lieu2, hebergement2, "2021-05-02", "10:00", "2021-05-03", "10:00")
+programmer1 = Programmer(festival1.get_idF(), lieu1.get_idL(), hebergement1.get_idH(), "2021-05-01", "10:00", "2021-05-02", "10:00")
+programmer2 = Programmer(festival2.get_idF(), lieu2.get_idL(), hebergement2.get_idH(), "2021-05-02", "10:00", "2021-05-03", "10:00")
 
 def test_get_idFestival():
     assert programmer1.get_idFestival() == festival1.get_idF()
@@ -506,8 +508,8 @@ def test_type_heureDepart2():
     
 # classe Groupe
 
-groupe1 = Groupe(1, hebergement1, "IAM")
-groupe2 = Groupe(2, hebergement2, "NWA")
+groupe1 = Groupe(1, hebergement1.get_idH(), "IAM", "description1")
+groupe2 = Groupe(2, hebergement2.get_idH(), "NWA", "description2")
 
 def test_get_idG():
     assert groupe1.get_idG() == 1
@@ -518,6 +520,9 @@ def test_get_idHebergement():
 def test_get_nomG():
     assert groupe1.get_nomG() == "IAM"
     
+def test_get_descriptionG():
+    assert groupe1.get_descriptionG() == "description1"
+    
 def test_idG2():
     assert groupe2.get_idG() == 2
     
@@ -526,6 +531,9 @@ def test_idHebergement2():
     
 def test_nomG2():
     assert groupe2.get_nomG() == "NWA"
+    
+def test_get_descriptionG2():
+    assert groupe2.get_descriptionG() == "description2"
     
 def test_type_idG():
     assert isinstance(groupe1.get_idG(), int)
@@ -545,10 +553,18 @@ def test_type_idHebergement2():
 def test_type_nomG2():
     assert isinstance(groupe2.get_nomG(), str)
     
+def test_type_descriptionG():
+    assert isinstance(groupe1.get_descriptionG(), str)
+    
+def test_type_descriptionG2():
+    assert isinstance(groupe2.get_descriptionG(), str)
+
+
+    
 # classe Membre_Groupe
 
-membre_groupe1 = Membre_Groupe(1, groupe1, "Dupont", "Jean")
-membre_groupe2 = Membre_Groupe(2, groupe2, "Martin", "Pierre")
+membre_groupe1 = Membre_Groupe(1, groupe1.get_idG(), "Dupont", "Jean")
+membre_groupe2 = Membre_Groupe(2, groupe2.get_idG(), "Martin", "Pierre")
 
 def test_get_idMG():
     assert membre_groupe1.get_idMG() == 1
@@ -600,8 +616,8 @@ def test_type_prenomMG2():
     
 # classe Instrument
 
-instrument1 = Instrument(1, membre_groupe1, "guitare")
-instrument2 = Instrument(2, membre_groupe2, "batterie")
+instrument1 = Instrument(1, membre_groupe1.get_idMG(), "guitare")
+instrument2 = Instrument(2, membre_groupe2.get_idMG(), "batterie")
 
 def test_get_idI():
     assert instrument1.get_idI() == 1
@@ -670,8 +686,8 @@ def test_type_nomSt2():
     
 # classe Lien_Video
 
-lien_video1 = Lien_Video(1, groupe1, "lien1")
-lien_video2 = Lien_Video(2, groupe2, "lien2")
+lien_video1 = Lien_Video(1, groupe1.get_idG(), "lien1")
+lien_video2 = Lien_Video(2, groupe2.get_idG(), "lien2")
 
 def test_get_idLV():
     assert lien_video1.get_idLV() == 1
@@ -711,8 +727,8 @@ def test_type_video2():
     
 # classe Lien_Reseaux_Sociaux
 
-lien_reseaux_sociaux1 = Lien_Reseaux_Sociaux(1, groupe1, "lien1")
-lien_reseaux_sociaux2 = Lien_Reseaux_Sociaux(2, groupe2, "lien2")
+lien_reseaux_sociaux1 = Lien_Reseaux_Sociaux(1, groupe1.get_idG(), "lien1")
+lien_reseaux_sociaux2 = Lien_Reseaux_Sociaux(2, groupe2.get_idG(), "lien2")
 
 def test_get_idLRS():
     assert lien_reseaux_sociaux1.get_idLRS() == 1
@@ -752,8 +768,8 @@ def test_type_reseau2():
     
 # classe Photo
 
-photo1 = Photo(1, groupe1, "photo1")
-photo2 = Photo(2, groupe2, "photo2")
+photo1 = Photo(1, groupe1.get_idG(), "photo1")
+photo2 = Photo(2, groupe2.get_idG(), "photo2")
 
 def test_get_idP():
     assert photo1.get_idP() == 1
@@ -852,8 +868,8 @@ def test_type_heureFinE2():
     
 # classe Activites_Annexes
 
-activites_annexes1 = Activites_Annexes(evenement1, "activites_annexes1", True)
-activites_annexes2 = Activites_Annexes(evenement2, "activites_annexes2", False)
+activites_annexes1 = Activites_Annexes(evenement1.get_idE(), "activites_annexes1", True)
+activites_annexes2 = Activites_Annexes(evenement2.get_idE(), "activites_annexes2", False)
 
 def test_get_idEvenement():
     assert activites_annexes1.get_idEvenement() == evenement1.get_idE()
@@ -893,8 +909,8 @@ def test_type_ouvertAuPublic2():
     
 # classe Concert
 
-concert1 = Concert(evenement1, "1:00", "2:00")
-concert2 = Concert(evenement2, "2:00", "3:00")
+concert1 = Concert(evenement1.get_idE(), "1:00", "2:00")
+concert2 = Concert(evenement2.get_idE(), "2:00", "3:00")
 
 def test_get_idEvenement():
     assert concert1.get_idEvenement() == evenement1.get_idE()
@@ -1074,16 +1090,16 @@ def test_delete_spectateur():
 # Classe BilletBD
 
 billet_bd = BilletBD(connexion_bd)
-billet_1 = Billet(1, festival_1, type_billet_1, spectateur_1, 80, '2023-08-01')
+billet_1 = Billet(1, festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS(), 80, '2023-08-01')
 
 def test_get_billets_spectateur():
-    billets = billet_bd.get_billets_spectateur(festival_1, type_billet_1, spectateur_1)
+    billets = billet_bd.get_billets_spectateur(festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS())
     billets_de_bd = [(b.get_idB(), b.get_idFestival(), b.get_idType(), b.get_idSpectateur(), b.get_prix(), b.get_dateAchat()) for b in billets]
     billets_python = [b for b in billets_de_bd]
     assert billets_de_bd == billets_python
     
 def test_insert_billet():
-    billet = Billet(9, festival_1, type_billet_1, spectateur_1, 50, '2023-08-01')
+    billet = Billet(9, festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS(), 50, '2023-08-01')
     billet_bd.insert_billet(billet)
     assert billet.get_idFestival() == festival_1.get_idF()
     assert billet.get_idType() == type_billet_1.get_idType()
@@ -1092,25 +1108,25 @@ def test_insert_billet():
     assert billet.get_dateAchat() == datetime.strptime('2023-08-01', '%Y-%m-%d').date()
     
 def test_delete_billet():
-    billet = Billet(9, festival_1, type_billet_1, spectateur_1, 50, '2023-08-01')
+    billet = Billet(9, festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS(), 50, '2023-08-01')
     billet_bd.insert_billet(billet)
     billet_bd.delete_billet_by_id_spectateur(billet, spectateur_1.get_idS())
-    assert billet not in billet_bd.get_billets_spectateur(festival_1, type_billet_1, spectateur_1)
+    assert billet not in billet_bd.get_billets_spectateur(festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS())
     
 # LieuBD
 
 lieu_bd = LieuBD(connexion_bd)
-lieu_1 = Lieu(1, festival_1, 'Lieu 1', 'Adresse Lieu 1', 1000)
-lieu_2 = Lieu(9, festival_1, 'Lieu 15', 'Adresse Lieu 15', 2000)
+lieu_1 = Lieu(1, festival_1.get_idF(), 'Lieu 1', 'Adresse Lieu 1', 1000)
+lieu_2 = Lieu(9, festival_1.get_idF(), 'Lieu 15', 'Adresse Lieu 15', 2000)
 
 def test_get_all_lieux():
-    lieux = lieu_bd.get_all_lieux(festival_1)
+    lieux = lieu_bd.get_all_lieux(festival_1.get_idF())
     lieux_de_bd = [(l.get_idL(), l.get_idFestival(), l.get_nomL(), l.get_adresseL(), l.get_jaugeL()) for l in lieux]
     lieux_python = [l for l in lieux_de_bd]
     assert lieux_de_bd == lieux_python
     
 def test_get_lieu_by_adresse():
-    lieu = lieu_bd.get_lieu_by_adresse(festival_1, 'Adresse Lieu 1')
+    lieu = lieu_bd.get_lieu_by_adresse(festival_1.get_idF(), 'Adresse Lieu 1')
     assert lieu.get_idL() == lieu_1.get_idL()
     assert lieu.get_idFestival() == lieu_1.get_idFestival()
     assert lieu.get_nomL() == lieu_1.get_nomL()
@@ -1118,7 +1134,7 @@ def test_get_lieu_by_adresse():
     assert lieu.get_jaugeL() == lieu_1.get_jaugeL()
     
 def test_insert_lieu():
-    lieu = Lieu(8, festival_1, 'Lieu 5', 'Adresse Lieu 5', 1000)
+    lieu = Lieu(8, festival_1.get_idF(), 'Lieu 5', 'Adresse Lieu 5', 1000)
     lieu_bd.insert_lieu(lieu)
     assert lieu.get_idFestival() == festival_1.get_idF()
     assert lieu.get_nomL() == 'Lieu 5'
@@ -1126,15 +1142,16 @@ def test_insert_lieu():
     assert lieu.get_jaugeL() == 1000
     
 def test_delete_lieu():
-    lieu = Lieu(8, festival_1, 'Lieu 5', 'Adresse Lieu 5', 1000)
+    lieu = Lieu(8, festival_1.get_idF(), 'Lieu 5', 'Adresse Lieu 5', 1000)
     lieu_bd.insert_lieu(lieu)
     lieu_bd.delete_lieu_by_nom(lieu, 'Lieu 5')
-    assert lieu not in lieu_bd.get_all_lieux(festival_1)
+    assert lieu not in lieu_bd.get_all_lieux(festival_1.get_idF())
     
 # HebergementBD
 
 hebergement_bd = HebergementBD(connexion_bd)
 hebergement_1 = Hebergement(1, 'Hébergement 1', 100, 'Adresse Hébergement 1')
+hebergement_3 = Hebergement(3, 'Hébergement 3', 500, 'Adresse Hébergement 3')
 
 def test_get_all_hebergements():
     hebergements = hebergement_bd.get_all_hebergements()
@@ -1162,3 +1179,19 @@ def test_delete_hebergement():
     hebergement_bd.delete_hebergement_by_nom(hebergement, 'Hébergement 5')
     assert hebergement not in hebergement_bd.get_all_hebergements()
     
+# GroupeBD
+
+groupe_bd = GroupeBD(connexion_bd)
+groupe_1 = Groupe(1, hebergement_1.get_idH(), 'Groupe 1', 'Description Groupe 1')
+
+# Membre_GroupeBD
+
+groupe_3 = Groupe(3, hebergement_3.get_idH(), 'Groupe 3', 'Description Groupe 3')
+
+membre_groupe_bd = Membre_GroupeBD(connexion_bd)
+
+def test_get_all_artistes_of_groupe():
+    artistes = membre_groupe_bd.get_artistes_of_groupe(groupe_3.get_idG())
+    artistes_de_bd = [(a.get_idMG(), a.get_idGroupe(), a.get_nomMG(), a.get_prenomMG()) for a in artistes]
+    artistes_python = [a for a in artistes_de_bd]
+    assert artistes_de_bd == artistes_python

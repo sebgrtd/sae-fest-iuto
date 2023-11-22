@@ -68,11 +68,11 @@ class Spectateur:
     
 
 class Billet:
-    def __init__(self, idB: int, festival: Festival, type_billet: Type_Billet, spectateur: Spectateur, prix: int, dateAchat: str):
+    def __init__(self, idB: int, idF: int, idType: int, idS: int, prix: int, dateAchat: str):
         self._idB = idB
-        self._festival = festival
-        self._type_billet = type_billet
-        self._spectateur = spectateur
+        self._idF = idF
+        self._idType = idType
+        self._idS = idS
         self._prix = prix
         self._dateAchat = dateAchat if isinstance(dateAchat, date) else datetime.strptime(dateAchat, '%Y-%m-%d').date()
         
@@ -80,13 +80,13 @@ class Billet:
         return self._idB
     
     def get_idFestival(self):
-        return self._festival.get_idF()
+        return self._idF
     
     def get_idType(self):
-        return self._type_billet.get_idType()
+        return self._idType
     
     def get_idSpectateur(self):
-        return self._spectateur.get_idS()
+        return self._idS
     
     def get_prix(self):
         return self._prix
@@ -96,9 +96,9 @@ class Billet:
     
     
 class Lieu:
-    def __init__(self, idL: int, festival: Festival, nomL: str, adresseL: str, jaugeL: int):
+    def __init__(self, idL: int, idF: int, nomL: str, adresseL: str, jaugeL: int):
         self._idL = idL
-        self._festival = festival
+        self._idF = idF
         self._nomL = nomL
         self._adresseL = adresseL
         self._jaugeL = jaugeL
@@ -107,7 +107,7 @@ class Lieu:
         return self._idL
     
     def get_idFestival(self):
-        return self._festival.get_idF()
+        return self._idF
     
     def get_nomL(self):
         return self._nomL
@@ -140,23 +140,23 @@ class Hebergement:
     
     
 class Programmer:
-    def __init__(self, festival: Festival, lieu: Lieu, hebergement: Hebergement, dateArrivee: str, heureArrivee: str, dateDepart: str, heureDepart: str):
-        self._festival = festival
-        self._lieu = lieu
-        self._hebergement = hebergement
+    def __init__(self, idF: int, idL: int, idH: int, dateArrivee: str, heureArrivee: str, dateDepart: str, heureDepart: str):
+        self._idF = idF
+        self._idL = idL
+        self._idH = idH
         self._dateArrivee = dateArrivee if isinstance(dateArrivee, date) else datetime.strptime(dateArrivee, '%Y-%m-%d').date()
         self._heureArrivee = heureArrivee if isinstance(heureArrivee, time) else datetime.strptime(heureArrivee, '%H:%M').time()
         self._dateDepart = dateDepart if isinstance(dateDepart, date) else datetime.strptime(dateDepart, '%Y-%m-%d').date()
         self._heureDepart = heureDepart if isinstance(heureDepart, time) else datetime.strptime(heureDepart, '%H:%M').time()
         
     def get_idFestival(self):
-        return self._festival.get_idF()
+        return self._idF
     
     def get_idLieu(self):
-        return self._lieu.get_idL()
+        return self._idL
     
     def get_idHebergement(self):
-        return self._hebergement.get_idH()
+        return self._idH
     
     def get_dateArrivee(self):
         return self._dateArrivee
@@ -172,25 +172,29 @@ class Programmer:
     
 
 class Groupe:
-    def __init__(self, idG: int, hebergement: Hebergement, nomG: str):
+    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str):
         self._idG = idG
-        self._hebergement = hebergement
+        self._idH = idH
         self._nomG = nomG
+        self._descriptionG = descriptionG
         
     def get_idG(self):
         return self._idG
     
     def get_idHebergement(self):
-        return self._hebergement.get_idH()
+        return self._idH
     
     def get_nomG(self):
         return self._nomG
     
+    def get_descriptionG(self):
+        return self._descriptionG
+    
 
 class Membre_Groupe:
-    def __init__(self, idMG: int, groupe: Groupe, nomMG: str, prenomMG: str):
+    def __init__(self, idMG: int, idG, nomMG: str, prenomMG: str):
         self._idMG = idMG
-        self._groupe = groupe
+        self._idG = idG
         self._nomMG = nomMG
         self._prenomMG = prenomMG
         
@@ -198,7 +202,7 @@ class Membre_Groupe:
         return self._idMG
     
     def get_idGroupe(self):
-        return self._groupe.get_idG()
+        return self._idG
     
     def get_nomMG(self):
         return self._nomMG
@@ -206,17 +210,28 @@ class Membre_Groupe:
     def get_prenomMG(self):
         return self._prenomMG
     
+    def __repr__(self):
+        return f"({self._idMG}, {self._idG}, {self._nomMG}, {self._prenomMG})"
+    
+    def to_dict(self):
+        return {
+            "idMG": self._idMG,
+            "idG": self._idG,
+            "nomMG": self._nomMG,
+            "prenomMG": self._prenomMG
+        }
+    
 class Instrument:
-    def __init__(self, idI: int, membre_groupe: Membre_Groupe, nomI: str):
+    def __init__(self, idI: int, idMG: int, nomI: str):
         self._idI = idI
-        self._membre_groupe = membre_groupe
+        self._idMG = idMG
         self._nomI = nomI
         
     def get_idI(self):
         return self._idI
     
     def get_idMembreGroupe(self):
-        return self._membre_groupe.get_idMG()
+        return self._idMG
     
     def get_nomI(self):
         return self._nomI
@@ -234,46 +249,46 @@ class Style_Musical:
         return self._nomSt
     
 class Lien_Video:
-    def __init__(self, idLV: int, groupe: Groupe, video: str):
+    def __init__(self, idLV: int, idG: int, video: str):
         self._idLV = idLV
-        self._groupe = groupe
+        self._idG = idG
         self._video = video
         
     def get_idLV(self):
         return self._idLV
     
     def get_idGroupe(self):
-        return self._groupe.get_idG()
+        return self._idG
     
     def get_video(self):
         return self._video
     
 class Lien_Reseaux_Sociaux:
-    def __init__(self, idLRS: int, groupe: Groupe, reseau: str):
+    def __init__(self, idLRS: int, idG: int, reseau: str):
         self._idLRS = idLRS
-        self._groupe = groupe
+        self._idG = idG
         self._reseau = reseau
         
     def get_idLRS(self):
         return self._idLRS
     
     def get_idGroupe(self):
-        return self._groupe.get_idG()
+        return self._idG
     
     def get_reseau(self):
         return self._reseau
     
 class Photo:
-    def __init__(self, idP: int, groupe: Groupe, photo: str):
+    def __init__(self, idP: int, idG: int, photo: str):
         self._idP = idP
-        self._groupe = groupe
+        self._idG = idG
         self._photo = photo
         
     def get_idP(self):
         return self._idP
     
     def get_idGroupe(self):
-        return self._groupe.get_idG()
+        return self._idG
     
     def get_photo(self):
         return self._photo
@@ -298,13 +313,13 @@ class Evenement:
         return self._heureFinE
     
 class Activites_Annexes:
-    def __init__(self, evenement: Evenement, typeA: str, ouvertAuPublic: bool):
-        self._evenement = evenement
+    def __init__(self, idE: int, typeA: str, ouvertAuPublic: bool):
+        self._idE = idE
         self._typeA = typeA
         self._ouvertAuPublic = ouvertAuPublic
         
     def get_idEvenement(self):
-        return self._evenement.get_idE()
+        return self._idE
     
     def get_typeA(self):
         return self._typeA
@@ -313,13 +328,13 @@ class Activites_Annexes:
         return self._ouvertAuPublic
     
 class Concert:
-    def __init__(self, evenement: Evenement, tempsMontage: str, tempsDemontage: str):
-        self._evenement = evenement
+    def __init__(self, idE: int, tempsMontage: str, tempsDemontage: str):
+        self._idE = idE
         self._tempsMontage = tempsMontage if isinstance(tempsMontage, time) else datetime.strptime(tempsMontage, '%H:%M').time()
         self._tempsDemontage = tempsDemontage if isinstance(tempsDemontage, time) else datetime.strptime(tempsDemontage, '%H:%M').time()
     
     def get_idEvenement(self):
-        return self._evenement.get_idE()
+        return self._idE
     
     def get_tempsMontage(self):
         return self._tempsMontage
