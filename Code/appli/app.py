@@ -17,4 +17,5 @@ app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 def renvoyer_json():
     connexion_bd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexion_bd)
-    return membre_groupebd.artistes_to_json(3)
+    return membre_groupebd.artistes_to_json()
+
