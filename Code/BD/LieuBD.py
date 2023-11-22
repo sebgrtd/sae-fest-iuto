@@ -7,23 +7,23 @@ class LieuBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
         
-    def get_all_lieux(self, festival):
+    def get_all_lieux(self, idFestival):
         try:
             query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU WHERE idF = :idFestival")
             lieux = []
-            result = self.connexion.get_connexion().execute(query, {"idFestival": festival.get_idF()})
+            result = self.connexion.get_connexion().execute(query, {"idFestival": idFestival})
             for idL, idF, nomL, adresseL, jaugeL in result:
-                lieux.append(Lieu(idL, festival, nomL, adresseL, jaugeL))
+                lieux.append(Lieu(idL, idF, nomL, adresseL, jaugeL))
             return lieux
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
-    def get_lieu_by_adresse(self, festival, adresse):
+    def get_lieu_by_adresse(self, idFestival, adresse):
         try:
             query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU WHERE idF = :idFestival AND adresseL = :adresse")
-            result = self.connexion.get_connexion().execute(query, {"idFestival": festival.get_idF(), "adresse": adresse})
+            result = self.connexion.get_connexion().execute(query, {"idFestival": idFestival, "adresse": adresse})
             for idL, idF, nomL, adresseL, jaugeL in result:
-                return Lieu(idL, festival, nomL, adresseL, jaugeL)
+                return Lieu(idL, idF, nomL, adresseL, jaugeL)
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             

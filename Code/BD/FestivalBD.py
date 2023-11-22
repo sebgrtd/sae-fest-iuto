@@ -1,4 +1,3 @@
-import sqlalchemy
 from BD import Festival
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
