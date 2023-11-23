@@ -481,7 +481,7 @@ input[type="number"]::-webkit-outer-spin-button {
 } 
 
 #Accueil .marquee{
-  overflow-x:hidden ;
+  overflow-x:scroll;
   width: 100%;
   border-top: 0.22375rem solid var(--color-orange);
   border-bottom: 0.22375rem solid var(--color-orange);

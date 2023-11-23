@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import MarqueeScroll from '../../components/bandeau-effet-scroll-infini/MarqueeScroll'
 import Button from '../../components/form/Button';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 type Props = {
   isNavInFocus : boolean;
@@ -15,13 +16,16 @@ export default function (props: Props) {
   useEffect(() => {
     
     const fetchArtistes = async () => {
-      const res = await fetch('http://localhost:5000/getArtistes')
-      const data = await res.json()
-      setLesArtistes(data)
+      const res = await axios.get('http://localhost:5000/getArtistes')
+      const data = res.data
+      const listeNomArtistes : string[] = []
+      data.map((artiste : any) => {
+        listeNomArtistes.push(artiste.nomDeSceneMG.toUpperCase())
+      })
+      setLesArtistes(listeNomArtistes)
     }
 
-    fetchArtistes();
-
+    fetchArtistes()
   }, [])
   
 

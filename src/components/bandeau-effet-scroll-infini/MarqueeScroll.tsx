@@ -7,6 +7,7 @@ type Props = {
 
 export default function MarqueeScroll(props: Props) {
     props.artistes.push(...props.artistes) // double la liste des artistes
+    console.log(props.artistes)
     const lesArtistesRef = useRef<HTMLDivElement>(null)
 
     const[tailleArtistes, setTailleArtistes] = useState(lesArtistesRef.current?.offsetWidth || 0)
@@ -15,43 +16,37 @@ export default function MarqueeScroll(props: Props) {
     
         setTailleArtistes(lesArtistesRef.current?.offsetWidth || 0)
         console.log(lesArtistesRef.current?.offsetWidth)
+
     }, [lesArtistesRef])
     
-
     const infiniteMarqueeVariants = {
         animate: {
-            x: -1903*2,
+            x: '-100%',
             transition: {
                 x: {
                     repeat: Infinity,
                     repeatType: 'loop',
-                    duration: 15,
+                    duration: 10,
                     ease: 'linear'
                 }
             }
         },
     }
 
-    const handleLoad = () => {
-        console.log("test")
-        setTailleArtistes(lesArtistesRef.current?.offsetWidth || 0)
-    }
 
     return (
     <div className='marquee'>
 
         <motion.div className="les-artistes"
         ref={lesArtistesRef}
-        variants={infiniteMarqueeVariants}
-        animate='animate'
+       
         >
 
             {props.artistes.map((artiste, index) => {
                     return (
                         <div 
                         key={index}
-                        className='container'
-                        onLoad={handleLoad}>
+                        className='container'>
 
                             <span className='nom-artiste'>{artiste}</span>
 
