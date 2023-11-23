@@ -13,7 +13,6 @@ function App() {
   return (
     <>
       <Navbar setNavInFocus={setIsNavInFocus} isTransparent={isNavTransparent}/>
-
       <AnimatePresence>
 
         <Routes>

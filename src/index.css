@@ -109,7 +109,7 @@ body{
 }
 
 #Navbar .btns .nav-btn.menu-btn .bar{
-  height:0.225rem;
+  height:0.24rem;
   width:60%;
   background-color: var(--color-light);
   border-radius: 0.48125rem;
@@ -506,6 +506,23 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 6.25rem;
   color:transparent;
   -webkit-text-stroke: 0.22375rem var(--color-orange);
+}
+
+.exit{
+  position: absolute;
+  bottom:0;
+  left:0;
+  height:100vh;
+  width: 100%;
+  z-index: 100;
+}
+
+.exit.beige{
+  background-color: var(--color-light);
+}
+
+.exit.dark{
+  background-color: var(--color-dark);
 }
 
 

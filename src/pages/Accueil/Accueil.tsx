@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect, useState} from 'react'
 import MarqueeScroll from '../../components/bandeau-effet-scroll-infini/MarqueeScroll'
 import Button from '../../components/form/Button';
 import { motion } from 'framer-motion';
@@ -9,7 +9,22 @@ type Props = {
 }
 
 export default function (props: Props) {
-  const lesArtistes = ["VLADIMIR CAUCHEMAR", "BOOBA", "FREEZE CORLEONE", "DAMSO", "ASHE 22", "HEUSS L'ENFOIRE", "ZOLA", "SCH", "H JEUNECRACK", "LUTHER"];
+  //const lesArtistes = ["VLADIMIR CAUCHEMAR", "BOOBA", "FREEZE CORLEONE", "DAMSO", "ASHE 22", "HEUSS L'ENFOIRE", "ZOLA", "SCH", "H JEUNECRACK", "LUTHER"];
+  const [lesArtistes, setLesArtistes] = useState([""]);
+
+  useEffect(() => {
+    
+    const fetchArtistes = async () => {
+      const res = await fetch('http://localhost:5000/getArtistes')
+      const data = await res.json()
+      setLesArtistes(data)
+    }
+
+    fetchArtistes();
+
+  }, [])
+  
+
 
   const contentVariants = {
     visible:{
@@ -32,8 +47,31 @@ export default function (props: Props) {
     }
   }
 
+  const exitVariants = (index: number) => {
+    return{
+      start:{
+        y: 0,
+        zIndex: 99-index,
+        transition:{
+          duration:0.5,
+          delay: 0.5*(index+1),
+          ease: [1, 0, 0,1]
+        }
+      },
+      end:{
+        y: "-100vh",
+        zIndex: 99-index,
+        transition:{
+          duration:0.5,
+          delay: 0.5*(index+1),
+          ease: [1, 0, 0,1]
+        }
+      }
+    }
+  }
+
   return (
-    <main id="Accueil" className='page'>
+    <motion.div id="Accueil" className='page'>
         <div className="img-container">
             <img src="/images/bg.png" alt="background" />
         </div>
@@ -55,6 +93,10 @@ export default function (props: Props) {
           
           <MarqueeScroll artistes={lesArtistes} />
         </motion.div>
-    </main>
+
+        <motion.div className="exit beige" variants={exitVariants(0)} initial="start" animate="end"/>
+        <motion.div className="exit dark" variants={exitVariants(1)} initial="start" animate="end"/>
+
+    </motion.div>
   )
 }
