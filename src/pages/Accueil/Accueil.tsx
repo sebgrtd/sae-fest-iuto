@@ -11,22 +11,26 @@ type Props = {
 
 export default function (props: Props) {
   //const lesArtistes = ["VLADIMIR CAUCHEMAR", "BOOBA", "FREEZE CORLEONE", "DAMSO", "ASHE 22", "HEUSS L'ENFOIRE", "ZOLA", "SCH", "H JEUNECRACK", "LUTHER"];
-  const [lesArtistes, setLesArtistes] = useState([""]);
+  const [lesArtistes, setLesArtistes] = useState<string[]>([]);
 
   useEffect(() => {
     
     const fetchArtistes = async () => {
-      const res = await axios.get('http://localhost:5000/getArtistes')
+      const res = await axios.get('http://localhost:8080/')
       const data = res.data
       const listeNomArtistes : string[] = []
       data.map((artiste : any) => {
         listeNomArtistes.push(artiste.nomDeSceneMG.toUpperCase())
       })
+
+      //double la liste des artistes pour avoir un effet de boucle
+      listeNomArtistes.push(...listeNomArtistes)
+
       setLesArtistes(listeNomArtistes)
     }
 
     fetchArtistes()
-    setLesArtistes(["VLADIMIR CAUCHEMAR", "BOOBA", "FREEZE CORLEONE", "DAMSO", "ASHE 22", "HEUSS L'ENFOIRE", "ZOLA", "SCH", "H JEUNECRACK", "LUTHER","VLADIMIR CAUCHEMAR", "BOOBA", "FREEZE CORLEONE", "DAMSO", "ASHE 22", "HEUSS L'ENFOIRE", "ZOLA", "SCH", "H JEUNECRACK", "LUTHER"]);
+    //setLesArtistes(["VLADIMIR CAUCHEMAR", "BOOBA", "FREEZE CORLEONE", "DAMSO", "ASHE 22", "HEUSS L'ENFOIRE", "ZOLA", "SCH", "H JEUNECRACK", "LUTHER","VLADIMIR CAUCHEMAR", "BOOBA", "FREEZE CORLEONE", "DAMSO", "ASHE 22", "HEUSS L'ENFOIRE", "ZOLA", "SCH", "H JEUNECRACK", "LUTHER"]);
   }, [])
   
 
