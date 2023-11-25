@@ -624,16 +624,15 @@ input[type="number"]::-webkit-outer-spin-button {
   position: relative;
 }
 
-.combo::before{
+.combo .always-visible::before{
   content: "";
   position: absolute;
-  bottom:3.25rem;
-  left:0;
-  width: 100%;
+  left:-5%;
+  width: 110%;
   height: 100vh;
   background-color: var(--color-light);
-  z-index: 15;
-
+  z-index: -1;
+  bottom: 0;
 }
 
 .combo .always-visible{
@@ -644,6 +643,7 @@ input[type="number"]::-webkit-outer-spin-button {
   z-index: 10;
   background-color: var(--color-light);
   cursor: pointer;
+  position: relative;
 }
 
 .combo .always-visible h4{
