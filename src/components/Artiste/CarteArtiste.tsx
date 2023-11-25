@@ -90,7 +90,7 @@ export default function CarteArtiste(props: Props) {
         }
     },
     default:{
-        y:"2.9rem",
+        y:(window.innerWidth <= 576 ? 3.1 : 2.9).toString() + "rem",
         fontSize: "1.875rem",
         transition:{
             delay:delay,
