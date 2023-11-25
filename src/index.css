@@ -557,8 +557,13 @@ input[type="number"]::-webkit-outer-spin-button {
 #Programmation header .title{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 95%;
   z-index: 20;
+}
+
+#Programmation header .title svg{
+  height: 4.375rem;
 }
 
 #Programmation header .title h2{
@@ -571,11 +576,15 @@ input[type="number"]::-webkit-outer-spin-button {
 #Programmation header .filters-container{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: 6rem;
+  row-gap: 2rem;
   width: 95%;
 }
 
 #Programmation header .filters-container .filters{
   display: flex;
+  align-items: center;
   gap: 3.75rem;
 }
 
@@ -594,6 +603,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-weight: 600;
   outline: none;
   width: 27rem;
+  font-size: 1rem;
 }
 
 .searchbar input::placeholder{
@@ -609,8 +619,9 @@ input[type="number"]::-webkit-outer-spin-button {
   z-index: 2;
   position: absolute;
   bottom:50%;
-  transform: translateY(35%);
+  transform: translateY(50%);
   right:1.25rem;
+  height: 1.5rem;
 }
 
 .searchbar svg path{
