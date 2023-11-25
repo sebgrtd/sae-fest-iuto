@@ -137,12 +137,17 @@ body{
 }
 
 #Navbar .cross{
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   position: absolute;
   top:3rem;
   right:3rem;
   cursor: pointer;
+}
+
+#Navbar .cross svg{
+  height: 100%;
+  width: 100%;
 }
 
 #Navbar .menu > .link-container{
@@ -478,12 +483,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
 #Accueil .img-container img{
   object-fit: cover;
-  left:-5%;
-  bottom: -5%;
+  left:-10%;
+  bottom: -10%;
   object-position: center;
   position: absolute;
-  height: 110%;
-  width: 110%;
+  height: 120%;
+  width: 120%;
   z-index: -10;
   filter: blur(16px);
 } 
