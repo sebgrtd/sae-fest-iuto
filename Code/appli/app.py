@@ -25,21 +25,16 @@ def renvoyer_json():
 
 @app.route('/connecter', methods=['POST'])
 def connecter():
+    connexion_bd = ConnexionBD()
+    userbd = UserBD(connexion_bd)
     data = request.get_json()
     print(data)
     email = data["email"]
     password = data["password"]
-    if gestion_connexion(email, password):
-        return jsonify({"connexion" : True})
-    else:
-        return jsonify({"connexion" : False})
-    
-def gestion_connexion(email, password):
-    connexion_bd = ConnexionBD()
-    userbd = UserBD(connexion_bd)
     if userbd.exist_user(email, password):
-        return True
-    return False
+        return userbd.user_to_json(userbd.get_user_by_email(email))
+    else:
+        return jsonify({"error": "Utilisateur non trouvé"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

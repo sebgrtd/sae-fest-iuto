@@ -1,11 +1,18 @@
 from datetime import datetime, date, time
 
 class User:         
-    def __init__(self, id, username, password, email):
-        self.id = id
-        self.username = username
-        self.password = password
-        self.email = email
+    def __init__(self, idUser: int, pseudoUser: str, mdpUser: str, emailUser: str):
+        self._idUser = idUser
+        self._pseudoUser = pseudoUser
+        self._mdpUser = mdpUser
+        self._emailUser = emailUser
+
+    def to_dict(self):
+        return {
+            "idUser": self._idUser,
+            "pseudoUser": self._pseudoUser,
+            "emailUser": self._emailUser
+        }
 
 class Festival:
     def __init__(self, idF: int, nomF: str, villeF: str, dateDebutF: str, dateFinF: str):
