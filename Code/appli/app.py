@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 import sys
 
@@ -11,13 +11,17 @@ from ConnexionBD import ConnexionBD
 from UserBD import UserBD
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:irvyn@localhost/festiuto'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/festiuto'
 CORS(app, resources={r"/": {"origins": "*"}})
 db = SQLAlchemy(app)
 
 app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
 @app.route('/')
+def index():
+    return render_template('API.html')
+
+@app.route('/getArtistes')
 def renvoyer_json():
     connexion_bd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexion_bd)
