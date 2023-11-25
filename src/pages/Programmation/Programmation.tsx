@@ -1,23 +1,26 @@
-import {useEffect, useState} from 'react'
-import SearchBar from '../../components/form/Searchbar'
+import {useEffect, useState, useRef, useLayoutEffect} from 'react'
+import SearchBar from '../../components/form/SearchBar';
 import Combo from '../../components/form/Combo';
-import CarteArtiste from '../../components/CarteArtiste';
+import CarteArtiste from '../../components/Artiste/CarteArtiste';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 type Props = {
     isNavInFocus: boolean;
     setIsNavTransparent: (isNavTransparent : boolean) => void;
 }
 
 export default function Programmation(props : Props) {
+  const location = useLocation();
+  const idArtistComingFrom = location.state?.comesFromPageArtist;
+  const oldX = location.state?.oldX;
+  const oldY = location.state?.oldY;
+
 
   const[filtreDate, setFiltreDate] = useState("Tout");
   const[filtreAffichage, setFiltreAffichage] = useState("Grille");
   const[filtreGenre, setFiltreGenre] = useState("Tout");
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    props.setIsNavTransparent(false)
-  }, [])
+  const pageRef = useRef<HTMLDivElement>(null);
   
   
   const contentVariants = {
@@ -41,11 +44,16 @@ export default function Programmation(props : Props) {
     }
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    props.setIsNavTransparent(false)
+  }, [])
+
   return (
     <motion.div id="Programmation"
     variants={contentVariants}
-    initial="hidden"
     animate={props.isNavInFocus ? "hidden" : "visible"}
+    ref={pageRef}
     >
         <header>
             <div className="title">
@@ -64,11 +72,11 @@ export default function Programmation(props : Props) {
             </div>
         </header>
         <main className='liste-artistes'>
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
+            <CarteArtiste id={0} oldX={idArtistComingFrom == 0 ? oldX : null} oldY={idArtistComingFrom == 0 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 0} nomArtiste="Travis Scott" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste id={1} oldX={idArtistComingFrom == 1 ? oldX : null} oldY={idArtistComingFrom == 1 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 1} nomArtiste="Booba" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste id={2} oldX={idArtistComingFrom == 2 ? oldX : null} oldY={idArtistComingFrom == 2 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 2} nomArtiste="Freeze Corleone" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste id={3} oldX={idArtistComingFrom == 3 ? oldX : null} oldY={idArtistComingFrom == 3 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 3} nomArtiste="Pop Simoke" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste id={4} oldX={idArtistComingFrom == 4 ? oldX : null} oldY={idArtistComingFrom == 4 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 4} nomArtiste="Vladimir Poutine" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
         </main>
     </motion.div>
   )

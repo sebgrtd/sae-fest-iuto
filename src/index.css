@@ -67,6 +67,7 @@ body{
   padding: 0 3.6875rem;
   justify-content: space-between;
   z-index: 100;
+  transition: background-color 0.3s ease;
 }
 
 #Navbar .logo{
@@ -542,6 +543,8 @@ input[type="number"]::-webkit-outer-spin-button {
   gap: 6rem;
   padding: 0 3.6875rem;
   padding-top: 15vh;
+  position: relative;
+  overflow: hidden;
 }
 
 #Programmation header{
@@ -715,17 +718,29 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0 3.6875rem;
 }
 
+#Programmation .selected{
+  transform: scale(2) translateX(80%);
+  z-index: 99;
+}
+
+.outer-carte-artiste{
+  width: 24rem;
+  height: 15.5rem;
+}
+
 .carte-artiste{
   display: flex;
   cursor:pointer;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 24rem;
-  height: 15.5rem;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border-radius: 0.5rem;
   position: relative;
+  text-decoration: none;
+  color: var(--color-light);
   /* mets un inner shadow en bas 
   box-shadow: inset 0 -110px 72px -33px rgba(0, 0, 0, 0.6);
   z-index: 3;*/
@@ -738,13 +753,11 @@ input[type="number"]::-webkit-outer-spin-button {
   left:0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 20%, rgba(0, 0, 0, 0) 60%);
 
 }
 
 .carte-artiste img{
-  z-index: -1;
-  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -759,27 +772,149 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0.5rem 1rem;
   font-family: "TuskerGrotesk";
 }
 
+.carte-artiste .texts .date-heure{
+  position: relative;
+}
+
 .carte-artiste .texts h3{
-  font-size: 2.3rem;
   font-weight: 800;
 }
 
 .carte-artiste .texts h4{
-  font-size: 1.875rem;
   font-weight: 700;
-  filter: opacity(0.8);
-  transition: all 0.5s ease;
 }
 
 .carte-artiste .texts h4:last-of-type{
-  position: absolute;
   text-align: end;
   width: 100%;
-  transform: translateY(1rem);
+}
+
+#PageArtiste{
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#PageArtiste .overlay{
+  position: absolute;
+  bottom:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  transition: background 10s ease;
+}
+
+#PageArtiste img{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+#PageArtiste .content{
+  position: absolute;
+  bottom:0;
+  left:0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between; 
+  width: 100%;
+  align-items: center;
+  padding: 3rem;
+  
+
+  display:grid;
+  grid-template-areas: 
+  'top top top'
+  'title bottom date-heure';
+
+}
+
+#PageArtiste .content h3{
+  color: var(--color-yellow);
+  font-size: 7.625rem;
+  font-family: "TuskerGrotesk";
+  font-weight: 800;
+  align-self: flex-end;
+  grid-area: title;
+}
+
+#PageArtiste .content .date-heure{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: end;
+  align-self: flex-end;
+  grid-area: date-heure;
+}
+
+#PageArtiste .content h4{
+  font-size: 4.6875rem;
+  font-weight: 700;
+  font-family: "TuskerGrotesk";
+  color: var(--color-light);
+}
+
+#PageArtiste .content h4:last-of-type{
+  filter: opacity(0.8);
+}
+
+#PageArtiste .content .infos{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:2.125rem;
+  flex-basis: 50%;
+}
+
+#PageArtiste .content .infos p{
+  font-family: "Montserrat";
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+#PageArtiste .content .infos .les-reseaux{
+  display: flex;
+  justify-content: center;
+  gap:1rem;
+}
+
+#PageArtiste .btn-retour{
+  text-decoration: none;
+  color: var(--color-dark);
+  gap: 1.125rem;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+#PageArtiste .btn-retour:hover{
+  gap: 1.875rem;
+  filter: brightness(2);
+}
+
+#PageArtiste .btn-retour svg{
+  height: 2rem;
+  width: 2rem;
+}
+
+#PageArtiste .btn-retour svg rect{
+  fill: var(--color-dark);
+  filter: brightness(3);
+}
+
+.btn-reseau{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4.5rem;
+  width: 4.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-orange);
 }
 
 /* fais des media queries qui ne changent que le fontsize du body */
