@@ -9,15 +9,13 @@ type Props = {
 }
 
 export default function TextField(props: Props) {
-  const[currentText, setCurrentText] = useState("");
   const[isFocused, setIsFocused] = useState(false);
   const labelRef = useRef<HTMLLabelElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const leTexte = e.target.value;
-    setCurrentText(leTexte);
-    console.log(leTexte);
+    props.setTextVar(leTexte);
   }
 
   const labelVariants = {
@@ -88,7 +86,7 @@ export default function TextField(props: Props) {
         htmlFor="text"
         variants={labelVariants}
         initial="default"
-        animate={isFocused || currentText !== "" ? "animate" : "default"}
+        animate={isFocused || props.textVar !== "" ? "animate" : "default"}
         onClick={() => inputRef.current?.focus()}
         >{props.text}</motion.label>
 
@@ -106,7 +104,7 @@ export default function TextField(props: Props) {
         className="bg"
         variants={bgVariants}
         initial="hidden"
-        animate={isFocused || currentText !== "" ? "visible" : "hidden"}
+        animate={isFocused || props.textVar !== "" ? "visible" : "hidden"}
         />
 
         <motion.div 
@@ -114,7 +112,7 @@ export default function TextField(props: Props) {
         className="mask"
         variants={maskVariants}
         initial="hidden"
-        animate={isFocused || currentText !== "" ? "visible" : "hidden"}
+        animate={isFocused || props.textVar !== "" ? "visible" : "hidden"}
         />
 
     </div>

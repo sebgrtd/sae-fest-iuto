@@ -16,7 +16,7 @@ export default function (props: Props) {
   useEffect(() => {
     
     const fetchArtistes = async () => {
-      const res = await axios.get('http://localhost:8080/')
+      const res = await axios.get('http://localhost:8080/getArtistes')
       const data = res.data
       const listeNomArtistes : string[] = []
       data.map((artiste : any) => {

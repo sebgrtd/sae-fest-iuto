@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import {useState} from 'react';
 import TextField from '../../form/TextField';
 import Button from '../../form/Button';
+import axios from 'axios';
 
 type Props = {
   isOpen: boolean;
@@ -15,6 +16,31 @@ export default function MenuConnexion(props: Props) {
   const[password, setPassword] = useState("");
 
   const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+    // verifie si les champs sont remplis
+    // verifie si l'email est bien un email (regex)
+
+    // const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const isEmail = regexEmail.test(email);
+
+    // if (isEmail || password === "") {
+    //   alert("Veuillez remplir tous les champs")
+    // }
+
+    // fais une requete post avec axios à localhost:8080/connecter
+
+    console.log(email + " " + password)
+
+    const data = {
+      email,
+      password
+    }
+
+    console.log(data)
+
+    axios.post("http://localhost:8080/connecter", data).then((res) => {
+      console.log(res);
+    })
+
     e.preventDefault();
   }
 
