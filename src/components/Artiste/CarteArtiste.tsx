@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
 import {useState} from 'react'
+import { Link } from 'react-router-dom'
 
 type Props = {
     date: string,
     heure: string,
     nomArtiste: string,
+    setIsNavTransparent: (isNavTransparent : boolean) => void;
 }
 
 export default function CarteArtiste(props: Props) {
@@ -84,9 +86,11 @@ export default function CarteArtiste(props: Props) {
   }
 
   return (
-    <div className="carte-artiste"
+    <Link className="carte-artiste"
     onMouseEnter={() => setIsHovered(true)}
     onMouseLeave={() => setIsHovered(false)}
+    to="/artiste/1"
+    onClick={() => props.setIsNavTransparent(true)}
     >
         <motion.img 
         src="/images/test-travis.png" 
@@ -120,6 +124,6 @@ export default function CarteArtiste(props: Props) {
                 >{props.heure}</motion.h4>
             </motion.div>
         </div>
-    </div>
+    </Link>
   )
 }

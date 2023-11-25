@@ -67,6 +67,7 @@ body{
   padding: 0 3.6875rem;
   justify-content: space-between;
   z-index: 100;
+  transition: background-color 0.3s ease;
 }
 
 #Navbar .logo{
@@ -726,6 +727,9 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow: hidden;
   border-radius: 0.5rem;
   position: relative;
+  text-decoration: none;
+  color: var(--color-light);
+  transition: all 0.3s ease;
   /* mets un inner shadow en bas 
   box-shadow: inset 0 -110px 72px -33px rgba(0, 0, 0, 0.6);
   z-index: 3;*/
@@ -780,6 +784,98 @@ input[type="number"]::-webkit-outer-spin-button {
   text-align: end;
   width: 100%;
   transform: translateY(1rem);
+}
+
+#PageArtiste{
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#PageArtiste::after{
+  content: "";
+  position: absolute;
+  bottom:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 20%, rgba(0, 0, 0, 0) 60%);
+
+}
+
+#PageArtiste img{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+#PageArtiste .content{
+  position: absolute;
+  bottom:0;
+  left:0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 1rem 3rem;
+}
+
+#PageArtiste .content h3{
+  color: var(--color-yellow);
+  font-size: 7.625rem;
+  font-family: "TuskerGrotesk";
+  font-weight: 800;
+}
+
+#PageArtiste .content .date-heure{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: end;
+  align-self: flex-end;
+}
+
+#PageArtiste .content h4{
+  font-size: 4.6875rem;
+  font-weight: 700;
+  font-family: "TuskerGrotesk";
+  color: var(--color-light);
+}
+
+#PageArtiste .content h4:last-of-type{
+  filter: opacity(0.8);
+}
+
+#PageArtiste .content .infos{
+  display: flex;
+  flex-direction: column;
+  gap:2.125rem;
+  flex-basis: 50%;
+}
+
+#PageArtiste .content .infos p{
+  font-family: "Montserrat";
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+#PageArtiste .content .infos .les-reseaux{
+  display: flex;
+  justify-content: center;
+  gap:1rem;
+}
+
+.btn-reseau{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4.5rem;
+  width: 4.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-orange);
 }
 
 /* fais des media queries qui ne changent que le fontsize du body */

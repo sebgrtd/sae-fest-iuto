@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
-import SearchBar from '../../components/form/Searchbar'
+import SearchBar from '../../components/form/SearchBar';
 import Combo from '../../components/form/Combo';
-import CarteArtiste from '../../components/CarteArtiste';
+import CarteArtiste from '../../components/Artiste/CarteArtiste';
 import { motion } from 'framer-motion';
 type Props = {
     isNavInFocus: boolean;
@@ -64,11 +64,11 @@ export default function Programmation(props : Props) {
             </div>
         </header>
         <main className='liste-artistes'>
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
         </main>
     </motion.div>
   )
