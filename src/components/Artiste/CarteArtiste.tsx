@@ -3,11 +3,14 @@ import {useState,useRef, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 
 type Props = {
+    id:number,
     date: string,
     heure: string,
     nomArtiste: string,
     setIsNavTransparent: (isNavTransparent : boolean) => void;
-    selected?: boolean;
+    comesFromPageArtist?: boolean;
+    oldX?: number;
+    oldY?: number;
 }
 
 export default function CarteArtiste(props: Props) {
@@ -15,7 +18,19 @@ export default function CarteArtiste(props: Props) {
   const nomArtiste = props.nomArtiste.toUpperCase().split(" ")
   const[isHovered, setIsHovered] = useState(false)
   const[isSwitching, setIsSwitching] = useState(false)
+  const[delay, setDelay] = useState(props.comesFromPageArtist? 0.2 : 0)
   const refCarte = useRef<HTMLDivElement>(null);
+  const[zIndexCard, setZIndexCard] = useState(props.comesFromPageArtist ? 99 : 1)
+
+  useEffect(() => {
+    
+    setTimeout(() => {
+        setZIndexCard(1)
+        setDelay(0)
+    }, 600);
+    
+  }, [])
+  
 
   const titleVariants = {
     hover:{
@@ -30,12 +45,14 @@ export default function CarteArtiste(props: Props) {
         fontSize: "2.3rem",
         color:"#FFFBEE",
         transition:{
+            delay:delay,
             duration:0.4,
             ease: [1, 0, 0,1]
         }
     },
     exit:{
         fontSize: "7.625rem",
+        color:"#FFD600",
         transition:{
             duration:0.4,
             ease: [1, 0, 0,1]
@@ -76,6 +93,7 @@ export default function CarteArtiste(props: Props) {
         y:"2.9rem",
         fontSize: "1.875rem",
         transition:{
+            delay:delay,
             duration:0.4,
             ease: [1, 0, 0,1]
         }
@@ -110,18 +128,20 @@ export default function CarteArtiste(props: Props) {
 
   const carteVariants = {
     default:{
-        scale:1,
-        zIndex:1,
+        zIndex:zIndexCard,
+        width: "24rem",
+        height: "15.5rem",
+        y:0,
+        x:0,
         transition:{
+            delay:0.2,
             duration:0.4,
             ease: [1, 0, 0,1]
         }
     },
     exit:{
-        scale:1,
-        // le met au centre de l'écran
-        translateX: refCarte.current? -refCarte.current.offsetLeft : 0,
-        translateY: refCarte.current? -refCarte.current.offsetTop : 0,
+        x: refCarte.current? -refCarte.current.offsetLeft : props.oldX? -props.oldX : 0,
+        y: refCarte.current? -refCarte.current.offsetTop : props.oldY? -props.oldY : 0,
         height: "100vh",
         width: "100vw",
         zIndex:99,
@@ -136,6 +156,7 @@ export default function CarteArtiste(props: Props) {
     default:{
         padding: "0.5rem 1rem",
         transition:{
+            delay:delay*2,
             duration:0.4,
             ease: [1, 0, 0,1]
         }
@@ -152,16 +173,27 @@ export default function CarteArtiste(props: Props) {
 
   return (
     <motion.div
-    className={props.selected ? "selected outer-carte-artiste" : "outer-carte-artiste"}
+    className="outer-carte-artiste"
     ref={refCarte}
     variants={carteVariants}
-    initial="default"
+    initial={props.comesFromPageArtist ? "exit" : "default"}
+    animate="default"
     exit={isSwitching ? "exit" : "default"}
     >
         <Link className="carte-artiste"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        to="/artiste/1"
+        to={{
+            pathname:"/artiste",
+            search:`?id=${props.id}`,
+        }}
+        state={{
+            nomArtiste: props.nomArtiste,
+            date: props.date,
+            heure: props.heure,
+            oldX: refCarte.current?.offsetLeft,
+            oldY: refCarte.current?.offsetTop
+        }}
         onClick={() => {props.setIsNavTransparent(true); setIsSwitching(true)}}
         >
             <motion.img 
@@ -174,12 +206,13 @@ export default function CarteArtiste(props: Props) {
             />
             <motion.div className="texts"
             variants={textVariants}
-            initial="default"
+            initial={props.comesFromPageArtist ? "exit" : "default"}
+            animate="default"
             exit={isSwitching ? "exit" : "default"}
             >
                 <motion.h3
                 variants={titleVariants}
-                initial="default"
+                initial={props.comesFromPageArtist ? "exit" : "default"}
                 animate={isHovered ? "hover" : "default"}
                 exit={isSwitching ? "exit" : "default"}
                 >{
@@ -192,7 +225,7 @@ export default function CarteArtiste(props: Props) {
                 
                 <motion.div className="date-heure"
                 variants={dateHeureVariants}
-                initial="default"
+                initial={props.comesFromPageArtist ? "exit" : "default"}
                 animate={isHovered ? "hover" : "default"}
                 exit={isSwitching ? "exit" : "default"}
                 >

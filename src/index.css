@@ -832,6 +832,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 7.625rem;
   font-family: "TuskerGrotesk";
   font-weight: 800;
+  align-self: flex-end;
 }
 
 #PageArtiste .content .date-heure{
@@ -856,6 +857,7 @@ input[type="number"]::-webkit-outer-spin-button {
 #PageArtiste .content .infos{
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap:2.125rem;
   flex-basis: 50%;
 }
@@ -874,20 +876,10 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 #PageArtiste .btn-retour{
-  position: absolute;
-  top:15vh;
-  left: 3.6875rem;
   text-decoration: none;
   color: var(--color-dark);
-  font-family: "Montserrat";
-  font-size: 2.125rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
   gap: 1.125rem;
   z-index: 1;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-dark);
   transition: all 0.3s ease;
 }
 
@@ -897,7 +889,13 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 #PageArtiste .btn-retour svg{
-  height: 2.125rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+#PageArtiste .btn-retour svg rect{
+  fill: var(--color-dark);
+  filter: brightness(3);
 }
 
 .btn-reseau{

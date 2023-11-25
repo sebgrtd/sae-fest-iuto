@@ -23,7 +23,7 @@ function App() {
             <Route path="/programmation" element={<Programmation isNavInFocus={isNavInFocus} setIsNavTransparent={setIsNavTransparent} />} />
             <Route path="/billeterie" />
             <Route path="/faq"/>
-            <Route path="/artiste/*" element={<PageArtiste />}/>
+            <Route path="/artiste" element={<PageArtiste />}/>
         </Routes>
 
       </AnimatePresence>
