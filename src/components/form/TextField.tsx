@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 
 type Props = {
     text:string;
@@ -91,7 +91,7 @@ export default function TextField(props: Props) {
         >{props.text}</motion.label>
 
         <input name="text" 
-        type="text" 
+        type={props.isPassword ? "password" : "text"}
         defaultValue=""
         ref={inputRef}
         onChange={handleTextChange}

@@ -143,11 +143,13 @@ body{
   top:3rem;
   right:3rem;
   cursor: pointer;
+  z-index: 100;
 }
 
 #Navbar .cross svg{
   height: 100%;
   width: 100%;
+  z-index: 100;
 }
 
 #Navbar .menu > .link-container{
@@ -184,13 +186,16 @@ body{
   right:0;
   padding: 6rem;
   z-index: 100;
+  overflow-x: hidden;
 }
 
 #Navbar .side-menu .container{
+  position: absolute;
   display: flex;
   flex-direction: column;
   gap:3.5rem;
-  width: 100%;
+  width: 42rem;
+  padding: 6rem;
 }
 
 #Navbar .side-menu h2{
@@ -238,7 +243,7 @@ body{
   z-index: 2;
 }
 
-#Navbar .side-menu form input[type="text"]{
+#Navbar .side-menu form .textfield-container input{
   font-family: "Montserrat";
   border:0px solid transparent;
   background-color: var(--color-light-secondary);
