@@ -543,6 +543,8 @@ input[type="number"]::-webkit-outer-spin-button {
   gap: 6rem;
   padding: 0 3.6875rem;
   padding-top: 15vh;
+  position: relative;
+  overflow: hidden;
 }
 
 #Programmation header{
@@ -716,20 +718,29 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0 3.6875rem;
 }
 
+#Programmation .selected{
+  transform: scale(2) translateX(80%);
+  z-index: 99;
+}
+
+.outer-carte-artiste{
+  width: 24rem;
+  height: 15.5rem;
+}
+
 .carte-artiste{
   display: flex;
   cursor:pointer;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 24rem;
-  height: 15.5rem;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border-radius: 0.5rem;
   position: relative;
   text-decoration: none;
   color: var(--color-light);
-  transition: all 0.3s ease;
   /* mets un inner shadow en bas 
   box-shadow: inset 0 -110px 72px -33px rgba(0, 0, 0, 0.6);
   z-index: 3;*/
@@ -742,13 +753,11 @@ input[type="number"]::-webkit-outer-spin-button {
   left:0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 20%, rgba(0, 0, 0, 0) 60%);
 
 }
 
 .carte-artiste img{
-  z-index: -1;
-  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -763,27 +772,24 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0.5rem 1rem;
   font-family: "TuskerGrotesk";
 }
 
+.carte-artiste .texts .date-heure{
+  position: relative;
+}
+
 .carte-artiste .texts h3{
-  font-size: 2.3rem;
   font-weight: 800;
 }
 
 .carte-artiste .texts h4{
-  font-size: 1.875rem;
   font-weight: 700;
-  filter: opacity(0.8);
-  transition: all 0.5s ease;
 }
 
 .carte-artiste .texts h4:last-of-type{
-  position: absolute;
   text-align: end;
   width: 100%;
-  transform: translateY(1rem);
 }
 
 #PageArtiste{
@@ -818,7 +824,7 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: space-between; 
   align-items: center;
-  padding: 1rem 3rem;
+  padding: 3rem;
 }
 
 #PageArtiste .content h3{
@@ -865,6 +871,33 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: center;
   gap:1rem;
+}
+
+#PageArtiste .btn-retour{
+  position: absolute;
+  top:15vh;
+  left: 3.6875rem;
+  text-decoration: none;
+  color: var(--color-dark);
+  font-family: "Montserrat";
+  font-size: 2.125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+  z-index: 1;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-dark);
+  transition: all 0.3s ease;
+}
+
+#PageArtiste .btn-retour:hover{
+  gap: 1.875rem;
+  filter: brightness(2);
+}
+
+#PageArtiste .btn-retour svg{
+  height: 2.125rem;
 }
 
 .btn-reseau{

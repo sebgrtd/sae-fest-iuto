@@ -30,14 +30,14 @@ export default function BoutonReseau(props: Props) {
     default:{
         fill:"#E45A3B",
         transition:{
-            duration:0.4,
+            duration:0.3,
             ease: [1, 0, 0,1]
         }
     },
     hover:{
         fill:"#FFFBEE",
         transition:{
-            duration:0.4,
+            duration:0.3,
             ease: [1, 0, 0,1]
         }
     }

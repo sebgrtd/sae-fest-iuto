@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useRef, useLayoutEffect} from 'react'
 import SearchBar from '../../components/form/SearchBar';
 import Combo from '../../components/form/Combo';
 import CarteArtiste from '../../components/Artiste/CarteArtiste';
@@ -14,10 +14,7 @@ export default function Programmation(props : Props) {
   const[filtreAffichage, setFiltreAffichage] = useState("Grille");
   const[filtreGenre, setFiltreGenre] = useState("Tout");
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    props.setIsNavTransparent(false)
-  }, [])
+  const pageRef = useRef<HTMLDivElement>(null);
   
   
   const contentVariants = {
@@ -41,11 +38,16 @@ export default function Programmation(props : Props) {
     }
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    props.setIsNavTransparent(false)
+  }, [])
+
   return (
     <motion.div id="Programmation"
     variants={contentVariants}
-    initial="hidden"
     animate={props.isNavInFocus ? "hidden" : "visible"}
+    ref={pageRef}
     >
         <header>
             <div className="title">
@@ -64,11 +66,11 @@ export default function Programmation(props : Props) {
             </div>
         </header>
         <main className='liste-artistes'>
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste nomArtiste="Travis Scott" date="22 Juilet" heure="17h30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} selected/>
+            <CarteArtiste nomArtiste="Travis Scott" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            <CarteArtiste nomArtiste="Travis Scott" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
         </main>
     </motion.div>
   )
