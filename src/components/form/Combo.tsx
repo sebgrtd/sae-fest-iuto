@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import {useState} from 'react'
+import {useState, useRef, useEffect} from 'react'
 
 type Props = {
     choices : string[],
@@ -47,8 +47,11 @@ export default function Combo(props: Props) {
 
   return (
     <div className="combo">
-        <div className="always-visible" onClick={() => {setIsOpen(!isOpen)}}>
-            
+
+        <div 
+        className="always-visible" 
+        onClick={() => {setIsOpen(!isOpen)}}
+        > 
             <h4>{`${props.title}: ${props.currentChoice}`}</h4>
 
             <motion.div className="btn-open"
