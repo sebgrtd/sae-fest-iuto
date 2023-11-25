@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion'
 import { Route, Routes } from 'react-router-dom'
 import Accueil from './pages/Accueil/Accueil'
 import { useState } from 'react'
+import Programmation from './pages/Programmation/Programmation'
 
 function App() {
   const [isNavInFocus, setIsNavInFocus] = useState(false)
@@ -13,12 +14,11 @@ function App() {
   return (
     <>
       <Navbar setNavInFocus={setIsNavInFocus} isTransparent={isNavTransparent}/>
-
       <AnimatePresence>
 
         <Routes>
             <Route path="/" element={<Accueil isNavInFocus={isNavInFocus} setIsNavTransparent={setIsNavTransparent}  />} />
-            <Route path="/programmation" />
+            <Route path="/programmation" element={<Programmation isNavInFocus={isNavInFocus} setIsNavTransparent={setIsNavTransparent} />} />
             <Route path="/billeterie" />
             <Route path="/faq"/>
         </Routes>

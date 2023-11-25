@@ -6,36 +6,65 @@ type Props = {
 }
 
 export default function MarqueeScroll(props: Props) {
-    props.artistes.push(...props.artistes) // double la liste des artistes
+    
     const lesArtistesRef = useRef<HTMLDivElement>(null)
+
+    const[tailleDuREM, setTailleDuREM] = useState(0);
+    
+    // mets la taille de 1rem dans tailleDuREM
+    useEffect(() => {
+        
+        setTailleDuREM(parseFloat(getComputedStyle(document.documentElement).fontSize))
+
+    }, [])
 
     const[tailleArtistes, setTailleArtistes] = useState(lesArtistesRef.current?.offsetWidth || 0)
 
+    const handleChildUpdate = () => {
+        if(lesArtistesRef.current){
+            console.log(lesArtistesRef.current.offsetWidth)
+            const enfants = lesArtistesRef.current.children;
+            let sommeTailles = 0;
+
+            for(let i = 0; i < enfants.length; i++){
+                sommeTailles += enfants[i].clientWidth;
+            }
+
+            sommeTailles /= 2;
+            sommeTailles += (enfants.length/2)*tailleDuREM;
+            console.log(sommeTailles)
+            setTailleArtistes(sommeTailles)
+        }
+    }
+
+
     useEffect(() => {
-    
-        setTailleArtistes(lesArtistesRef.current?.offsetWidth || 0)
-        console.log(lesArtistesRef.current?.offsetWidth)
-    }, [lesArtistesRef])
-    
+
+        console.log(props.artistes.length)
+
+        if (props.artistes.length > 1){
+
+            handleChildUpdate()
+            
+        }
+        
+
+    }, [props.artistes])
 
     const infiniteMarqueeVariants = {
         animate: {
-            x: -1903*2,
+            x: -tailleArtistes,
             transition: {
                 x: {
                     repeat: Infinity,
                     repeatType: 'loop',
-                    duration: 15,
+                    duration: 5,
                     ease: 'linear'
                 }
             }
         },
     }
 
-    const handleLoad = () => {
-        console.log("test")
-        setTailleArtistes(lesArtistesRef.current?.offsetWidth || 0)
-    }
 
     return (
     <div className='marquee'>
@@ -43,15 +72,14 @@ export default function MarqueeScroll(props: Props) {
         <motion.div className="les-artistes"
         ref={lesArtistesRef}
         variants={infiniteMarqueeVariants}
-        animate='animate'
+        animate="animate"
         >
 
             {props.artistes.map((artiste, index) => {
                     return (
                         <div 
                         key={index}
-                        className='container'
-                        onLoad={handleLoad}>
+                        className='container'>
 
                             <span className='nom-artiste'>{artiste}</span>
 

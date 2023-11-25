@@ -27,7 +27,7 @@ export default function MenuButton(props : Props) {
         hover:{
             opacity: index === 1 ? 0 : 1,
             rotate: index == 0 ? 90 : 0,
-            y : index == 0 ? "0.7rem" : index == 1 ? 0 : "-0.7rem",
+            y : index == 0 ? "0.75rem" : index == 1 ? 0 : "-0.75rem",
             transition:{
                 duration: 0.5,
                 ease: [1, -0.02, 0,1]
@@ -36,7 +36,7 @@ export default function MenuButton(props : Props) {
         close:{
             opacity: index === 1 ? 0 : 1,
             rotate: index == 0 ? 45 : -45,
-            y : index == 0 ? "0.7rem" : index == 1 ? 0 : "-0.7rem",
+            y : index == 0 ? "0.75rem" : index == 1 ? 0 : "-0.75rem",
             transition:{
                 duration: 0.5,
                 ease: [1, -0.02, 0,1]
