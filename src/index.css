@@ -799,15 +799,13 @@ input[type="number"]::-webkit-outer-spin-button {
   position: relative;
 }
 
-#PageArtiste::after{
-  content: "";
+#PageArtiste .overlay{
   position: absolute;
   bottom:0;
   left:0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 20%, rgba(0, 0, 0, 0) 60%);
-
+  transition: background 10s ease;
 }
 
 #PageArtiste img{
@@ -823,8 +821,16 @@ input[type="number"]::-webkit-outer-spin-button {
   z-index: 1;
   display: flex;
   justify-content: space-between; 
+  width: 100%;
   align-items: center;
   padding: 3rem;
+  
+
+  display:grid;
+  grid-template-areas: 
+  'top top top'
+  'title bottom date-heure';
+
 }
 
 #PageArtiste .content h3{
@@ -833,6 +839,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-family: "TuskerGrotesk";
   font-weight: 800;
   align-self: flex-end;
+  grid-area: title;
 }
 
 #PageArtiste .content .date-heure{
@@ -841,6 +848,7 @@ input[type="number"]::-webkit-outer-spin-button {
   align-items: flex-end;
   text-align: end;
   align-self: flex-end;
+  grid-area: date-heure;
 }
 
 #PageArtiste .content h4{

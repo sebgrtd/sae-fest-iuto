@@ -179,6 +179,7 @@ export default function CarteArtiste(props: Props) {
     initial={props.comesFromPageArtist ? "exit" : "default"}
     animate="default"
     exit={isSwitching ? "exit" : "default"}
+    onClick={() => window.scrollTo(0,0)}
     >
         <Link className="carte-artiste"
         onMouseEnter={() => setIsHovered(true)}
