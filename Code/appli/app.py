@@ -39,6 +39,23 @@ def connecter():
         return userbd.user_to_json(userbd.get_user_by_email(email))
     else:
         return jsonify({"error": "Utilisateur non trouvé"})
+    
+@app.route('/inscription', methods=['POST'])
+def inscription():
+    connexion_bd = ConnexionBD()
+    userbd = UserBD(connexion_bd)
+    data = request.get_json()
+    print(data)
+    pseudo = data["pseudo"]
+    email = data["email"]
+    password = data["password"]
+    if userbd.exist_user(email, password):
+        return jsonify({"error": "Utilisateur déjà existant"})
+    else:
+        if userbd.add_user(pseudo, email, password):
+            return userbd.user_to_json(userbd.get_user_by_email(email))
+        else:
+            return jsonify({"error": "Erreur lors de l'ajout de l'utilisateur"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
