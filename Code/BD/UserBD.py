@@ -25,5 +25,19 @@ class UserBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
 
+    def add_user(self, pseudo, email, password):
+        try:
+            query = text("INSERT INTO USER (pseudoUser, emailUser, mdpUser) VALUES (:pseudo, :email, :password)")
+            print("INSERT INTO USER : " + "\n"
+                  + "pseudoUser = " + pseudo + "\n"
+                  + "emailUser = " + email + "\n"
+                  + "mdpUser = " + password + "\n")
+            self.connexion.get_connexion().execute(query, {"pseudo": pseudo, "email": email, "password": password})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+
     def user_to_json(self, user):
         return json.dumps(user.to_dict(), ensure_ascii=False)
