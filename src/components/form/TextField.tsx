@@ -13,6 +13,13 @@ export default function TextField(props: Props) {
   const labelRef = useRef<HTMLLabelElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (props.textVar !== "") {
+        setIsFocused(true)
+    }
+  }, [])
+  
+
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const leTexte = e.target.value;
     props.setTextVar(leTexte);
@@ -93,6 +100,7 @@ export default function TextField(props: Props) {
         <input name="text" 
         type={props.isPassword ? "password" : "text"}
         defaultValue=""
+        value={props.textVar}
         ref={inputRef}
         onChange={handleTextChange}
         onFocus={() => setIsFocused(true)}

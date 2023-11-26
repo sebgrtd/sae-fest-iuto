@@ -97,7 +97,9 @@ export default function Button(props:Prop) {
       <motion.input type="submit" value={props.text}
       variants={inputVariants}
       initial="hidden"
-      animate={isHovered ? "visible":"hidden"}/>
+      animate={isHovered ? "visible":"hidden"}
+      onClick={(e) => e.preventDefault()}
+      />
 
       <motion.img 
       src="/icones/right-arrow.svg" 
