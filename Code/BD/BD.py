@@ -204,6 +204,21 @@ class Groupe:
     def get_descriptionG(self):
         return self._descriptionG
     
+    def get_datePassage(self):
+        return "2021-05-20"
+    
+    def get_heurePassage(self):
+        return "20:00:00"
+    
+    def to_dict(self):
+        return {
+            "idG": self._idG,
+            "nomG": self._nomG,
+            "descriptionG": self._descriptionG,
+            "datePassage": self.get_datePassage(),
+            "heurePassage": self.get_heurePassage()
+        }
+    
 
 class Membre_Groupe:
     def __init__(self, idMG: int, idG, nomMG: str, prenomMG: str, nomDeSceneMG: str):
@@ -296,6 +311,13 @@ class Lien_Reseaux_Sociaux:
     
     def get_reseau(self):
         return self._reseau
+    
+    def to_dict(self):
+        return {
+            "idLRS": self._idLRS,
+            "idG": self._idG,
+            "reseau": self._reseau
+        }
     
 class Photo:
     def __init__(self, idP: int, idG: int, photo: str):
