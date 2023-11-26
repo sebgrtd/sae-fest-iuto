@@ -16,12 +16,14 @@ export default function (props: Props) {
   useEffect(() => {
     
     const fetchArtistes = async () => {
-      const res = await axios.get('http://localhost:8080/getArtistes')
+      const res = await axios.get('http://localhost:8080/getNomsArtistes')
       const data = res.data
+      // data : ["Vladimir Cauchemar", "Booba", "Freeze Corleone", "Damso", "Ashe 22", "Heuss l'Enfoiré", "Zola", "Sch", "H Jeunecrack", "Luther"]
       const listeNomArtistes : string[] = []
-      data.map((artiste : any) => {
-        listeNomArtistes.push(artiste.nomDeSceneMG.toUpperCase())
-      })
+      data.forEach((artiste: string) => 
+        listeNomArtistes.push(artiste.toUpperCase())
+      )
+      console.log(listeNomArtistes)
 
       //double la liste des artistes pour avoir un effet de boucle
       listeNomArtistes.push(...listeNomArtistes)
