@@ -82,10 +82,35 @@ def inscription():
     if userbd.exist_user(email, password):
         return jsonify({"error": "Utilisateur déjà existant"})
     else:
-        if userbd.add_user(pseudo, email, password):
+        res = userbd.add_user(pseudo, email, password)
+        if res:
             return userbd.user_to_json(userbd.get_user_by_email(email))
+        elif res == "emailErr":
+            return jsonify({"error": "Email déjà existant"})
         else:
             return jsonify({"error": "Erreur lors de l'ajout de l'utilisateur"})
+        
+@app.route('/modifierProfil', methods=['POST'])
+def modifierProfil():
+    connexion_bd = ConnexionBD()
+    userbd = UserBD(connexion_bd)
+    data = request.get_json()
+    print(data)
+    idUser =data['id']
+    pseudo = data["pseudo"]
+    email = data["email"]
+    password = data["password"]
+    ancien_mdp = data['oldPassword']
+    if userbd.exist_user_with_id(idUser, ancien_mdp):
+        res = userbd.update_user(idUser, email, pseudo, password)
+        if res:
+            return userbd.user_to_json(userbd.get_user_by_email(email))
+        elif res == "emailErr":
+            return jsonify({"error": "Email déjà existant"})
+        else:
+            return jsonify({"error": "Erreur lors de la modification de l'utilisateur"})
+    else:
+        return jsonify({"error": "Utilisateur non trouve"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
