@@ -12,7 +12,7 @@ from LienRS_BD import LienRS_BD
 from Membre_GroupeBD import Membre_GroupeBD
 from ConnexionBD import ConnexionBD
 from UserBD import UserBD
-from emailAPI import email
+from emailSender import EmailSender
 from generateurCode import genererCode
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
@@ -126,11 +126,11 @@ def envoyerCodeVerification():
     connexion_bd = ConnexionBD()
     userbd = UserBD(connexion_bd)
     
-    if not userbd.email_exist(emailUser):
+    if not userbd.email_exists(emailUser):
         return jsonify({"error": "Email non existant"})
     
     code = genererCode()
-    email_sender = email(MAIL_FESTIUTO, MDP_FESTIUTO)
+    email_sender = EmailSender(MAIL_FESTIUTO, MDP_FESTIUTO)
     res = email_sender.sendCodeVerification(emailUser, code)
     if res:
         return jsonify({"success": "code envoyé", "code": code})

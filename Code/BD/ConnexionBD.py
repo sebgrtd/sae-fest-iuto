@@ -15,7 +15,7 @@ class ConnexionBD:
     def __init__(self):
         self.__connexion = None
         self.__user = "root"
-        self.__passwd = "irvyn"
+        self.__passwd = "root"
         self.__host = "localhost"
         self.__database = "festiuto"
         self.ouvrir_connexion()

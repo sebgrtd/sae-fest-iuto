@@ -8,10 +8,26 @@ class UserBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
 
+    def email_exists(self, email):
+        try:
+            query = text("SELECT count(*) FROM USER WHERE emailUser = :email")
+            result = self.connexion.get_connexion().execute(query, {"email": email})
+            return result.fetchone()[0] == 1
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+
     def exist_user(self, email, password):
         try:
             query = text("SELECT count(*) FROM USER WHERE emailUser = :email AND mdpUser = :password")
             result = self.connexion.get_connexion().execute(query, {"email": email, "password": password})
+            return result.fetchone()[0] == 1
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+
+    def exist_user_with_id(self, idUser, password):
+        try:
+            query = text("SELECT count(*) FROM USER WHERE idUser = :idUser AND mdpUser = :password")
+            result = self.connexion.get_connexion().execute(query, {"idUser": idUser, "password": password})
             return result.fetchone()[0] == 1
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
@@ -36,6 +52,25 @@ class UserBD:
             self.connexion.get_connexion().commit()
             return True
         except SQLAlchemyError as e:
+            if ("emailUser" in str(e) and "Duplicate entry" in str(e)):
+                return "emailErr"
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def update_user(self, idUser, email, pseudo, password):
+        try:
+            query = text("UPDATE USER SET pseudoUser = :pseudo, emailUser = :email, mdpUser = :password WHERE idUser = :idUser")
+            print("UPDATE USER : " + "\n"
+                + "idUser = " + str(idUser) + "\n"
+                + "pseudoUser = " + pseudo + "\n"
+                + "emailUser = " + email + "\n"
+                + "mdpUser = " + password + "\n")
+            self.connexion.get_connexion().execute(query, {"idUser": idUser, "pseudo": pseudo, "email": email, "password": password})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            if ("emailUser" in str(e) and "Duplicate entry" in str(e)):
+                return "emailErr"
             print(f"La requête a échoué : {e}")
             return False
 

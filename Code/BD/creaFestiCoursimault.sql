@@ -5,6 +5,7 @@ CREATE TABLE USER(
     idUser INT NOT NULL AUTO_INCREMENT,
     pseudoUser VARCHAR(99) NOT NULL UNIQUE,
     mdpUser VARCHAR(9999) NOT NULL,
+    codeTempUser VARCHAR(6),
     emailUser VARCHAR(99) UNIQUE,
     PRIMARY KEY(idUser)
 );
