@@ -40,6 +40,17 @@ export default function MenuConnexion(props: Props) {
     setPassword("");
     setPseudo("");
     setOldPassword("");
+
+    if (menu === "modifierInfos"){
+      if (isConnected() === false){
+        goTo("connexion");
+        return;
+      }
+      const user = getUserCookie();
+      setEmail(user.emailUser);
+      setPseudo(user.pseudoUser);
+    }
+
     setCurrentMenu(menu);
   }
 
@@ -119,7 +130,36 @@ export default function MenuConnexion(props: Props) {
 
   const handleModifierInfos = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (isConnected() === false){
+      goTo("connexion");
+      return;
+    }
 
+    const currentID = getUserCookie().idUser;
+
+    const data = {
+      id:currentID,
+      pseudo,
+      email,
+      password,
+      oldPassword
+    } 
+
+    axios.post("http://localhost:8080/modifierProfil", data).then((res) => {
+      const data = res.data;
+
+      if (data.error){
+        alert(data.error);
+        return;
+      }
+
+      const idUser = data.idUser;
+      const pseudoUser = data.pseudoUser;
+      const emailUser = data.emailUser;
+      setUserCookie({idUser, pseudoUser, emailUser});
+      goTo("connecte");
+    })
   }
 
   const menuVariants = {
