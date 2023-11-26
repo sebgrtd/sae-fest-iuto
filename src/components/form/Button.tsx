@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 type Prop = {
     text:string;
+    formRef?:React.RefObject<HTMLFormElement>;
 }
 
 export default function Button(props:Prop) {
@@ -89,7 +90,9 @@ export default function Button(props:Prop) {
     onMouseLeave={() => setIsHovered(false)}
     variants={bgVariants}
     initial="hidden"
-    animate={isHovered ? "visible" : "hidden"}>
+    animate={isHovered ? "visible" : "hidden"}
+    onClick={() => props.formRef? props.formRef.current?.requestSubmit(): {}}
+    >
 
       <motion.input type="submit" value={props.text}
       variants={inputVariants}

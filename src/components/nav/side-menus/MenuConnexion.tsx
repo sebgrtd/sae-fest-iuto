@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import TextField from '../../form/TextField';
 import Button from '../../form/Button';
 import axios from 'axios';
-import { setCookie, getCookie, setUserCookie, getUserCookie, isConnected, removeUserCookie } from '../../../cookies/CookiesLib';
+import { setUserCookie, getUserCookie, isConnected, removeUserCookie } from '../../../cookies/CookiesLib';
 
 type Props = {
   isOpen: boolean;
@@ -16,6 +16,10 @@ type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexi
 
 export default function MenuConnexion(props: Props) {
   const[currentMenu, setCurrentMenu] = useState<menuConnexionTabs>(isConnected() ? "connecte" : "connexion"); 
+  const formConnexionRef = useRef<HTMLFormElement>(null);
+  const formInscriptionRef = useRef<HTMLFormElement>(null);
+  const formResetMdpRef = useRef<HTMLFormElement>(null);
+  const formModifierInfosRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setCurrentMenu(isConnected() ? "connecte" : "connexion");
@@ -113,6 +117,11 @@ export default function MenuConnexion(props: Props) {
     e.preventDefault();
   }
 
+  const handleModifierInfos = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+  }
+
   const menuVariants = {
     hidden:{
       x: "42rem",
@@ -179,10 +188,10 @@ export default function MenuConnexion(props: Props) {
               key={currentMenu}
               >  
               <h2>Me connecter</h2>
-              <form onSubmit={handleConnexion}>
+              <form onSubmit={handleConnexion} ref={formConnexionRef}>
                 <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
                 <TextField text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
-                <Button text="CONNEXION"/>
+                <Button text="CONNEXION" formRef={formConnexionRef}/>
               </form>
               <div className="other">
                 <a href="" onClick={(e) => goTo("aideConnexion",e)}>Je n'arrive pas à me connecter</a>
@@ -217,11 +226,13 @@ export default function MenuConnexion(props: Props) {
               key={currentMenu}
             >  
             <h2>Créer un compte</h2>
-            <form onSubmit={handleInscription}>
+            <form onSubmit={handleInscription}
+            ref={formInscriptionRef}
+            >
                 <TextField text="pseudo" textVar={pseudo} setTextVar={setPseudo}/>
                 <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
                 <TextField text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
-                <Button text="M'INSCRIRE"/>
+                <Button text="M'INSCRIRE" formRef={formInscriptionRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("aideConnexion",e)}>Je n'arrive pas à me connecter</a>
@@ -238,9 +249,11 @@ export default function MenuConnexion(props: Props) {
               key={currentMenu}
             >  
             <h2>Réinitialiser mon mot de passe</h2>
-            <form onSubmit={handleResetMdp}>
+            <form onSubmit={handleResetMdp}
+            ref={formResetMdpRef}
+            >
                 <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
-                <Button text="REINITIALISER"/>
+                <Button text="REINITIALISER" formRef={formResetMdpRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("inscription",e)}>Créer un compte</a>
@@ -257,12 +270,14 @@ export default function MenuConnexion(props: Props) {
               key={currentMenu}
             >  
             <h2>Modifier mes informations</h2>
-            <form onSubmit={handleResetMdp}>
+            <form onSubmit={handleModifierInfos}
+            ref={formModifierInfosRef}
+            >
                 <TextField text="pseudo" textVar={pseudo} setTextVar={setPseudo}/>
                 <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
                 <TextField text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
                 <TextField text="ancien mot de passe" textVar={oldPassword} setTextVar={setOldPassword} isPassword/>
-                <Button text="MODIFIER"/>
+                <Button text="MODIFIER" formRef={formModifierInfosRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("connecte",e)}>Retour</a>
