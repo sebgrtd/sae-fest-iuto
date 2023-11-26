@@ -126,6 +126,21 @@ export default function MenuConnexion(props: Props) {
 
   const handleResetMdp = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const data = {
+      email
+    }
+
+    axios.post("http://localhost:8080/resetPassword", data).then((res) => {
+      const data = res.data;
+      if (res.data.error){
+        alert(data.error);
+        return;
+      }
+
+      // TODO CHANGER SUR LA PAGE DE CODE
+
+    })
   }
 
   const handleModifierInfos = (e : React.FormEvent<HTMLFormElement>) => {
