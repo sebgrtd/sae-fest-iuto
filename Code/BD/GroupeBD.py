@@ -1,3 +1,4 @@
+import json
 from BD import Groupe
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
@@ -36,3 +37,21 @@ class GroupeBD:
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
+
+    def get_groupe_by_id(self, id):
+        try:
+            query = text("SELECT idG, idH, nomG, descriptionG FROM groupe WHERE idG = :id")
+            result = self.connexion.get_connexion().execute(query, {"id": id})
+            for idG, idH, nomG, descriptionG in result:
+                return Groupe(idG, idH, nomG, descriptionG)
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}") 
+
+    # renvoie le nom, l'id, la date et l'heure de passage d'un groupe EN JSON
+    def get_groupes_json(self):
+        groupes = self.get_all_groupes()
+        groupes_json = []
+        for groupe in groupes:
+            groupes_json.append(groupe.to_dict())
+        return json.dumps(groupes_json)
+            

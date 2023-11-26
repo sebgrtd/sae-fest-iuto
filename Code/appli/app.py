@@ -6,13 +6,15 @@ import sys
 
 sys.path.append('../BD')
 
+from GroupeBD import GroupeBD
+from LienRS_BD import LienRS_BD
 from Membre_GroupeBD import Membre_GroupeBD
 from ConnexionBD import ConnexionBD
 from UserBD import UserBD
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/festiuto'
-CORS(app, resources={r"/": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 db = SQLAlchemy(app)
 
 app.config['BOOTSTRAP_SERVE_LOCAL'] = True
@@ -21,11 +23,39 @@ app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 def index():
     return render_template('API.html')
 
-@app.route('/getArtistes')
-def renvoyer_json():
+@app.route('/getNomsArtistes')
+def getNomsArtistes():
     connexion_bd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexion_bd)
-    return membre_groupebd.artistes_to_json()
+    res = membre_groupebd.getNomsArtistes_json()
+    if res is None:
+        return jsonify({"error": "Aucun artiste trouve"})
+    else:
+        return res
+
+@app.route('/getArtistes')
+def getArtistes():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    res = groupebd.get_groupes_json()
+    if res is None:
+            return jsonify({"error": "Aucun artiste trouve"})
+    else:
+        return res
+
+@app.route('/getInformationsSupplementairesArtiste/<int:id>')
+def getInformationsSupplementairesArtiste(id):
+    connexion_bd = ConnexionBD()
+    lienRS = LienRS_BD(connexion_bd)
+    res = lienRS.get_lienRS_json(id)
+    if res is None:
+        return jsonify({"error": "Aucun artiste trouve"})
+    else:
+        return res
+
+@app.route('/getArtiste/<int:id>')
+def getArtiste(id):
+    return "Informations de l'artiste " + str(id)
 
 @app.route('/connecter', methods=['POST'])
 def connecter():
@@ -38,7 +68,7 @@ def connecter():
     if userbd.exist_user(email, password):
         return userbd.user_to_json(userbd.get_user_by_email(email))
     else:
-        return jsonify({"error": "Utilisateur non trouvé"})
+        return jsonify({"error": "Utilisateur non trouve"})
     
 @app.route('/inscription', methods=['POST'])
 def inscription():

@@ -50,6 +50,7 @@ class Membre_GroupeBD:
             print(f"La requête a échoué : {e}")
         
             
-    def artistes_to_json(self):
+    def getNomsArtistes_json(self):
         artistes = self.get_all_artistes()
-        return json.dumps([artiste.to_dict() for artiste in artistes], ensure_ascii=False)
+        return json.dumps([artiste.get_nomDeSceneMG() for artiste in artistes], ensure_ascii=False)
+

@@ -1,7 +1,10 @@
 {% block content %}
 <h1> Voici la liste des routes pour tester l'API de l'application </h1>
 <ul>
-    <li> <a href="{{ url_for('renvoyer_json') }}"> getArtistes </a> </li>
+    <li> <a href="{{ url_for('getNomsArtistes') }}"> getNomsArtistes </a> </li>
+    <li> <a href="{{ url_for('getArtistes') }}"> getArtistes </a> </li>
+    <li> <a href="{{ url_for('getInformationsSupplementairesArtiste', id=1) }}"> getInformationsSupplementairesArtiste(id) </a> </li>
+    <li> <a href="{{ url_for('getArtiste', id=1) }}"> getArtiste(id) </a> </li>
 </ul>
 
 {% endblock %}
