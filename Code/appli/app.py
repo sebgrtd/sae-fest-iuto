@@ -5,12 +5,18 @@ from flask_sqlalchemy import SQLAlchemy
 import sys
 
 sys.path.append('../BD')
+sys.path.append('../mail')
 
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
 from Membre_GroupeBD import Membre_GroupeBD
 from ConnexionBD import ConnexionBD
 from UserBD import UserBD
+from emailAPI import email
+from generateurCode import genererCode
+
+MAIL_FESTIUTO = "festiuto@gmail.com"
+MDP_FESTIUTO = "xutxiocjikqolubq"
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/festiuto'
@@ -111,6 +117,24 @@ def modifierProfil():
             return jsonify({"error": "Erreur lors de la modification de l'utilisateur"})
     else:
         return jsonify({"error": "Utilisateur non trouve"})
+
+@app.route('/envoyerCodeVerification', methods=['POST'])
+def envoyerCodeVerification():
+    data = request.get_json()
+    emailUser = data["email"]
+    
+    connexion_bd = ConnexionBD()
+    userbd = UserBD(connexion_bd)
+    
+    if not userbd.email_exist(emailUser):
+        return jsonify({"error": "Email non existant"})
+    
+    code = genererCode()
+    email_sender = email(MAIL_FESTIUTO, MDP_FESTIUTO)
+    res = email_sender.sendCodeVerification(emailUser, code)
+    if res:
+        return jsonify({"success": "code envoyé", "code": code})
+    return jsonify({"error": "erreur lors de l'envoi du code"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
