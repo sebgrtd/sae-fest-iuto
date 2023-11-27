@@ -17,5 +17,10 @@ class EmailSender:
         
         message = "Votre code de vérification est : " + code
         msg.attach(MIMEText(message, 'plain'))
-        
-        self.server.sendmail(self.email, emailUser, msg.as_string())
+        try:
+            self.server.sendmail(self.email, emailUser, msg.as_string())
+            self.server.quit()
+            return True
+        except Exception as e:
+            print(e)
+            return False

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_file
 from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -133,8 +133,41 @@ def envoyerCodeVerification():
     email_sender = EmailSender(MAIL_FESTIUTO, MDP_FESTIUTO)
     res = email_sender.sendCodeVerification(emailUser, code)
     if res:
-        return jsonify({"success": "code envoyé", "code": code})
+        return jsonify({"success": "code envoyé"})
     return jsonify({"error": "erreur lors de l'envoi du code"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
+    
+@app.route('/ajouterImage', methods=['POST'])
+def ajouterImage():
+    # permet de stocker l'image dans la base de données sous forme de blob
+    idMG = request.form['idMG']
+    image_file = request.files['img']
+    if image_file:
+        image = image_file.read()
+        connexion_bd = ConnexionBD()
+        membre_groupebd = Membre_GroupeBD(connexion_bd)
+        res = membre_groupebd.add_image(idMG, image)
+        if res:
+            return jsonify({"success": "image ajoutée"})
+    return jsonify({"error": "erreur lors de l'ajout de l'image"})
+
+import io
+
+@app.route('/getImageArtiste/<int:id>')
+def getImageArtiste(id):
+    #get l'image en blob de l'artiste et l'affiche
+    try:
+        connexion_bd = ConnexionBD()
+        membre_groupebd = Membre_GroupeBD(connexion_bd)
+        image_blob = membre_groupebd.get_image(id)
+        if image_blob is None:
+            return jsonify({"error": "Aucune image trouve"})
+        else:
+                image = io.BytesIO(image_blob)
+                image.seek(0)
+                return send_file(image, mimetype='image/jpeg')
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "erreur lors de la récupération de l'image"})

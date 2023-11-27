@@ -48,7 +48,25 @@ class Membre_GroupeBD:
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
+    
+    def add_image(self, idMembreGroupe, image):
+        try:
+            query = text("UPDATE membre_groupe SET imgMG = :image WHERE idMG = :idMG")
+            self.connexion.get_connexion().execute(query, {"image": image, "idMG": idMembreGroupe})
+            print(f"L'image du membre_groupe {idMembreGroupe} a été ajoutée")
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
         
+    def get_image(self,idMembreGroupe):
+        try:
+            query = text("SELECT imgMG FROM membre_groupe WHERE idMG = :idMG")
+            result = self.connexion.get_connexion().execute(query, {"idMG": idMembreGroupe})
+            return result.fetchone()[0]
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
             
     def getNomsArtistes_json(self):
         artistes = self.get_all_artistes()
