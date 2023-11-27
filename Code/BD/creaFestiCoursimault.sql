@@ -5,6 +5,7 @@ CREATE TABLE USER(
     idUser INT NOT NULL AUTO_INCREMENT,
     pseudoUser VARCHAR(99) NOT NULL UNIQUE,
     mdpUser VARCHAR(9999) NOT NULL,
+    codeTempUser VARCHAR(6),
     emailUser VARCHAR(99) UNIQUE,
     PRIMARY KEY(idUser)
 );
@@ -86,6 +87,7 @@ CREATE TABLE MEMBRE_GROUPE (
     nomMG VARCHAR(50) NOT NULL,
     prenomMG VARCHAR(50) NOT NULL,
     nomDeSceneMG VARCHAR(50) NOT NULL,
+    imgMG LONGBLOB,
     PRIMARY KEY (idMG)
 );
 
