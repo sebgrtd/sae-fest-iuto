@@ -6,13 +6,14 @@ import TextField from '../../form/TextField';
 import Button from '../../form/Button';
 import axios from 'axios';
 import { setUserCookie, getUserCookie, isConnected, removeUserCookie } from '../../../cookies/CookiesLib';
+import ChampCode from '../../form/ChampCode';
 
 type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen : boolean) => void;
 }
 
-type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets";
+type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification";
 
 export default function MenuConnexion(props: Props) {
   const[currentMenu, setCurrentMenu] = useState<menuConnexionTabs>(isConnected() ? "connecte" : "connexion"); 
@@ -23,13 +24,14 @@ export default function MenuConnexion(props: Props) {
 
   useEffect(() => {
     setCurrentMenu(isConnected() ? "connecte" : "connexion");
+    setCurrentMenu("codeVerification")
   }, [props.isOpen === true])
-  
 
   const[email, setEmail] = useState("");
   const[password, setPassword] = useState("");
   const[pseudo, setPseudo] = useState("");
   const[oldPassword, setOldPassword] = useState("");
+  const[codeVerification, setCodeVerification] = useState("");
 
   console.log(getUserCookie());
 
@@ -126,7 +128,30 @@ export default function MenuConnexion(props: Props) {
 
   const handleResetMdp = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const data = {
+      email
+    }
+
+    axios.post("http://localhost:8080/envoyerCodeVerification", data).then((res) => {
+      const dataRes = res.data;
+      if (res.data.error){
+        alert(dataRes.error);
+        return;
+      }
+
+      if (res.data.success){
+        goTo("codeVerification")
+        setEmail(data.email);
+      }
+
+    })
   }
+
+  const handleEnvoyerCode = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(codeVerification);
+  };
 
   const handleModifierInfos = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -324,8 +349,28 @@ export default function MenuConnexion(props: Props) {
               </div>
           </motion.div>
         )
-        : currentMenu === "mesBillets" && (
+        : currentMenu === "mesBillets" ? (
           <></>
+        )
+        : currentMenu === "codeVerification" && (
+          <motion.div className="container"
+            variants={menuSwitchVariants}
+              initial="appearing"
+              animate="default"
+              exit="exit"
+              key={currentMenu}
+            >  
+            <h2>Entrez le code reçu par e-mail</h2>
+            <form onSubmit={handleEnvoyerCode}
+            ref={formModifierInfosRef}
+            >
+                <ChampCode codeVar={codeVerification} setCodeVar={setCodeVerification} nbChar={6}/>
+                <Button text="VALIDER" formRef={formModifierInfosRef}/>
+            </form>
+            <div className="other">
+                <a href="" onClick={(e) => goTo("connexion",e)}>Retour</a>
+              </div>
+          </motion.div>
         )
         }
           

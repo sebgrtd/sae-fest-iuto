@@ -198,6 +198,26 @@ body{
   padding: 6rem;
 }
 
+.champ-code{
+  display: flex;
+  gap:1rem;
+  max-width: 100%;
+  justify-content: center;
+}
+
+.champ-code input{
+  width: 3rem;
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 1.375rem;
+  padding: 1.5rem 0;
+  text-align: center;
+  background-color: var(--color-orange-secondary);
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+}
+
 #Navbar .side-menu h2{
   font-size: 2.625rem;
   font-weight: 600;

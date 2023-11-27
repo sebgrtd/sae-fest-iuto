@@ -25,6 +25,9 @@ export default function CarteArtiste(props: Props) {
   useEffect(() => {
     
     setTimeout(() => {
+        console.log(props.date)
+        console.log(props.heure)
+
         setZIndexCard(1)
         setDelay(0)
     }, 600);
@@ -198,7 +201,7 @@ export default function CarteArtiste(props: Props) {
         onClick={() => {props.setIsNavTransparent(true); setIsSwitching(true)}}
         >
             <motion.img 
-            src="/images/test-travis.png" 
+            src={"http://localhost:8080/getImageArtiste/" + props.id} 
             alt="image de l'artiste" 
             variants={imageVariants}
             initial="default"

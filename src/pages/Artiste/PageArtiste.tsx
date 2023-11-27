@@ -91,7 +91,7 @@ export default function PageArtiste() {
     animate={infosGridPosition === "top" ? "extended" : "initial"}
       />
 
-      <img src="/images/test-travis.png" alt="image de fond" />
+      <img src={"http://localhost:8080/getImageArtiste/"+idArtiste} alt="image de fond" />
       <div className="content"
       style={{
         columnGap: infosGridPosition === "top" ? "0" : "5rem",
