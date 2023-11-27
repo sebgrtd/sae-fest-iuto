@@ -61,7 +61,11 @@ def getInformationsSupplementairesArtiste(id):
 
 @app.route('/getArtiste/<int:id>')
 def getArtiste(id):
-    return "Informations de l'artiste " + str(id)
+    connexion_bd = ConnexionBD()
+    membre_groupebd = Membre_GroupeBD(connexion_bd)
+    mb = membre_groupebd.get_artiste_by_id(id)
+    res = mb.to_dict()
+    return jsonify({"error": "Aucun artiste trouve"}) if res is None else res
 
 @app.route('/connecter', methods=['POST'])
 def connecter():
@@ -142,13 +146,13 @@ if __name__ == '__main__':
 @app.route('/ajouterImage', methods=['POST'])
 def ajouterImage():
     # permet de stocker l'image dans la base de données sous forme de blob
-    idMG = request.form['idMG']
+    idMG = request.form['idG']
     image_file = request.files['img']
     if image_file:
         image = image_file.read()
         connexion_bd = ConnexionBD()
-        membre_groupebd = Membre_GroupeBD(connexion_bd)
-        res = membre_groupebd.add_image(idMG, image)
+        groupebd = GroupeBD(connexion_bd)
+        res = groupebd.add_image(idMG, image)
         if res:
             return jsonify({"success": "image ajoutée"})
     return jsonify({"error": "erreur lors de l'ajout de l'image"})
@@ -160,8 +164,8 @@ def getImageArtiste(id):
     #get l'image en blob de l'artiste et l'affiche
     try:
         connexion_bd = ConnexionBD()
-        membre_groupebd = Membre_GroupeBD(connexion_bd)
-        image_blob = membre_groupebd.get_image(id)
+        groupebd = GroupeBD(connexion_bd)
+        image_blob = groupebd.get_image(id)
         if image_blob is None:
             return jsonify({"error": "Aucune image trouve"})
         else:
