@@ -4,9 +4,19 @@ import Combo from '../../components/form/Combo';
 import CarteArtiste from '../../components/Artiste/CarteArtiste';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+
 type Props = {
     isNavInFocus: boolean;
     setIsNavTransparent: (isNavTransparent : boolean) => void;
+}
+
+type Groupe = {
+  idG: number;
+  nomG: string;
+  descriptionG: string;
+  datePassage: string;
+  heurePassage: string;
 }
 
 export default function Programmation(props : Props) {
@@ -14,6 +24,31 @@ export default function Programmation(props : Props) {
   const idArtistComingFrom = location.state?.comesFromPageArtist;
   const oldX = location.state?.oldX;
   const oldY = location.state?.oldY;
+
+  const[lesGroupes, setLesGroupes] = useState<Groupe[]>([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/getArtistes').then((res) => {
+      const data = res.data;
+      const listeGroupes : Groupe[] = [];
+      console.log(data)
+      data.forEach((groupe: Groupe) => {
+        // la datepassage est sous forme 2021-05-20 pour 20 mai 2021
+        // je veux la transformer en 20 mai (pas besoin de l'année)
+        const lesMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        const date = groupe.datePassage.split("-");
+        const datePassage = date[2] + " " + lesMois[parseInt(date[1])-1];
+        groupe.datePassage = datePassage; 
+        // l'heure est sous forme 20:00:00 pour 20h00 j'ai envie de la transformer en 20H00
+        const heure = groupe.heurePassage.split(":");
+        const heurePassage = heure[0] + "H" + heure[1];
+        groupe.heurePassage = heurePassage;
+        listeGroupes.push(groupe);
+      });
+      setLesGroupes(listeGroupes);
+    })
+  }, [])
+  
 
 
   const[filtreDate, setFiltreDate] = useState("Tout");
@@ -72,11 +107,13 @@ export default function Programmation(props : Props) {
             </div>
         </header>
         <main className='liste-artistes'>
-            <CarteArtiste id={0} oldX={idArtistComingFrom == 0 ? oldX : null} oldY={idArtistComingFrom == 0 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 0} nomArtiste="Travis Scott" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste id={1} oldX={idArtistComingFrom == 1 ? oldX : null} oldY={idArtistComingFrom == 1 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 1} nomArtiste="Booba" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste id={2} oldX={idArtistComingFrom == 2 ? oldX : null} oldY={idArtistComingFrom == 2 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 2} nomArtiste="Freeze Corleone" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste id={3} oldX={idArtistComingFrom == 3 ? oldX : null} oldY={idArtistComingFrom == 3 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 3} nomArtiste="Pop Simoke" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
-            <CarteArtiste id={4} oldX={idArtistComingFrom == 4 ? oldX : null} oldY={idArtistComingFrom == 4 ? oldY : null} comesFromPageArtist={idArtistComingFrom == 4} nomArtiste="Vladimir Poutine" date="22 JUILLET" heure="17H30" setIsNavTransparent={props.setIsNavTransparent} />
+            {
+              lesGroupes.map((groupe, index) => {
+                return(
+                  <CarteArtiste key={groupe.idG} id={groupe.idG} oldX={idArtistComingFrom == groupe.idG ? oldX : null} oldY={idArtistComingFrom == groupe.idG ? oldY : null} comesFromPageArtist={idArtistComingFrom == groupe.idG} nomArtiste={groupe.nomG} date={groupe.datePassage} heure={groupe.heurePassage} setIsNavTransparent={props.setIsNavTransparent} />
+                )
+              })
+            }
         </main>
     </motion.div>
   )
