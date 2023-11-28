@@ -5,6 +5,7 @@ import CarteArtiste from '../../components/Artiste/CarteArtiste';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import Footer from '../../components/footer';
 
 type Props = {
     isNavInFocus: boolean;
@@ -91,6 +92,7 @@ export default function Programmation(props : Props) {
   }, [])
 
   return (
+    <>
     <motion.div id="Programmation"
     variants={contentVariants}
     animate={props.isNavInFocus ? "hidden" : "visible"}
@@ -122,5 +124,7 @@ export default function Programmation(props : Props) {
             }
         </main>
     </motion.div>
+    <Footer/>
+    </>
   )
 }

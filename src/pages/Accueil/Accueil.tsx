@@ -3,6 +3,7 @@ import MarqueeScroll from '../../components/bandeau-effet-scroll-infini/MarqueeS
 import Button from '../../components/form/Button';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import Footer from '../../components/footer';
 
 type Props = {
   isNavInFocus : boolean;
@@ -82,6 +83,7 @@ export default function (props: Props) {
   }
 
   return (
+    <>
     <motion.div id="Accueil" className='page'>
         <div className="img-container">
             <img src="/images/bg.png" alt="background" />
@@ -109,5 +111,7 @@ export default function (props: Props) {
         <motion.div className="exit dark" variants={exitVariants(1)} initial="start" animate="end"/>
 
     </motion.div>
+    <Footer/>
+    </>
   )
 }
