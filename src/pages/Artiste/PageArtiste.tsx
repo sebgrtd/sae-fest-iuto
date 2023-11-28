@@ -9,6 +9,7 @@ export default function PageArtiste() {
     const location = useLocation();
     const oldX = location.state?.oldX;
     const oldY = location.state?.oldY;
+    const oldGroupes = location.state?.oldGroupes;
     const[nomArtiste, setNomArtiste] = useState(location.state?.nomArtiste)
     const[date, setDate] = useState(location.state?.date)
     const[heure, setHeure] = useState(location.state?.heure)
@@ -129,7 +130,8 @@ Tame Impala est né du précédent groupe de Kevin Parker, Dee Dee Dums, qui mê
             state={{
                 comesFromPageArtist:idArtiste,
                 oldX: oldX,
-                oldY: oldY
+                oldY: oldY,
+                oldGroupes: oldGroupes
             }}
             className='btn-retour'>
                 <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">

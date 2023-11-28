@@ -11,7 +11,16 @@ type Props = {
     comesFromPageArtist?: boolean;
     oldX?: number;
     oldY?: number;
+    oldGroupes?: Groupe[];
 }
+
+type Groupe = {
+    idG: number;
+    nomG: string;
+    descriptionG: string;
+    datePassage: string;
+    heurePassage: string;
+  }
 
 export default function CarteArtiste(props: Props) {
   // change le nomArtiste en majuscule et remplace les espaces par des retours à la ligne
@@ -196,7 +205,8 @@ export default function CarteArtiste(props: Props) {
             date: props.date,
             heure: props.heure,
             oldX: refCarte.current?.offsetLeft,
-            oldY: refCarte.current?.offsetTop
+            oldY: refCarte.current?.offsetTop,
+            oldGroupes: props.oldGroupes
         }}
         onClick={() => {props.setIsNavTransparent(true); setIsSwitching(true)}}
         >
