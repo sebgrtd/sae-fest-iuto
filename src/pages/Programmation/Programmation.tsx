@@ -26,9 +26,10 @@ export default function Programmation(props : Props) {
   const oldY = location.state?.oldY;
   const oldGroupes = location.state?.oldGroupes;
 
-  console.log(location.state)
 
+  window.history.replaceState({}, document.title)
   const[lesGroupes, setLesGroupes] = useState<Groupe[]>(location.state? oldGroupes : []);
+  
 
   useEffect(() => {
     if (!location.state){
