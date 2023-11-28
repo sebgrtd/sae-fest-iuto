@@ -756,7 +756,7 @@ input[type="number"]::-webkit-outer-spin-button {
   gap:1.875rem;
   justify-content: center;
   grid-template-columns: repeat(auto-fill, 24rem);
-  padding: 0 3.6875rem;
+  padding: 0 3.6875rem 2rem 3.6875rem;
 }
 
 #Programmation .selected{
@@ -957,6 +957,96 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 1rem;
   border-radius: 0.5rem;
   border: 2px solid var(--color-orange);
+}
+
+footer{
+  background-color: var(--color-orange);
+  color: var(--color-light-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rem;
+  width: 100%;
+  padding:6rem;
+  overflow-x: hidden;
+}
+
+footer .top-content{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  gap:6.25rem;
+  position: relative;
+}
+
+footer .top-content .logo{
+  position: relative;
+  left: 2rem;
+}
+
+footer .top-content .rubriques{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
+  width: 70%;
+  gap: 2rem;
+  column-gap: 10rem;
+  /* centre les */
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+
+}
+
+footer .top-content .rubrique{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:2rem;
+}
+
+footer .top-content .rubrique ul{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+footer .top-content .rubrique ul li{
+  list-style: none;
+  margin-bottom: 1.25rem;
+}
+
+footer .top-content .rubrique ul li a{
+  text-decoration: none;
+  color: var(--color-light-secondary);
+  font-size: 1.25rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+}
+
+footer .top-content .rubrique h3{
+  font-weight: 700;
+  font-size: 1.75rem;
+}
+
+footer .bottom-content{
+  width: 90%;
+  border-top: 2px solid var(--color-yellow);
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap:1.5625rem;
+}
+
+footer .bottom-content h4{
+  font-size: 1.25rem; 
+}
+
+footer .bottom-content h5{
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 /* fais des media queries qui ne changent que le fontsize du body */
