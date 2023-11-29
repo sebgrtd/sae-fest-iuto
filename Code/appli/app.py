@@ -137,12 +137,48 @@ def envoyerCodeVerification():
     email_sender = EmailSender(MAIL_FESTIUTO, MDP_FESTIUTO)
     res = email_sender.sendCodeVerification(emailUser, code)
     if res:
-        return jsonify({"success": "code envoyé"})
+        resAjout = userbd.ajouterCodeVerification(emailUser, code)
+        if resAjout:
+            return jsonify({"success": "code envoyé"})
     return jsonify({"error": "erreur lors de l'envoi du code"})
 
-if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+@app.route('/testerCodeVerification', methods=['POST'])
+def tester_code_verification():
+    data = request.get_json()
+    emailUser = data["email"]
+    code = data["code"]
     
+    connexion_bd = ConnexionBD()
+    userbd = UserBD(connexion_bd)
+    
+    if not userbd.email_exists(emailUser):
+        return jsonify({"error": "Email non existant"})
+    
+    if userbd.tester_code_verification(emailUser, code):
+        return jsonify({"success": "code correct"})
+    else:
+        return jsonify({"error": "code incorrect"})
+
+@app.route("/modifierMdp", methods=['POST'])
+def modifierMdp():
+    data = request.get_json()
+    emailUser = data["email"]
+    nouveauMdp = data["password"]
+    code = data["code"]
+    
+    connexion_bd = ConnexionBD()
+    userbd = UserBD(connexion_bd)
+    
+    if not userbd.email_exists(emailUser):
+        return jsonify({"error": "Email non existant"})
+    
+    if userbd.tester_code_verification(emailUser, code):
+        res = userbd.update_password(emailUser, nouveauMdp)
+        if res:
+            return jsonify({"success": "mot de passe modifié"})
+        else:
+            return jsonify({"error": "erreur lors de la modification du mot de passe"})
+
 @app.route('/ajouterImage', methods=['POST'])
 def ajouterImage():
     # permet de stocker l'image dans la base de données sous forme de blob
@@ -175,3 +211,7 @@ def getImageArtiste(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "erreur lors de la récupération de l'image"})
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8080)
+    
