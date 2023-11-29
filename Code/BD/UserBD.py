@@ -73,6 +73,36 @@ class UserBD:
                 return "emailErr"
             print(f"La requête a échoué : {e}")
             return False
+    
+    def ajouterCodeVerification(self, emailUser, code):
+        try:
+            query = text("UPDATE USER SET codeTempUser = :code WHERE emailUser = :email")
+            self.connexion.get_connexion().execute(query, {"code": code, "email": emailUser})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def tester_code_verification(self, emailUser, code):
+        try:
+            query = text("SELECT count(*) FROM USER WHERE emailUser = :email AND codeTempUser = :code")
+            # si la requete retourne 1 alors le code est bon
+            result = self.connexion.get_connexion().execute(query, {"email": emailUser, "code": code})
+            return result.fetchone()[0] == 1
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def update_password(self,emailUser, newPassword):
+        try:
+            query = text("UPDATE USER SET mdpUser= :mdp, codeTempUser = null WHERE emailUser = :email")
+            self.connexion.get_connexion().execute(query, {"mdp": newPassword, "email": emailUser})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
 
     def user_to_json(self, user):
         return json.dumps(user.to_dict(), ensure_ascii=False)
