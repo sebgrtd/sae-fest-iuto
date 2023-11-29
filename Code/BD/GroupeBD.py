@@ -54,4 +54,23 @@ class GroupeBD:
         for groupe in groupes:
             groupes_json.append(groupe.to_dict())
         return json.dumps(groupes_json)
-            
+    
+    def add_image(self, idGroupe, image):
+        try:
+            query = text("UPDATE groupe SET imgG = :imgG WHERE idG = :idG")
+            self.connexion.get_connexion().execute(query, {"imgG": image, "idG": idGroupe})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def get_image(self,idGroupe):
+        try:
+            query = text("SELECT imgG FROM groupe WHERE idG = :idG")
+            result = self.connexion.get_connexion().execute(query, {"idG": idGroupe})
+            for imgMG in result:
+                return imgMG[0]
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return None

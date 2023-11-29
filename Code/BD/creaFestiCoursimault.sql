@@ -78,6 +78,7 @@ CREATE TABLE GROUPE (
     idH INT NOT NULL,
     nomG VARCHAR(50) NOT NULL,
     descriptionG VARCHAR(50) NOT NULL,
+    imgG LONGBLOB,
     PRIMARY KEY (idG)
 );
 
@@ -87,7 +88,6 @@ CREATE TABLE MEMBRE_GROUPE (
     nomMG VARCHAR(50) NOT NULL,
     prenomMG VARCHAR(50) NOT NULL,
     nomDeSceneMG VARCHAR(50) NOT NULL,
-    imgMG LONGBLOB,
     PRIMARY KEY (idMG)
 );
 

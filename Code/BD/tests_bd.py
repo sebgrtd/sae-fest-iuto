@@ -1207,12 +1207,7 @@ def test_get_all_groupes():
 groupe_3 = Groupe(1, 1, 'Vladimir Cauchemar', 'Desc')
 
 membre_groupe_bd = Membre_GroupeBD(connexion_bd)
-
-def test_get_all_artistes_of_groupe():
-    artistes = membre_groupe_bd.get_artistes_of_groupe(groupe_3.get_idG())
-    artistes_de_bd = [(a.get_idMG(), a.get_idGroupe(), a.get_nomMG(), a.get_prenomMG(), a.get_nomDeSceneMG()) for a in artistes]
-    artistes_python = [a for a in artistes_de_bd]
-    assert artistes_de_bd == artistes_python
+membre_groupe_1 = Membre_Groupe(1, groupe_3.get_idG(), 'Vladimir', 'Cauchemar', 'Vladimir Cauchemar')
 
 def test_get_all_artistes():
     artistes = membre_groupe_bd.get_all_artistes()
@@ -1233,3 +1228,11 @@ def test_delete_membre_groupe():
     membre_groupe_bd.insert_membre_groupe(membre_groupe)
     membre_groupe_bd.delete_membre_groupe_by_name_scene(membre_groupe, 'Test')
     assert membre_groupe not in membre_groupe_bd.get_all_artistes()
+    
+def test_get_artiste_by_id():
+    artiste = membre_groupe_bd.get_artiste_by_id(1)
+    assert artiste.get_idMG() == 1
+    assert artiste.get_idGroupe() == 1
+    assert artiste.get_nomMG() == 'Vlad'
+    assert artiste.get_prenomMG() == 'Cauchemar'
+    assert artiste.get_nomDeSceneMG() == 'Vladimir Cauchemar'
