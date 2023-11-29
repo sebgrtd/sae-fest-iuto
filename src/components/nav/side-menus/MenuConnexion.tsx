@@ -13,7 +13,7 @@ type Props = {
   setIsOpen: (isOpen : boolean) => void;
 }
 
-type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification";
+type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification" | "changerMdp";
 
 export default function MenuConnexion(props: Props) {
   const[currentMenu, setCurrentMenu] = useState<menuConnexionTabs>(isConnected() ? "connecte" : "connexion"); 
@@ -21,17 +21,26 @@ export default function MenuConnexion(props: Props) {
   const formInscriptionRef = useRef<HTMLFormElement>(null);
   const formResetMdpRef = useRef<HTMLFormElement>(null);
   const formModifierInfosRef = useRef<HTMLFormElement>(null);
+  const formCodeVerificationRef = useRef<HTMLFormElement>(null);
+  const formModifMdpRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setCurrentMenu(isConnected() ? "connecte" : "connexion");
-    setCurrentMenu("codeVerification")
   }, [props.isOpen === true])
 
   const[email, setEmail] = useState("");
   const[password, setPassword] = useState("");
+  const[verifierPassword, setVerifierPassword] = useState("");
   const[pseudo, setPseudo] = useState("");
   const[oldPassword, setOldPassword] = useState("");
   const[codeVerification, setCodeVerification] = useState("");
+
+  useEffect(() => {
+    if (codeVerification.length === 6){
+      formCodeVerificationRef.current?.requestSubmit();
+    }
+  }, [codeVerification])
+  
 
   console.log(getUserCookie());
 
@@ -42,6 +51,7 @@ export default function MenuConnexion(props: Props) {
     setPassword("");
     setPseudo("");
     setOldPassword("");
+    setVerifierPassword("");
 
     if (menu === "modifierInfos"){
       if (isConnected() === false){
@@ -142,6 +152,7 @@ export default function MenuConnexion(props: Props) {
 
       if (res.data.success){
         goTo("codeVerification")
+        setCodeVerification("");
         setEmail(data.email);
       }
 
@@ -150,7 +161,25 @@ export default function MenuConnexion(props: Props) {
 
   const handleEnvoyerCode = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(codeVerification);
+    const data = {
+      email,
+      code:codeVerification
+    }
+
+    axios.post("http://localhost:8080/testerCodeVerification", data).then((res) =>{
+      const dataRes = res.data;
+      if(dataRes.error){
+        alert(dataRes.error);
+        return;
+      }
+
+      if(res.data.success){
+        console.log("code correct");
+        goTo("changerMdp")
+        setEmail(data.email);
+        setCodeVerification(data.code);
+      }
+    })
   };
 
   const handleModifierInfos = (e : React.FormEvent<HTMLFormElement>) => {
@@ -184,6 +213,35 @@ export default function MenuConnexion(props: Props) {
       const emailUser = data.emailUser;
       setUserCookie({idUser, pseudoUser, emailUser});
       goTo("connecte");
+    })
+  }
+
+  const handleModifierMdp = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (password !== verifierPassword){
+      alert("Les mots de passe ne correspondent pas");
+      return;
+    }
+
+    const data = {
+      email,
+      password,
+      code: codeVerification
+    }
+
+    axios.post("http://localhost:8080/modifierMdp", data).then((res) => {
+      const dataRes = res.data;
+
+      if (dataRes.error){
+        alert(dataRes.error);
+        return;
+      }
+
+      if (dataRes.success){
+        removeUserCookie();
+        goTo("connexion");
+      }
     })
   }
 
@@ -352,7 +410,7 @@ export default function MenuConnexion(props: Props) {
         : currentMenu === "mesBillets" ? (
           <></>
         )
-        : currentMenu === "codeVerification" && (
+        : currentMenu === "codeVerification" ? (
           <motion.div className="container"
             variants={menuSwitchVariants}
               initial="appearing"
@@ -362,14 +420,32 @@ export default function MenuConnexion(props: Props) {
             >  
             <h2>Entrez le code reçu par e-mail</h2>
             <form onSubmit={handleEnvoyerCode}
-            ref={formModifierInfosRef}
+            ref={formCodeVerificationRef}
             >
                 <ChampCode codeVar={codeVerification} setCodeVar={setCodeVerification} nbChar={6}/>
-                <Button text="VALIDER" formRef={formModifierInfosRef}/>
+                <Button text="VALIDER" formRef={formCodeVerificationRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("connexion",e)}>Retour</a>
               </div>
+          </motion.div>
+        ) 
+        : currentMenu === "changerMdp" && (
+          <motion.div className="container"
+            variants={menuSwitchVariants}
+              initial="appearing"
+              animate="default"
+              exit="exit"
+              key={currentMenu}
+            >  
+            <h2>Choisissez un nouveau mot de passe</h2>
+            <form onSubmit={handleModifierMdp}
+            ref={formModifMdpRef}
+            >
+                 <TextField isPassword text="Mot de passe" textVar={password} setTextVar={setPassword}/>
+                <TextField isPassword text="Vérifiez votre mot de passe" textVar={verifierPassword} setTextVar={setVerifierPassword}/>
+                <Button text="VALIDER" formRef={formModifMdpRef}/>
+            </form>
           </motion.div>
         )
         }
