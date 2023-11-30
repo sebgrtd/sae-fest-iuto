@@ -95,7 +95,7 @@ export default function Navbar(props : Props) {
         <NavLink variants={navLinkVariant(0)} isOpen={isOpen} setIsOpen={setIsOpen} isCurrent={"/" == current} linkTo="/" name="Accueil"/>
         <NavLink variants={navLinkVariant(1)} isOpen={isOpen} setIsOpen={setIsOpen} isCurrent={"/programmation" == current} linkTo="/programmation" name="Programmation"/>
         <NavLink variants={navLinkVariant(2)} isOpen={isOpen} setIsOpen={setIsOpen} isCurrent={"/billeterie" == current} linkTo="/billeterie" name="Billeterie"/>
-        <NavLink variants={navLinkVariant(3)} isOpen={isOpen} setIsOpen={setIsOpen} isCurrent={"/FAQ" == current} linkTo="/FAQ" name="FAQ"/>
+        <NavLink variants={navLinkVariant(3)} isOpen={isOpen} setIsOpen={setIsOpen} isCurrent={"/faq" == current} linkTo="/faq" name="FAQ"/>
       </motion.div> 
       <Link to="/" className='logo'>
         <img src="/logo.svg" alt="logo"/>
