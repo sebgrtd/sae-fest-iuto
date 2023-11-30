@@ -6,6 +6,7 @@ type Props = {
     textVar:string;
     setTextVar: (newText: string) => void;
     isPassword? : boolean;
+    errorText: string;
 }
 
 export default function TextField(props: Props) {
@@ -86,43 +87,48 @@ export default function TextField(props: Props) {
     }
   }
   return (  
-    <div className='textfield-container'>
-        
-        <motion.label 
-        ref={labelRef}
-        htmlFor="text"
-        variants={labelVariants}
-        initial="default"
-        animate={isFocused || props.textVar !== "" ? "animate" : "default"}
-        onClick={() => inputRef.current?.focus()}
-        >{props.text}</motion.label>
+    <div className="textfield-container">
+        <div className='textfield'>
+            
+            <motion.label 
+            ref={labelRef}
+            htmlFor="text"
+            variants={labelVariants}
+            initial="default"
+            animate={isFocused || props.textVar !== "" ? "animate" : "default"}
+            onClick={() => inputRef.current?.focus()}
+            >{props.text}</motion.label>
 
-        <input name="text" 
-        type={props.isPassword ? "password" : "text"}
-        defaultValue=""
-        value={props.textVar}
-        ref={inputRef}
-        onChange={handleTextChange}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        />
+            <input name="text" 
+            type={props.isPassword ? "password" : "text"}
+            defaultValue=""
+            value={props.textVar}
+            ref={inputRef}
+            onChange={handleTextChange}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            />
 
-        <motion.div 
-        aria-hidden 
-        className="bg"
-        variants={bgVariants}
-        initial="hidden"
-        animate={isFocused || props.textVar !== "" ? "visible" : "hidden"}
-        />
+            <motion.div 
+            aria-hidden 
+            className="bg"
+            variants={bgVariants}
+            initial="hidden"
+            animate={isFocused || props.textVar !== "" ? "visible" : "hidden"}
+            />
 
-        <motion.div 
-        aria-hidden 
-        className="mask"
-        variants={maskVariants}
-        initial="hidden"
-        animate={isFocused || props.textVar !== "" ? "visible" : "hidden"}
-        />
+            <motion.div 
+            aria-hidden 
+            className="mask"
+            variants={maskVariants}
+            initial="hidden"
+            animate={isFocused || props.textVar !== "" ? "visible" : "hidden"}
+            />
 
+        </div>
+        {props.errorText !== "" &&
+            <div className="error">* {props.errorText}</div>
+        }
     </div>
   )
 }

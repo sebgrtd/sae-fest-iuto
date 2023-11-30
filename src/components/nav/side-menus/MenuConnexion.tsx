@@ -15,6 +15,8 @@ type Props = {
 
 type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification" | "changerMdp";
 
+type typeErreur = "email" | "password" | "pseudo" | "oldPassword" | "verifPassword" | "codeVerification";
+
 export default function MenuConnexion(props: Props) {
   const[currentMenu, setCurrentMenu] = useState<menuConnexionTabs>(isConnected() ? "connecte" : "connexion"); 
   const formConnexionRef = useRef<HTMLFormElement>(null);
@@ -23,6 +25,7 @@ export default function MenuConnexion(props: Props) {
   const formModifierInfosRef = useRef<HTMLFormElement>(null);
   const formCodeVerificationRef = useRef<HTMLFormElement>(null);
   const formModifMdpRef = useRef<HTMLFormElement>(null);
+  const[isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setCurrentMenu(isConnected() ? "connecte" : "connexion");
@@ -34,6 +37,15 @@ export default function MenuConnexion(props: Props) {
   const[pseudo, setPseudo] = useState("");
   const[oldPassword, setOldPassword] = useState("");
   const[codeVerification, setCodeVerification] = useState("");
+
+  const[errorEmail, setErrorEmail] = useState("");
+  const[errorPassword, setErrorPassword] = useState("");
+  const[errorPseudo, setErrorPseudo] = useState("");
+  const[errorOldPassword, setErrorOldPassword] = useState("");
+  const[errorVerifPassword, setErrorVerifPassword] = useState("");
+  const[errorCodeVerification, setErrorCodeVerification] = useState("");
+
+  const[isWrong, setIsWrong] = useState(false);
 
   useEffect(() => {
     if (codeVerification.length === 6){
@@ -53,6 +65,9 @@ export default function MenuConnexion(props: Props) {
     setOldPassword("");
     setVerifierPassword("");
 
+    clearErrors();
+    setIsLoading(false);
+
     if (menu === "modifierInfos"){
       if (isConnected() === false){
         goTo("connexion");
@@ -66,20 +81,99 @@ export default function MenuConnexion(props: Props) {
     setCurrentMenu(menu);
   }
 
-  const handleConnexion = (e : React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // verifie si les champs sont remplis
-    // verifie si l'email est bien un email (regex)
+  const clearErrors = () => {
+    setErrorEmail("");
+    setErrorPassword("");
+    setErrorPseudo("");
+    setErrorOldPassword("");
+    setErrorVerifPassword("");
+  }
 
+  const setErreur = (type : typeErreur, message : string) => {
+    setIsWrong(true);
+    setIsLoading(false);
+  
+    switch (type){
+      case "email":
+        setErrorEmail(message);
+        break;
+      case "password":
+        setErrorPassword(message);
+        break;
+      case "pseudo":
+        setErrorPseudo(message);
+        break;
+      case "oldPassword":
+        setErrorOldPassword(message);
+        break;
+      case "verifPassword":
+        setErrorVerifPassword(message);
+        break;
+      case "codeVerification":
+        setErrorCodeVerification(message);
+        break;
+    }
+
+
+    setTimeout(() => {
+      setIsWrong(false);
+    }, 500);
+
+  }
+
+  const checkEmail = (email : string) => {
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmail = regexEmail.test(email);
 
     if (!isEmail){
-      alert("L'email n'est pas valide");
-      return;
+      setErreur("email", "L'email n'est pas valide");
+      return false;
     }
-    if (password.length === 0){
-      alert("Le mot de passe doit faire au moins 8 caractères");
+    return true;
+  }
+
+  // regarde si le pseudo fait +4 caractères
+  const checkPseudo = (pseudo : string) => {
+    if (pseudo.length < 4){
+      setErreur("pseudo", "Le pseudo doit faire au moins 4 caractères");
+      return false;
+    }
+    return true;
+  }
+
+  // regarde si le mot de passe fait +4 caractères
+  const checkPassword = (password : string) => {
+    if (password.length < 4){
+      setErreur("password", "Le mot de passe doit faire au moins 4 caractères");
+      return false;
+    }
+    return true;
+  }
+
+  const CheckOldPassword = (oldPassword : string) => {
+    if (oldPassword.length < 4){
+      setErreur("oldPassword", "Le mot de passe doit faire au moins 4 caractères");
+      return false;
+    }
+    return true;
+  }
+  
+  const checkPasswordMatching = (password : string, verifierPassword : string) => {
+    if (password !== verifierPassword){
+      setErreur("verifPassword", "Les mots de passe ne correspondent pas");
+      return false;
+    }
+    return true;
+  }
+
+  const handleConnexion = (e : React.FormEvent<HTMLFormElement>) => {
+    clearErrors();
+    e.preventDefault();
+    setIsLoading(true);
+    // verifie si les champs sont remplis
+    // verifie si l'email est bien un email (regex)
+
+    if (!checkEmail(email) || !checkPassword(password)){
       return;
     }
 
@@ -93,7 +187,8 @@ export default function MenuConnexion(props: Props) {
     axios.post("http://localhost:8080/connecter", data).then((res) => {
       const data = res.data;
       if (data.error){
-        alert(data.error);
+        setErreur("email", data.error);
+        setErreur("password", data.error);
         return;
       }
       const idUser = data.idUser;
@@ -101,17 +196,26 @@ export default function MenuConnexion(props: Props) {
       const emailUser = data.emailUser;
       setUserCookie({idUser, pseudoUser, emailUser});
       goTo("connecte");
+      setIsLoading(false);
     })
   }
 
   const handleDeconnexion = (e : React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    clearErrors();
+
     removeUserCookie();
     setCurrentMenu("connexion");
   }
 
   const handleInscription = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    clearErrors();
+    setIsLoading(true);
+
+    if (!checkEmail(email) || !checkPassword(password) || !checkPseudo(pseudo)){
+      return;
+    }
     
     const data = {
       pseudo,
@@ -123,7 +227,7 @@ export default function MenuConnexion(props: Props) {
       const data = res.data;
 
       if (data.error){
-        alert(data.error);
+        setErreur("email", data.error);
         return;
       }
 
@@ -132,12 +236,19 @@ export default function MenuConnexion(props: Props) {
       const emailUser = data.emailUser;
       setUserCookie({idUser, pseudoUser, emailUser});
       goTo("connecte");
+      setIsLoading(false);
     })
 
   }
 
   const handleResetMdp = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    clearErrors();
+    setIsLoading(true);
+
+    if (!checkEmail(email)){
+      return;
+    }
 
     const data = {
       email
@@ -146,7 +257,7 @@ export default function MenuConnexion(props: Props) {
     axios.post("http://localhost:8080/envoyerCodeVerification", data).then((res) => {
       const dataRes = res.data;
       if (res.data.error){
-        alert(dataRes.error);
+        setErreur("email", dataRes.error);
         return;
       }
 
@@ -155,12 +266,21 @@ export default function MenuConnexion(props: Props) {
         setCodeVerification("");
         setEmail(data.email);
       }
+      setIsLoading(false);
 
     })
   }
 
   const handleEnvoyerCode = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    clearErrors();
+    setIsLoading(true);
+
+    if (codeVerification.length !== 6){
+      setErreur("codeVerification", "Le code doit faire 6 caractères");
+      return;
+    }
+
     const data = {
       email,
       code:codeVerification
@@ -169,7 +289,8 @@ export default function MenuConnexion(props: Props) {
     axios.post("http://localhost:8080/testerCodeVerification", data).then((res) =>{
       const dataRes = res.data;
       if(dataRes.error){
-        alert(dataRes.error);
+        setErreur("codeVerification", dataRes.error);
+        setCodeVerification("");
         return;
       }
 
@@ -179,11 +300,14 @@ export default function MenuConnexion(props: Props) {
         setEmail(data.email);
         setCodeVerification(data.code);
       }
+      setIsLoading(false);
     })
   };
 
   const handleModifierInfos = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    clearErrors();
+    setIsLoading(true);
     
     if (isConnected() === false){
       goTo("connexion");
@@ -191,6 +315,10 @@ export default function MenuConnexion(props: Props) {
     }
 
     const currentID = getUserCookie().idUser;
+
+    if (!checkEmail(email) || !checkPassword(password) || !checkPseudo(pseudo) || !CheckOldPassword(oldPassword)){
+      return;
+    }
 
     const data = {
       id:currentID,
@@ -204,7 +332,7 @@ export default function MenuConnexion(props: Props) {
       const data = res.data;
 
       if (data.error){
-        alert(data.error);
+        setErreur("oldPassword", data.error);
         return;
       }
 
@@ -213,14 +341,16 @@ export default function MenuConnexion(props: Props) {
       const emailUser = data.emailUser;
       setUserCookie({idUser, pseudoUser, emailUser});
       goTo("connecte");
+      setIsLoading(false);
     })
   }
 
   const handleModifierMdp = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    clearErrors();
+    setIsLoading(true);
 
-    if (password !== verifierPassword){
-      alert("Les mots de passe ne correspondent pas");
+    if (!checkPassword(password) || !checkPasswordMatching(password, verifierPassword)){
       return;
     }
 
@@ -235,6 +365,7 @@ export default function MenuConnexion(props: Props) {
 
       if (dataRes.error){
         alert(dataRes.error);
+        
         return;
       }
 
@@ -242,6 +373,7 @@ export default function MenuConnexion(props: Props) {
         removeUserCookie();
         goTo("connexion");
       }
+      setIsLoading(false);
     })
   }
 
@@ -286,6 +418,14 @@ export default function MenuConnexion(props: Props) {
         duration: 0.5,
         ease: [1, -0.02, 0,1]
       }
+    },
+    wrong:{
+      // fais remuer le menu de gauche à droite avant qu'il aille au centre
+      x: [0, -20, 20, -20, 20, 0],
+      transition:{
+        duration: 0.4,
+        ease: "linear"
+      }
     }
     
   }
@@ -295,7 +435,7 @@ export default function MenuConnexion(props: Props) {
     variants={menuVariants}
     initial="hidden"
     animate={props.isOpen ? "visible" : "hidden"}>
-        <div className="cross" onClick={() => props.setIsOpen(false)}>
+        <div className="cross" onClick={() =>  {props.setIsOpen(false); }}>
           <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="6.52539" y="0.321533" width="35.8974" height="3.58974" rx="1.79487" transform="rotate(45 6.52539 0.321533)" fill="#E45A3B"/>
             <rect x="3.87891" y="25.5957" width="35.8974" height="3.58974" rx="1.79487" transform="rotate(-45 3.87891 25.5957)" fill="#E45A3B"/>
@@ -306,15 +446,15 @@ export default function MenuConnexion(props: Props) {
               <motion.div className="container"
               variants={menuSwitchVariants}
               initial="appearing"
-              animate="default"
-              exit="exit"
+              animate={isWrong ? "wrong" : "default"}
+              exit={!props.isOpen ? "default" : "exit"}
               key={currentMenu}
               >  
               <h2>Me connecter</h2>
               <form onSubmit={handleConnexion} ref={formConnexionRef}>
-                <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
-                <TextField text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
-                <Button text="CONNEXION" formRef={formConnexionRef}/>
+                <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
+                <TextField errorText={errorPassword} text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
+                <Button isLoading={isLoading} text="CONNEXION" formRef={formConnexionRef}/>
               </form>
               <div className="other">
                 <a href="" onClick={(e) => goTo("aideConnexion",e)}>Je n'arrive pas à me connecter</a>
@@ -344,18 +484,18 @@ export default function MenuConnexion(props: Props) {
           <motion.div className="container"
             variants={menuSwitchVariants}
               initial="appearing"
-              animate="default"
-              exit="exit"
+              animate={isWrong ? "wrong" : "default"}
+              exit={!props.isOpen ? "default" : "exit"}
               key={currentMenu}
             >  
             <h2>Créer un compte</h2>
             <form onSubmit={handleInscription}
             ref={formInscriptionRef}
             >
-                <TextField text="pseudo" textVar={pseudo} setTextVar={setPseudo}/>
-                <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
-                <TextField text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
-                <Button text="M'INSCRIRE" formRef={formInscriptionRef}/>
+                <TextField errorText={errorPseudo} text="pseudo" textVar={pseudo} setTextVar={setPseudo}/>
+                <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
+                <TextField errorText={errorPassword} text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
+                <Button isLoading={isLoading} text="M'INSCRIRE" formRef={formInscriptionRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("aideConnexion",e)}>Je n'arrive pas à me connecter</a>
@@ -367,16 +507,16 @@ export default function MenuConnexion(props: Props) {
           <motion.div className="container"
             variants={menuSwitchVariants}
               initial="appearing"
-              animate="default"
-              exit="exit"
+              animate={isWrong ? "wrong" : "default"}
+              exit={!props.isOpen ? "default" : "exit"}
               key={currentMenu}
             >  
             <h2>Réinitialiser mon mot de passe</h2>
             <form onSubmit={handleResetMdp}
             ref={formResetMdpRef}
             >
-                <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
-                <Button text="REINITIALISER" formRef={formResetMdpRef}/>
+                <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
+                <Button isLoading={isLoading} text="REINITIALISER" formRef={formResetMdpRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("inscription",e)}>Créer un compte</a>
@@ -388,19 +528,19 @@ export default function MenuConnexion(props: Props) {
           <motion.div className="container"
             variants={menuSwitchVariants}
               initial="appearing"
-              animate="default"
-              exit="exit"
+              animate={isWrong ? "wrong" : "default"}
+              exit={!props.isOpen ? "default" : "exit"}
               key={currentMenu}
             >  
             <h2>Modifier mes informations</h2>
             <form onSubmit={handleModifierInfos}
             ref={formModifierInfosRef}
             >
-                <TextField text="pseudo" textVar={pseudo} setTextVar={setPseudo}/>
-                <TextField text="e-mail" textVar={email} setTextVar={setEmail}/>
-                <TextField text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
-                <TextField text="ancien mot de passe" textVar={oldPassword} setTextVar={setOldPassword} isPassword/>
-                <Button text="MODIFIER" formRef={formModifierInfosRef}/>
+                <TextField errorText={errorPseudo} text="pseudo" textVar={pseudo} setTextVar={setPseudo}/>
+                <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
+                <TextField errorText={errorPassword} text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
+                <TextField errorText={errorOldPassword} text="ancien mot de passe" textVar={oldPassword} setTextVar={setOldPassword} isPassword/>
+                <Button isLoading={isLoading} text="MODIFIER" formRef={formModifierInfosRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("connecte",e)}>Retour</a>
@@ -414,16 +554,16 @@ export default function MenuConnexion(props: Props) {
           <motion.div className="container"
             variants={menuSwitchVariants}
               initial="appearing"
-              animate="default"
-              exit="exit"
+              animate={isWrong ? "wrong" : "default"}
+              exit={!props.isOpen ? "default" : "exit"}
               key={currentMenu}
             >  
             <h2>Entrez le code reçu par e-mail</h2>
             <form onSubmit={handleEnvoyerCode}
             ref={formCodeVerificationRef}
             >
-                <ChampCode codeVar={codeVerification} setCodeVar={setCodeVerification} nbChar={6}/>
-                <Button text="VALIDER" formRef={formCodeVerificationRef}/>
+                <ChampCode errorText={errorCodeVerification} codeVar={codeVerification} setCodeVar={setCodeVerification} nbChar={6}/>
+                <Button isLoading={isLoading} text="VALIDER" formRef={formCodeVerificationRef}/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("connexion",e)}>Retour</a>
@@ -434,17 +574,17 @@ export default function MenuConnexion(props: Props) {
           <motion.div className="container"
             variants={menuSwitchVariants}
               initial="appearing"
-              animate="default"
-              exit="exit"
+              animate={isWrong ? "wrong" : "default"}
+              exit={!props.isOpen ? "default" : "exit"}
               key={currentMenu}
             >  
             <h2>Choisissez un nouveau mot de passe</h2>
             <form onSubmit={handleModifierMdp}
             ref={formModifMdpRef}
             >
-                 <TextField isPassword text="Mot de passe" textVar={password} setTextVar={setPassword}/>
-                <TextField isPassword text="Vérifiez votre mot de passe" textVar={verifierPassword} setTextVar={setVerifierPassword}/>
-                <Button text="VALIDER" formRef={formModifMdpRef}/>
+                 <TextField errorText={errorPassword} isPassword text="Mot de passe" textVar={password} setTextVar={setPassword}/>
+                <TextField errorText={errorVerifPassword} isPassword text="Vérifiez votre mot de passe" textVar={verifierPassword} setTextVar={setVerifierPassword}/>
+                <Button isLoading={isLoading} text="VALIDER" formRef={formModifMdpRef}/>
             </form>
           </motion.div>
         )
