@@ -94,6 +94,7 @@ export default function Programmation(props : Props) {
   return (
     <>
     <motion.div id="Programmation"
+    className='page-defaut'
     variants={contentVariants}
     animate={props.isNavInFocus ? "hidden" : "visible"}
     ref={pageRef}
