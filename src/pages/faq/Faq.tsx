@@ -1,17 +1,35 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import FaqCard from '../../components/FaqCard';
 import Footer from '../../components/footer';
+import axios from 'axios';
 
 type Props = {
     isNavInFocus : boolean;
     setIsNavTransparent: (isNavTransparent : boolean) => void;
   }
 
+type Faq = {
+  idFaq: number;
+  question: string;
+  reponse: string;
+}
+
 export default function Faq(props: Props) {
+  const[listeFaq, setListeFaq] = useState<Faq[]>([]); 
+
   useEffect(() => {
     window.scrollTo(0, 0)
     props.setIsNavTransparent(false);
-  })
+
+    axios.get('http://localhost:8080/getFaq').then((res) => {
+      const data = res.data;
+      const listeFaq : Faq[] = [];
+      data.forEach((faq: Faq) => {
+        listeFaq.push(faq);
+      });
+      setListeFaq(listeFaq);
+    })
+  }, [])
 
   return (
     <>
@@ -25,11 +43,11 @@ export default function Faq(props: Props) {
               </div>
           </header>
           <main className='les-faqs'>
-              <FaqCard id="1" question="Quand aura lieu le festival ?" reponse="Le festival aura lieu le 30 juillet 2021."/>
-              <FaqCard id="2" question="Où aura lieu le festival ?" reponse="Le festival aura lieu au parc de la Gare de Bressoux."/>
-              <FaqCard id="3" question="Quels sont les horaires du festival ?" reponse="Le festival aura lieu de 16h à 23h."/>
-              <FaqCard id="4" question="Quel est le prix de l'entrée ?" reponse="Prépare toi à vivre une expérience unique en son genre ! Nos billets sont maintenant disponibles et c’est l’occasion de garantir ta place pour l’évènement de l’année. 
-  Les billets sont en quantité limitée, alors ne tarde pas. Réserve dès maintenant pour ne pas manquer cette opportunitée de faire partie de cette édition du FEST IUT’O!"/>
+              {
+                listeFaq.map((faq : Faq) => {
+                  return <FaqCard key={faq.idFaq} id={faq.idFaq} question={faq.question} reponse={faq.reponse} />
+                })  
+              }
           </main>
       </div>
       <Footer/>

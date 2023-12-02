@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import {useState,useRef, useEffect} from 'react'
 
 type Props = {
-    id: string;
+    id: number;
     question: string;
     reponse: string;
 }
@@ -56,6 +56,7 @@ export default function FaqCard(props:Props) {
   const reponseVariants = {
     hidden:{
         opacity:0,
+        zIndex:-1,
         transition:{
             duration:0.5,
             ease: [1, 0, 0,1]
@@ -63,6 +64,7 @@ export default function FaqCard(props:Props) {
     },
     visible:{
         opacity:1,
+        zIndex:1,
         transition:{
             duration:0.5,
             ease: [1, 0, 0,1]
@@ -96,7 +98,7 @@ export default function FaqCard(props:Props) {
     animate={isOpen ? "visible" : "hidden"}>
         <div className="top-content" ref={topContentRef}>
             <div className="title">
-                <h4 className='index'>0{props.id}.</h4>
+                <h4 className='index'>{props.id.toString().length == 1 ? "0" : ""}{props.id}.</h4>
                 <h3 className='question'>{props.question}</h3>
             </div>
             <motion.svg
