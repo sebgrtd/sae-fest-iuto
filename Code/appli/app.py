@@ -14,6 +14,7 @@ from ConnexionBD import ConnexionBD
 from UserBD import UserBD
 from emailSender import EmailSender
 from generateurCode import genererCode
+from FaqBD import FaqBD
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -211,6 +212,16 @@ def getImageArtiste(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "erreur lors de la récupération de l'image"})
+
+@app.route('/getFaq')
+def get_faq():
+    connexion_bd = ConnexionBD()
+    faqbd = FaqBD(connexion_bd)
+    res = faqbd.get_faqs_json()
+    if res is None:
+        return jsonify({"error": "Aucune faq trouve"})
+    else:
+        return res
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
