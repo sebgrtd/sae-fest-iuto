@@ -73,19 +73,16 @@ INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG) VALUES
 
 -- Insérer des données dans la table INSTRUMENT
 INSERT INTO INSTRUMENT (idMG, nomI) VALUES
-    (1, 'Instrument 1'),
-    (2, 'Instrument 2'),
-    (3, 'Instrument 3'),
-    (4, 'Instrument 2'),
-    (5, 'Instrument 1'),
-    (6, 'Instrument 3'),
-    (7, 'Instrument 1'),
-    (8, 'Instrument 2'),
-    (9, 'Instrument 3'),
-    (10, 'Instrument 1'),
-    (11, 'Instrument 2'),
-    (12, 'Instrument 3'),
-    (13, 'Instrument 1');
+    (1, 'DJ'),
+    (2, 'Chanteur'),
+    (3, 'Chanteur'),
+    (4, 'Chanteur'),
+    (5, 'Chanteur'),
+    (6, 'Chanteur'),
+    (7, 'Chanteur'),
+    (8, 'Chanteur'),
+    (9, 'Chanteur'),
+    (10, 'Chanteur');
 
 -- Insérer des données dans la table LIEN_VIDEO
 INSERT INTO LIEN_VIDEO (idG, video) VALUES
@@ -101,10 +98,7 @@ INSERT INTO LIEN_VIDEO (idG, video) VALUES
     (7, 'Video 1'),
     (8, 'Video 1'),
     (9, 'Video 1'),
-    (10, 'Video 1'),
-    (11, 'Video 1'),
-    (12, 'Video 1'),
-    (13, 'Video 1');
+    (10, 'Video 1');
 
 -- Insérer des données dans la table LIEN_RESEAUX_SOCIAUX
 INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
@@ -120,10 +114,7 @@ INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (7, 'Réseau 1'),
     (8, 'Réseau 1'),
     (9, 'Réseau 1'),
-    (10, 'Réseau 1'),
-    (11, 'Réseau 1'),
-    (12, 'Réseau 1'),
-    (13, 'Réseau 1');
+    (10, 'Réseau 1');
 
 -- Insérer des données dans la table SPECTATEUR
 INSERT INTO SPECTATEUR (nomS, prenomS, adresseS, emailS, mdpS) VALUES
@@ -152,39 +143,17 @@ INSERT INTO BILLET (idF, idType, idS, prix, dateAchat) VALUES
     (2, 1, 4, 50, '2023-07-16');
 
 -- Insérer des données dans la table EVENEMENT
-INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE) VALUES
-    (1, 'Événement 1', '10:00:00', '12:00:00'),
-    (1, 'Événement 2', '14:00:00', '16:00:00'),
-    (2, 'Événement 1', '10:00:00', '12:00:00'),
-    (3, 'Événement 1', '10:00:00', '12:00:00'),
-    (3, 'Événement 2', '14:00:00', '16:00:00'),
-    (3, 'Événement 3', '18:00:00', '20:00:00'),
-    (4, 'Événement 1', '10:00:00', '12:00:00'),
-    (5, 'Événement 1', '10:00:00', '12:00:00'),
-    (6, 'Événement 1', '10:00:00', '12:00:00'),
-    (7, 'Événement 1', '10:00:00', '12:00:00'),
-    (8, 'Événement 1', '10:00:00', '12:00:00'),
-    (9, 'Événement 1', '10:00:00', '12:00:00'),
-    (10, 'Événement 1', '10:00:00', '12:00:00'),
-    (11, 'Événement 1', '10:00:00', '12:00:00'),
-    (12, 'Événement 1', '10:00:00', '12:00:00'),
-    (13, 'Événement 1', '10:00:00', '12:00:00');
-
--- Insérer des données dans la table ACTIVITES_ANNEXES
-INSERT INTO ACTIVITES_ANNEXES (idE, typeA, ouvertAuPublic) VALUES
-    (1, 'Activité 1', 1, true),
-    (2, 'Activité 2', 1, true),
-    (3, 'Activité 1', 1, true),
-    (4, 'Activité 1', 1, true),
-    (5, 'Activité 2', 1, true),
-    (6, 'Activité 3', 1, true),
-    (7, 'Activité 1', 1, true),
-    (8, 'Activité 1', 1, true),
-    (9, 'Activité 1', 1, true),
-    (10, 'Activité 1', 1, true),
-    (11, 'Activité 1', 1, true),
-    (12, 'Activité 1', 1, true),
-    (13, 'Activité 1', 1, true);
+INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
+    (1, 'Concert Groupe 1', '10:00:00', '12:00:00', '2023-08-01', '2023-08-01'),
+    (2, 'Concert Groupe 2', '10:00:00', '12:00:00', '2023-08-02', '2023-08-02'),
+    (3, 'Concert Groupe 3', '10:00:00', '12:00:00', '2023-08-03', '2023-08-03'),
+    (4, 'Concert Groupe 4', '10:00:00', '12:00:00', '2023-08-04', '2023-08-04'),
+    (5, 'Concert Groupe 5', '10:00:00', '12:00:00', '2023-08-05', '2023-08-05'),
+    (6, 'Concert Groupe 6', '10:00:00', '12:00:00', '2023-07-15', '2023-07-15'),
+    (7, 'Concert Groupe 7', '10:00:00', '12:00:00', '2023-07-16', '2023-07-16'),
+    (8, 'Concert Groupe 8', '10:00:00', '12:00:00', '2023-07-17', '2023-07-17'),
+    (9, 'Concert Groupe 9', '10:00:00', '12:00:00', '2023-07-18', '2023-07-18'),
+    (10, 'Concert Groupe 10', '10:00:00', '12:00:00', '2023-07-19', '2023-07-19');
 
 -- Insérer des données dans la table CONCERT
 INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
@@ -197,17 +166,11 @@ INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
     (7, '01:00:00', '01:00:00'),
     (8, '01:00:00', '01:00:00'),
     (9, '01:00:00', '01:00:00'),
-    (10, '01:00:00', '01:00:00'),
-    (11, '01:00:00', '01:00:00'),
-    (12, '01:00:00', '01:00:00'),
-    (13, '01:00:00', '01:00:00');
+    (10, '01:00:00', '01:00:00');
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
     (1, 1, 1, '2023-08-06', '08:00:00', '2023-08-07', '16:00:00');
-
-
-
 
 -- test des triggers
 

@@ -350,12 +350,14 @@ class Photo:
         return self.__photo
     
 class Evenement:
-    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: str, heureFinE: str):
+    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
         self.__idE = idE
         self.__idG = idG
         self.__nomE = nomE
         self.__heureDebutE = heureDebutE if isinstance(heureDebutE, time) else datetime.strptime(heureDebutE, '%H:%M').time()
         self.__heureFinE = heureFinE if isinstance(heureFinE, time) else datetime.strptime(heureFinE, '%H:%M').time()
+        self.__dateDebutE = dateDebutE if isinstance(dateDebutE, date) else datetime.strptime(dateDebutE, '%Y-%m-%d').date()
+        self.__dateFinE = dateFinE if isinstance(dateFinE, date) else datetime.strptime(dateFinE, '%Y-%m-%d').date()
         
     def get_idE(self):
         return self.__idE
@@ -371,6 +373,12 @@ class Evenement:
     
     def get_heureFinE(self):
         return self.__heureFinE
+    
+    def get_dateDebutE(self):
+        return self.__dateDebutE
+    
+    def get_dateFinE(self):
+        return self.__dateFinE
     
 class Activites_Annexes:
     def __init__(self, idE: int, typeA: str, ouvertAuPublic: bool):
