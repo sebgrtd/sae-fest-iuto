@@ -1,5 +1,27 @@
 from datetime import datetime, date, time
 
+class Faq:
+    def __init__(self, idFaq: int, question: str, reponse: str):
+        self._idFaq = idFaq
+        self._question = question
+        self._reponse = reponse
+    
+    def get_idFaq(self):
+        return self._idFaq
+    
+    def get_question(self):
+        return self._question
+    
+    def get_reponse(self):
+        return self._reponse
+    
+    def to_dict(self):
+        return {
+            "idFaq": self._idFaq,
+            "question": self._question,
+            "reponse": self._reponse
+        }
+
 class User:         
     def __init__(self, idUser: int, pseudoUser: str, mdpUser: str, emailUser: str):
         self.__idUser = idUser
