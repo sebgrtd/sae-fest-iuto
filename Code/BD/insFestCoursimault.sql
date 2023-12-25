@@ -106,25 +106,6 @@ INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (12, 'Réseau 1'),
     (13, 'Réseau 1');
 
--- Insérer des données dans la table PHOTO
-INSERT INTO PHOTO (idG, photo) VALUES
-    (1, 'Photo 1'),
-    (1, 'Photo 2'),
-    (2, 'Photo 1'),
-    (3, 'Photo 1'),
-    (3, 'Photo 2'),
-    (3, 'Photo 3'),
-    (4, 'Photo 1'),
-    (5, 'Photo 1'),
-    (6, 'Photo 1'),
-    (7, 'Photo 1'),
-    (8, 'Photo 1'),
-    (9, 'Photo 1'),
-    (10, 'Photo 1'),
-    (11, 'Photo 1'),
-    (12, 'Photo 1'),
-    (13, 'Photo 1');
-
 -- Insérer des données dans la table SPECTATEUR
 INSERT INTO SPECTATEUR (nomS, prenomS, adresseS, emailS, mdpS) VALUES
     ('Spectateur 1', 'Prénom 1', 'Adresse 1', 'email1@example.com', 'mdp1'),
@@ -152,19 +133,55 @@ INSERT INTO BILLET (idF, idType, idS, prix, dateAchat) VALUES
     (2, 1, 4, 50, '2023-07-16');
 
 -- Insérer des données dans la table EVENEMENT
-INSERT INTO EVENEMENT (nomE, heureDebutE, heureFinE) VALUES
-    ('Événement 1', '18:00:00', '23:00:00'),
-    ('Événement 2', '16:00:00', '22:00:00');
+INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE) VALUES
+    (1, 'Événement 1', '10:00:00', '12:00:00'),
+    (1, 'Événement 2', '14:00:00', '16:00:00'),
+    (2, 'Événement 1', '10:00:00', '12:00:00'),
+    (3, 'Événement 1', '10:00:00', '12:00:00'),
+    (3, 'Événement 2', '14:00:00', '16:00:00'),
+    (3, 'Événement 3', '18:00:00', '20:00:00'),
+    (4, 'Événement 1', '10:00:00', '12:00:00'),
+    (5, 'Événement 1', '10:00:00', '12:00:00'),
+    (6, 'Événement 1', '10:00:00', '12:00:00'),
+    (7, 'Événement 1', '10:00:00', '12:00:00'),
+    (8, 'Événement 1', '10:00:00', '12:00:00'),
+    (9, 'Événement 1', '10:00:00', '12:00:00'),
+    (10, 'Événement 1', '10:00:00', '12:00:00'),
+    (11, 'Événement 1', '10:00:00', '12:00:00'),
+    (12, 'Événement 1', '10:00:00', '12:00:00'),
+    (13, 'Événement 1', '10:00:00', '12:00:00');
 
 -- Insérer des données dans la table ACTIVITES_ANNEXES
-INSERT INTO ACTIVITES_ANNEXES (typeA, ouvertAuPublic) VALUES
-    ('Activité 1', TRUE),
-    ('Activité 2', TRUE);
+INSERT INTO ACTIVITES_ANNEXES (idE, typeA, ouvertAuPublic) VALUES
+    (1, 'Activité 1', 1, true),
+    (2, 'Activité 2', 1, true),
+    (3, 'Activité 1', 1, true),
+    (4, 'Activité 1', 1, true),
+    (5, 'Activité 2', 1, true),
+    (6, 'Activité 3', 1, true),
+    (7, 'Activité 1', 1, true),
+    (8, 'Activité 1', 1, true),
+    (9, 'Activité 1', 1, true),
+    (10, 'Activité 1', 1, true),
+    (11, 'Activité 1', 1, true),
+    (12, 'Activité 1', 1, true),
+    (13, 'Activité 1', 1, true);
 
 -- Insérer des données dans la table CONCERT
-INSERT INTO CONCERT (tempsMontage, tempsDemontage) VALUES
-    ('10:00:00', '12:00:00'),
-    ('09:00:00', '11:00:00');
+INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
+    (1, '01:00:00', '01:00:00'),
+    (2, '01:00:00', '01:00:00'),
+    (3, '01:00:00', '01:00:00'),
+    (4, '01:00:00', '01:00:00'),
+    (5, '01:00:00', '01:00:00'),
+    (6, '01:00:00', '01:00:00'),
+    (7, '01:00:00', '01:00:00'),
+    (8, '01:00:00', '01:00:00'),
+    (9, '01:00:00', '01:00:00'),
+    (10, '01:00:00', '01:00:00'),
+    (11, '01:00:00', '01:00:00'),
+    (12, '01:00:00', '01:00:00'),
+    (13, '01:00:00', '01:00:00');
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
