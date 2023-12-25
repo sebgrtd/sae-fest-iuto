@@ -821,8 +821,8 @@ def test_type_photo2():
     
 # classe Evenement
 
-evenement1 = Evenement(1, 1, "evenement1", "10:00", "20:00")
-evenement2 = Evenement(2, 2, "evenement2", "15:00", "23:00")
+evenement1 = Evenement(1, 1, "evenement1", "10:00", "20:00", "2021-05-01", "2021-05-02")
+evenement2 = Evenement(2, 2, "evenement2", "15:00", "23:00", "2021-05-02", "2021-05-03")
 
 def test_get_idE():
     assert evenement1.get_idE() == 1
