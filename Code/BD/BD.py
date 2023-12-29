@@ -61,6 +61,15 @@ class Festival:
     
     def __repr__(self):
         return f"({self.__idF}, {self.__nomF}, {self.__villeF}, {self.__dateDebutF}, {self.__dateFinF})"
+    
+    def to_dict(self):
+        return {
+            "idF": self.__idF,
+            "nomF": self.__nomF,
+            "villeF": self.__villeF,
+            "dateDebutF": self.__dateDebutF.isoformat(),
+            "dateFinF": self.__dateFinF.isoformat()
+        }
 
     
 class Type_Billet:
@@ -73,6 +82,12 @@ class Type_Billet:
     
     def get_duree(self):
         return self.__duree
+    
+    def to_dict(self):
+        return {
+            "idType": self.__idType,
+            "duree": self.__duree
+        }
     
 
 class Spectateur:
@@ -102,6 +117,15 @@ class Spectateur:
     def get_mdpS(self):
         return self.__mdpS
     
+    def to_dict(self):
+        return {
+            "idS": self.__idS,
+            "nomS": self.__nomS,
+            "prenomS": self.__prenomS,
+            "adresseS": self.__adresseS,
+            "emailS": self.__emailS,
+            "mdpS": self.__mdpS
+        }
 
 class Billet:
     def __init__(self, idB: int, idF: int, idType: int, idS: int, prix: int, dateAchat: str):
@@ -130,6 +154,16 @@ class Billet:
     def get_dateAchat(self):
         return self.__dateAchat
     
+    def to_dict(self):
+        return {
+            "idB": self.__idB,
+            "idF": self.__idF,
+            "idType": self.__idType,
+            "idS": self.__idS,
+            "prix": self.__prix,
+            "dateAchat": self.__dateAchat.isoformat()
+        }
+    
     
 class Lieu:
     def __init__(self, idL: int, idF: int, nomL: str, adresseL: str, jaugeL: int):
@@ -154,6 +188,15 @@ class Lieu:
     def get_jaugeL(self):
         return self.__jaugeL
     
+    def to_dict(self):
+        return {
+            "idL": self.__idL,
+            "idF": self.__idF,
+            "nomL": self.__nomL,
+            "adresseL": self.__adresseL,
+            "jaugeL": self.__jaugeL
+        }
+    
 
 class Hebergement:
     def __init__(self, idH: int, nomH: str, limitePlacesH: int, adresseH: int):
@@ -174,6 +217,13 @@ class Hebergement:
     def get_adresseH(self):
         return self.__adresseH
     
+    def to_dict(self):
+        return {
+            "idH": self.__idH,
+            "nomH": self.__nomH,
+            "limitePlacesH": self.__limitePlacesH,
+            "adresseH": self.__adresseH
+        }
     
 class Programmer:
     def __init__(self, idF: int, idL: int, idH: int, dateArrivee: str, heureArrivee: str, dateDepart: str, heureDepart: str):
@@ -181,9 +231,13 @@ class Programmer:
         self.__idL = idL
         self.__idH = idH
         self.__dateArrivee = dateArrivee if isinstance(dateArrivee, date) else datetime.strptime(dateArrivee, '%Y-%m-%d').date()
-        self.__heureArrivee = heureArrivee if isinstance(heureArrivee, time) else datetime.strptime(heureArrivee, '%H:%M').time()
+        self.__heureArrivee = self.timedelta_to_time(heureArrivee) if isinstance(heureArrivee, timedelta) else datetime.strptime(heureArrivee, '%H:%M').time()
         self.__dateDepart = dateDepart if isinstance(dateDepart, date) else datetime.strptime(dateDepart, '%Y-%m-%d').date()
-        self.__heureDepart = heureDepart if isinstance(heureDepart, time) else datetime.strptime(heureDepart, '%H:%M').time()
+        self.__heureDepart = self.timedelta_to_time(heureDepart) if isinstance(heureDepart, timedelta) else datetime.strptime(heureDepart, '%H:%M').time()
+        
+    @staticmethod
+    def timedelta_to_time(td):
+        return (datetime.min + td).time()
         
     def get_idFestival(self):
         return self.__idF
@@ -205,6 +259,17 @@ class Programmer:
     
     def get_heureDepart(self):
         return self.__heureDepart
+    
+    def to_dict(self):
+        return {
+            "idF": self.__idF,
+            "idL": self.__idL,
+            "idH": self.__idH,
+            "dateArrivee": self.__dateArrivee.isoformat(),
+            "heureArrivee": self.__heureArrivee.strftime("%H:%M:%S"),
+            "dateDepart": self.__dateDepart.isoformat(),
+            "heureDepart": self.__heureDepart.strftime("%H:%M:%S")
+        }
     
 
 class Groupe:
@@ -285,6 +350,12 @@ class Instrument:
     def get_nomI(self):
         return self.__nomI
     
+    def to_dict(self):
+        return {
+            "idI": self.__idI,
+            "idMG": self.__idMG,
+            "nomI": self.__nomI
+        }
     
 class Style_Musical:
     def __init__(self, idSt: int, nomSt: str):
@@ -296,6 +367,12 @@ class Style_Musical:
     
     def get_nomSt(self):
         return self.__nomSt
+    
+    def to_dict(self):
+        return {
+            "idSt": self.__idSt,
+            "nomSt": self.__nomSt
+        }
     
 class Lien_Video:
     def __init__(self, idLV: int, idG: int, video: str):
@@ -311,6 +388,13 @@ class Lien_Video:
     
     def get_video(self):
         return self.__video
+    
+    def to_dict(self):
+        return {
+            "idLV": self.__idLV,
+            "idG": self.__idG,
+            "video": self.__video
+        }
     
 class Lien_Reseaux_Sociaux:
     def __init__(self, idLRS: int, idG: int, reseau: str):
@@ -348,6 +432,13 @@ class Photo:
     
     def get_photo(self):
         return self.__photo
+    
+    def to_dict(self):
+        return {
+            "idP": self.__idP,
+            "idG": self.__idG,
+            "photo": self.__photo
+        }
     
 class Evenement:
     def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: timedelta, heureFinE: timedelta, dateDebutE: str, dateFinE: str):
@@ -410,11 +501,22 @@ class Activites_Annexes:
     def get_ouvertAuPublic(self):
         return self.__ouvertAuPublic
     
+    def to_dict(self):
+        return {
+            "idE": self.__idE,
+            "typeA": self.__typeA,
+            "ouvertAuPublic": self.__ouvertAuPublic
+        }
+    
 class Concert:
     def __init__(self, idE: int, tempsMontage: str, tempsDemontage: str):
         self.__idE = idE
-        self.__tempsMontage = tempsMontage if isinstance(tempsMontage, time) else datetime.strptime(tempsMontage, '%H:%M').time()
-        self.__tempsDemontage = tempsDemontage if isinstance(tempsDemontage, time) else datetime.strptime(tempsDemontage, '%H:%M').time()
+        self.__tempsMontage = self.timedelta_to_time(tempsMontage) if isinstance(tempsMontage, timedelta) else datetime.strptime(tempsMontage, '%H:%M').time()
+        self.__tempsDemontage = self.timedelta_to_time(tempsDemontage) if isinstance(tempsDemontage, timedelta) else datetime.strptime(tempsDemontage, '%H:%M').time()
+        
+    @staticmethod
+    def timedelta_to_time(td):
+        return (datetime.min + td).time()
     
     def get_idEvenement(self):
         return self.__idE
@@ -424,3 +526,10 @@ class Concert:
     
     def get_tempsDemontage(self):
         return self.__tempsDemontage
+
+    def to_dict(self):
+        return {
+            "idE": self.__idE,
+            "tempsMontage": self.__tempsMontage.strftime("%H:%M:%S"),
+            "tempsDemontage": self.__tempsDemontage.strftime("%H:%M:%S")
+        }
