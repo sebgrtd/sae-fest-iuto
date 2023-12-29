@@ -1,5 +1,10 @@
+{% block styles %} 
+    <link rel="stylesheet" href="{{ url_for("static", filename="API.css") }}">
+{% endblock %}
 {% block content %}
-<h1> Voici la liste des routes pour tester l'API de l'application </h1>
+<div class="titre">
+    <h1> Voici la liste des routes pour tester l'API de l'application </h1>
+</div>
 <ul>
     <li> <a href="{{ url_for('getNomsArtistes') }}"> getNomsArtistes </a> </li>
     <li> <a href="{{ url_for('getArtistes') }}"> getArtistes </a> </li>
