@@ -15,6 +15,7 @@ from UserBD import UserBD
 from emailSender import EmailSender
 from generateurCode import genererCode
 from FaqBD import FaqBD
+from EvenementBD import EvenementBD
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -49,6 +50,15 @@ def getArtistes():
             return jsonify({"error": "Aucun artiste trouve"})
     else:
         return res
+    
+@app.route('/filtrerArtistes')
+def filtrerArtistes():
+    connexion_bd = ConnexionBD()
+    evenementbd = EvenementBD(connexion_bd)
+    liste_groupes_21 = evenementbd.groupes_21_juillet_to_json()
+    liste_groupes_22 = evenementbd.groupes_22_juillet_to_json()
+    liste_groupes_23 = evenementbd.groupes_23_juillet_to_json()
+    return jsonify({"21 juillet": liste_groupes_21, "22 juillet": liste_groupes_22, "23 juillet": liste_groupes_23})
 
 @app.route('/getInformationsSupplementairesArtiste/<int:id>')
 def getInformationsSupplementairesArtiste(id):
@@ -183,13 +193,13 @@ def modifierMdp():
 @app.route('/ajouterImage', methods=['POST'])
 def ajouterImage():
     # permet de stocker l'image dans la base de données sous forme de blob
-    idMG = request.form['idG']
+    idG = request.form['idG']
     image_file = request.files['img']
     if image_file:
         image = image_file.read()
         connexion_bd = ConnexionBD()
         groupebd = GroupeBD(connexion_bd)
-        res = groupebd.add_image(idMG, image)
+        res = groupebd.add_image(idG, image)
         if res:
             return jsonify({"success": "image ajoutée"})
     return jsonify({"error": "erreur lors de l'ajout de l'image"})

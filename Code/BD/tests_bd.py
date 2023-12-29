@@ -7,6 +7,7 @@ from LieuBD import *
 from HebergementBD import *
 from GroupeBD import *
 from Membre_GroupeBD import *
+from EvenementBD import *
 
 # classe Festival
 

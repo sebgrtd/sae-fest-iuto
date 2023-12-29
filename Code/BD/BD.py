@@ -1,4 +1,4 @@
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 
 class Faq:
     def __init__(self, idFaq: int, question: str, reponse: str):
@@ -350,14 +350,18 @@ class Photo:
         return self.__photo
     
 class Evenement:
-    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
+    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: timedelta, heureFinE: timedelta, dateDebutE: str, dateFinE: str):
         self.__idE = idE
         self.__idG = idG
         self.__nomE = nomE
-        self.__heureDebutE = heureDebutE if isinstance(heureDebutE, time) else datetime.strptime(heureDebutE, '%H:%M').time()
-        self.__heureFinE = heureFinE if isinstance(heureFinE, time) else datetime.strptime(heureFinE, '%H:%M').time()
-        self.__dateDebutE = dateDebutE if isinstance(dateDebutE, date) else datetime.strptime(dateDebutE, '%Y-%m-%d').date()
-        self.__dateFinE = dateFinE if isinstance(dateFinE, date) else datetime.strptime(dateFinE, '%Y-%m-%d').date()
+        self.__heureDebutE = self.timedelta_to_time(heureDebutE) if isinstance(heureDebutE, timedelta) else heureDebutE
+        self.__heureFinE = self.timedelta_to_time(heureFinE) if isinstance(heureFinE, timedelta) else heureFinE
+        self.__dateDebutE = dateDebutE if isinstance(dateDebutE, date) else datetime.strptime(dateDebutE, "%Y-%m-%d").date()
+        self.__dateFinE = dateFinE if isinstance(dateFinE, date) else datetime.strptime(dateFinE, "%Y-%m-%d").date()
+
+    @staticmethod
+    def timedelta_to_time(td):
+        return (datetime.min + td).time()
         
     def get_idE(self):
         return self.__idE
@@ -379,6 +383,17 @@ class Evenement:
     
     def get_dateFinE(self):
         return self.__dateFinE
+    
+    def to_dict(self):
+        return {
+            "idE": self.__idE,
+            "idG": self.__idG,
+            "nomE": self.__nomE,
+            "heureDebutE": self.__heureDebutE.strftime("%H:%M:%S") if self.__heureDebutE else None,
+            "heureFinE": self.__heureFinE.strftime("%H:%M:%S") if self.__heureFinE else None,
+            "dateDebutE": self.__dateDebutE.isoformat() if self.__dateDebutE else None,
+            "dateFinE": self.__dateFinE.isoformat() if self.__dateFinE else None
+        }
     
 class Activites_Annexes:
     def __init__(self, idE: int, typeA: str, ouvertAuPublic: bool):
