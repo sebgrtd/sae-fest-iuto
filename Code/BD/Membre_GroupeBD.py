@@ -65,3 +65,16 @@ class Membre_GroupeBD:
     def get_artiste_by_id_json(self, id):
         artiste = self.get_artiste_by_id(id)
         return json.dumps(artiste, ensure_ascii=False)
+    
+    def search_membres_groupe(self, artiste_recherche):
+        try:
+            artiste_recherche = f"%{artiste_recherche}%"
+            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG FROM membre_groupe WHERE nomDeSceneMG LIKE :search")
+            membres = []
+            result = self.connexion.get_connexion().execute(query, {"search": artiste_recherche})
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
+                membres.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG).to_dict())
+            return membres
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return []

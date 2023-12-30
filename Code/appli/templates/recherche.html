@@ -1,0 +1,33 @@
+{% block content %}
+    <div class="content">
+        <h1>Résultat de la Recherche</h1>
+        <form method="POST" action="{{ url_for('recherche') }}">
+            <input type="text" name="recherche" placeholder="Entrer le nom du groupe ou de l'artiste" value="{{ recherche }}">
+            <button type="submit">Rechercher</button>
+        </form>
+
+        <h2>Groupes</h2>
+        {% if groupes %}
+            <ul>
+            {% for groupe in groupes %}
+                <li>{{ groupe }} </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            <p>Aucun groupe trouvé.</p>
+        {% endif %}
+
+        <h2>Artistes</h2>
+        {% if artistes %}
+            <ul>
+            {% for artiste in artistes %}
+                <li>{{ artiste }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun artiste trouvé.</p>
+        {% endif %}
+
+        <a href = "{{ url_for('index') }}">Retour à l'accueil</a>
+    </div>
+{% endblock %}
