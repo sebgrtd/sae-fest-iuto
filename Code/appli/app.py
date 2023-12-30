@@ -232,6 +232,19 @@ def get_faq():
         return jsonify({"error": "Aucune faq trouve"})
     else:
         return res
+    
+@app.route("/recherche/", methods=["GET", "POST"])
+def recherche():
+    if request.method == "POST":
+        recherche = request.form.get("recherche", "")
+    else:
+        recherche = request.args.get("recherche", "")
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    membre_groupebd = Membre_GroupeBD(connexion_bd)
+    groupes = groupebd.search_groupes(recherche) if recherche else []
+    artistes = membre_groupebd.search_membres_groupe(recherche) if recherche else []
+    return render_template("recherche.html", recherche=recherche, groupes=groupes, artistes=artistes)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
