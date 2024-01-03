@@ -1,0 +1,23 @@
+{% block content %}
+    <div class="content">
+        <h1>Choisissez le style musical qui vous intéresse</h1>
+        <h2> Styles musicaux présents au festival</h2>
+        <form action="{{ url_for('filtrer_styles') }}" method="POST">
+            {% for style in styles_musicaux %}
+                <input type="radio" id="style_{{ style.get_idSt() }}" name="nomStyle" value="{{ style.get_nomSt() }}">
+                <label for="style_{{ style.get_idSt() }}">{{ style.get_nomSt() }}</label><br>
+            {% endfor %}
+            <input type="submit" value="Sélectionner">
+        </form>
+        <div class="groupes">
+            <h2>Liste des groupes</h2>
+            <ul>
+                {% for groupe in liste_groupes %}
+                    <li>{{ groupe.to_dict() }}</li>
+                {% else %}
+                    <li>Aucun groupe ne correspond à votre recherche</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
