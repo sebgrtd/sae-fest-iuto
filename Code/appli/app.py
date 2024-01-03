@@ -261,8 +261,11 @@ def filtrer_styles():
             groupe_stylebd = Groupe_StyleBD(connexion_bd)
             liste_groupes = groupe_stylebd.get_groupes_selon_style(idStyle)
     return render_template("styles_musicaux.html", styles_musicaux=styles_musicaux, liste_groupes=liste_groupes)
-    
 
+@app.route("/menu_admin")
+def menu_admin():
+    return render_template("menu_admin.html")
+    
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
     
