@@ -1052,7 +1052,219 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0 6rem;
 }
 
-/* Footer */
+/* Billetterie */
+
+#Billeterie{
+  padding: 12vh 0 0 0;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 100px;
+}
+#Billeterie header{
+  position: relative;
+  height: 316px;
+}
+
+#Billeterie .billets {
+  padding: 0 325px 0 325px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#Billeterie .bgbillet{
+  position: relative;
+  padding: 0;
+  min-width: 100%;
+}
+#Billeterie .billetExemple {
+  position: absolute;
+  top: 12vh;
+  width: 35vw; 
+}
+
+#Billeterie .header h2{
+    font-family: 'TuskerGrotesk';
+    font-weight: bold;
+    color: var(--color-orange);
+    font-size: 4.375rem;
+    color: white;
+    position: absolute;
+    left: 1em;
+    top: 0.6em;
+  }
+
+#Billeterie .header-billet{
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#Billeterie .header-billet h2, #Billeterie h3, .ticket-card h4{
+  color: var(--color-orange, #E45A3B);
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#Billeterie .header-billet h2{
+  font-size: 40px;
+}
+
+#Billeterie h3{
+  font-size: 36px;
+}
+
+
+#Billeterie .header-billet .lieu, .ticket-card .left-part p{
+  color: var(--greytext, #4E4E4E);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  line-height: normal;
+}
+
+
+#Billeterie .header-billet .lieu{
+  font-weight: 600;
+
+}
+
+.ticket-card .left-part p{
+  font-weight: 400;
+}
+
+#Billeterie .lieu{
+  display: flex;
+  gap: 10px;
+}
+
+#Billeterie .billets-content{
+  margin-top: 55px;
+  padding: 0 15px 0 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+#Billeterie .achat-billets{
+  margin-top:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ticket-card {
+  background-color: white;
+  box-shadow: 0px 20px 23.8px -28px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  width: 95%;
+  margin: 1rem 0;
+}
+.ticket-card .content{
+  padding: 20px;
+}
+
+.ticket-card .content h4{
+  font-size: 20px;
+}
+
+.ticket-card h4{
+  margin-bottom: 30px;
+}
+
+.ticket-card .content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.right-part{
+  display: flex;;
+  gap: 10px;
+}
+
+.ticket-card .sub-menu{
+  width: 100%;
+  background-color: var(--color-dark);
+  display: flex;
+  height: 80px;
+  padding: 0 10px;
+  position: relative;
+  box-shadow: 0px 20px 23.8px -28px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+}
+
+
+.left-part-sub{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+
+
+.ticket-card .rect{
+  position: relative;
+  background-color: white;
+  width: 166px;
+  height: 50px;
+  border-radius: 12px;
+}
+
+.ticket-card img{
+  position: absolute;
+  width: 100px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  top: calc(50% - 35px / 2); 
+  left: calc(50% - 100px / 2); 
+}
+
+.ticket-card .sub-menu{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--white, #FFF);
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.ticket-control {
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+}
+
+.ticket-control button {
+  background: none; 
+  border: none; 
+  font-size: 2em;
+  cursor: pointer; 
+  color: white;
+}
+
+.ticket-control span {
+  margin: 0 1em;
+}
+
+.ticket-control .sommeButton {
+  margin-bottom: 2px;
+  font-size: 1.7em;
+}
+
 
 footer{
   background-color: var(--color-orange);
