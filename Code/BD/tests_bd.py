@@ -8,6 +8,7 @@ from HebergementBD import *
 from GroupeBD import *
 from Membre_GroupeBD import *
 from EvenementBD import *
+from Style_MusicalBD import *
 
 # classe Festival
 

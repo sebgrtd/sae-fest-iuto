@@ -16,6 +16,8 @@ from emailSender import EmailSender
 from generateurCode import genererCode
 from FaqBD import FaqBD
 from EvenementBD import EvenementBD
+from Style_MusicalBD import Style_MusicalBD
+from Groupe_StyleBD import Groupe_StyleBD
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -245,6 +247,21 @@ def recherche():
     groupes = groupebd.search_groupes(recherche) if recherche else []
     artistes = membre_groupebd.search_membres_groupe(recherche) if recherche else []
     return render_template("recherche.html", recherche=recherche, groupes=groupes, artistes=artistes)
+
+@app.route("/styles_musicaux", methods=["GET", "POST"])
+def filtrer_styles():
+    connexion_bd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexion_bd)
+    styles_musicaux = style_musicalbd.get_all_styles()
+    liste_groupes = []
+    if request.method == "POST":
+        nomStyle = request.form.get("nomStyle", "")
+        idStyle = style_musicalbd.get_id_style_by_name(nomStyle)
+        if idStyle is not None:
+            groupe_stylebd = Groupe_StyleBD(connexion_bd)
+            liste_groupes = groupe_stylebd.get_groupes_selon_style(idStyle)
+    return render_template("styles_musicaux.html", styles_musicaux=styles_musicaux, liste_groupes=liste_groupes)
+    
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

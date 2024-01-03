@@ -168,6 +168,18 @@ INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
     (9, '01:00:00', '01:00:00'),
     (10, '01:00:00', '01:00:00');
 
+INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 1),
+    (5, 2),
+    (6, 3),
+    (7, 1),
+    (8, 2),
+    (9, 3),
+    (10, 1);
+
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
     (1, 1, 1, '2023-08-06', '08:00:00', '2023-08-07', '16:00:00');
@@ -189,3 +201,4 @@ INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, he
 -- Le groupe ne peut pas arriver après la fin du festival
 INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
     (1, 1, 1, '2023-10-06', '08:00:00', '2023-10-07', '16:00:00');
+

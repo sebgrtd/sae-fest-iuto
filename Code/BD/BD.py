@@ -533,3 +533,20 @@ class Concert:
             "tempsMontage": self.__tempsMontage.strftime("%H:%M:%S"),
             "tempsDemontage": self.__tempsDemontage.strftime("%H:%M:%S")
         }
+
+class Groupe_Style:
+    def __init__(self, idG: int, idSt: int):
+        self.__idG = idG
+        self.__idSt = idSt
+        
+    def get_idG(self):
+        return self.__idG
+    
+    def get_idSt(self):
+        return self.__idSt
+    
+    def to_dict(self):
+        return {
+            "idG": self.__idG,
+            "idSt": self.__idSt
+        }
