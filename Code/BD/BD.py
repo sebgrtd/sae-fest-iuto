@@ -298,6 +298,12 @@ class Groupe:
             "nomG": self.__nomG,
             "descriptionG": self.__descriptionG
         }
+        
+    def set_nomG(self, nomG):
+        self.__nomG = nomG
+        
+    def set_descriptionG(self, descriptionG):
+        self.__descriptionG = descriptionG
     
 
 class Membre_Groupe:

@@ -1,6 +1,6 @@
 from flask import Flask, send_file
 from flask_cors import CORS
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
 
@@ -18,6 +18,7 @@ from FaqBD import FaqBD
 from EvenementBD import EvenementBD
 from Style_MusicalBD import Style_MusicalBD
 from Groupe_StyleBD import Groupe_StyleBD
+from BD import Groupe
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -265,7 +266,51 @@ def filtrer_styles():
 @app.route("/menu_admin")
 def menu_admin():
     return render_template("menu_admin.html")
-    
+
+@app.route("/groupes_festival")
+def groupes_festival():
+    connexionbd = ConnexionBD()
+    groupebd = GroupeBD(connexionbd)
+    liste_groupes = groupebd.get_all_groupes()
+    return render_template("groupes_festival.html", liste_groupes=liste_groupes)
+
+@app.route("/modifier_groupe", methods=["POST"])
+def modifier_groupe():
+    connexionbd = ConnexionBD()
+    groupebd = GroupeBD(connexionbd)
+    id_groupe = request.form["id_groupe"]
+    nom_groupe = request.form["nom_groupe"]
+    description_groupe = request.form["description_groupe"]
+    groupe = groupebd.get_groupe_by_id(id_groupe)
+    groupe.set_nomG(nom_groupe)
+    groupe.set_descriptionG(description_groupe)
+    succes = groupebd.update_groupe(groupe)
+    if succes:
+        print(f"Le groupe {id_groupe} a été mis à jour.")
+    else:
+        print(f"La mise à jour du groupe {id_groupe} a échoué.")
+    return redirect(url_for("groupes_festival"))
+
+@app.route("/supprimer_groupe", methods=["POST"])
+def supprimer_groupe():
+    connexionbd = ConnexionBD()
+    groupebd = GroupeBD(connexionbd)
+    id_groupe = request.form["id_groupe"]
+    groupe = groupebd.get_groupe_by_id(id_groupe)
+    nom_groupe = groupe.get_nomG()
+    groupebd.delete_groupe_by_name(groupe, nom_groupe)
+    return redirect(url_for("groupes_festival"))
+
+@app.route("/ajouter_groupe", methods=["POST"])
+def ajouter_groupe():
+    connexionbd = ConnexionBD()
+    groupebd = GroupeBD(connexionbd)
+    nom_groupe = request.form["nom_nouveau_groupe"]
+    description_groupe = request.form["description_nouveau_groupe"]
+    groupe = Groupe(None, None, nom_groupe, description_groupe)
+    groupebd.insert_groupe(groupe)
+    return redirect(url_for("groupes_festival"))
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
     

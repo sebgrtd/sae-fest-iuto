@@ -1,0 +1,118 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="admin_groupes.css") }}">
+{% endblock %}
+
+{% block content %}
+    <h1> Les groupes présents au festival </h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Groupe</th>
+                <th>ID Hébergement</th>
+                <th>Nom du Groupe</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for groupe in liste_groupes %}
+            <tr>
+                <td>{{ groupe.get_idG() }}</td>
+                <td>{{ groupe.get_idHebergement() or "Non attribué" }}</td>
+                <td>{{ groupe.get_nomG() }}</td>
+                <td>{{ groupe.get_descriptionG() }}</td>
+                <td>
+                    <button class="btn-modifier" 
+                        data-id="{{ groupe.get_idG() }}"
+                        data-nom="{{ groupe.get_nomG() }}"
+                        data-description="{{ groupe.get_descriptionG() }}">Modifier</button>
+                    <button class="btn-supprimer" data-id="{{ groupe.get_idG() }}">Supprimer</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modale pour modifier un groupe -->
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/modifier_groupe" method="post">
+                <!-- ID Groupe (caché) -->
+                <input type="hidden" name="id_groupe" id="id_groupe_modifier" value="">
+                <!-- Champs pour la modification -->
+                <input type="text" name="nom_groupe" id="nom_groupe_modifier" placeholder="Nom du groupe">
+                <input type="text" name="description_groupe" id="description_groupe_modifier" placeholder="Description du groupe">
+                <button type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour supprimer un groupe -->
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/supprimer_groupe" method="post">
+                <p>Êtes-vous sûr de vouloir supprimer ce groupe ?</p>
+                <!-- ID Groupe (caché) -->
+                <input type="hidden" name="id_groupe" id="id_groupe_supprimer" value="">
+                <button type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un groupe -->
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/ajouter_groupe" method="post">
+                <input type="text" name="nom_nouveau_groupe" placeholder="Nom du groupe">
+                <input type="text" name="description_nouveau_groupe" placeholder="Description du groupe">
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+    <button id="ajouter">Ajouter</button>
+
+    <!-- Script pour la gestion des modales -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_groupe_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("nom_groupe_modifier").value = btn.getAttribute("data-nom");
+                    document.getElementById("description_groupe_modifier").value = btn.getAttribute("data-description");
+                    modalModifier.style.display = "block";
+                };
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_groupe_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            };
+        });
+    </script>
+{% endblock %}
