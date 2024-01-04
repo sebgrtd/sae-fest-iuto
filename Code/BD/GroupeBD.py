@@ -87,3 +87,13 @@ class GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return []
+        
+    def update_groupe(self, groupe):
+        try:
+            query = text("UPDATE groupe SET nomG = :nomG, descriptionG = :descriptionG WHERE idG = :idG")
+            self.connexion.get_connexion().execute(query, {"nomG": groupe.get_nomG(), "descriptionG": groupe.get_descriptionG(), "idG": groupe.get_idG()})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
