@@ -78,3 +78,23 @@ class Membre_GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return []
+
+    def update_membre_groupe(self, membre_groupe):
+        try:
+            query = text("UPDATE membre_groupe SET nomMG = :nomMG, prenomMG = :prenomMG, nomDeSceneMG = :nomDeSceneMG WHERE idMG = :idMG")
+            self.connexion.get_connexion().execute(query, {"nomMG": membre_groupe.get_nomMG(), "prenomMG": membre_groupe.get_prenomMG(), "nomDeSceneMG": membre_groupe.get_nomDeSceneMG(), "idMG": membre_groupe.get_idMG()})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def get_id_membre_by_name_scene(self, nom_de_scene):
+        try:
+            query = text("SELECT idMG FROM membre_groupe WHERE nomDeSceneMG = :nomDeScene")
+            result = self.connexion.get_connexion().execute(query, {"nomDeScene": nom_de_scene})
+            for idMG in result:
+                return idMG[0]
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return None

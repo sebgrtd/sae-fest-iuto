@@ -3,6 +3,7 @@
 {% endblock %}
 
 {% block content %}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
     <h1> Les groupes présents au festival </h1>
     <table>
         <thead>
@@ -16,19 +17,20 @@
         </thead>
         <tbody>
             {% for groupe in liste_groupes %}
-            <tr>
-                <td>{{ groupe.get_idG() }}</td>
-                <td>{{ groupe.get_idHebergement() or "Non attribué" }}</td>
-                <td>{{ groupe.get_nomG() }}</td>
-                <td>{{ groupe.get_descriptionG() }}</td>
-                <td>
-                    <button class="btn-modifier" 
-                        data-id="{{ groupe.get_idG() }}"
-                        data-nom="{{ groupe.get_nomG() }}"
-                        data-description="{{ groupe.get_descriptionG() }}">Modifier</button>
-                    <button class="btn-supprimer" data-id="{{ groupe.get_idG() }}">Supprimer</button>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ groupe.get_idG() }}</td>
+                    <td>{{ groupe.get_idHebergement() or "Non attribué" }}</td>
+                    <td>{{ groupe.get_nomG() }}</td>
+                    <td>{{ groupe.get_descriptionG() }}</td>
+                    <td>
+                        <button class="btn-modifier" 
+                            data-id="{{ groupe.get_idG() }}"
+                            data-nom="{{ groupe.get_nomG() }}"
+                            data-description="{{ groupe.get_descriptionG() }}">Modifier</button>
+                        <button class="btn-supprimer" data-id="{{ groupe.get_idG() }}">Supprimer</button>
+                        <a href="{{ url_for('consulter_groupe', id_groupe=groupe.get_idG()) }}" class="btn-consulter">Consulter</a>
+                    </td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -43,7 +45,7 @@
                 <!-- Champs pour la modification -->
                 <input type="text" name="nom_groupe" id="nom_groupe_modifier" placeholder="Nom du groupe">
                 <input type="text" name="description_groupe" id="description_groupe_modifier" placeholder="Description du groupe">
-                <button type="submit">Modifier</button>
+                <button id="modifier" type="submit">Modifier</button>
             </form>
         </div>
     </div>
@@ -56,7 +58,7 @@
                 <p>Êtes-vous sûr de vouloir supprimer ce groupe ?</p>
                 <!-- ID Groupe (caché) -->
                 <input type="hidden" name="id_groupe" id="id_groupe_supprimer" value="">
-                <button type="submit">Supprimer</button>
+                <button id="supprimer" type="submit">Supprimer</button>
             </form>
         </div>
     </div>
@@ -68,7 +70,7 @@
             <form action="/ajouter_groupe" method="post">
                 <input type="text" name="nom_nouveau_groupe" placeholder="Nom du groupe">
                 <input type="text" name="description_nouveau_groupe" placeholder="Description du groupe">
-                <button type="submit">Ajouter</button>
+                <button class ="btn-ajouter" type="submit">Ajouter</button>
             </form>
         </div>
     </div>

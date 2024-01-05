@@ -341,6 +341,15 @@ class Membre_Groupe:
             "nomDeSceneMG": self.__nomDeSceneMG
         }
     
+    def set_nomMG(self, nomMG):
+        self.__nomMG = nomMG
+        
+    def set_prenomMG(self, prenomMG):
+        self.__prenomMG = prenomMG
+        
+    def set_nomDeSceneMG(self, nomDeSceneMG):
+        self.__nomDeSceneMG = nomDeSceneMG
+    
 class Instrument:
     def __init__(self, idI: int, idMG: int, nomI: str):
         self.__idI = idI
