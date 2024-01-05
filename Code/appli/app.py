@@ -18,7 +18,9 @@ from FaqBD import FaqBD
 from EvenementBD import EvenementBD
 from Style_MusicalBD import Style_MusicalBD
 from Groupe_StyleBD import Groupe_StyleBD
+
 from BD import Groupe
+from BD import Membre_Groupe
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -310,6 +312,55 @@ def ajouter_groupe():
     groupe = Groupe(None, None, nom_groupe, description_groupe)
     groupebd.insert_groupe(groupe)
     return redirect(url_for("groupes_festival"))
+
+@app.route("/consulter_groupe/<int:id_groupe>")
+def consulter_groupe(id_groupe):
+    connexionbd = ConnexionBD()
+    groupebd = GroupeBD(connexionbd)
+    groupe = groupebd.get_groupe_by_id(id_groupe)
+    membres_groupe = groupebd.get_membres_groupe(id_groupe)
+    return render_template("membres_groupe.html", groupe=groupe, membres_groupe=membres_groupe)
+
+@app.route("/modifier_membre", methods=["POST"])
+def modifier_membre_groupe():
+    connexionbd = ConnexionBD()
+    membre_groupebd = Membre_GroupeBD(connexionbd)
+    nom_membre_groupe = request.form["nom_membre"]
+    prenom_membre_groupe = request.form["prenom_membre"]
+    nom_scene_membre_groupe = request.form["nom_scene_membre"]
+    id_membre_groupe = request.form["id_membre"]
+    membre_groupe = membre_groupebd.get_artiste_by_id(id_membre_groupe)
+    membre_groupe.set_nomMG(nom_membre_groupe)
+    membre_groupe.set_prenomMG(prenom_membre_groupe)
+    membre_groupe.set_nomDeSceneMG(nom_scene_membre_groupe)
+    succes = membre_groupebd.update_membre_groupe(membre_groupe)
+    if succes:
+        print(f"Le membre {id_membre_groupe} a été mis à jour.")
+    else:
+        print(f"La mise à jour du membre {id_membre_groupe} a échoué.")
+    return redirect(url_for("consulter_groupe", id_groupe=membre_groupe.get_idGroupe()))
+
+@app.route("/supprimer_membre", methods=["POST"])
+def supprimer_membre_groupe():
+    connexionbd = ConnexionBD()
+    membre_groupebd = Membre_GroupeBD(connexionbd)
+    id_membre_groupe = request.form["id_membre"]
+    membre_groupe = membre_groupebd.get_artiste_by_id(id_membre_groupe)
+    nom_scene_membre_groupe = membre_groupe.get_nomDeSceneMG()
+    membre_groupebd.delete_membre_groupe_by_name_scene(membre_groupe, nom_scene_membre_groupe)
+    return redirect(url_for("consulter_groupe", id_groupe=membre_groupe.get_idGroupe()))
+
+@app.route("/ajouter_membre", methods=["POST"])
+def ajouter_membre_groupe():
+    connexionbd = ConnexionBD()
+    membre_groupebd = Membre_GroupeBD(connexionbd)
+    id_groupe = request.form["id_groupe"]
+    nom_membre_groupe = request.form["nom_nouveau_membre"]
+    prenom_membre_groupe = request.form["prenom_nouveau_membre"]
+    nom_scene_membre_groupe = request.form["nom_scene_nouveau_membre"]
+    membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe)
+    membre_groupebd.insert_membre_groupe(membre_groupe)
+    return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

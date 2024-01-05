@@ -1,0 +1,125 @@
+{% block styles %}
+    <link rel="stylesheet" href=" {{ url_for('static', filename="admin_groupes.css") }}">
+{% endblock %}
+
+{% block content %}
+    <a id="retour" href="{{ url_for('groupes_festival')}}">Retour</a>
+    <h1> Les membres du groupe {{ groupe.get_nomG() }} </h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Membre Groupe</th>
+                <th>ID Groupe</th>
+                <th>Nom du membre</th>
+                <th>Prenom du membre</th>
+                <th>Nom de scene</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membre in membres_groupe %}
+                <tr>
+                    <td>{{ membre.get_idMG() }}</td>
+                    <td>{{ membre.get_idGroupe() }}</td>
+                    <td>{{ membre.get_nomMG() }}</td>
+                    <td>{{ membre.get_prenomMG() }}</td>
+                    <td>{{ membre.get_nomDeSceneMG() }}</td>
+                    <td>
+                        <button class="btn-modifier" 
+                        data-id="{{ membre.get_idMG() }}" 
+                        data-nom="{{ membre.get_nomMG() }}" 
+                        data-prenom="{{ membre.get_prenomMG() }}" 
+                        data-nomscene="{{ membre.get_nomDeSceneMG() }}">Modifier</button>
+                        <button class="btn-supprimer" data-id="{{ membre.get_idMG() }}">Supprimer</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modale pour modifier un membre du groupe -->
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/modifier_membre" method="post">
+                <!-- ID Membre Groupe (caché) -->
+                <input type="hidden" name="id_membre" id="id_membre_modifier" value="">
+                <!-- Champs pour la modification -->
+                <input type="text" name="nom_membre" id="nom_modifier" placeholder="Nom du membre">
+                <input type="text" name="prenom_membre" id="prenom_modifier" placeholder="Prénom du membre">
+                <input type="text" name="nom_scene_membre" id="nom_scene_modifier" placeholder="Nom de scène du membre">
+                <button id="modifier" type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour supprimer un membre -->
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/supprimer_membre" method="post">
+                <p>Êtes-vous sûr de vouloir supprimer du groupe ce membre ?</p>
+                <!-- ID Membre Groupe (caché) -->
+                <input type="hidden" name="id_membre" id="id_membre_supprimer" value="">
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un membre -->
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/ajouter_membre" method="post">
+                <input type="hidden" name="id_groupe" id="id_groupe_ajouter" value="{{ groupe.get_idG() }}">
+                <input type="text" name="nom_nouveau_membre" placeholder="Nom du groupe">
+                <input type="text" name="prenom_nouveau_membre" placeholder="Prénom du groupe">
+                <input type="text" name="nom_scene_nouveau_membre" placeholder="Nom de scène du groupe">
+                <button class="btn-ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+    <button id="ajouter">Ajouter</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_membre_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("nom_modifier").value = btn.getAttribute("data-nom");
+                    document.getElementById("prenom_modifier").value = btn.getAttribute("data-prenom");
+                    document.getElementById("nom_scene_modifier").value = btn.getAttribute("data-nomscene");
+                    modalModifier.style.display = "block";
+                };
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_membre_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            };
+        });
+    </script>
+{% endblock %}

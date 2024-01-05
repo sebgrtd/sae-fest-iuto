@@ -1,5 +1,6 @@
 import json
 from BD import Groupe
+from BD import Membre_Groupe
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
 from sqlalchemy.exc import SQLAlchemyError
@@ -97,3 +98,15 @@ class GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return False
+        
+    def get_membres_groupe(self, idGroupe):
+        try:
+            query = text("select idMG, idG, nomMG, prenomMG, nomDeSceneMG from membre_groupe natural join groupe where idG=:idG")
+            membres = []
+            result = self.connexion.get_connexion().execute(query, {"idG": idGroupe})
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
+                membres.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG))
+            return membres
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return []

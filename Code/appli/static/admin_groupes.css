@@ -32,7 +32,6 @@ tr:nth-child(even) {
 }
 
 button {
-    background-color: #4CAF50;
     color: white;
     padding: 8px 16px;
     margin: 4px 2px;
@@ -41,8 +40,28 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.btn-modifier {
+    background-color: #4CAF50;
+}
+
+.btn-modifier:hover {
     background-color: #45a049;
+}
+
+.btn-supprimer {
+    background-color: #f44336;
+}
+
+.btn-supprimer:hover {
+    background-color: #da190b;
+}
+
+#supprimer {
+    background-color: #f44336;
+}
+
+#supprimer:hover {
+    background-color: #da190b;
 }
 
 #ajouter {
@@ -53,6 +72,14 @@ button:hover {
 }
 
 #ajouter:hover {
+    background-color: #0b7dda;
+}
+
+.btn-ajouter {
+    background-color: #2196F3;
+}
+
+.btn-ajouter:hover {
     background-color: #0b7dda;
 }
 
@@ -89,4 +116,42 @@ button:hover {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.btn-consulter {
+    text-decoration: none;
+    color: white;
+    background-color: #3498db;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+#modifier {
+    background-color: #4CAF50;
+}
+
+#modifier:hover {
+    background-color: #45a049;
+}
+
+#retour {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 15px;
+    margin-left: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+#retour:hover {
+    background-color: #0b7dda;
 }

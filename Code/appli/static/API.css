@@ -58,3 +58,29 @@ ul li a:hover {
         font-size: 24px;
     }
 }
+
+.admin {
+    position: relative;
+    min-height: 50px;
+}
+
+#btn-admin {
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    text-decoration: none;
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#btn-admin:hover {
+    background-color: #2e86c1;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+}
