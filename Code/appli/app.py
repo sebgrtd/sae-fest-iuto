@@ -286,6 +286,7 @@ def modifier_groupe():
     groupe = groupebd.get_groupe_by_id(id_groupe)
     groupe.set_nomG(nom_groupe)
     groupe.set_descriptionG(description_groupe)
+    groupebd.modifier_img(id_groupe, request.files['image_groupe'].read())
     succes = groupebd.update_groupe(groupe)
     if succes:
         print(f"Le groupe {id_groupe} a été mis à jour.")
@@ -311,6 +312,19 @@ def ajouter_groupe():
     description_groupe = request.form["description_nouveau_groupe"]
     groupe = Groupe(None, None, nom_groupe, description_groupe)
     groupebd.insert_groupe(groupe)
+    idG = groupebd.get_id_groupe_by_name(nom_groupe)
+    image_file = request.files['image_nouveau_groupe']
+    
+    if image_file:
+        image = image_file.read()
+        connexion_bd = ConnexionBD()
+        groupebd = GroupeBD(connexion_bd)
+        res = groupebd.add_image(idG, image)
+        if (res):
+            print("image ajoutée")
+        else:
+            print("erreur lors de l'ajout de l'image")
+
     return redirect(url_for("groupes_festival"))
 
 @app.route("/consulter_groupe/<int:id_groupe>")

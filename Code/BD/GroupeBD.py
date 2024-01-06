@@ -66,6 +66,16 @@ class GroupeBD:
             print(f"La requête a échoué : {e}")
             return False
         
+    def modifier_img(self, idGroupe, image):
+        try:
+            query = text("UPDATE groupe SET imgG = :imgG WHERE idG = :idG")
+            self.connexion.get_connexion().execute(query, {"imgG": image, "idG": idGroupe})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
     def get_image(self,idGroupe):
         try:
             query = text("SELECT imgG FROM groupe WHERE idG = :idG")
@@ -110,3 +120,13 @@ class GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return []
+
+    def get_id_groupe_by_name(self, nom):
+        try:
+            query = text("SELECT idG FROM groupe WHERE nomG = :nom")
+            result = self.connexion.get_connexion().execute(query, {"nom": nom})
+            for idG in result:
+                return idG[0]
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return None

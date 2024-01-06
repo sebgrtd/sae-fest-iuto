@@ -12,6 +12,7 @@
                 <th>ID Hébergement</th>
                 <th>Nom du Groupe</th>
                 <th>Description</th>
+                <th>Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                     <td>{{ groupe.get_idHebergement() or "Non attribué" }}</td>
                     <td>{{ groupe.get_nomG() }}</td>
                     <td>{{ groupe.get_descriptionG() }}</td>
+                    <td> <img src="http://localhost:5000/getImageArtiste/{{ groupe.get_idG()}}" alt="image_groupe"/> </td>
                     <td>
                         <button class="btn-modifier" 
                             data-id="{{ groupe.get_idG() }}"
@@ -39,12 +41,13 @@
     <div id="modal-modifier" class="modal">
         <div class="modal-content">
             <span class="close-button">x</span>
-            <form action="/modifier_groupe" method="post">
+            <form action="/modifier_groupe" method="post" enctype="multipart/form-data">
                 <!-- ID Groupe (caché) -->
                 <input type="hidden" name="id_groupe" id="id_groupe_modifier" value="">
                 <!-- Champs pour la modification -->
                 <input type="text" name="nom_groupe" id="nom_groupe_modifier" placeholder="Nom du groupe">
                 <input type="text" name="description_groupe" id="description_groupe_modifier" placeholder="Description du groupe">
+                <input type="file" name="image_groupe" accept="image/*">
                 <button id="modifier" type="submit">Modifier</button>
             </form>
         </div>
@@ -67,9 +70,10 @@
     <div id="modal-ajouter" class="modal">
         <div class="modal-content">
             <span class="close-button">x</span>
-            <form action="/ajouter_groupe" method="post">
+            <form action="/ajouter_groupe" method="post" enctype="multipart/form-data">
                 <input type="text" name="nom_nouveau_groupe" placeholder="Nom du groupe">
                 <input type="text" name="description_nouveau_groupe" placeholder="Description du groupe">
+                <input type="file" name="image_nouveau_groupe" accept="image/*">
                 <button class ="btn-ajouter" type="submit">Ajouter</button>
             </form>
         </div>
