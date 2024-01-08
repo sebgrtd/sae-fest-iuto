@@ -130,17 +130,6 @@ INSERT INTO STYLE_MUSICAL (nomSt) VALUES
     ('Style 2'),
     ('Style 3');
 
--- Insérer des données dans la table TYPE_BILLET
-INSERT INTO TYPE_BILLET (duree) VALUES
-    (3),
-    (2);
-
--- Insérer des données dans la table BILLET
-INSERT INTO BILLET (idF, idType, idS, prix, dateAchat) VALUES
-    (1, 1, 1, 50, '2023-08-01'),
-    (1, 1, 2, 50, '2023-08-02'),
-    (2, 2, 3, 75, '2023-07-15'),
-    (2, 1, 4, 50, '2023-07-16');
 
 -- Insérer des données dans la table EVENEMENT
 INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
@@ -154,6 +143,11 @@ INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) 
     (8, 'Concert Groupe 8', '11:00:00', '12:00:00', '2023-07-23', '2023-07-23'),
     (9, 'Concert Groupe 9', '14:00:00', '15:00:00', '2023-07-23', '2023-07-23'),
     (10, 'Concert Groupe 10', '17:00:00', '18:00:00', '2023-07-23', '2023-07-23');
+
+INSERT INTO TYPE_BILLET(duree) VALUES
+    (1),
+    (2),
+    (3);
 
 -- Insérer des données dans la table CONCERT
 INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES

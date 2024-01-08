@@ -9,19 +9,19 @@ class BilletBD:
         
     def get_billets_spectateur(self, idFestival, idType, idSpectateur):
         try:
-            query = text("SELECT idB, idF, idType, idS, prix, dateAchat FROM BILLET WHERE idF = :idFestival AND idType = :idType AND idS = :idSpectateur")
+            query = text("SELECT idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB FROM BILLET WHERE idF = :idFestival AND idType = :idType AND idS = :idSpectateur")
             billets = []
             result = self.connexion.get_connexion().execute(query, {"idFestival": idFestival, "idType": idType, "idSpectateur": idSpectateur})
-            for idB, idF, idType, idS, prix, dateAchat in result:
-                billets.append(Billet(idB, idF, idType, idS, prix, dateAchat))
+            for idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB in result:
+                billets.append(Billet(idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB))
             return billets
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
     def insert_billet(self, billet):
         try:
-            query = text("INSERT INTO billet (idF, idType, idS, prix, dateAchat) VALUES (:idF, :idType, :idS, :prix, :dateAchat)")
-            result = self.connexion.get_connexion().execute(query, {"idF": billet.get_idFestival(), "idType": billet.get_idType(), "idS": billet.get_idSpectateur(), "prix": billet.get_prix(), "dateAchat": billet.get_dateAchat()})
+            query = text("INSERT INTO billet (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES (:idF, :idType, :idS, :prix, :dateAchat, :dateDebutB, :dateFinB)")
+            result = self.connexion.get_connexion().execute(query, {"idF": billet.get_idFestival(), "idType": billet.get_idType(), "idS": billet.get_idSpectateur(), "prix": billet.get_prix(), "dateAchat": billet.get_dateAchat(), "dateDebutB": billet.get_dateDebutB(), "dateFinB": billet.get_dateFinB()})
             billet_id = result.lastrowid
             print(f"Le billet {billet_id} a été ajouté")
             self.connexion.get_connexion().commit()
