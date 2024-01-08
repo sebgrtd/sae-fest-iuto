@@ -29,7 +29,7 @@ class HebergementBD:
             
     def insert_hebergement(self, hebergement):
         try:
-            query = text("INSERT INTO hebergement (nomH, limitePlacesH, adresseH) VALUES (:nomH, :limitePlacesH, :adresseH)")
+            query = text("INSERT INTO HEBERGEMENT (nomH, limitePlacesH, adresseH) VALUES (:nomH, :limitePlacesH, :adresseH)")
             result = self.connexion.get_connexion().execute(query, {"nomH": hebergement.get_nomH(), "limitePlacesH": hebergement.get_limitePlacesH(), "adresseH": hebergement.get_adresseH()})
             hebergement_id = result.lastrowid
             print(f"L'hebergement {hebergement_id} a été ajouté")
@@ -39,7 +39,7 @@ class HebergementBD:
             
     def delete_hebergement_by_nom(self, hebergement, nom):
         try:
-            query = text("DELETE FROM hebergement WHERE idH = :idH AND nomH = :nom")
+            query = text("DELETE FROM HEBERGEMENT WHERE idH = :idH AND nomH = :nom")
             self.connexion.get_connexion().execute(query, {"idH": hebergement.get_idH(), "nom": nom})
             print(f"L'hebergement {hebergement.get_idH()} a été supprimé")
             self.connexion.get_connexion().commit()

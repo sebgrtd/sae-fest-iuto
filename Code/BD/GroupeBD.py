@@ -11,7 +11,7 @@ class GroupeBD:
         
     def get_all_groupes(self):
         try:
-            query = text("SELECT idG, idH, nomG, descriptionG FROM groupe")
+            query = text("SELECT idG, idH, nomG, descriptionG FROM GROUPE")
             groupes = []
             result = self.connexion.get_connexion().execute(query)
             for idG, idH, nomG, descriptionG in result:
@@ -22,7 +22,7 @@ class GroupeBD:
             
     def insert_groupe(self, groupe):
         try:
-            query = text("INSERT INTO groupe (idH, nomG, descriptionG) VALUES (:idH, :nomG, :descriptionG)")
+            query = text("INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES (:idH, :nomG, :descriptionG)")
             result = self.connexion.get_connexion().execute(query, {"idH": groupe.get_idHebergement(), "nomG": groupe.get_nomG(), "descriptionG": groupe.get_descriptionG()})
             groupe_id = result.lastrowid
             print(f"Le groupe {groupe_id} a été ajouté")
@@ -32,7 +32,7 @@ class GroupeBD:
             
     def delete_groupe_by_name(self, groupe, nom):
         try:
-            query = text("DELETE FROM groupe WHERE idG = :idG AND nomG = :nom")
+            query = text("DELETE FROM GROUPE WHERE idG = :idG AND nomG = :nom")
             self.connexion.get_connexion().execute(query, {"idG": groupe.get_idG(), "nom": nom})
             print(f"Le groupe {groupe.get_idG()} a été supprimé")
             self.connexion.get_connexion().commit()
@@ -41,7 +41,7 @@ class GroupeBD:
 
     def get_groupe_by_id(self, id):
         try:
-            query = text("SELECT idG, idH, nomG, descriptionG FROM groupe WHERE idG = :id")
+            query = text("SELECT idG, idH, nomG, descriptionG FROM GROUPE WHERE idG = :id")
             result = self.connexion.get_connexion().execute(query, {"id": id})
             for idG, idH, nomG, descriptionG in result:
                 return Groupe(idG, idH, nomG, descriptionG)
@@ -58,7 +58,7 @@ class GroupeBD:
     
     def add_image(self, idGroupe, image):
         try:
-            query = text("UPDATE groupe SET imgG = :imgG WHERE idG = :idG")
+            query = text("UPDATE GROUPE SET imgG = :imgG WHERE idG = :idG")
             self.connexion.get_connexion().execute(query, {"imgG": image, "idG": idGroupe})
             self.connexion.get_connexion().commit()
             return True
@@ -68,7 +68,7 @@ class GroupeBD:
         
     def modifier_img(self, idGroupe, image):
         try:
-            query = text("UPDATE groupe SET imgG = :imgG WHERE idG = :idG")
+            query = text("UPDATE GROUPE SET imgG = :imgG WHERE idG = :idG")
             self.connexion.get_connexion().execute(query, {"imgG": image, "idG": idGroupe})
             self.connexion.get_connexion().commit()
             return True
@@ -78,7 +78,7 @@ class GroupeBD:
         
     def get_image(self,idGroupe):
         try:
-            query = text("SELECT imgG FROM groupe WHERE idG = :idG")
+            query = text("SELECT imgG FROM GROUPE WHERE idG = :idG")
             result = self.connexion.get_connexion().execute(query, {"idG": idGroupe})
             for imgMG in result:
                 return imgMG[0]
@@ -89,7 +89,7 @@ class GroupeBD:
     def search_groupes(self, groupe_recherche):
         try:
             groupe_recherche = f"%{groupe_recherche}%"
-            query = text("SELECT idG, idH, nomG, descriptionG FROM groupe WHERE nomG LIKE :search")
+            query = text("SELECT idG, idH, nomG, descriptionG FROM GROUPE WHERE nomG LIKE :search")
             groupes = []
             result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche})
             for idG, idH, nomG, descriptionG in result:
@@ -101,7 +101,7 @@ class GroupeBD:
         
     def update_groupe(self, groupe):
         try:
-            query = text("UPDATE groupe SET nomG = :nomG, descriptionG = :descriptionG WHERE idG = :idG")
+            query = text("UPDATE GROUPE SET nomG = :nomG, descriptionG = :descriptionG WHERE idG = :idG")
             self.connexion.get_connexion().execute(query, {"nomG": groupe.get_nomG(), "descriptionG": groupe.get_descriptionG(), "idG": groupe.get_idG()})
             self.connexion.get_connexion().commit()
             return True
@@ -111,7 +111,7 @@ class GroupeBD:
         
     def get_membres_groupe(self, idGroupe):
         try:
-            query = text("select idMG, idG, nomMG, prenomMG, nomDeSceneMG from membre_groupe natural join groupe where idG=:idG")
+            query = text("select idMG, idG, nomMG, prenomMG, nomDeSceneMG from MEMBRE_GROUPE natural join GROUPE where idG=:idG")
             membres = []
             result = self.connexion.get_connexion().execute(query, {"idG": idGroupe})
             for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
@@ -123,7 +123,7 @@ class GroupeBD:
 
     def get_id_groupe_by_name(self, nom):
         try:
-            query = text("SELECT idG FROM groupe WHERE nomG = :nom")
+            query = text("SELECT idG FROM GROUPE WHERE nomG = :nom")
             result = self.connexion.get_connexion().execute(query, {"nom": nom})
             for idG in result:
                 return idG[0]

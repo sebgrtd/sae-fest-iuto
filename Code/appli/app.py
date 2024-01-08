@@ -9,6 +9,7 @@ sys.path.append('../mail')
 
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
+from HebergementBD import HebergementBD
 from Membre_GroupeBD import Membre_GroupeBD
 from ConnexionBD import ConnexionBD
 from UserBD import UserBD
@@ -26,7 +27,7 @@ MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/festiuto'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://coursimault:coursimault@servinfo-mariadb/DBcoursimault'
 CORS(app, resources={r"/*": {"origins": "*"}})
 db = SQLAlchemy(app)
 
@@ -274,7 +275,23 @@ def groupes_festival():
     connexionbd = ConnexionBD()
     groupebd = GroupeBD(connexionbd)
     liste_groupes = groupebd.get_all_groupes()
+
+    if liste_groupes is None:
+        liste_groupes = []
+
     return render_template("groupes_festival.html", liste_groupes=liste_groupes)
+
+@app.route("/hebergements_festival")
+def hebergements_festival():
+    connexionbd = ConnexionBD()
+    hebergementbd = HebergementBD(connexionbd)
+    liste_hebergements = hebergementbd.get_all_hebergements()
+
+    if liste_hebergements is None:
+        liste_hebergements = []
+
+    return render_template("hebergements_festival.html", liste_hebergements=liste_hebergements)
+
 
 @app.route("/modifier_groupe", methods=["POST"])
 def modifier_groupe():

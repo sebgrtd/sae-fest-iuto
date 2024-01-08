@@ -1,0 +1,41 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="admin_groupes.css") }}">
+{% endblock %}
+
+{% block content %}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1> Les Hébergements au festival </h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Hébergement</th>
+                <th>ID Groupe</th>
+                <th>Nom de l'hébergement</th>
+                <th>Limite places</th>
+                <th>Adresse Hébergement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hebergement in liste_hebergements %}
+                <tr>
+                    <td>{{ hebergement.get_idH() }}</td>
+                    <td>{{ "N/A" }}</td>
+                    <td>{{ hebergement.get_nomH() }}</td>
+                    <td>{{ hebergement.get_limitePlacesH() }}</td>
+                    <td>{{ hebergement.get_adresseH() }}</td>
+                    <td>
+                        <button class="btn-modifier" 
+                            data-id="{{ hebergement.get_idH() }}"
+                            data-nom="{{ hebergement.get_nomH() }}"
+                            data-description="{{ hebergement.get_limitePlacesH() }}">Modifier</button>
+                        <button class="btn-supprimer" data-id="{{ hebergement.get_idH() }}">Supprimer</button>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}
