@@ -196,8 +196,8 @@ def test_type_mdpS2():
     
 # classe Billet
 
-billet1 = Billet(1, festival1.get_idF(), type_billet1.get_idType(), spectateur1.get_idS(), 10, "2021-05-01")
-billet2 = Billet(2, festival2.get_idF(), type_billet2.get_idType(), spectateur2.get_idS(), 20, "2021-05-02")
+billet1 = Billet(1, festival1.get_idF(), type_billet1.get_idType(), spectateur1.get_idS(), 10, "2021-05-01", "2021-05-02", "2021-05-03")
+billet2 = Billet(2, festival2.get_idF(), type_billet2.get_idType(), spectateur2.get_idS(), 20, "2021-05-02", "2021-05-03", "2021-05-04")
 
 def test_get_idB():
     assert billet1.get_idB() == 1
@@ -1026,7 +1026,7 @@ def test_delete_festival():
 # Type_BillletBD
 
 type_billet_bd = Type_BilletBD(connexion_bd)
-type_billet_1 = Type_Billet(1, 3)
+type_billet_1 = Type_Billet(6, 1)
 
 def test_get_all_types_billets():
     types_billets = type_billet_bd.get_all_types_billets()
@@ -1035,7 +1035,7 @@ def test_get_all_types_billets():
     assert types_billets_de_bd == types_billets_python
     
 def test_get_type_billet_by_id():
-    type_billet = type_billet_bd.get_type_billet_by_id(1)
+    type_billet = type_billet_bd.get_type_billet_by_id(6)
     assert type_billet.get_idType() == type_billet_1.get_idType()
     assert type_billet.get_duree() == type_billet_1.get_duree()
 
@@ -1104,29 +1104,29 @@ def test_delete_spectateur():
 # Classe BilletBD
 
 billet_bd = BilletBD(connexion_bd)
-billet_1 = Billet(1, festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS(), 80, '2023-08-01')
+billet_1 = Billet(1, festival_1.get_idF(), 6, spectateur_1.get_idS(), 80, '2023-08-01', '2023-08-05', '2023-08-05')
 
 def test_get_billets_spectateur():
-    billets = billet_bd.get_billets_spectateur(festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS())
-    billets_de_bd = [(b.get_idB(), b.get_idFestival(), b.get_idType(), b.get_idSpectateur(), b.get_prix(), b.get_dateAchat()) for b in billets]
+    billets = billet_bd.get_billets_spectateur(festival_1.get_idF(), 6, spectateur_1.get_idS())
+    billets_de_bd = [(b.get_idB(), b.get_idFestival(), b.get_idType(), b.get_idSpectateur(), b.get_prix(), b.get_dateAchat(), b.get_dateDebutB(), b.get_dateFinB()) for b in billets]
     billets_python = [b for b in billets_de_bd]
     assert billets_de_bd == billets_python
     
 def test_insert_billet():
-    billet = Billet(9, festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS(), 50, '2023-08-01')
+    billet = Billet(9, festival_1.get_idF(), 6, spectateur_1.get_idS(), 50, '2023-08-01', '2023-08-05', '2023-08-05')
     billet_bd.insert_billet(billet)
     assert billet.get_idFestival() == festival_1.get_idF()
-    assert billet.get_idType() == type_billet_1.get_idType()
+    assert billet.get_idType() == 6
     assert billet.get_idSpectateur() == spectateur_1.get_idS()
     assert billet.get_prix() == 50
     assert billet.get_dateAchat() == datetime.strptime('2023-08-01', '%Y-%m-%d').date()
     
 def test_delete_billet():
-    billet = Billet(9, festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS(), 50, '2023-08-01')
+    billet = Billet(9, festival_1.get_idF(), 6, spectateur_1.get_idS(), 50, '2023-08-01', '2023-08-05', '2023-08-05')
     billet_bd.insert_billet(billet)
     billet_bd.delete_billet_by_id_spectateur(billet, spectateur_1.get_idS())
-    assert billet not in billet_bd.get_billets_spectateur(festival_1.get_idF(), type_billet_1.get_idType(), spectateur_1.get_idS())
-    
+    assert billet not in billet_bd.get_billets_spectateur(festival_1.get_idF(), 6, spectateur_1.get_idS())
+
 # LieuBD
 
 lieu_bd = LieuBD(connexion_bd)

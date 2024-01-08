@@ -128,13 +128,15 @@ class Spectateur:
         }
 
 class Billet:
-    def __init__(self, idB: int, idF: int, idType: int, idS: int, prix: int, dateAchat: str):
+    def __init__(self, idB: int, idF: int, idType: int, idS: int, prix: int, dateAchat: str, dateDebutB: str, dateFinB: str):
         self.__idB = idB
         self.__idF = idF
         self.__idType = idType
         self.__idS = idS
         self.__prix = prix
         self.__dateAchat = dateAchat if isinstance(dateAchat, date) else datetime.strptime(dateAchat, '%Y-%m-%d').date()
+        self.__dateDebutB = dateDebutB if isinstance(dateDebutB, date) else datetime.strptime(dateDebutB, '%Y-%m-%d').date()
+        self.__dateFinB = dateFinB if isinstance(dateFinB, date) else datetime.strptime(dateFinB, '%Y-%m-%d').date()
         
     def get_idB(self):
         return self.__idB
@@ -154,6 +156,12 @@ class Billet:
     def get_dateAchat(self):
         return self.__dateAchat
     
+    def get_dateDebutB(self):
+        return self.__dateDebutB
+    
+    def get_dateFinB(self):
+        return self.__dateFinB
+    
     def to_dict(self):
         return {
             "idB": self.__idB,
@@ -161,7 +169,9 @@ class Billet:
             "idType": self.__idType,
             "idS": self.__idS,
             "prix": self.__prix,
-            "dateAchat": self.__dateAchat.isoformat()
+            "dateAchat": self.__dateAchat.isoformat(),
+            "dateDebutB": self.__dateDebutB.isoformat(),
+            "dateFinB": self.__dateFinB.isoformat()
         }
     
     
@@ -456,12 +466,12 @@ class Photo:
         }
     
 class Evenement:
-    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: timedelta, heureFinE: timedelta, dateDebutE: str, dateFinE: str):
+    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
         self.__idE = idE
         self.__idG = idG
         self.__nomE = nomE
-        self.__heureDebutE = self.timedelta_to_time(heureDebutE) if isinstance(heureDebutE, timedelta) else heureDebutE
-        self.__heureFinE = self.timedelta_to_time(heureFinE) if isinstance(heureFinE, timedelta) else heureFinE
+        self.__heureDebutE = self.timedelta_to_time(heureDebutE) if isinstance(heureDebutE, timedelta) else datetime.strptime(heureDebutE, '%H:%M').time()
+        self.__heureFinE = self.timedelta_to_time(heureFinE) if isinstance(heureFinE, timedelta) else datetime.strptime(heureFinE, '%H:%M').time()
         self.__dateDebutE = dateDebutE if isinstance(dateDebutE, date) else datetime.strptime(dateDebutE, "%Y-%m-%d").date()
         self.__dateFinE = dateFinE if isinstance(dateFinE, date) else datetime.strptime(dateFinE, "%Y-%m-%d").date()
 
