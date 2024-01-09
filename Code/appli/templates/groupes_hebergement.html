@@ -34,10 +34,11 @@
     <div id="modal-supprimer" class="modal">
         <div class="modal-content">
             <span class="close-button">x</span>
-            <form action="/supprimer_groupe" method="post">
+            <form action="/supprimer_groupe_hebergement" method="post">
                 <p>Êtes-vous sûr de vouloir supprimer ce groupe de l'hébergements ?</p>
                 <!-- ID Groupe (caché) -->
                 <input type="hidden" name="id_groupe" id="id_groupe_supprimer" value="">
+                <input type="hidden" name="id_hebergement" id="id_hebergement_supprimer" value="{{ hebergement.get_idH() }}">
                 <button id="supprimer" type="submit">Supprimer</button>
             </form>
         </div>
@@ -83,7 +84,7 @@
 
             document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
                 btn.onclick = function() {
-                    document.getElementById("id_membre_supprimer").value = btn.getAttribute("data-id");
+                    document.getElementById("id_groupe_supprimer").value = btn.getAttribute("data-id");
                     modalSupprimer.style.display = "block";
                 };
             });
