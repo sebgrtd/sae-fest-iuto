@@ -18,9 +18,11 @@ from FaqBD import FaqBD
 from EvenementBD import EvenementBD
 from Style_MusicalBD import Style_MusicalBD
 from Groupe_StyleBD import Groupe_StyleBD
+from ConcertBD import ConcertBD
 
 from BD import Groupe
 from BD import Membre_Groupe
+from BD import Evenement    
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -375,6 +377,61 @@ def ajouter_membre_groupe():
     membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe)
     membre_groupebd.insert_membre_groupe(membre_groupe)
     return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
+
+@app.route("/evenements_festival")
+def evenements_festival():
+    connexionbd = ConnexionBD()
+    concertbd = ConcertBD(connexionbd)
+    evenementbd = EvenementBD(connexionbd)
+    liste_concerts = concertbd.get_all_concerts()
+    liste_evenements = evenementbd.get_all_evenements()
+    return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_concerts=liste_concerts)
+
+@app.route("/modifier_evenement", methods=["POST"])
+def modifier_evenement():
+    connexionbd = ConnexionBD()
+    evenementbd = EvenementBD(connexionbd)
+    id_evenement = request.form["id_evenement"]
+    nom_evenement = request.form["nom_evenement"]
+    date_debut = request.form["date_debut"]
+    date_fin = request.form["date_fin"]
+    heure_debut = request.form["heure_debut"]
+    heure_fin = request.form["heure_fin"]
+    evenement = evenementbd.get_evenement_by_id(id_evenement)
+    evenement.set_nomE(nom_evenement)
+    evenement.set_dateDebutE(date_debut)
+    evenement.set_dateFinE(date_fin)
+    evenement.set_heureDebutE(heure_debut)
+    evenement.set_heureFinE(heure_fin)
+    succes = evenementbd.update_evenement(evenement)
+    if succes:
+        print(f"L'événement {id_evenement} a été mis à jour.")
+    else:
+        print(f"La mise à jour de l'événement {id_evenement} a échoué.")
+    return redirect(url_for("evenements_festival"))
+
+@app.route("/supprimer_evenement", methods=["POST"])
+def supprimer_evenement():
+    connexionbd = ConnexionBD()
+    evenementbd = EvenementBD(connexionbd)
+    id_evenement = request.form["id_evenement"]
+    evenement = evenementbd.get_evenement_by_id(id_evenement)
+    nom_evenement = evenement.get_nomE()
+    evenementbd.delete_evenement_by_name(evenement, nom_evenement)
+    return redirect(url_for("evenements_festival"))
+
+@app.route("/ajouter_evenement", methods=["POST"])
+def ajouter_evenement():
+    connexionbd = ConnexionBD()
+    evenementbd = EvenementBD(connexionbd)
+    nom_evenement = request.form["nom_evenement"]
+    date_debut = request.form["date_debut"]
+    date_fin = request.form["date_fin"]
+    heure_debut = request.form["heure_debut"]
+    heure_fin = request.form["heure_fin"]
+    evenement = Evenement(None, None, nom_evenement, heure_debut, heure_fin, date_debut, date_fin)
+    evenementbd.insert_evenement(evenement)
+    return redirect(url_for("evenements_festival"))
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

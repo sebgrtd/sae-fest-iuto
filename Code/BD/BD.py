@@ -500,6 +500,21 @@ class Evenement:
     def get_dateFinE(self):
         return self.__dateFinE
     
+    def set_nomE(self, nomE):
+        self.__nomE = nomE
+        
+    def set_heureDebutE(self, heureDebutE):
+        self.__heureDebutE = heureDebutE
+        
+    def set_heureFinE(self, heureFinE):
+        self.__heureFinE = heureFinE
+        
+    def set_dateDebutE(self, dateDebutE):
+        self.__dateDebutE = dateDebutE
+        
+    def set_dateFinE(self, dateFinE):
+        self.__dateFinE = dateFinE
+    
     def to_dict(self):
         return {
             "idE": self.__idE,
