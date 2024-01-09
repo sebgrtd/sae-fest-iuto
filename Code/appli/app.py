@@ -352,6 +352,15 @@ def consulter_groupe(id_groupe):
     membres_groupe = groupebd.get_membres_groupe(id_groupe)
     return render_template("membres_groupe.html", groupe=groupe, membres_groupe=membres_groupe)
 
+@app.route("/consulter_hebergement/<int:id_hebergement>")
+def consulter_hebergement(id_hebergement):
+    connexionbd = ConnexionBD()
+    hebergementbd = HebergementBD(connexionbd)
+    hebergement = hebergementbd.get_hebergement_by_id(id_hebergement)
+    groupes_hebergement = hebergementbd.get_groupes_hebergement(id_hebergement)
+    print(groupes_hebergement)
+    return render_template("groupes_hebergement.html", hebergement=hebergement, groupes_hebergement=groupes_hebergement)
+
 @app.route("/modifier_membre", methods=["POST"])
 def modifier_membre_groupe():
     connexionbd = ConnexionBD()

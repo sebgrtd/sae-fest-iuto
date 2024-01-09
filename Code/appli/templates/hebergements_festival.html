@@ -9,7 +9,6 @@
         <thead>
             <tr>
                 <th>ID Hébergement</th>
-                <th>ID Groupe</th>
                 <th>Nom de l'hébergement</th>
                 <th>Limite places</th>
                 <th>Adresse Hébergement</th>
@@ -20,7 +19,6 @@
             {% for hebergement in liste_hebergements %}
                 <tr>
                     <td>{{ hebergement.get_idH() }}</td>
-                    <td>{{ "N/A" }}</td>
                     <td>{{ hebergement.get_nomH() }}</td>
                     <td>{{ hebergement.get_limitePlacesH() }}</td>
                     <td>{{ hebergement.get_adresseH() }}</td>
@@ -28,14 +26,99 @@
                         <button class="btn-modifier" 
                             data-id="{{ hebergement.get_idH() }}"
                             data-nom="{{ hebergement.get_nomH() }}"
-                            data-description="{{ hebergement.get_limitePlacesH() }}">Modifier</button>
+                            data-limiteP="{{ hebergement.get_limitePlacesH() }}"
+                            data-adresse="{{ hebergement.get_adresseH() }}">Modifier</button>
                         <button class="btn-supprimer" data-id="{{ hebergement.get_idH() }}">Supprimer</button>
-                        
+                        <a href="{{ url_for('consulter_hebergement', id_hebergement=hebergement.get_idH()) }}" class="btn-consulter">Consulter</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    
+    <!-- Modale pour modifier un hébergement -->
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/modifier_hebergement" method="post" enctype="multipart/form-data">
+                <!-- ID hébergement (caché) -->
+                <input type="hidden" name="id_hebergement" id="id_hebergement_modifier" value="">
+                <!-- Champs pour la modification -->
+                <input type="text" name="nom_hebergement" id="nom_hebergement_modifier" placeholder="Nom de l'hébergement">
+                <input type="text" name="limite_places" id="limite_places_modifier" placeholder="Limite places">
+                <input type="text" name="adresse_hebergement" id="adresse_hebergement_modifier" placeholder="Adresse de l'hébergement">
+                <button id="modifier" type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour supprimer un hébergement -->
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/supprimer_hebergement" method="post">
+                <p>Êtes-vous sûr de vouloir supprimer cet hébergement ?</p>
+                <!-- ID Hébergement (caché) -->
+                <input type="hidden" name="id_hebergement" id="id_hebergement_supprimer" value="">
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un hébergement -->
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/ajouter_hebergement" method="post" enctype="multipart/form-data">
+                <input type="text" name="nom_nouveau_hebergement" placeholder="Nom de l'hébergement">
+                <input type="text" name="limite_places" placeholder="Limite places">
+                <input type="text" name="adresse_hebergement" placeholder="Adresse de l'hébergement">
+                <button class ="btn-ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+    <button id="ajouter">Ajouter</button>
+
+    <!-- Script pour la gestion des modales -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_hebergement_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("nom_hebergement_modifier").value = btn.getAttribute("data-nom");
+                    document.getElementById("limite_places_modifier").value = btn.getAttribute("data-limiteP");
+                    document.getElementById("adresse_hebergement_modifier").value = btn.getAttribute("data-adresse");
+                    modalModifier.style.display = "block";
+                };
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_hebergement_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            };
+        });
+    </script>
 {% endblock %}

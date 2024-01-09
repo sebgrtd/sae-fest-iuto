@@ -1,4 +1,4 @@
-from BD import Hebergement
+from BD import Groupe, Hebergement
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
 from sqlalchemy.exc import SQLAlchemyError
@@ -15,6 +15,26 @@ class HebergementBD:
             for idH, nomH, limitePlacesH, adresseH in result:
                 hebergements.append(Hebergement(idH,nomH, limitePlacesH, adresseH))
             return hebergements
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+
+    def get_hebergement_by_id(self, idH):
+        try:
+            query = text("SELECT idH, nomH, limitePlacesH, adresseH FROM HEBERGEMENT WHERE idH = :idH")
+            result = self.connexion.get_connexion().execute(query, {"idH": idH})
+            for idH,nomH, limitePlacesH, adresseH in result:
+                return Hebergement(idH,nomH, limitePlacesH, adresseH)
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+
+    def get_groupes_hebergement(self, idH):
+        try:
+            query = text("SELECT idG, idH, nomG, descriptionG FROM GROUPE WHERE idH = :idH")
+            result = self.connexion.get_connexion().execute(query, {"idH": idH})
+            groupes = []
+            for idG, idH, nomG, descriptionG in result:
+                groupes.append(Groupe(idG, idH, nomG, descriptionG))
+            return groupes
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             

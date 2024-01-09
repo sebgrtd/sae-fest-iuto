@@ -1,0 +1,102 @@
+{% block styles %}
+    <link rel="stylesheet" href=" {{ url_for('static', filename="admin_groupes.css") }}">
+{% endblock %}
+
+{% block content %}
+    <a id="retour" href="{{ url_for('hebergements_festival')}}">Retour</a>
+    <h1> Les groupes de l'hébergement {{ hebergement.get_nomH() }} </h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Groupe</th>
+                <th>ID Hébergement</th>
+                <th>Nom du groupe</th>
+                <th>Description du groupe</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for groupe in groupes_hebergement %}
+                <tr>
+                    <td>{{ groupe.get_idG() }}</td>
+                    <td>{{ groupe.get_idHebergement() }}</td>
+                    <td>{{ groupe.get_nomG() }}</td>
+                    <td>{{ groupe.get_descriptionG() }}</td>
+                    <td>
+                        <button class="btn-supprimer" data-id="{{ groupe.get_idG() }}">Supprimer</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modale pour supprimer un groupe -->
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/supprimer_groupe" method="post">
+                <p>Êtes-vous sûr de vouloir supprimer ce groupe de l'hébergements ?</p>
+                <!-- ID Groupe (caché) -->
+                <input type="hidden" name="id_groupe" id="id_groupe_supprimer" value="">
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un groupe -->
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/ajouter_groupe" method="post">
+                <input type="hidden" name="id_hebergement" id="id_hebergement_ajouter" value="{{ hebergement.get_idH() }}">
+                <input type="text" name="nom_nouveau_membre" placeholder="Nom du groupe">
+                <input type="text" name="prenom_nouveau_membre" placeholder="Prénom du groupe">
+                <input type="text" name="nom_scene_nouveau_membre" placeholder="Nom de scène du groupe">
+                <button class="btn-ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+    <button id="ajouter">Ajouter</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_membre_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("nom_modifier").value = btn.getAttribute("data-nom");
+                    document.getElementById("prenom_modifier").value = btn.getAttribute("data-prenom");
+                    document.getElementById("nom_scene_modifier").value = btn.getAttribute("data-nomscene");
+                    modalModifier.style.display = "block";
+                };
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_membre_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            };
+        });
+    </script>
+{% endblock %}
