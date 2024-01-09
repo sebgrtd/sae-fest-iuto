@@ -175,7 +175,7 @@ INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
     (10, 1);
 
 -- Insérer des données dans la table PROGRAMMER
-INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
+INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
     (1, 1, 1, '2023-08-06', '08:00:00', '2023-08-07', '16:00:00');
 
 -- test des triggers
@@ -189,10 +189,10 @@ INSERT INTO BILLET (idF, idType, idS, prix, dateAchat) VALUES
     (3, 1, 1, 50, '2023-08-01');
 
 -- Le groupe ne peut pas arriver avant le début du festival
-INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
+INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
     (1, 1, 1, '2023-05-06', '08:00:00', '2023-05-07', '16:00:00');
 
 -- Le groupe ne peut pas arriver après la fin du festival
-INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
+INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
     (1, 1, 1, '2023-10-06', '08:00:00', '2023-10-07', '16:00:00');
 

@@ -227,6 +227,15 @@ class Hebergement:
     def get_adresseH(self):
         return self.__adresseH
     
+    def set_nomH(self, nomH):
+        self.__nomH = nomH
+
+    def set_limitePlacesH(self, limitePlacesH):
+        self.__limitePlacesH = limitePlacesH
+
+    def set_adresseH(self, adresseH):
+        self.__adresseH = adresseH
+    
     def to_dict(self):
         return {
             "idH": self.__idH,
@@ -300,6 +309,9 @@ class Groupe:
     
     def get_descriptionG(self):
         return self.__descriptionG
+    
+    def set_idHebergement(self, idH):
+        self.__idH = idH
     
     def to_dict(self):
         return {

@@ -65,4 +65,22 @@ class HebergementBD:
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
+
+    def delete_hebergement_by_id(self, idH):
+        try:
+            query = text("DELETE FROM HEBERGEMENT WHERE idH = :idH")
+            self.connexion.get_connexion().execute(query, {"idH": idH})
+            print(f"L'hebergement {idH} a été supprimé")
+            self.connexion.get_connexion().commit()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+
+    def update_hebergement(self, hebergement):
+        try:
+            query = text("UPDATE HEBERGEMENT SET nomH = :nomH, limitePlacesH = :limitePlacesH, adresseH = :adresseH WHERE idH = :idH")
+            self.connexion.get_connexion().execute(query, {"idH": hebergement.get_idH(), "nomH": hebergement.get_nomH(), "limitePlacesH": hebergement.get_limitePlacesH(), "adresseH": hebergement.get_adresseH()})
+            print(f"L'hebergement {hebergement.get_idH()} a été modifié")
+            self.connexion.get_connexion().commit()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
             

@@ -101,8 +101,8 @@ class GroupeBD:
         
     def update_groupe(self, groupe):
         try:
-            query = text("UPDATE GROUPE SET nomG = :nomG, descriptionG = :descriptionG WHERE idG = :idG")
-            self.connexion.get_connexion().execute(query, {"nomG": groupe.get_nomG(), "descriptionG": groupe.get_descriptionG(), "idG": groupe.get_idG()})
+            query = text("UPDATE GROUPE SET idH = :idH, nomG = :nomG, descriptionG = :descriptionG WHERE idG = :idG")
+            self.connexion.get_connexion().execute(query, {"idH": groupe.get_idHebergement(), "nomG": groupe.get_nomG(), "descriptionG": groupe.get_descriptionG(), "idG": groupe.get_idG()})
             self.connexion.get_connexion().commit()
             return True
         except SQLAlchemyError as e:
