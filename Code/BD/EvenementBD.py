@@ -10,19 +10,19 @@ class EvenementBD:
         
     def get_all_evenements(self):
         try:
-            query = text("SELECT idE, nomE, dateE, heureE, descriptionE, idG FROM evenement")
+            query = text("SELECT idE, idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE FROM EVENEMENT")
             evenements = []
             result = self.connexion.get_connexion().execute(query)
-            for idE, nomE, dateE, heureE, descriptionE, idG in result:
-                evenements.append(Evenement(idE, nomE, dateE, heureE, descriptionE, idG))
+            for idE, idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE in result:
+                evenements.append(Evenement(idE, idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE))
             return evenements
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
     
     def insert_evenement(self, evenement):
         try:
-            query = text("INSERT INTO evenement (nomE, dateE, heureE, descriptionE, idG) VALUES (:nomE, :dateE, :heureE, :descriptionE, :idG)")
-            result = self.connexion.get_connexion().execute(query, {"nomE": evenement.get_nomE(), "dateE": evenement.get_dateE(), "heureE": evenement.get_heureE(), "descriptionE": evenement.get_descriptionE(), "idG": evenement.get_idG()})
+            query = text("INSERT INTO EVENEMENT (nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES (:nomE, :heureDebutE, :heureFinE, :dateDebutE, :dateFinE)")
+            result = self.connexion.get_connexion().execute(query, {"nomE": evenement.get_nomE(), "heureDebutE": evenement.get_heureDebutE(), "heureFinE": evenement.get_heureFinE(), "dateDebutE": evenement.get_dateDebutE(), "dateFinE": evenement.get_dateFinE()})
             evenement_id = result.lastrowid
             print(f"L'événement {evenement_id} a été ajouté")
             self.connexion.get_connexion().commit()
@@ -31,7 +31,7 @@ class EvenementBD:
             
     def delete_evenement_by_name(self, evenement, nom):
         try:
-            query = text("DELETE FROM evenement WHERE idE = :idE AND nomE = :nom")
+            query = text("DELETE FROM EVENEMENT WHERE idE = :idE AND nomE = :nom")
             self.connexion.get_connexion().execute(query, {"idE": evenement.get_idE(), "nom": nom})
             print(f"L'événement {evenement.get_idE()} a été supprimé")
             self.connexion.get_connexion().commit()
@@ -100,3 +100,21 @@ class EvenementBD:
             for groupe, evenement in groupes:
                 res.append((groupe.to_dict(), evenement.to_dict()))
             return res
+        
+    def get_evenement_by_id(self, id):
+        try:
+            query = text("SELECT idE, idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE FROM EVENEMENT WHERE idE = :id")
+            result = self.connexion.get_connexion().execute(query, {"id": id})
+            for idE, idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE in result:
+                return Evenement(idE, idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE)
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+
+    def update_evenement(self, evenement):
+        try:
+            query = text("UPDATE EVENEMENT SET nomE = :nomE, heureDebutE = :heureDebutE, heureFinE = :heureFinE, dateDebutE = :dateDebutE, dateFinE = :dateFinE WHERE idE = :idE")
+            self.connexion.get_connexion().execute(query, {"nomE": evenement.get_nomE(), "heureDebutE": evenement.get_heureDebutE(), "heureFinE": evenement.get_heureFinE(), "dateDebutE": evenement.get_dateDebutE(), "dateFinE": evenement.get_dateFinE(), "idE": evenement.get_idE()})
+            print(f"L'événement {evenement.get_idE()} a été modifié")
+            self.connexion.get_connexion().commit()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
