@@ -105,22 +105,24 @@
                 <!-- Date de fin -->
                 <label for="date_fin_ajouter">Date de fin:</label>
                 <input type="date" name="date_fin" id="date_fin_ajouter" max="2023-07-23" min="2023-07-21" required>
-                <label for="type_evenement_concert">Concert</label>
-                <input type="radio" name="type_evenement" value="concert" id="type_evenement_concert" required>
-                <label for="type_evenement_activite">Activité Annexe</label>
-                <input type="radio" name="type_evenement" value="activite" id="type_evenement_activite" required>   
-                <div id="concert_fields" style="display:none;">
-                    <label for="temps_montage">Temps Montage:</label>
-                    <input type="time" name="temps_montage" id="temps_montage">
-                    <label for="temps_demontage">Temps Démontage:</label>
-                    <input type="time" name="temps_demontage" id="temps_demontage">
+                <div class="radios">
+                    <label for="type_evenement_concert">Concert</label>
+                    <input type="radio" name="type_evenement" value="concert" id="type_evenement_concert" required>
+                    <label for="type_evenement_activite">Activité Annexe</label>
+                    <input type="radio" name="type_evenement" value="activite" id="type_evenement_activite" required>
                 </div>
-                <div id="activite_fields" style="display:none;">
-                    <label for="type_activite">Type d'activité:</label>
-                    <input type="text" name="type_activite" id="type_activite">
-                    <label for="ouvert_public">Ouvert au public:</label>
-                    <input type="checkbox" name="ouvert_public" id="ouvert_public">
-                </div>
+                    <div id="concert_fields" style="display:none;">
+                        <label for="temps_montage">Temps Montage:</label>
+                        <input type="time" name="temps_montage" id="temps_montage">
+                        <label for="temps_demontage">Temps Démontage:</label>
+                        <input type="time" name="temps_demontage" id="temps_demontage">
+                    </div>
+                    <div id="activite_fields" style="display:none;">
+                        <label for="type_activite">Type d'activité:</label>
+                        <input type="text" name="type_activite" id="type_activite">
+                        <label for="ouvert_public">Ouvert au public:</label>
+                        <input type="checkbox" name="ouvert_public" id="ouvert_public">
+                    </div>
                 <button class="btn-ajouter" type="submit">Ajouter</button>
             </form>
         </div>

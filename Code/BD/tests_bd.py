@@ -880,46 +880,46 @@ def test_type_heureDebutE2():
 def test_type_heureFinE2():
     assert isinstance(evenement2.get_heureFinE(), time)
     
-# classe Activites_Annexes
+# classe Activite_Annexe
 
-activites_annexes1 = Activites_Annexes(evenement1.get_idE(), "activites_annexes1", True)
-activites_annexes2 = Activites_Annexes(evenement2.get_idE(), "activites_annexes2", False)
+Activite_Annexe1 = Activite_Annexe(evenement1.get_idE(), "Activite_Annexe1", True)
+Activite_Annexe2 = Activite_Annexe(evenement2.get_idE(), "Activite_Annexe2", False)
 
 def test_get_idEvenement():
-    assert activites_annexes1.get_idEvenement() == evenement1.get_idE()
+    assert Activite_Annexe1.get_idEvenement() == evenement1.get_idE()
     
 def test_get_typeA():
-    assert activites_annexes1.get_typeA() == "activites_annexes1"
+    assert Activite_Annexe1.get_typeA() == "Activite_Annexe1"
     
 def test_get_ouvertAuPublic():
-    assert activites_annexes1.get_ouvertAuPublic() == True
+    assert Activite_Annexe1.get_ouvertAuPublic() == True
     
 def test_idEvenement2():
-    assert activites_annexes2.get_idEvenement() == evenement2.get_idE()
+    assert Activite_Annexe2.get_idEvenement() == evenement2.get_idE()
     
 def test_typeA2():
-    assert activites_annexes2.get_typeA() == "activites_annexes2"
+    assert Activite_Annexe2.get_typeA() == "Activite_Annexe2"
     
 def test_ouvertAuPublic2():
-    assert activites_annexes2.get_ouvertAuPublic() == False
+    assert Activite_Annexe2.get_ouvertAuPublic() == False
     
 def test_type_idEvenement():
-    assert isinstance(activites_annexes1.get_idEvenement(), int)
+    assert isinstance(Activite_Annexe1.get_idEvenement(), int)
     
 def test_type_typeA():
-    assert isinstance(activites_annexes1.get_typeA(), str)
+    assert isinstance(Activite_Annexe1.get_typeA(), str)
     
 def test_type_ouvertAuPublic():
-    assert isinstance(activites_annexes1.get_ouvertAuPublic(), bool)
+    assert isinstance(Activite_Annexe1.get_ouvertAuPublic(), bool)
     
 def test_type_idEvenement2():
-    assert isinstance(activites_annexes2.get_idEvenement(), int)
+    assert isinstance(Activite_Annexe2.get_idEvenement(), int)
     
 def test_type_typeA2():
-    assert isinstance(activites_annexes2.get_typeA(), str)
+    assert isinstance(Activite_Annexe2.get_typeA(), str)
     
 def test_type_ouvertAuPublic2():
-    assert isinstance(activites_annexes2.get_ouvertAuPublic(), bool)
+    assert isinstance(Activite_Annexe2.get_ouvertAuPublic(), bool)
     
 # classe Concert
 

@@ -19,6 +19,7 @@ from EvenementBD import EvenementBD
 from Style_MusicalBD import Style_MusicalBD
 from Groupe_StyleBD import Groupe_StyleBD
 from ConcertBD import ConcertBD
+from Activite_AnnexeBD import Activite_AnnexeBD
 
 from BD import * 
 
@@ -418,6 +419,9 @@ def supprimer_evenement():
     nom_evenement = evenement.get_nomE()
     if evenementbd.verify_id_in_concert(id_evenement):
         concert_bd.delete_concert_by_id(id_evenement)
+    elif evenementbd.verify_id_in_activite_annexe(id_evenement):
+        activite_annexe_bd = Activite_AnnexeBD(connexionbd)
+        activite_annexe_bd.delete_activite_annexe_by_id(id_evenement)
     evenementbd.delete_evenement_by_name(evenement, nom_evenement)
     return redirect(url_for("evenements_festival"))
 
@@ -432,7 +436,6 @@ def ajouter_evenement():
     heure_fin = request.form["heure_fin"] if request.form["heure_fin"] else None
     evenement = Evenement(None, None, None, nom_evenement, heure_debut, heure_fin, date_debut, date_fin)
     id_evenement = evenementbd.insert_evenement(evenement)
-    print(id_evenement)
     type_evenement = request.form["type_evenement"]
 
     if type_evenement == "concert":
@@ -445,7 +448,9 @@ def ajouter_evenement():
     elif type_evenement == "activite":
         type_activite = request.form["type_activite"] if request.form["type_activite"] else None
         ouvert_public = True if request.form["ouvert_public"] else False
-        # Créez et insérez l’objet Activite_Annexe dans la base de données
+        activite_annexebd = Activite_AnnexeBD(connexionbd)
+        activite_annexe = Activite_Annexe(id_evenement, type_activite, ouvert_public)
+        activite_annexebd.insert_activite_annexe(activite_annexe)
     return redirect(url_for("evenements_festival"))
 
 if __name__ == '__main__':

@@ -531,7 +531,7 @@ class Evenement:
             "dateFinE": self.__dateFinE.isoformat() if self.__dateFinE else None
         }
     
-class Activites_Annexes:
+class Activite_Annexe:
     def __init__(self, idE: int, typeA: str, ouvertAuPublic: bool):
         self.__idE = idE
         self.__typeA = typeA

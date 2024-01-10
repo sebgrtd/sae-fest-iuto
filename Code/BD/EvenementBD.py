@@ -129,3 +129,13 @@ class EvenementBD:
             return False
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
+            
+    def verify_id_in_activite_annexe(self, id):
+        try:
+            query = text("SELECT idE FROM EVENEMENT WHERE idE = :id and idE in (SELECT idE FROM ACTIVITE_ANNEXE)")
+            result = self.connexion.get_connexion().execute(query, {"id": id})
+            for idE in result:
+                return True
+            return False
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")

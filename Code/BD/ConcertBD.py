@@ -45,3 +45,12 @@ class ConcertBD:
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
+
+    def update_concert(self, concert):
+        try:
+            query = text("UPDATE CONCERT SET tempsMontage = :tempsMontage, tempsDemontage = :tempsDemontage WHERE idE = :idE")
+            self.connexion.get_connexion().execute(query, {"idE": concert.get_idEvenement(), "tempsMontage": concert.get_tempsMontage(), "tempsDemontage": concert.get_tempsDemontage()})
+            print(f"Le concert {concert.get_idEvenement()} a été modifié")
+            self.connexion.get_connexion().commit()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
