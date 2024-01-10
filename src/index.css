@@ -1164,37 +1164,37 @@ input[type="number"]::-webkit-outer-spin-button {
   flex-direction: column;
 }
 
-.ticket-card {
+#Billeterie .ticket-card {
   background-color: white;
   box-shadow: 0px 20px 23.8px -28px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   width: 95%;
   margin: 1rem 0;
 }
-.ticket-card .content{
+#Billeterie .ticket-card .content{
   padding: 20px;
 }
 
-.ticket-card .content h4{
+#Billeterie .ticket-card .content h4{
   font-size: 20px;
 }
 
-.ticket-card h4{
+#Billeterie .ticket-card h4{
   margin-bottom: 30px;
 }
 
-.ticket-card .content{
+#Billeterie .ticket-card .content{
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.right-part{
+#Billeterie .right-part{
   display: flex;;
   gap: 10px;
 }
 
-.ticket-card .sub-menu{
+#Billeterie .ticket-card .sub-menu{
   width: 100%;
   background-color: var(--color-dark);
   display: flex;
@@ -1206,13 +1206,45 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 
-.left-part-sub{
+#Billeterie .left-part-sub{
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
+  gap: 20px;
+  padding-top: 10px;
+}
+
+#Billeterie .bottom-partsubmenu{
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+#Billeterie .bottom-part-left{display: flex;
   gap: 20px;
 }
 
+#Billeterie .delimiter-submenu{
+  width: 80%;
+  height: 2px;
+  background-color: #808080;
+}
+
+#Billeterie .top-partsubmenu{
+  width: 80%;
+}
+
+.sub-menu-left-part{
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+#Billeterie .article-select{
+  display: flex;
+  align-items: center;
+}
 
 .ticket-card .rect{
   position: relative;
@@ -1265,6 +1297,16 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 1.7em;
 }
 
+.sub-menu.forfait-2j {
+  height: 300px; 
+}
+
+.sub-menu.forfait-2j, .sub-menu{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 footer{
   background-color: var(--color-orange);

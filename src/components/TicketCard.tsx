@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Button from '../components/form/Button';
+import { getCookie, setCookie } from '../cookies/CookiesLib.tsx';
+
 
 type Props = {
   id: number;
@@ -17,6 +20,29 @@ export default function TicketCard(props: Props) {
   const [tickets, setTickets] = useState(props.nbTicket);
   const [rotation, setRotation] = useState(0);
   const [days, setDays] = useState(initialDays);
+
+  const addToCartHandler = () => {
+    const selectedDays = isForfait 
+      ? Object.entries(days).filter(([day, isChosen]) => isChosen).map(([day, _]) => day) 
+      : [];
+
+    const itemForCart = {
+      id: props.id,
+      title: props.title,
+      price: typeof props.price === 'number' ? props.price : 0,
+      quantity: tickets,
+      selectedDays: selectedDays,
+    };
+
+    let cart = getCookie('cart') || []; 
+    const billetIndex = cart.findIndex((billet: any) => billet.id === itemForCart.id);
+    if (billetIndex > -1) {
+      cart[billetIndex].quantity += itemForCart.quantity;
+    } else {
+      cart.push(itemForCart);
+    }
+    setCookie('cart', cart, { expires: 7 }); 
+  };
   const handleTicketChange = (newTickets: number, event: React.MouseEvent) => {
     event.stopPropagation();
     setTickets(newTickets);
@@ -35,7 +61,7 @@ export default function TicketCard(props: Props) {
     },
     open: {
       opacity: 1,
-      height: 80,
+      height: props.title === "Forfait 2 jours" ? 150 : 120,
       transition: {
         duration: 0.2,
         ease: 'easeInOut',
@@ -56,11 +82,26 @@ export default function TicketCard(props: Props) {
     },
   };
 
-  const toggleDaySelection = (day: keyof typeof initialDays) => {
-    setDays(prevDays => ({ ...prevDays, [day]: !prevDays[day] }));
+  const maxSelectedDays = 2;
+
+  const selectedDayCount = () => {
+    return Object.values(days).filter(Boolean).length;
   };
 
-  const isForfait = props.isForfait || false; // Déterminez si c’est un forfait en se basant sur la
+  const toggleDaySelection = (day: keyof typeof initialDays) => {
+    setDays(prevDays => {
+      const isSelected = prevDays[day];
+      const count = selectedDayCount();
+  
+      if (!isSelected && count >= maxSelectedDays) {
+        return prevDays;
+      }
+      
+      return { ...prevDays, [day]: !prevDays[day] };
+    });
+  };
+  
+  const isForfait = props.isForfait || false; // Déterminez si c'est un forfait en se basant sur la
 
   return (
     <motion.div
@@ -89,14 +130,15 @@ export default function TicketCard(props: Props) {
           </motion.div>
         </div>
       </div>
-      
       <motion.div
-        className='sub-menu'
-        variants={contentVariants}
-        initial="closed"
-        animate={isOpen ? "open" : "closed"}
-        exit="closed"
-      >
+  className={`sub-menu ${props.title === "Forfait 2 jours" ? "forfait-2j" : ""}`}
+  variants={contentVariants}
+  initial="closed"
+  animate={isOpen ? "open" : "closed"}
+  exit="closed"
+>
+  <div className='top-partsubmenu'>
+        <div className='left-part-sub'>
         {isForfait && (Object.keys(days) as Array<keyof typeof days>).map(day => (
           <label key={day}>
             <input 
@@ -107,20 +149,33 @@ export default function TicketCard(props: Props) {
             {day}
           </label>
         ))}
-        <div className='left-part-sub'>
+          <div className='sub-menu-left-part'>
           <div className ="rect">
             <img src="images/billet_pass1j.png" alt="Billet pass 1 jour" />
           </div>
+          <div className='article-select'>
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 22 21" fill="none">
             <path d="M22 9.03848H14.6966L19.8599 4.10947L17.6953 2.04109L12.532 6.97007V0H9.46799V6.97007L4.30475 2.04109L2.13807 4.10947L7.30131 9.03848H0V11.9615H7.30131L2.13807 16.8906L4.30475 18.9589L9.46799 14.0299V21H12.532V14.0299L17.6953 18.9589L19.8599 16.8906L14.6966 11.9615H22V9.03848Z" fill="#FFD600"/>
           </svg>
           <p>x{tickets} Article(s) sélectionné(s)</p>
-        </div>
+          </div>
+          </div>
         <div className="ticket-control">
           <button onClick={(event) => handleTicketChange(Math.max(tickets - 1, 0), event)}>-</button>
           <span>{tickets}</span>
           <button className='sommeButton' onClick={(event) => handleTicketChange(tickets + 1, event)}>+</button>
         </div>
+        </div>
+      </div>
+      <div className='delimiter-submenu'></div>
+      <div className='bottom-partsubmenu'>
+        <div className='bottom-part-left'>
+        <p>Sous-total</p>
+          <p>{tickets * props.price}€</p>
+        </div>
+        <button onClick={addToCartHandler}>AJOUTER AU PANIER</button>
+      </div>
+
       </motion.div>
     </motion.div>
   );
