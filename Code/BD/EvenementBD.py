@@ -113,8 +113,8 @@ class EvenementBD:
 
     def update_evenement(self, evenement):
         try:
-            query = text("UPDATE EVENEMENT SET nomE = :nomE, heureDebutE = :heureDebutE, heureFinE = :heureFinE, dateDebutE = :dateDebutE, dateFinE = :dateFinE WHERE idE = :idE")
-            self.connexion.get_connexion().execute(query, {"nomE": evenement.get_nomE(), "heureDebutE": evenement.get_heureDebutE(), "heureFinE": evenement.get_heureFinE(), "dateDebutE": evenement.get_dateDebutE(), "dateFinE": evenement.get_dateFinE(), "idE": evenement.get_idE()})
+            query = text("UPDATE EVENEMENT SET idG = :idG, idL = :idL, nomE = :nomE, heureDebutE = :heureDebutE, heureFinE = :heureFinE, dateDebutE = :dateDebutE, dateFinE = :dateFinE WHERE idE = :idE")
+            self.connexion.get_connexion().execute(query, {"idG": evenement.get_idG(), "idL":evenement.get_idL() ,"nomE": evenement.get_nomE(), "heureDebutE": evenement.get_heureDebutE(), "heureFinE": evenement.get_heureFinE(), "dateDebutE": evenement.get_dateDebutE(), "dateFinE": evenement.get_dateFinE(), "idE": evenement.get_idE()})
             print(f"L'événement {evenement.get_idE()} a été modifié")
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:

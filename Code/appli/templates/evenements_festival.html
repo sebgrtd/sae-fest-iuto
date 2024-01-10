@@ -55,6 +55,22 @@
             <form action="/modifier_evenement" method="post">
                 <!-- ID Evenement (caché) -->
                 <input type="hidden" name="id_evenement" id="id_evenement_modifier" value="">
+                <!-- Groupe de l'évènement -->
+                <label for ="groupe_evenement_modifier">Groupe de l'événement:</label>
+                <select name="groupe_evenement" id="groupe_evenement_modifier" required>
+                    <option value="" disabled selected>Choisir un groupe</option>
+                    {% for groupe in liste_groupes %}
+                        <option value="{{ groupe.get_idG() }}">{{ groupe.get_nomG() }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Lieu de l'évènement -->
+                <label for="lieu_evenement_modifier">Lieu de l'événement:</label>
+                <select name="lieu_evenement" id="lieu_evenement_modifier" required>
+                    <option value="" disabled selected>Choisir un lieu</option>
+                    {% for lieu in liste_lieux %}
+                        <option value="{{ lieu.get_idL() }}">{{ lieu.get_nomL() }}</option>
+                    {% endfor %}
+                </select>
                 <!-- Nom de l'événement -->
                 <label for="nom_evenement_modifier">Nom de l'événement:</label>
                 <input type="text" name="nom_evenement" id="nom_evenement_modifier" placeholder="Nom de l'événement" required>
@@ -163,6 +179,8 @@
             document.querySelectorAll(".btn-modifier").forEach(function(btn) {
                 btn.onclick = function() {
                     document.getElementById("id_evenement_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("groupe_evenement_modifier").value = btn.getAttribute("data-idG");
+                    document.getElementById("lieu_evenement_modifier").value = btn.getAttribute("data-idL");
                     document.getElementById("nom_evenement_modifier").value = btn.getAttribute("data-nom");
                     document.getElementById("heure_debut_modifier").value = btn.getAttribute("data-heureDebut");
                     document.getElementById("heure_fin_modifier").value = btn.getAttribute("data-heureFin");

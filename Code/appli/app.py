@@ -405,12 +405,16 @@ def modifier_evenement():
     connexionbd = ConnexionBD()
     evenementbd = EvenementBD(connexionbd)
     id_evenement = request.form["id_evenement"]
+    id_lieu = request.form["lieu_evenement"] if request.form["lieu_evenement"] else None
+    id_groupe = request.form["groupe_evenement"] if request.form["groupe_evenement"] else None
     nom_evenement = request.form["nom_evenement"]
     date_debut = request.form["date_debut"]
     date_fin = request.form["date_fin"]
     heure_debut = request.form["heure_debut"]
     heure_fin = request.form["heure_fin"]
     evenement = evenementbd.get_evenement_by_id(id_evenement)
+    evenement.set_idG(id_groupe)
+    evenement.set_idL(id_lieu)
     evenement.set_nomE(nom_evenement)
     evenement.set_dateDebutE(date_debut)
     evenement.set_dateFinE(date_fin)

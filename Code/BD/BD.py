@@ -482,6 +482,12 @@ class Evenement:
     def get_dateFinE(self):
         return self.__dateFinE
     
+    def set_idG(self, idG):
+        self.__idG = idG
+        
+    def set_idL(self, idL):
+        self.__idL = idL
+    
     def set_nomE(self, nomE):
         self.__nomE = nomE
         
