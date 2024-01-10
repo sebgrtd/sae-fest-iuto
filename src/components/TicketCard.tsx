@@ -4,15 +4,19 @@ import { useState } from 'react';
 type Props = {
   id: number;
   title: string;
-  price: number;
+  price: number|string;
   nbTicket: number;
+  isForfait?: boolean; 
 };
+
+const initialDays = { '20Juillet': false, '21Juillet': false, '22Juillet': false };
 
 
 export default function TicketCard(props: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [tickets, setTickets] = useState(props.nbTicket);
   const [rotation, setRotation] = useState(0);
+  const [days, setDays] = useState(initialDays);
   const handleTicketChange = (newTickets: number, event: React.MouseEvent) => {
     event.stopPropagation();
     setTickets(newTickets);
@@ -52,6 +56,12 @@ export default function TicketCard(props: Props) {
     },
   };
 
+  const toggleDaySelection = (day: keyof typeof initialDays) => {
+    setDays(prevDays => ({ ...prevDays, [day]: !prevDays[day] }));
+  };
+
+  const isForfait = props.isForfait || false; // Déterminez si c’est un forfait en se basant sur la
+
   return (
     <motion.div
       className="ticket-card"
@@ -87,6 +97,16 @@ export default function TicketCard(props: Props) {
         animate={isOpen ? "open" : "closed"}
         exit="closed"
       >
+        {isForfait && (Object.keys(days) as Array<keyof typeof days>).map(day => (
+          <label key={day}>
+            <input 
+              type="checkbox"
+              checked={days[day]}
+              onChange={() => toggleDaySelection(day)}
+            />
+            {day}
+          </label>
+        ))}
         <div className='left-part-sub'>
           <div className ="rect">
             <img src="images/billet_pass1j.png" alt="Billet pass 1 jour" />

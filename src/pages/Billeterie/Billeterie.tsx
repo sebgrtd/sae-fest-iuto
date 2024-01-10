@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import TicketCard from "../../components/TicketCard";
 import Footer from "../../components/footer";
+import axios from 'axios';
 
 type Props = {
   isNavInFocus: boolean;
@@ -10,9 +11,11 @@ type Props = {
 type Billet = {
   idB: number;
   title: string;
-  prix: number;
+  prix: number|string;
   nbTicket: number;
 };
+
+
 
 export default function Billeterie(props: Props) {
   const billets: Billet[] = [
@@ -32,6 +35,18 @@ export default function Billeterie(props: Props) {
       idB: 3,
       title: "Accès Lundi 22 Juillet",
       prix: 90,
+      nbTicket: 0,
+    },
+    {
+      idB: 4,
+      title: "Forfait 2 jours",
+      prix: "À partir de 140",
+      nbTicket: 0,
+    },
+    {
+      idB: 5,
+      title: "Forfait 3 jours",
+      prix: "180",
       nbTicket: 0,
     },
   ];
@@ -106,6 +121,7 @@ export default function Billeterie(props: Props) {
                 title={billet.title}
                 price={billet.prix}
                 nbTicket={billet.nbTicket}
+                isForfait={billet.idB === 4}
               />
             ))}
             </div>

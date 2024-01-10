@@ -39,17 +39,16 @@ export default function Programmation(props : Props) {
         const listeGroupes : Groupe[] = [];
         console.log(data)
         data.forEach((groupe: Groupe) => {
-          // la datepassage est sous forme 2021-05-20 pour 20 mai 2021
-          // je veux la transformer en 20 mai (pas besoin de l'année)
-          const lesMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-          const date = groupe.datePassage.split("-");
-          const datePassage = date[2] + " " + lesMois[parseInt(date[1])-1];
-          groupe.datePassage = datePassage; 
-          // l'heure est sous forme 20:00:00 pour 20h00 j'ai envie de la transformer en 20H00
-          const heure = groupe.heurePassage.split(":");
-          const heurePassage = heure[0] + "H" + heure[1];
-          groupe.heurePassage = heurePassage;
-          listeGroupes.push(groupe);
+          if (groupe.datePassage && groupe.heurePassage) {
+            const lesMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            const date = groupe.datePassage.split("-");
+            const datePassage = date[2] + " " + lesMois[parseInt(date[1])-1];
+            groupe.datePassage = datePassage; 
+            const heure = groupe.heurePassage.split(":");
+            const heurePassage = heure[0] + "H" + heure[1];
+            groupe.heurePassage = heurePassage;
+            listeGroupes.push(groupe);
+          }
         });
         setLesGroupes(listeGroupes);
     })
