@@ -276,6 +276,8 @@ def groupes_festival():
     connexionbd = ConnexionBD()
     groupebd = GroupeBD(connexionbd)
     liste_groupes = groupebd.get_all_groupes()
+    if not liste_groupes:
+        return render_template("groupes_festival.html", liste_groupes=[], liste_lieux=[])
     return render_template("groupes_festival.html", liste_groupes=liste_groupes)
 
 @app.route("/modifier_groupe", methods=["POST"])
@@ -335,6 +337,8 @@ def consulter_groupe(id_groupe):
     groupebd = GroupeBD(connexionbd)
     groupe = groupebd.get_groupe_by_id(id_groupe)
     membres_groupe = groupebd.get_membres_groupe(id_groupe)
+    if not membres_groupe:
+        return render_template("membres_groupe.html", groupe=groupe, membres_groupe=[])
     return render_template("membres_groupe.html", groupe=groupe, membres_groupe=membres_groupe)
 
 @app.route("/modifier_membre", methods=["POST"])
@@ -391,6 +395,8 @@ def evenements_festival():
     liste_evenements = evenementbd.get_all_evenements()
     liste_evenements_concerts = []
     liste_evenements_activites_annexes = []
+    if not liste_evenements:
+        return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=[], liste_groupes=[])
     lieubd = LieuBD(connexionbd)
     liste_lieux = lieubd.get_all_lieux()
     for evenement in liste_evenements:
@@ -468,8 +474,10 @@ def ajouter_evenement():
     elif type_evenement == "activite":
         type_activite = request.form["type_activite"] if request.form["type_activite"] else None
         ouvert_public = True if "ouvert_public" in request.form else False
+        print(ouvert_public)
         activite_annexebd = Activite_AnnexeBD(connexionbd)
         activite_annexe = Activite_Annexe(id_evenement, type_activite, ouvert_public)
+        print(activite_annexe.get_ouvertAuPublic())
         activite_annexebd.insert_activite_annexe(activite_annexe)
     return redirect(url_for("evenements_festival"))
 
