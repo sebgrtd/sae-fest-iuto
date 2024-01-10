@@ -130,15 +130,16 @@ CREATE TABLE LIEN_RESEAUX_SOCIAUX (
 CREATE TABLE EVENEMENT (
     idE INT NOT NULL AUTO_INCREMENT,
     idG INT,
+    idL INT,
     nomE VARCHAR(50) NOT NULL,
-    heureDebutE TIME NOT NULL,
-    heureFinE TIME NOT NULL,
-    dateDebutE DATE NOT NULL,
-    dateFinE DATE NOT NULL,
+    heureDebutE TIME NOT NULL CHECK (heureDebutE < heureFinE),
+    heureFinE TIME NOT NULL CHECK (heureFinE > heureDebutE),
+    dateDebutE DATE NOT NULL CHECK (dateDebutE <= dateFinE),
+    dateFinE DATE NOT NULL CHECK (dateFinE >= dateDebutE),
     PRIMARY KEY (idE)
 );
 
-CREATE TABLE ACTIVITES_ANNEXES (
+CREATE TABLE ACTIVITE_ANNEXE (
     idE INT NOT NULL,
     typeA VARCHAR(50) NOT NULL,
     ouvertAuPublic BOOLEAN NOT NULL,
@@ -185,6 +186,8 @@ ALTER TABLE ACTIVITES_ANNEXES ADD FOREIGN KEY (idE) REFERENCES EVENEMENT (idE);
 ALTER TABLE CONCERT ADD FOREIGN KEY (idE) REFERENCES EVENEMENT (idE);
 
 ALTER TABLE EVENEMENT ADD FOREIGN KEY (idG) REFERENCES GROUPE (idG);
+
+ALTER TABLE EVENEMENT ADD FOREIGN KEY (idL) REFERENCES LIEU (idL);
 
 -- Les Fonctions
 
@@ -401,3 +404,61 @@ begin
     end if;
 end |
 delimiter ;
+
+delimiter |
+
+CREATE TRIGGER lieuDejaUtiliseDurantHoraire BEFORE INSERT ON EVENEMENT
+FOR EACH ROW
+BEGIN
+    DECLARE conflitTrouve INT DEFAULT 0;
+    DECLARE tempsDemontageConcert TIME;
+    DECLARE finEvenement TIME;
+    SELECT IFNULL(MAX(c.tempsDemontage), '00:00:00') INTO tempsDemontageConcert
+    FROM CONCERT c
+    JOIN EVENEMENT e ON c.idE = e.idE
+    WHERE e.idL = NEW.idL
+    AND e.dateDebutE <= NEW.dateDebutE
+    AND e.dateFinE >= NEW.dateDebutE
+    AND ADDTIME(e.heureFinE, c.tempsDemontage) > NEW.heureDebutE;
+    SELECT COUNT(*) INTO conflitTrouve
+    FROM EVENEMENT e
+    WHERE e.idL = NEW.idL
+    AND e.dateDebutE = NEW.dateDebutE
+    AND (
+        (e.heureDebutE < NEW.heureFinE AND e.heureFinE > NEW.heureDebutE) OR
+        (ADDTIME(e.heureFinE, tempsDemontageConcert) > NEW.heureDebutE)
+    );
+    IF conflitTrouve > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Un événement ou concert est déjà prévu à ce lieu et cet horaire.";
+    END IF;
+END |
+
+delimiter ;
+
+DELIMITER |
+
+CREATE TRIGGER verifDisponibiliteGroupe BEFORE INSERT ON EVENEMENT
+FOR EACH ROW
+BEGIN
+    DECLARE conflitExistant INT DEFAULT 0;
+    DECLARE tempsMontageConcert TIME;
+    IF NEW.idE IN (SELECT idE FROM CONCERT) THEN
+        SET tempsMontageConcert := (SELECT tempsMontage FROM CONCERT WHERE idE = NEW.idE);
+    ELSE
+        SET tempsMontageConcert := '00:00:00';
+    END IF;
+    SELECT COUNT(*) INTO conflitExistant
+    FROM EVENEMENT e
+    LEFT JOIN CONCERT c ON e.idE = c.idE
+    WHERE e.idG = NEW.idG
+    AND e.dateDebutE = NEW.dateDebutE
+    AND (
+        (NEW.heureDebutE < ADDTIME(e.heureFinE, IFNULL(c.tempsDemontage, '00:00:00'))) OR
+        (ADDTIME(NEW.heureDebutE, tempsMontageConcert) > e.heureDebutE AND ADDTIME(NEW.heureDebutE, tempsMontageConcert) < e.heureFinE)
+    );
+    IF conflitExistant > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le groupe a déjà un événement prévu qui entre en conflit avec le nouvel horaire.";
+    END IF;
+END |
+
+DELIMITER ;

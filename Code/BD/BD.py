@@ -443,32 +443,11 @@ class Lien_Reseaux_Sociaux:
             "reseau": self.__reseau
         }
     
-class Photo:
-    def __init__(self, idP: int, idG: int, photo: str):
-        self.__idP = idP
-        self.__idG = idG
-        self.__photo = photo
-        
-    def get_idP(self):
-        return self.__idP
-    
-    def get_idGroupe(self):
-        return self.__idG
-    
-    def get_photo(self):
-        return self.__photo
-    
-    def to_dict(self):
-        return {
-            "idP": self.__idP,
-            "idG": self.__idG,
-            "photo": self.__photo
-        }
-    
 class Evenement:
-    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
+    def __init__(self, idE: int, idG: int, idL: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
         self.__idE = idE
         self.__idG = idG
+        self.__idL = idL
         self.__nomE = nomE
         self.__heureDebutE = self.timedelta_to_time(heureDebutE) if isinstance(heureDebutE, timedelta) else datetime.strptime(heureDebutE, '%H:%M').time()
         self.__heureFinE = self.timedelta_to_time(heureFinE) if isinstance(heureFinE, timedelta) else datetime.strptime(heureFinE, '%H:%M').time()
@@ -485,6 +464,9 @@ class Evenement:
     def get_idG(self):
         return self.__idG
     
+    def get_idL(self):
+        return self.__idL
+    
     def get_nomE(self):
         return self.__nomE
     
@@ -499,6 +481,12 @@ class Evenement:
     
     def get_dateFinE(self):
         return self.__dateFinE
+    
+    def set_idG(self, idG):
+        self.__idG = idG
+        
+    def set_idL(self, idL):
+        self.__idL = idL
     
     def set_nomE(self, nomE):
         self.__nomE = nomE
@@ -519,6 +507,7 @@ class Evenement:
         return {
             "idE": self.__idE,
             "idG": self.__idG,
+            "idL": self.__idL,
             "nomE": self.__nomE,
             "heureDebutE": self.__heureDebutE.strftime("%H:%M:%S") if self.__heureDebutE else None,
             "heureFinE": self.__heureFinE.strftime("%H:%M:%S") if self.__heureFinE else None,
@@ -526,7 +515,7 @@ class Evenement:
             "dateFinE": self.__dateFinE.isoformat() if self.__dateFinE else None
         }
     
-class Activites_Annexes:
+class Activite_Annexe:
     def __init__(self, idE: int, typeA: str, ouvertAuPublic: bool):
         self.__idE = idE
         self.__typeA = typeA

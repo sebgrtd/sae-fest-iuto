@@ -7,21 +7,21 @@ class LieuBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
         
-    def get_all_lieux(self, idFestival):
+    def get_all_lieux(self):
         try:
-            query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU WHERE idF = :idFestival")
-            lieux = []
-            result = self.connexion.get_connexion().execute(query, {"idFestival": idFestival})
+            query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU")
+            result = self.connexion.get_connexion().execute(query)
+            liste_lieux = []
             for idL, idF, nomL, adresseL, jaugeL in result:
-                lieux.append(Lieu(idL, idF, nomL, adresseL, jaugeL))
-            return lieux
+                liste_lieux.append(Lieu(idL, idF, nomL, adresseL, jaugeL))
+            return liste_lieux
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
-    def get_lieu_by_adresse(self, idFestival, adresse):
+    def get_lieu_by_id(self, idLieu):
         try:
-            query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU WHERE idF = :idFestival AND adresseL = :adresse")
-            result = self.connexion.get_connexion().execute(query, {"idFestival": idFestival, "adresse": adresse})
+            query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU WHERE idL = :idLieu")
+            result = self.connexion.get_connexion().execute(query, {"idLieu": idLieu})
             for idL, idF, nomL, adresseL, jaugeL in result:
                 return Lieu(idL, idF, nomL, adresseL, jaugeL)
         except SQLAlchemyError as e:
@@ -42,6 +42,15 @@ class LieuBD:
             query = text("DELETE FROM lieu WHERE idL = :idL AND nomL = :nom")
             self.connexion.get_connexion().execute(query, {"idL": lieu.get_idL(), "nom": nom})
             print(f"Le lieu {lieu.get_idL()} a été supprimé")
+            self.connexion.get_connexion().commit()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
+    def update_lieu_by_id(self, lieu, idLieu):
+        try:
+            query = text("UPDATE lieu SET idF = :idF, nomL = :nomL, adresseL = :adresseL, jaugeL = :jaugeL WHERE idL = :idLieu")
+            self.connexion.get_connexion().execute(query, {"idF": lieu.get_idFestival(), "nomL": lieu.get_nomL(), "adresseL": lieu.get_adresseL(), "jaugeL": lieu.get_jaugeL(), "idLieu": idLieu})
+            print(f"Le lieu {lieu.get_idL()} a été modifié")
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")

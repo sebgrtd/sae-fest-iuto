@@ -155,3 +155,29 @@ button {
 #retour:hover {
     background-color: #0b7dda;
 }
+
+#modal-ajouter form {
+    display: flex;
+    flex-direction: column;
+}
+
+.radios {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.radios input {
+    margin: 0 0.5rem;
+}
+
+#modal-ajouter input {
+    margin-bottom: 1rem;
+    width: 150px;
+}
+
+#modal-ajouter select {
+    margin-bottom: 1rem;
+    width: 150px;
+}
