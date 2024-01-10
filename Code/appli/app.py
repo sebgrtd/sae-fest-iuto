@@ -20,9 +20,7 @@ from Style_MusicalBD import Style_MusicalBD
 from Groupe_StyleBD import Groupe_StyleBD
 from ConcertBD import ConcertBD
 
-from BD import Groupe
-from BD import Membre_Groupe
-from BD import Evenement    
+from BD import * 
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -310,8 +308,8 @@ def supprimer_groupe():
 def ajouter_groupe():
     connexionbd = ConnexionBD()
     groupebd = GroupeBD(connexionbd)
-    nom_groupe = request.form["nom_nouveau_groupe"]
-    description_groupe = request.form["description_nouveau_groupe"]
+    nom_groupe = request.form["nom_nouveau_groupe"] if request.form["nom_nouveau_groupe"] else None
+    description_groupe = request.form["description_nouveau_groupe"] if request.form["description_nouveau_groupe"] else None
     groupe = Groupe(None, None, nom_groupe, description_groupe)
     groupebd.insert_groupe(groupe)
     idG = groupebd.get_id_groupe_by_name(nom_groupe)
@@ -371,9 +369,9 @@ def ajouter_membre_groupe():
     connexionbd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexionbd)
     id_groupe = request.form["id_groupe"]
-    nom_membre_groupe = request.form["nom_nouveau_membre"]
-    prenom_membre_groupe = request.form["prenom_nouveau_membre"]
-    nom_scene_membre_groupe = request.form["nom_scene_nouveau_membre"]
+    nom_membre_groupe = request.form["nom_nouveau_membre"] if request.form["nom_nouveau_membre"] else None
+    prenom_membre_groupe = request.form["prenom_nouveau_membre"] if request.form["prenom_nouveau_membre"] else None
+    nom_scene_membre_groupe = request.form["nom_scene_nouveau_membre"] if request.form["nom_scene_nouveau_membre"] else None
     membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe)
     membre_groupebd.insert_membre_groupe(membre_groupe)
     return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
@@ -414,9 +412,12 @@ def modifier_evenement():
 def supprimer_evenement():
     connexionbd = ConnexionBD()
     evenementbd = EvenementBD(connexionbd)
+    concert_bd = ConcertBD(connexionbd)
     id_evenement = request.form["id_evenement"]
     evenement = evenementbd.get_evenement_by_id(id_evenement)
     nom_evenement = evenement.get_nomE()
+    if evenementbd.verify_id_in_concert(id_evenement):
+        concert_bd.delete_concert_by_id(id_evenement)
     evenementbd.delete_evenement_by_name(evenement, nom_evenement)
     return redirect(url_for("evenements_festival"))
 
@@ -424,13 +425,27 @@ def supprimer_evenement():
 def ajouter_evenement():
     connexionbd = ConnexionBD()
     evenementbd = EvenementBD(connexionbd)
-    nom_evenement = request.form["nom_evenement"]
-    date_debut = request.form["date_debut"]
-    date_fin = request.form["date_fin"]
-    heure_debut = request.form["heure_debut"]
-    heure_fin = request.form["heure_fin"]
-    evenement = Evenement(None, None, nom_evenement, heure_debut, heure_fin, date_debut, date_fin)
-    evenementbd.insert_evenement(evenement)
+    nom_evenement = request.form["nom_evenement"] if request.form["nom_evenement"] else None
+    date_debut = request.form["date_debut"] if request.form["date_debut"] else None
+    date_fin = request.form["date_fin"] if request.form["date_fin"] else None
+    heure_debut = request.form["heure_debut"] if request.form["heure_debut"] else None
+    heure_fin = request.form["heure_fin"] if request.form["heure_fin"] else None
+    evenement = Evenement(None, None, None, nom_evenement, heure_debut, heure_fin, date_debut, date_fin)
+    id_evenement = evenementbd.insert_evenement(evenement)
+    print(id_evenement)
+    type_evenement = request.form["type_evenement"]
+
+    if type_evenement == "concert":
+        temps_montage = request.form["temps_montage"] if request.form["temps_montage"] else None
+        temps_demontage = request.form["temps_demontage"] if request.form["temps_demontage"] else None
+        concert_bd = ConcertBD(connexionbd)
+        concert = Concert(id_evenement, temps_montage, temps_demontage)
+        concert_bd.insert_concert(concert)
+
+    elif type_evenement == "activite":
+        type_activite = request.form["type_activite"] if request.form["type_activite"] else None
+        ouvert_public = True if request.form["ouvert_public"] else False
+        # Créez et insérez l’objet Activite_Annexe dans la base de données
     return redirect(url_for("evenements_festival"))
 
 if __name__ == '__main__':

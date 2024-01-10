@@ -181,12 +181,12 @@ INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, he
 -- test des triggers
 
 -- Impossible d'acheter un billet pour un événement qui a déjà eu lieu
-INSERT INTO BILLET (idF, idType, idS, prix, dateAchat) VALUES
-    (1, 1, 1, 50, '2023-10-01');
+INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
+    (1, 1, 1, 50, '2023-10-01', '2023-07-21', '2023-07-21');
 
 -- La durée du billet est trop grande par rapport à celle du festival
-INSERT INTO BILLET (idF, idType, idS, prix, dateAchat) VALUES
-    (3, 1, 1, 50, '2023-08-01');
+INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
+    (3, 1, 1, 50, '2023-08-01', '2023-08-01', '2023-08-06');
 
 -- Le groupe ne peut pas arriver avant le début du festival
 INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
@@ -195,4 +195,3 @@ INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, he
 -- Le groupe ne peut pas arriver après la fin du festival
 INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
     (1, 1, 1, '2023-10-06', '08:00:00', '2023-10-07', '16:00:00');
-

@@ -466,9 +466,10 @@ class Photo:
         }
     
 class Evenement:
-    def __init__(self, idE: int, idG: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
+    def __init__(self, idE: int, idG: int, idL: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
         self.__idE = idE
         self.__idG = idG
+        self.__idL = idL
         self.__nomE = nomE
         self.__heureDebutE = self.timedelta_to_time(heureDebutE) if isinstance(heureDebutE, timedelta) else datetime.strptime(heureDebutE, '%H:%M').time()
         self.__heureFinE = self.timedelta_to_time(heureFinE) if isinstance(heureFinE, timedelta) else datetime.strptime(heureFinE, '%H:%M').time()
@@ -487,6 +488,9 @@ class Evenement:
     
     def get_nomE(self):
         return self.__nomE
+    
+    def get_idL(self):
+        return self.__idL
     
     def get_heureDebutE(self):
         return self.__heureDebutE
@@ -519,6 +523,7 @@ class Evenement:
         return {
             "idE": self.__idE,
             "idG": self.__idG,
+            "idL": self.__idL,
             "nomE": self.__nomE,
             "heureDebutE": self.__heureDebutE.strftime("%H:%M:%S") if self.__heureDebutE else None,
             "heureFinE": self.__heureFinE.strftime("%H:%M:%S") if self.__heureFinE else None,

@@ -10,6 +10,7 @@
             <tr>
                 <th>id Evenement</th>
                 <th>id Groupe</th>
+                <th> id Lieu</th>
                 <th>nom Evenement</th>
                 <th>heure de début</th>
                 <th>heure de fin</th>
@@ -23,6 +24,7 @@
                 <tr>
                     <td>{{ evenement.get_idE() }}</td>
                     <td>{{ evenement.get_idG() or "Non attribué" }}</td>
+                    <td>{{ evenement.get_idL() or "Non attribué" }}</td>
                     <td>{{ evenement.get_nomE() }}</td>
                     <td>{{ evenement.get_heureDebutE() }}</td>
                     <td>{{ evenement.get_heureFinE() }}</td>
@@ -90,19 +92,35 @@
             <form action="/ajouter_evenement" method="post">
                 <!-- Nom de l'événement -->
                 <label for="nom_evenement_ajouter">Nom de l'événement:</label>
-                <input type="text" name="nom_evenement" id="nom_evenement_ajouter" placeholder="Nom de l'événement">
+                <input type="text" name="nom_evenement" id="nom_evenement_ajouter" placeholder="Nom de l'événement" required>
                 <!-- Horaire de début -->
                 <label for="heure_debut_ajouter">Heure de début:</label>
-                <input type="time" name="heure_debut" id="heure_debut_ajouter">
+                <input type="time" name="heure_debut" id="heure_debut_ajouter" required>
                 <!-- Horaire de fin -->
                 <label for="heure_fin_ajouter">Heure de fin:</label>
-                <input type="time" name="heure_fin" id="heure_fin_ajouter">
+                <input type="time" name="heure_fin" id="heure_fin_ajouter" required>
                 <!-- Date de début -->
                 <label for="date_debut_ajouter">Date de début:</label>
-                <input type="date" name="date_debut" id="date_debut_ajouter" max="2023-07-23" min="2023-07-21">
+                <input type="date" name="date_debut" id="date_debut_ajouter" max="2023-07-23" min="2023-07-21" required>
                 <!-- Date de fin -->
                 <label for="date_fin_ajouter">Date de fin:</label>
-                <input type="date" name="date_fin" id="date_fin_ajouter" max="2023-07-23" min="2023-07-21">   
+                <input type="date" name="date_fin" id="date_fin_ajouter" max="2023-07-23" min="2023-07-21" required>
+                <label for="type_evenement_concert">Concert</label>
+                <input type="radio" name="type_evenement" value="concert" id="type_evenement_concert" required>
+                <label for="type_evenement_activite">Activité Annexe</label>
+                <input type="radio" name="type_evenement" value="activite" id="type_evenement_activite" required>   
+                <div id="concert_fields" style="display:none;">
+                    <label for="temps_montage">Temps Montage:</label>
+                    <input type="time" name="temps_montage" id="temps_montage">
+                    <label for="temps_demontage">Temps Démontage:</label>
+                    <input type="time" name="temps_demontage" id="temps_demontage">
+                </div>
+                <div id="activite_fields" style="display:none;">
+                    <label for="type_activite">Type d'activité:</label>
+                    <input type="text" name="type_activite" id="type_activite">
+                    <label for="ouvert_public">Ouvert au public:</label>
+                    <input type="checkbox" name="ouvert_public" id="ouvert_public">
+                </div>
                 <button class="btn-ajouter" type="submit">Ajouter</button>
             </form>
         </div>
@@ -149,6 +167,26 @@
                     event.target.style.display = "none";
                 }
             }
+
+            function toggleEventDetails(eventType) {
+                var concertFields = document.getElementById('concert_fields');
+                var activiteFields = document.getElementById('activite_fields');
+                concertFields.style.display = 'none';
+                activiteFields.style.display = 'none';
+                if(eventType === 'concert') {
+                    concertFields.style.display = 'block';
+                } else if (eventType === 'activite') {
+                    activiteFields.style.display = 'block';
+                }
+            }
+
+            document.getElementById('type_evenement_concert').addEventListener('change', function() {
+               if(this.checked) toggleEventDetails('concert');
+            });
+            
+            document.getElementById('type_evenement_activite').addEventListener('change', function() {
+               if(this.checked) toggleEventDetails('activite');
+            });
         });
     </script>
 

@@ -25,3 +25,4 @@ DROP TRIGGER IF EXISTS placeDisponibleHebergement;
 DROP TRIGGER IF EXISTS dureeTypeBillet;
 DROP TRIGGER IF EXISTS dateArriveeHebergement;
 DROP TRIGGER IF EXISTS groupeArriveTropTardHebergement;
+DROP TRIGGER IF EXISTS lieuDejaUtiliseDurantHoraire;
