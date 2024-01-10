@@ -33,11 +33,14 @@
                     <td> 
                         <button class="btn-modifier"
                             data-id="{{ evenement.get_idE() }}"
+                            data-idG="{{ evenement.get_idG() }}"
+                            data-idL="{{ evenement.get_idL() }}"
                             data-nom = "{{ evenement.get_nomE() }}"
                             data-heureDebut = "{{ evenement.get_heureDebutE() }}"
                             data-heureFin = "{{ evenement.get_heureFinE() }}"
                             data-dateDebut = "{{ evenement.get_dateDebutE() }}"
-                            data-dateFin = "{{ evenement.get_dateFinE() }}">Modifier</button>
+                            data-dateFin = "{{ evenement.get_dateFinE() }}"
+                            data-type-evenement="{{ 'concert' if evenement in liste_evenements_concerts else "activite" }}">Modifier</button>
                         <button class="btn-supprimer" data-id="{{ evenement.get_idE() }}">Supprimer</button>
                     </td>
                 </tr>
@@ -54,19 +57,19 @@
                 <input type="hidden" name="id_evenement" id="id_evenement_modifier" value="">
                 <!-- Nom de l'événement -->
                 <label for="nom_evenement_modifier">Nom de l'événement:</label>
-                <input type="text" name="nom_evenement" id="nom_evenement_modifier" placeholder="Nom de l'événement">
+                <input type="text" name="nom_evenement" id="nom_evenement_modifier" placeholder="Nom de l'événement" required>
                 <!-- Horaire de début -->
                 <label for="heure_debut_modifier">Heure de début:</label>
-                <input type="time" name="heure_debut" id="heure_debut_modifier">
+                <input type="time" name="heure_debut" id="heure_debut_modifier" required>
                 <!-- Horaire de fin -->
                 <label for="heure_fin_modifier">Heure de fin:</label>
-                <input type="time" name="heure_fin" id="heure_fin_modifier">
+                <input type="time" name="heure_fin" id="heure_fin_modifier" required>
                 <!-- Date de début -->
                 <label for="date_debut_modifier">Date de début:</label>
-                <input type="date" name="date_debut" id="date_debut_modifier" max="2023-07-23" min="2023-07-21">
+                <input type="date" name="date_debut" id="date_debut_modifier" max="2023-07-23" min="2023-07-21" required>
                 <!-- Date de fin -->
                 <label for="date_fin_modifier">Date de fin:</label>
-                <input type="date" name="date_fin" id="date_fin_modifier" max="2023-07-23" min="2023-07-21">   
+                <input type="date" name="date_fin" id="date_fin_modifier" max="2023-07-23" min="2023-07-21" required>
                 <button id="modifier" type="submit">Modifier</button>
             </form>
         </div>
@@ -90,6 +93,22 @@
         <div class="modal-content">
             <span class="close-button">x</span>
             <form action="/ajouter_evenement" method="post">
+                <!-- Groupe de l'évènement -->
+                <label for ="groupe_evenement_ajouter">Groupe de l'événement:</label>
+                <select name="groupe_evenement" id="groupe_evenement_ajouter" required>
+                    <option value="" disabled selected>Choisir un groupe</option>
+                    {% for groupe in liste_groupes %}
+                        <option value="{{ groupe.get_idG() }}">{{ groupe.get_nomG() }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Lieu de l'évènement -->
+                <label for="lieu_evenement_ajouter">Lieu de l'événement:</label>
+                <select name="lieu_evenement" id="lieu_evenement_ajouter" required>
+                    <option value="" disabled selected>Choisir un lieu</option>
+                    {% for lieu in liste_lieux %}
+                        <option value="{{ lieu.get_idL() }}">{{ lieu.get_nomL() }}</option>
+                    {% endfor %}
+                </select>
                 <!-- Nom de l'événement -->
                 <label for="nom_evenement_ajouter">Nom de l'événement:</label>
                 <input type="text" name="nom_evenement" id="nom_evenement_ajouter" placeholder="Nom de l'événement" required>
@@ -106,10 +125,10 @@
                 <label for="date_fin_ajouter">Date de fin:</label>
                 <input type="date" name="date_fin" id="date_fin_ajouter" max="2023-07-23" min="2023-07-21" required>
                 <div class="radios">
-                    <label for="type_evenement_concert">Concert</label>
-                    <input type="radio" name="type_evenement" value="concert" id="type_evenement_concert" required>
-                    <label for="type_evenement_activite">Activité Annexe</label>
-                    <input type="radio" name="type_evenement" value="activite" id="type_evenement_activite" required>
+                    <label for="type_evenement_concert_ajouter">Concert</label>
+                    <input type="radio" name="type_evenement" value="concert" id="type_evenement_concert_ajouter" required>
+                    <label for="type_evenement_activite_ajouter">Activité Annexe</label>
+                    <input type="radio" name="type_evenement" value="activite" id="type_evenement_activite_ajouter" required>
                 </div>
                     <div id="concert_fields" style="display:none;">
                         <label for="temps_montage">Temps Montage:</label>
@@ -182,13 +201,33 @@
                 }
             }
 
-            document.getElementById('type_evenement_concert').addEventListener('change', function() {
+            document.getElementById('type_evenement_concert_ajouter').addEventListener('change', function() {
                if(this.checked) toggleEventDetails('concert');
             });
             
-            document.getElementById('type_evenement_activite').addEventListener('change', function() {
+            document.getElementById('type_evenement_activite_ajouter').addEventListener('change', function() {
                if(this.checked) toggleEventDetails('activite');
             });
+
+            function toggleEventDetailsModify(eventType) {
+                var concertFields = document.getElementById("concert_fields_modifier");
+                var activiteFields = document.getElementById("activite_fields_modifier");
+                concertFields.style.display = "none";
+                activiteFields.style.display = "none";
+                if (eventType === "concert") {
+                    concertFields.style.display = "block";
+                } else if (eventType === "activite") {
+                    activiteFields.style.display = "block";
+                }
+            }
+
+            document.getElementById("type_evenement_concert_modifier").addEventListener("change", function() {
+                if (this.checked) toggleEventDetails("concert");
+            });
+
+            document.getElementById('type_evenement_activite_modifier').addEventListener('change', function() {
+                if(this.checked) toggleEventDetails('activite');
+             });
         });
     </script>
 

@@ -9,12 +9,12 @@ class Activite_AnnexeBD:
         
     def get_all_activites_annexes(self):
         try:
-            query = text("SELECT idE, idA, nomA, descriptionA FROM ACTIVITE_ANNEXE")
+            query = text("SELECT idE, typeA, ouvertAuPublic FROM ACTIVITE_ANNEXE")
             result = self.connexion.get_connexion().execute(query)
-            activites_annexes = []
-            for idE, idA, nomA, descriptionA in result:
-                activites_annexes.append(Activite_Annexe(idE, idA, nomA, descriptionA))
-            return activites_annexes
+            liste_activites_annexes = []
+            for idE, typeA, ouvertAuPublic in result:
+                liste_activites_annexes.append(Activite_Annexe(idE, typeA, ouvertAuPublic))
+            return liste_activites_annexes
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             

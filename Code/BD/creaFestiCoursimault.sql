@@ -434,3 +434,31 @@ BEGIN
 END |
 
 delimiter ;
+
+DELIMITER |
+
+CREATE TRIGGER verifDisponibiliteGroupe BEFORE INSERT ON EVENEMENT
+FOR EACH ROW
+BEGIN
+    DECLARE conflitExistant INT DEFAULT 0;
+    DECLARE tempsMontageConcert TIME;
+    IF NEW.idE IN (SELECT idE FROM CONCERT) THEN
+        SET tempsMontageConcert := (SELECT tempsMontage FROM CONCERT WHERE idE = NEW.idE);
+    ELSE
+        SET tempsMontageConcert := '00:00:00';
+    END IF;
+    SELECT COUNT(*) INTO conflitExistant
+    FROM EVENEMENT e
+    LEFT JOIN CONCERT c ON e.idE = c.idE
+    WHERE e.idG = NEW.idG
+    AND e.dateDebutE = NEW.dateDebutE
+    AND (
+        (NEW.heureDebutE < ADDTIME(e.heureFinE, IFNULL(c.tempsDemontage, '00:00:00'))) OR
+        (ADDTIME(NEW.heureDebutE, tempsMontageConcert) > e.heureDebutE AND ADDTIME(NEW.heureDebutE, tempsMontageConcert) < e.heureFinE)
+    );
+    IF conflitExistant > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le groupe a déjà un événement prévu qui entre en conflit avec le nouvel horaire.";
+    END IF;
+END |
+
+DELIMITER ;

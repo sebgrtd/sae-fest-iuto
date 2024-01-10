@@ -21,8 +21,8 @@ class EvenementBD:
     
     def insert_evenement(self, evenement):
         try:
-            query = text("INSERT INTO EVENEMENT (nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES (:nomE, :heureDebutE, :heureFinE, :dateDebutE, :dateFinE)")
-            result = self.connexion.get_connexion().execute(query, {"nomE": evenement.get_nomE(), "heureDebutE": evenement.get_heureDebutE(), "heureFinE": evenement.get_heureFinE(), "dateDebutE": evenement.get_dateDebutE(), "dateFinE": evenement.get_dateFinE()})
+            query = text("INSERT INTO EVENEMENT (idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES (:idG, :idL, :nomE, :heureDebutE, :heureFinE, :dateDebutE, :dateFinE)")
+            result = self.connexion.get_connexion().execute(query, {"idG": evenement.get_idG(), "idL": evenement.get_idL(), "nomE": evenement.get_nomE(), "heureDebutE": evenement.get_heureDebutE(), "heureFinE": evenement.get_heureFinE(), "dateDebutE": evenement.get_dateDebutE(), "dateFinE": evenement.get_dateFinE()})
             evenement_id = result.lastrowid
             print(f"L'événement {evenement_id} a été ajouté")
             self.connexion.get_connexion().commit()

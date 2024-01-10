@@ -443,28 +443,6 @@ class Lien_Reseaux_Sociaux:
             "reseau": self.__reseau
         }
     
-class Photo:
-    def __init__(self, idP: int, idG: int, photo: str):
-        self.__idP = idP
-        self.__idG = idG
-        self.__photo = photo
-        
-    def get_idP(self):
-        return self.__idP
-    
-    def get_idGroupe(self):
-        return self.__idG
-    
-    def get_photo(self):
-        return self.__photo
-    
-    def to_dict(self):
-        return {
-            "idP": self.__idP,
-            "idG": self.__idG,
-            "photo": self.__photo
-        }
-    
 class Evenement:
     def __init__(self, idE: int, idG: int, idL: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
         self.__idE = idE
@@ -486,11 +464,11 @@ class Evenement:
     def get_idG(self):
         return self.__idG
     
-    def get_nomE(self):
-        return self.__nomE
-    
     def get_idL(self):
         return self.__idL
+    
+    def get_nomE(self):
+        return self.__nomE
     
     def get_heureDebutE(self):
         return self.__heureDebutE

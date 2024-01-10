@@ -20,6 +20,7 @@ from Style_MusicalBD import Style_MusicalBD
 from Groupe_StyleBD import Groupe_StyleBD
 from ConcertBD import ConcertBD
 from Activite_AnnexeBD import Activite_AnnexeBD
+from LieuBD import LieuBD
 
 from BD import * 
 
@@ -382,9 +383,22 @@ def evenements_festival():
     connexionbd = ConnexionBD()
     concertbd = ConcertBD(connexionbd)
     evenementbd = EvenementBD(connexionbd)
+    groupebd = GroupeBD(connexionbd)
+    activite_annexe_bd = Activite_AnnexeBD(connexionbd)
+    liste_groupes = groupebd.get_all_groupes()
     liste_concerts = concertbd.get_all_concerts()
+    liste_activites_annexes = activite_annexe_bd.get_all_activites_annexes()
     liste_evenements = evenementbd.get_all_evenements()
-    return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_concerts=liste_concerts)
+    liste_evenements_concerts = []
+    liste_evenements_activites_annexes = []
+    lieubd = LieuBD(connexionbd)
+    liste_lieux = lieubd.get_all_lieux()
+    for evenement in liste_evenements:
+        if evenementbd.verify_id_in_concert(evenement.get_idE()):
+            liste_evenements_concerts.append(evenement)
+        elif evenementbd.verify_id_in_activite_annexe(evenement.get_idE()):
+            liste_evenements_activites_annexes.append(evenement)
+    return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_evenements_concerts=liste_evenements_concerts, liste_evenements_activites_annexes=liste_evenements_activites_annexes, liste_lieux=liste_lieux, liste_groupes=liste_groupes)
 
 @app.route("/modifier_evenement", methods=["POST"])
 def modifier_evenement():
@@ -429,12 +443,14 @@ def supprimer_evenement():
 def ajouter_evenement():
     connexionbd = ConnexionBD()
     evenementbd = EvenementBD(connexionbd)
+    id_lieu = request.form["lieu_evenement"] if request.form["lieu_evenement"] else None
+    id_groupe = request.form["groupe_evenement"] if request.form["groupe_evenement"] else None
     nom_evenement = request.form["nom_evenement"] if request.form["nom_evenement"] else None
     date_debut = request.form["date_debut"] if request.form["date_debut"] else None
     date_fin = request.form["date_fin"] if request.form["date_fin"] else None
     heure_debut = request.form["heure_debut"] if request.form["heure_debut"] else None
     heure_fin = request.form["heure_fin"] if request.form["heure_fin"] else None
-    evenement = Evenement(None, None, None, nom_evenement, heure_debut, heure_fin, date_debut, date_fin)
+    evenement = Evenement(None, id_groupe, id_lieu, nom_evenement, heure_debut, heure_fin, date_debut, date_fin)
     id_evenement = evenementbd.insert_evenement(evenement)
     type_evenement = request.form["type_evenement"]
 
@@ -447,7 +463,7 @@ def ajouter_evenement():
 
     elif type_evenement == "activite":
         type_activite = request.form["type_activite"] if request.form["type_activite"] else None
-        ouvert_public = True if request.form["ouvert_public"] else False
+        ouvert_public = True if "ouvert_public" in request.form else False
         activite_annexebd = Activite_AnnexeBD(connexionbd)
         activite_annexe = Activite_Annexe(id_evenement, type_activite, ouvert_public)
         activite_annexebd.insert_activite_annexe(activite_annexe)

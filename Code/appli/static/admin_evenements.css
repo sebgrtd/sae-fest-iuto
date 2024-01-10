@@ -176,3 +176,8 @@ button {
     margin-bottom: 1rem;
     width: 150px;
 }
+
+#modal-ajouter select {
+    margin-bottom: 1rem;
+    width: 150px;
+}
