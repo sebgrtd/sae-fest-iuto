@@ -48,16 +48,31 @@
     <div id="modal-ajouter" class="modal">
         <div class="modal-content">
             <span class="close-button">x</span>
-            <form action="/ajouter_groupe" method="post">
+            <form action="/ajouter_groupe_hebergement" method="post">
                 <input type="hidden" name="id_hebergement" id="id_hebergement_ajouter" value="{{ hebergement.get_idH() }}">
-                <input type="text" name="nom_nouveau_membre" placeholder="Nom du groupe">
-                <input type="text" name="prenom_nouveau_membre" placeholder="Prénom du groupe">
-                <input type="text" name="nom_scene_nouveau_membre" placeholder="Nom de scène du groupe">
+                
+                <!-- Ajout de la balise select pour le menu déroulant -->
+                <select name="nom_groupe" id="nom_groupe" class="select-groupe">
+                    {% for groupe in dict_groupes_not_in_hebergement %}
+                        {% if dict_groupes_not_in_hebergement[groupe] is none %}
+                            <option value="{{ groupe.get_idG() }}">{{ groupe.get_nomG() }} ({{ dict_groupes_not_in_hebergement[groupe] }})</option>
+                        {% endif %}
+                    {% endfor %}
+                    <option disabled>──────────</option>
+                    {% for groupe in dict_groupes_not_in_hebergement %}
+                        {% if dict_groupes_not_in_hebergement[groupe] is not none %}
+                            <option value="{{ groupe.get_idG() }}">{{ groupe.get_nomG() }} ({{ dict_groupes_not_in_hebergement[groupe] }})</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
                 <button class="btn-ajouter" type="submit">Ajouter</button>
             </form>
         </div>
     </div>
     <button id="ajouter">Ajouter</button>
+
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

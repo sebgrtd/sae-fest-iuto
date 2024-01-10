@@ -84,3 +84,15 @@ class HebergementBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
+    def get_groupes_not_in_hebergement(self, idHebergement):
+        try:
+            # ajouter tous les groupes meme ceux ou idH est null
+            query = text("SELECT idG, idH, nomG, descriptionG FROM GROUPE WHERE idH IS NULL OR idH != :idH")
+            result = self.connexion.get_connexion().execute(query, {"idH": idHebergement})
+            groupes = []
+            for idG, idH, nomG, descriptionG in result:
+                groupes.append(Groupe(idG, idH, nomG, descriptionG))
+            return groupes
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return []

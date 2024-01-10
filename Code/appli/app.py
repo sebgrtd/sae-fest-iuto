@@ -396,8 +396,15 @@ def consulter_hebergement(id_hebergement):
     hebergementbd = HebergementBD(connexionbd)
     hebergement = hebergementbd.get_hebergement_by_id(id_hebergement)
     groupes_hebergement = hebergementbd.get_groupes_hebergement(id_hebergement)
-    print(groupes_hebergement)
-    return render_template("groupes_hebergement.html", hebergement=hebergement, groupes_hebergement=groupes_hebergement)
+    groupes_not_in_hebergement = hebergementbd.get_groupes_not_in_hebergement(id_hebergement)
+
+    dict_groupes_not_in_hebergement = {}
+    for groupe in groupes_not_in_hebergement:
+        id_hebergement_groupe = groupe.get_idHebergement()
+        nom_hebergement_groupe = hebergementbd.get_hebergement_by_id(id_hebergement_groupe).get_nomH() if id_hebergement_groupe is not None else None
+        dict_groupes_not_in_hebergement[groupe] = nom_hebergement_groupe
+
+    return render_template("groupes_hebergement.html", hebergement=hebergement, groupes_hebergement=groupes_hebergement, dict_groupes_not_in_hebergement=dict_groupes_not_in_hebergement)
 
 @app.route("/modifier_membre", methods=["POST"])
 def modifier_membre_groupe():
@@ -451,6 +458,18 @@ def ajouter_membre_groupe():
     membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe)
     membre_groupebd.insert_membre_groupe(membre_groupe)
     return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
+
+@app.route("/ajouter_groupe_hebergement", methods=["POST"])
+def ajouter_groupe_hebergement():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    id_groupe = request.form["nom_groupe"]
+    id_hebergement = request.form["id_hebergement"]
+    groupe = groupebd.get_groupe_by_id(id_groupe)
+    groupe.set_idHebergement(id_hebergement)
+    groupebd.update_groupe(groupe)
+    return redirect(url_for("consulter_hebergement", id_hebergement=id_hebergement))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
