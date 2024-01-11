@@ -7,6 +7,17 @@ class BilletBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
         
+    def get_all_billets(self):
+        try:
+            query = text("SELECT idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB FROM BILLET")
+            result = self.connexion.get_connexion().execute(query)
+            liste_billets = []
+            for idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB in result:
+                liste_billets.append(Billet(idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB))
+            return liste_billets
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+        
     def get_billets_spectateur(self, idFestival, idType, idSpectateur):
         try:
             query = text("SELECT idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB FROM BILLET WHERE idF = :idFestival AND idType = :idType AND idS = :idSpectateur")

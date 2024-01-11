@@ -361,16 +361,12 @@ class Membre_Groupe:
         self.__nomDeSceneMG = nomDeSceneMG
     
 class Instrument:
-    def __init__(self, idI: int, idMG: int, nomI: str):
+    def __init__(self, idI: int, nomI: str):
         self.__idI = idI
-        self.__idMG = idMG
         self.__nomI = nomI
         
     def get_idI(self):
         return self.__idI
-    
-    def get_idMembreGroupe(self):
-        return self.__idMG
     
     def get_nomI(self):
         return self.__nomI
@@ -378,7 +374,6 @@ class Instrument:
     def to_dict(self):
         return {
             "idI": self.__idI,
-            "idMG": self.__idMG,
             "nomI": self.__nomI
         }
     
