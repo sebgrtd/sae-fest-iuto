@@ -1,12 +1,16 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../../../../App.tsx'; 
 
-type Props = {
-  typeBillet: number,
-  quantite: number,
-};
 
-export const ItemPanier: React.FC<Props> = ({ typeBillet, quantite }) => {
+type Props = {
+    id: number;
+    typeBillet: number,
+    title: string,
+    price: number,
+    quantite: number,
+  };
+
+export const ItemPanier: React.FC<Props> = ({ typeBillet, price, quantite, title}) => {
   const { cart, setCart } = useContext(CartContext);
 
   // Fonction pour enlever un billet du panier
@@ -34,8 +38,8 @@ export const ItemPanier: React.FC<Props> = ({ typeBillet, quantite }) => {
             </div>
             <div className="informations">
                 <div className="textes">
-                    <h4>Pass 1 jour - fosse</h4>
-                    <h5>35,99€</h5>
+                    <h4>{title}</h4>
+                    <h5>{price}€</h5> 
                 </div>
                 <div className="compteur-quantitee">
                     <span className='ajout-retrait' onClick={() => updateQuantity(Math.max(0, quantite - 1))}>-</span>

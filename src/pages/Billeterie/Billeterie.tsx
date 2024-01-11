@@ -3,6 +3,7 @@ import TicketCard from "../../components/TicketCard";
 import Footer from "../../components/footer";
 import axios from 'axios';
 
+
 type Props = {
   isNavInFocus: boolean;
   setIsNavTransparent: (isNavTransparent: boolean) => void;

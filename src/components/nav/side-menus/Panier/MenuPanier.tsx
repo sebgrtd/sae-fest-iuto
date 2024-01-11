@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { CartContext } from '../../../../App.tsx'; 
+import { CartContext } from '../../../../App.tsx'; // Assurez-vous que le chemin est correct
 import { ItemPanier } from './ItemPanier';
 import { motion } from 'framer-motion';
 
@@ -39,12 +39,20 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
       animate={isOpen ? "visible" : "hidden"}
     >
       <div className="cross" onClick={() => setIsOpen(false)}>
+            {/* SVG ou autre élément pour fermer le panier */}
       </div>
       <div className="container">
         <h2>Mon panier</h2>
         <section className='le-panier'>
           {cart.map((item) => (
-            <ItemPanier key={item.id} typeBillet={item.id} quantite={item.quantity} />
+            <ItemPanier 
+              key={item.id}
+              id={item.id}
+              typeBillet={item.id}
+              title={item.title}
+              price={typeof item.price === 'number' ? item.price : parseInt(item.price, 10)}
+              quantite={item.quantity}
+            />
           ))}
         </section>
         <div className="sous-total">
