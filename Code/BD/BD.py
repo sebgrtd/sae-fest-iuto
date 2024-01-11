@@ -44,6 +44,15 @@ class User:
     
     def get_statutUser(self):
         return self.__statutUser
+    
+    def set_pseudoUser(self, pseudoUser):
+        self.__pseudoUser = pseudoUser
+        
+    def set_mdpUser(self, mdpUser):
+        self.__mdpUser = mdpUser
+        
+    def set_emailUser(self, emailUser):
+        self.__emailUser = emailUser
 
     def to_dict(self):
         return {

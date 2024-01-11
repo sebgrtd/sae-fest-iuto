@@ -48,6 +48,14 @@ button {
     background-color: #45a049;
 }
 
+#modifier {
+    background-color: #4CAF50;
+}
+
+#modifier:hover {
+    background-color: #45a049;
+}
+
 .btn-supprimer {
     background-color: #f44336;
 }
@@ -128,14 +136,6 @@ button {
     cursor: pointer;
     display: inline-block;
     margin-top: 5px;
-}
-
-#modifier {
-    background-color: #4CAF50;
-}
-
-#modifier:hover {
-    background-color: #45a049;
 }
 
 #retour {
