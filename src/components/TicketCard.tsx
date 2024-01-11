@@ -1,18 +1,10 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../components/form/Button';
 import { getCookie, setCookie } from '../cookies/CookiesLib.tsx';
 import { CartContext } from '../App';
 
 
-type Props = {
-  id: number;
-  title: string;
-  price: number|string;
-  nbTicket: number;
-  isForfait?: boolean; 
-};
-
 const initialDays = { '20Juillet': false, '21Juillet': false, '22Juillet': false };
 
 type Props = {
@@ -22,8 +14,6 @@ type Props = {
   nbTicket: number;
   isForfait?: boolean; 
 };
-
-const initialDays = { '20Juillet': false, '21Juillet': false, '22Juillet': false };
 
 export default function TicketCard({ id, title, price, nbTicket, isForfait }: Props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +21,11 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
   const [rotation, setRotation] = useState(0);
   const [days, setDays] = useState(initialDays);
   const { cart, setCart } = useContext(CartContext);
-
+  
+  const handleTicketChange = (newTickets: number, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setTickets(newTickets);
+    };
   const addToCartHandler = () => {
     const selectedDays = isForfait ? 
       Object.entries(days).filter(([_, isChosen]) => isChosen).map(([day, _]) => day) : 
@@ -54,6 +48,7 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
     }
     setCart(newCart); // Met à jour l'état global du panier
     setCookie('cart', newCart, { expires: 7, sameSite: 'None', secure: true }); // Met à jour le cookie
+
   };
 
 
@@ -70,7 +65,7 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
     },
     open: {
       opacity: 1,
-      height: props.title === "Forfait 2 jours" ? 150 : 120,
+      height: title === "Forfait 2 jours" ? 150 : 120,
       transition: {
         duration: 0.2,
         ease: 'easeInOut',
@@ -110,8 +105,6 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
     });
   };
   
-  const isForfait = props.isForfait || false; // Déterminez si c'est un forfait en se basant sur la
-
   return (
     <motion.div
       className="ticket-card"
@@ -140,7 +133,7 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
         </div>
       </div>
       <motion.div
-  className={`sub-menu ${props.title === "Forfait 2 jours" ? "forfait-2j" : ""}`}
+  className={`sub-menu ${title === "Forfait 2 jours" ? "forfait-2j" : ""}`}
   variants={contentVariants}
   initial="closed"
   animate={isOpen ? "open" : "closed"}
@@ -180,7 +173,7 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
       <div className='bottom-partsubmenu'>
         <div className='bottom-part-left'>
         <p>Sous-total</p>
-          <p>{tickets * props.price}€</p>
+          <p>{tickets * price}€</p>
         </div>
         <button onClick={addToCartHandler}>AJOUTER AU PANIER</button>
       </div>

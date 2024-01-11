@@ -26,12 +26,11 @@ export default function NavButton(props:Props) {
             setCartItemCount(0);
           }
         };
-        
-
         useEffect(() => {
-            updateCartItemCount();
-          }, []);
+          updateCartItemCount();
+      }, [cart]);
 
+      
   const bgVariants = {
     default : {
         backgroundColor: '#E45A3B00',

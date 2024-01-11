@@ -24,7 +24,6 @@ export const CartContext = createContext<cartContext>({
 
 function App() {
   const [cart, setCart] = useState<any[]>(() => getCookie('cart') || []);
-  const [cart, setCart] = useState<any[]>([]);
   const [isNavInFocus, setIsNavInFocus] = useState(false)
   const[isNavTransparent, setIsNavTransparent] = useState(true);
   const location = useLocation();
