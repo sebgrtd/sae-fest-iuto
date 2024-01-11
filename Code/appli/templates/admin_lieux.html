@@ -1,0 +1,30 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_lieux.css') }}">
+{% endblock %}
+
+{% block content%}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1>Les billets du festival</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>id Lieu</th>
+                <th>nom Lieu</th>
+                <th>adresse Lieu</th>
+                <th>jauge Lieu</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lieu in liste_lieux %}
+                <tr>
+                    <td> {{ lieu.get_idL() }} </td>
+                    <td> {{ lieu.get_nomL() }} </td>
+                    <td> {{ lieu.get_adresseL() }} </td>
+                    <td> {{ lieu.get_jaugeL() }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button id="ajouter">Ajouter</button>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1>Les styles musicaux du festival</h1>
+    <table>
+        <thead>
+            <tr>
+                <td>id Style</td>
+                <td>nom</td>
+                <td>Actions</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for style in liste_styles_musicaux %}
+                <tr>
+                    <td> {{ style.get_idSt() }} </td>
+                    <td> {{ style.get_nomSt() }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button id="ajouter">Ajouter</button>
+{% endblock %}

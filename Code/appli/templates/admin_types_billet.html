@@ -1,0 +1,24 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="admin_types_billet.css") }}">
+{% endblock %}
+
+{% block content%}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1>Les types de billets du festival</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>id Type</th>
+                <th>duree</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for type in liste_types_billet %}
+                <tr>
+                    <td>{{ type.get_idType() }}</td>
+                    <td>{{ type.get_duree() }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

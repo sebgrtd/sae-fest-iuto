@@ -1,0 +1,26 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_instruments.css') }}">
+{% endblock %}
+
+{% block content%}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1>Les instruments du festival</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>id Instrument</th>
+                <th>nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for instrument in liste_instruments %}
+                <tr>
+                    <td> {{ instrument.get_idI() }} </td>
+                    <td> {{ instrument.get_nomI() }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button id="ajouter">Ajouter</button>
+{% endblock %}

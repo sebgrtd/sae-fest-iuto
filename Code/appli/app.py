@@ -21,6 +21,10 @@ from Groupe_StyleBD import Groupe_StyleBD
 from ConcertBD import ConcertBD
 from Activite_AnnexeBD import Activite_AnnexeBD
 from LieuBD import LieuBD
+from BilletBD import BilletBD
+from Type_BilletBD import Type_BilletBD
+from SpectateurBD import SpectateurBD
+from InstrumentBD import InstrumentBD
 
 from BD import * 
 
@@ -480,6 +484,60 @@ def ajouter_evenement():
         print(activite_annexe.get_ouvertAuPublic())
         activite_annexebd.insert_activite_annexe(activite_annexe)
     return redirect(url_for("evenements_festival"))
+
+@app.route("/billets_festival")
+def billets_festival():
+    connexionbd = ConnexionBD()
+    billetbd = BilletBD(connexionbd)
+    liste_billets = billetbd.get_all_billets()
+    if not liste_billets:
+        return render_template("admin_billets.html", liste_billets=[])
+    return render_template("admin_billets.html", liste_billets=liste_billets)
+
+@app.route("/lieux_festival")
+def lieux_festival():
+    connexionbd = ConnexionBD()
+    lieubd = LieuBD(connexionbd)
+    liste_lieux = lieubd.get_all_lieux()
+    if not liste_lieux:
+        return render_template("admin_lieux.html", liste_lieux=[])
+    return render_template("admin_lieux.html", liste_lieux=liste_lieux)
+
+@app.route("/types_billet_festival")
+def types_billet_festival():
+    connexionbd = ConnexionBD()
+    type_billetbd = Type_BilletBD(connexionbd)
+    liste_types_billet = type_billetbd.get_all_types_billets()
+    if not liste_types_billet:
+        return render_template("admin_types_billet.html", liste_types_billet=[])
+    return render_template("admin_types_billet.html", liste_types_billet=liste_types_billet)
+
+@app.route("/spectateurs_festival")
+def spectateurs_festival():
+    connexionbd = ConnexionBD()
+    spectateurbd = SpectateurBD(connexionbd)
+    liste_spectateurs = spectateurbd.get_all_spectateurs()
+    if not liste_spectateurs:
+        return render_template("admin_spectateurs.html", liste_spectateurs=[])
+    return render_template("admin_spectateurs.html", liste_spectateurs=liste_spectateurs)
+
+@app.route("/styles_musicaux_festival")
+def styles_musicaux_festival():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    liste_styles_musicaux = style_musicalbd.get_all_styles()
+    if not liste_styles_musicaux:
+        return render_template("admin_styles.html", liste_styles_musicaux=[])
+    return render_template("admin_styles.html", liste_styles_musicaux=liste_styles_musicaux)
+
+@app.route("/instruments_festival")
+def instruments_festival():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    liste_instruments = instrumentbd.get_all_instruments()
+    if not liste_instruments:
+        return render_template("admin_instruments.html", liste_instruments=[])
+    return render_template("admin_instruments.html", liste_instruments=liste_instruments)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
