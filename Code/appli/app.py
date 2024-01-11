@@ -9,6 +9,7 @@ sys.path.append('../mail')
 
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
+from HebergementBD import HebergementBD
 from Membre_GroupeBD import Membre_GroupeBD
 from ConnexionBD import ConnexionBD
 from UserBD import UserBD
@@ -28,11 +29,12 @@ from InstrumentBD import InstrumentBD
 
 from BD import * 
 
+
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/festiuto'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://coursimault:coursimault@servinfo-mariadb/DBcoursimault'
 CORS(app, resources={r"/*": {"origins": "*"}})
 db = SQLAlchemy(app)
 
@@ -271,18 +273,36 @@ def filtrer_styles():
             liste_groupes = groupe_stylebd.get_groupes_selon_style(idStyle)
     return render_template("styles_musicaux.html", styles_musicaux=styles_musicaux, liste_groupes=liste_groupes)
 
-@app.route("/menu_admin")
+@app.route("/menu_admin/", methods=["GET", "POST"])
 def menu_admin():
     return render_template("menu_admin.html")
+
+@app.route("/login_admin")
+def login_admin():
+    return render_template("login.html")
 
 @app.route("/groupes_festival")
 def groupes_festival():
     connexionbd = ConnexionBD()
     groupebd = GroupeBD(connexionbd)
     liste_groupes = groupebd.get_all_groupes()
-    if not liste_groupes:
-        return render_template("groupes_festival.html", liste_groupes=[], liste_lieux=[])
+
+    if liste_groupes is None:
+        liste_groupes = []
+
     return render_template("groupes_festival.html", liste_groupes=liste_groupes)
+
+@app.route("/hebergements_festival")
+def hebergements_festival():
+    connexionbd = ConnexionBD()
+    hebergementbd = HebergementBD(connexionbd)
+    liste_hebergements = hebergementbd.get_all_hebergements()
+
+    if liste_hebergements is None:
+        liste_hebergements = []
+
+    return render_template("hebergements_festival.html", liste_hebergements=liste_hebergements)
+
 
 @app.route("/modifier_groupe", methods=["POST"])
 def modifier_groupe():
@@ -302,6 +322,25 @@ def modifier_groupe():
         print(f"La mise à jour du groupe {id_groupe} a échoué.")
     return redirect(url_for("groupes_festival"))
 
+@app.route("/modifier_hebergement", methods=["POST"])
+def modifier_hebergement():
+    connexionbd = ConnexionBD()
+    hebergementbd = HebergementBD(connexionbd)
+    id_hebergement = request.form["id_hebergement"]
+    nom_hebergement = request.form["nom_hebergement"]
+    adresse_hebergement = request.form["adresse_hebergement"]
+    limite_places_hebergement = request.form["limite_places"]
+    hebergement = hebergementbd.get_hebergement_by_id(id_hebergement)
+    hebergement.set_nomH(nom_hebergement)
+    hebergement.set_adresseH(adresse_hebergement)
+    hebergement.set_limitePlacesH(limite_places_hebergement)
+    succes = hebergementbd.update_hebergement(hebergement)
+    if succes:
+        print(f"L'hebergement {id_hebergement} a été mis à jour.")
+    else:
+        print(f"La mise à jour de l'hebergement {id_hebergement} a échoué.")
+    return redirect(url_for("hebergements_festival"))
+
 @app.route("/supprimer_groupe", methods=["POST"])
 def supprimer_groupe():
     connexionbd = ConnexionBD()
@@ -311,6 +350,14 @@ def supprimer_groupe():
     nom_groupe = groupe.get_nomG()
     groupebd.delete_groupe_by_name(groupe, nom_groupe)
     return redirect(url_for("groupes_festival"))
+
+@app.route("/supprimer_hebergement", methods=["POST"])
+def supprimer_hebergement():
+    connexionbd = ConnexionBD()
+    hebergementbd = HebergementBD(connexionbd)
+    id_hebergement = request.form["id_hebergement"]
+    hebergementbd.delete_hebergement_by_id(id_hebergement)
+    return redirect(url_for("hebergements_festival"))
 
 @app.route("/ajouter_groupe", methods=["POST"])
 def ajouter_groupe():
@@ -335,6 +382,17 @@ def ajouter_groupe():
 
     return redirect(url_for("groupes_festival"))
 
+@app.route("/ajouter_hebergement", methods=["POST"])
+def ajouter_hebergement():
+    connexionbd = ConnexionBD()
+    hebergementbd = HebergementBD(connexionbd)
+    nom_hebergement = request.form["nom_nouveau_hebergement"]
+    adresse_hebergement = request.form["adresse_hebergement"]
+    limite_places_hebergement = request.form["limite_places"]
+    hebergement = Hebergement(None, nom_hebergement, limite_places_hebergement, adresse_hebergement)
+    hebergementbd.insert_hebergement(hebergement)
+    return redirect(url_for("hebergements_festival"))
+
 @app.route("/consulter_groupe/<int:id_groupe>")
 def consulter_groupe(id_groupe):
     connexionbd = ConnexionBD()
@@ -344,6 +402,22 @@ def consulter_groupe(id_groupe):
     if not membres_groupe:
         return render_template("membres_groupe.html", groupe=groupe, membres_groupe=[])
     return render_template("membres_groupe.html", groupe=groupe, membres_groupe=membres_groupe)
+
+@app.route("/consulter_hebergement/<int:id_hebergement>")
+def consulter_hebergement(id_hebergement):
+    connexionbd = ConnexionBD()
+    hebergementbd = HebergementBD(connexionbd)
+    hebergement = hebergementbd.get_hebergement_by_id(id_hebergement)
+    groupes_hebergement = hebergementbd.get_groupes_hebergement(id_hebergement)
+    groupes_not_in_hebergement = hebergementbd.get_groupes_not_in_hebergement(id_hebergement)
+
+    dict_groupes_not_in_hebergement = {}
+    for groupe in groupes_not_in_hebergement:
+        id_hebergement_groupe = groupe.get_idHebergement()
+        nom_hebergement_groupe = hebergementbd.get_hebergement_by_id(id_hebergement_groupe).get_nomH() if id_hebergement_groupe is not None else None
+        dict_groupes_not_in_hebergement[groupe] = nom_hebergement_groupe
+
+    return render_template("groupes_hebergement.html", hebergement=hebergement, groupes_hebergement=groupes_hebergement, dict_groupes_not_in_hebergement=dict_groupes_not_in_hebergement)
 
 @app.route("/modifier_membre", methods=["POST"])
 def modifier_membre_groupe():
@@ -374,6 +448,18 @@ def supprimer_membre_groupe():
     membre_groupebd.delete_membre_groupe_by_name_scene(membre_groupe, nom_scene_membre_groupe)
     return redirect(url_for("consulter_groupe", id_groupe=membre_groupe.get_idGroupe()))
 
+@app.route("/supprimer_groupe_hebergement", methods=["POST"])
+def supprimer_groupe_hebergement():
+    connexionbd = ConnexionBD()
+    groupebd = GroupeBD(connexionbd)
+    id_hebergement = request.form["id_hebergement"]
+    id_groupe = request.form["id_groupe"]
+    groupe = groupebd.get_groupe_by_id(id_groupe)
+    groupe.set_idHebergement(None)
+    print(groupe.get_idHebergement())
+    groupebd.update_groupe(groupe)
+    return redirect(url_for("consulter_hebergement", id_hebergement=id_hebergement))
+
 @app.route("/ajouter_membre", methods=["POST"])
 def ajouter_membre_groupe():
     connexionbd = ConnexionBD()
@@ -385,6 +471,17 @@ def ajouter_membre_groupe():
     membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe)
     membre_groupebd.insert_membre_groupe(membre_groupe)
     return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
+
+@app.route("/ajouter_groupe_hebergement", methods=["POST"])
+def ajouter_groupe_hebergement():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    id_groupe = request.form["nom_groupe"]
+    id_hebergement = request.form["id_hebergement"]
+    groupe = groupebd.get_groupe_by_id(id_groupe)
+    groupe.set_idHebergement(id_hebergement)
+    groupebd.update_groupe(groupe)
+    return redirect(url_for("consulter_hebergement", id_hebergement=id_hebergement))
 
 @app.route("/evenements_festival")
 def evenements_festival():

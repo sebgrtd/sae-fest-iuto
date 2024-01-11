@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <link rel="stylesheet" href="../static/login.css" />
+  </head>
+  <body>
+    <form action="/menu_admin" method="POST">
+      <div class="partie-connexion">
+        <h1>Connectez-vous à votre compte</h1>
+        <div class="div-textfield">
+          <div class="email textfield-position">
+            <label for="email_username">Email ou Pseudonyme</label>
+            <input
+              type="text"
+              id="email_username"
+              name="email_username"
+              required
+              minlength="1"
+              size="10"
+              placeholder="Ex : admin1"
+            />
+          </div>
+          <div class="password textfield-position">
+            <label for="password">Mot de passe</label>
+            <div class="pwd-eyes">
+              <input
+                type="password"
+                id="password-field"
+                name="password"
+                minlength="1"
+                required
+                placeholder="Cliquez pour entrer votre mot de passe"
+              />
+            </div>
+          </div>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul>
+                {% for category, message in messages %}
+                  <li class="flash-{{ category }}">{{ message }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+        </div>
+        <div class="bouton-connexion">
+          <button id="bonton-se-connecter" type="submit" name="submit">
+            Se connecter
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
