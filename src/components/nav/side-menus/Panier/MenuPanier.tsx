@@ -38,9 +38,9 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
       initial="hidden"
       animate={isOpen ? "visible" : "hidden"}
     >
-      <div className="cross" onClick={() => setIsOpen(false)}>
+      <img className="cross" onClick={() => setIsOpen(false)}>
             {/* SVG ou autre élément pour fermer le panier */}
-      </div>
+      </img>
       <div className="container">
         <h2>Mon panier</h2>
         <section className='le-panier'>

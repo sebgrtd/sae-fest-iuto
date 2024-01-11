@@ -255,6 +255,7 @@ body{
   font-weight: 600;
 }
 
+
 #Navbar .side-menu .other{
   display: flex;
   flex-direction: column;
@@ -374,6 +375,8 @@ body{
   display: flex;
   align-items: stretch;
   gap: 1.25rem;
+  align-items: center;
+  margin-bottom: 5px;
 }
 
 #Navbar .side-menu.cart .le-panier .item-panier .informations{
@@ -423,6 +426,7 @@ input[type="number"]::-webkit-outer-spin-button {
   position: static;
   height: 1.5rem;
   width:1.5rem;
+  margin-top: 4px;
 }
 
 #Navbar .side-menu.cart .le-panier .item-panier .informations .textes{
@@ -446,6 +450,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 1.875rem;
   font-weight: 500;
 }
+
 
 .btn{
   background-color: var(--color-orange);

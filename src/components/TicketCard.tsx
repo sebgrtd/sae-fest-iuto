@@ -47,7 +47,7 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
       newCart.push(itemForCart);
     }
     setCart(newCart); // Met à jour l'état global du panier
-    setCookie('cart', newCart, { expires: 7, sameSite: 'None', secure: true }); // Met à jour le cookie
+    setCookie('cart', newCart, { expires: 7, sameSite: 'None', secure: true }); 
 
   };
 
