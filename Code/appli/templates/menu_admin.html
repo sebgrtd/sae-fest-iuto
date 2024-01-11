@@ -9,19 +9,28 @@
                 <a href="{{ url_for('groupes_festival') }}"> Tableau des groupes du festival </a>
             </div>
             <div class="menu-item">
-                <a href="#"> Lien 2 </a>
+                <a href="{{ url_for('evenements_festival') }}"> Tableau des évènements du festival </a>
             </div>
             <div class="menu-item">
                 <a href="{{ url_for('hebergements_festival') }}"> Tableau des hébergements </a>
             </div>
             <div class="menu-item">
-                <a href="#"> Lien 4 </a>
+                <a href="{{ url_for('billets_festival') }}"> Tableau des billets </a>
             </div>
             <div class="menu-item">
-                <a href="#"> Lien 5 </a>
+                <a href="{{ url_for('lieux_festival') }}"> Tableau des lieux du festival </a>
             </div>
             <div class="menu-item">
-                <a href="#"> Lien 6 </a>
+                <a href="{{ url_for("types_billet_festival") }}"> Tableau des types de billets </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ url_for("spectateurs_festival") }}"> Tableau des spectateurs du festival </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ url_for("styles_musicaux_festival") }}"> Tableau des styles musicaux du festival </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ url_for("instruments_festival") }}"> Tableau des instruments du festival </a>
             </div>
         </div>
     </div>

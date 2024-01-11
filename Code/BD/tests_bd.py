@@ -823,8 +823,8 @@ def test_type_photo2():
     
 # classe Evenement
 
-evenement1 = Evenement(1, 1, "evenement1", "10:00", "20:00", "2021-05-01", "2021-05-02")
-evenement2 = Evenement(2, 2, "evenement2", "15:00", "23:00", "2021-05-02", "2021-05-03")
+evenement1 = Evenement(1, 1, 1, "evenement1", "10:00", "20:00", "2021-05-01", "2021-05-02")
+evenement2 = Evenement(2, 2, 1, "evenement2", "15:00", "23:00", "2021-05-02", "2021-05-03")
 
 def test_get_idE():
     assert evenement1.get_idE() == 1
@@ -880,46 +880,46 @@ def test_type_heureDebutE2():
 def test_type_heureFinE2():
     assert isinstance(evenement2.get_heureFinE(), time)
     
-# classe Activites_Annexes
+# classe Activite_Annexe
 
-activites_annexes1 = Activites_Annexes(evenement1.get_idE(), "activites_annexes1", True)
-activites_annexes2 = Activites_Annexes(evenement2.get_idE(), "activites_annexes2", False)
+Activite_Annexe1 = Activite_Annexe(evenement1.get_idE(), "Activite_Annexe1", True)
+Activite_Annexe2 = Activite_Annexe(evenement2.get_idE(), "Activite_Annexe2", False)
 
 def test_get_idEvenement():
-    assert activites_annexes1.get_idEvenement() == evenement1.get_idE()
+    assert Activite_Annexe1.get_idEvenement() == evenement1.get_idE()
     
 def test_get_typeA():
-    assert activites_annexes1.get_typeA() == "activites_annexes1"
+    assert Activite_Annexe1.get_typeA() == "Activite_Annexe1"
     
 def test_get_ouvertAuPublic():
-    assert activites_annexes1.get_ouvertAuPublic() == True
+    assert Activite_Annexe1.get_ouvertAuPublic() == True
     
 def test_idEvenement2():
-    assert activites_annexes2.get_idEvenement() == evenement2.get_idE()
+    assert Activite_Annexe2.get_idEvenement() == evenement2.get_idE()
     
 def test_typeA2():
-    assert activites_annexes2.get_typeA() == "activites_annexes2"
+    assert Activite_Annexe2.get_typeA() == "Activite_Annexe2"
     
 def test_ouvertAuPublic2():
-    assert activites_annexes2.get_ouvertAuPublic() == False
+    assert Activite_Annexe2.get_ouvertAuPublic() == False
     
 def test_type_idEvenement():
-    assert isinstance(activites_annexes1.get_idEvenement(), int)
+    assert isinstance(Activite_Annexe1.get_idEvenement(), int)
     
 def test_type_typeA():
-    assert isinstance(activites_annexes1.get_typeA(), str)
+    assert isinstance(Activite_Annexe1.get_typeA(), str)
     
 def test_type_ouvertAuPublic():
-    assert isinstance(activites_annexes1.get_ouvertAuPublic(), bool)
+    assert isinstance(Activite_Annexe1.get_ouvertAuPublic(), bool)
     
 def test_type_idEvenement2():
-    assert isinstance(activites_annexes2.get_idEvenement(), int)
+    assert isinstance(Activite_Annexe2.get_idEvenement(), int)
     
 def test_type_typeA2():
-    assert isinstance(activites_annexes2.get_typeA(), str)
+    assert isinstance(Activite_Annexe2.get_typeA(), str)
     
 def test_type_ouvertAuPublic2():
-    assert isinstance(activites_annexes2.get_ouvertAuPublic(), bool)
+    assert isinstance(Activite_Annexe2.get_ouvertAuPublic(), bool)
     
 # classe Concert
 
@@ -1238,3 +1238,6 @@ def test_get_artiste_by_id():
     assert artiste.get_nomMG() == 'Vlad'
     assert artiste.get_prenomMG() == 'Cauchemar'
     assert artiste.get_nomDeSceneMG() == 'Vladimir Cauchemar'
+
+evenement_bd = EvenementBD(connexion_bd)
+evenement_1 = Evenement(5, 1, 1, 'Evenement 1', '10:00', '20:00', '2023-08-01', '2023-08-05')

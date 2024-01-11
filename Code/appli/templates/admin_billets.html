@@ -1,0 +1,36 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_billets.css') }}">
+{% endblock %}
+
+{% block content%}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1>Les billets du festival</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>id Billet</th>
+                <th>id Type</th>
+                <th>id Spectateur</th>
+                <th>prix</th>
+                <th>date d'achat</th>
+                <th>date de début</th>
+                <th>date de fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for billet in liste_billets %}
+                <tr>
+                    <td> {{ billet.get_idB() }} </td>
+                    <td> {{ billet.get_idType() }} </td>
+                    <td> {{ billet.get_idSpectateur() }} </td>
+                    <td> {{ billet.get_prix() }} </td>
+                    <td> {{ billet.get_dateAchat() }} </td>
+                    <td> {{ billet.get_dateDebutB() }} </td>
+                    <td> {{ billet.get_dateFinB() }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button id="ajouter">Ajouter</button>
+{% endblock %}

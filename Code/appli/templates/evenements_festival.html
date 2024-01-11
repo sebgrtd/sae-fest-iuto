@@ -1,0 +1,252 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_evenements.css') }}">
+{% endblock %}
+
+{% block content %}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1>Les événements du festival</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>id Evenement</th>
+                <th>id Groupe</th>
+                <th> id Lieu</th>
+                <th>nom Evenement</th>
+                <th>heure de début</th>
+                <th>heure de fin</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evenement in liste_evenements %}
+                <tr>
+                    <td>{{ evenement.get_idE() }}</td>
+                    <td>{{ evenement.get_idG() or "Non attribué" }}</td>
+                    <td>{{ evenement.get_idL() or "Non attribué" }}</td>
+                    <td>{{ evenement.get_nomE() }}</td>
+                    <td>{{ evenement.get_heureDebutE() }}</td>
+                    <td>{{ evenement.get_heureFinE() }}</td>
+                    <td>{{ evenement.get_dateDebutE() }}</td>
+                    <td>{{ evenement.get_dateFinE() }}</td>
+                    <td> 
+                        <button class="btn-modifier"
+                            data-id="{{ evenement.get_idE() }}"
+                            data-idG="{{ evenement.get_idG() }}"
+                            data-idL="{{ evenement.get_idL() }}"
+                            data-nom = "{{ evenement.get_nomE() }}"
+                            data-heureDebut = "{{ evenement.get_heureDebutE() }}"
+                            data-heureFin = "{{ evenement.get_heureFinE() }}"
+                            data-dateDebut = "{{ evenement.get_dateDebutE() }}"
+                            data-dateFin = "{{ evenement.get_dateFinE() }}"
+                            data-type-evenement="{{ 'concert' if evenement in liste_evenements_concerts else "activite" }}">Modifier</button>
+                        <button class="btn-supprimer" data-id="{{ evenement.get_idE() }}">Supprimer</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modale pour modifier un évènement -->
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/modifier_evenement" method="post">
+                <!-- ID Evenement (caché) -->
+                <input type="hidden" name="id_evenement" id="id_evenement_modifier" value="">
+                <!-- Groupe de l'évènement -->
+                <label for ="groupe_evenement_modifier">Groupe de l'événement:</label>
+                <select name="groupe_evenement" id="groupe_evenement_modifier" required>
+                    <option value="" disabled selected>Choisir un groupe</option>
+                    {% for groupe in liste_groupes %}
+                        <option value="{{ groupe.get_idG() }}">{{ groupe.get_nomG() }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Lieu de l'évènement -->
+                <label for="lieu_evenement_modifier">Lieu de l'événement:</label>
+                <select name="lieu_evenement" id="lieu_evenement_modifier" required>
+                    <option value="" disabled selected>Choisir un lieu</option>
+                    {% for lieu in liste_lieux %}
+                        <option value="{{ lieu.get_idL() }}">{{ lieu.get_nomL() }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Nom de l'événement -->
+                <label for="nom_evenement_modifier">Nom de l'événement:</label>
+                <input type="text" name="nom_evenement" id="nom_evenement_modifier" placeholder="Nom de l'événement" required>
+                <!-- Horaire de début -->
+                <label for="heure_debut_modifier">Heure de début:</label>
+                <input type="time" name="heure_debut" id="heure_debut_modifier" required>
+                <!-- Horaire de fin -->
+                <label for="heure_fin_modifier">Heure de fin:</label>
+                <input type="time" name="heure_fin" id="heure_fin_modifier" required>
+                <!-- Date de début -->
+                <label for="date_debut_modifier">Date de début:</label>
+                <input type="date" name="date_debut" id="date_debut_modifier" max="2023-07-23" min="2023-07-21" required>
+                <!-- Date de fin -->
+                <label for="date_fin_modifier">Date de fin:</label>
+                <input type="date" name="date_fin" id="date_fin_modifier" max="2023-07-23" min="2023-07-21" required>
+                <button id="modifier" type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour supprimer un évènement -->
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/supprimer_evenement" method="post">
+                <!-- ID Evenement (caché) -->
+                <input type="hidden" name="id_evenement" id="id_evenement_supprimer" value="">
+                <p>Êtes-vous sûr de vouloir supprimer cet évènement ?</p>
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un groupe -->
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/ajouter_evenement" method="post">
+                <!-- Groupe de l'évènement -->
+                <label for ="groupe_evenement_ajouter">Groupe de l'événement:</label>
+                <select name="groupe_evenement" id="groupe_evenement_ajouter" required>
+                    <option value="" disabled selected>Choisir un groupe</option>
+                    {% for groupe in liste_groupes %}
+                        <option value="{{ groupe.get_idG() }}">{{ groupe.get_nomG() }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Lieu de l'évènement -->
+                <label for="lieu_evenement_ajouter">Lieu de l'événement:</label>
+                <select name="lieu_evenement" id="lieu_evenement_ajouter" required>
+                    <option value="" disabled selected>Choisir un lieu</option>
+                    {% for lieu in liste_lieux %}
+                        <option value="{{ lieu.get_idL() }}">{{ lieu.get_nomL() }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Nom de l'événement -->
+                <label for="nom_evenement_ajouter">Nom de l'événement:</label>
+                <input type="text" name="nom_evenement" id="nom_evenement_ajouter" placeholder="Nom de l'événement" required>
+                <!-- Horaire de début -->
+                <label for="heure_debut_ajouter">Heure de début:</label>
+                <input type="time" name="heure_debut" id="heure_debut_ajouter" required>
+                <!-- Horaire de fin -->
+                <label for="heure_fin_ajouter">Heure de fin:</label>
+                <input type="time" name="heure_fin" id="heure_fin_ajouter" required>
+                <!-- Date de début -->
+                <label for="date_debut_ajouter">Date de début:</label>
+                <input type="date" name="date_debut" id="date_debut_ajouter" max="2023-07-23" min="2023-07-21" required>
+                <!-- Date de fin -->
+                <label for="date_fin_ajouter">Date de fin:</label>
+                <input type="date" name="date_fin" id="date_fin_ajouter" max="2023-07-23" min="2023-07-21" required>
+                <div class="radios">
+                    <label for="type_evenement_concert_ajouter">Concert</label>
+                    <input type="radio" name="type_evenement" value="concert" id="type_evenement_concert_ajouter" required>
+                    <label for="type_evenement_activite_ajouter">Activité Annexe</label>
+                    <input type="radio" name="type_evenement" value="activite" id="type_evenement_activite_ajouter" required>
+                </div>
+                    <div id="concert_fields" style="display:none;">
+                        <label for="temps_montage">Temps Montage:</label>
+                        <input type="time" name="temps_montage" id="temps_montage">
+                        <label for="temps_demontage">Temps Démontage:</label>
+                        <input type="time" name="temps_demontage" id="temps_demontage">
+                    </div>
+                    <div id="activite_fields" style="display:none;">
+                        <label for="type_activite">Type d'activité:</label>
+                        <input type="text" name="type_activite" id="type_activite">
+                        <label for="ouvert_public">Ouvert au public:</label>
+                        <input type="checkbox" name="ouvert_public" id="ouvert_public">
+                    </div>
+                <button class="btn-ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+    <button id="ajouter">Ajouter</button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_evenement_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("groupe_evenement_modifier").value = btn.getAttribute("data-idG");
+                    document.getElementById("lieu_evenement_modifier").value = btn.getAttribute("data-idL");
+                    document.getElementById("nom_evenement_modifier").value = btn.getAttribute("data-nom");
+                    document.getElementById("heure_debut_modifier").value = btn.getAttribute("data-heureDebut");
+                    document.getElementById("heure_fin_modifier").value = btn.getAttribute("data-heureFin");
+                    document.getElementById("date_debut_modifier").value = btn.getAttribute("data-dateDebut");
+                    document.getElementById("date_fin_modifier").value = btn.getAttribute("data-dateFin");
+                    modalModifier.style.display = "block";
+                };
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_evenement_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            }
+
+            function toggleEventDetails(eventType) {
+                var concertFields = document.getElementById('concert_fields');
+                var activiteFields = document.getElementById('activite_fields');
+                concertFields.style.display = 'none';
+                activiteFields.style.display = 'none';
+                if(eventType === 'concert') {
+                    concertFields.style.display = 'block';
+                } else if (eventType === 'activite') {
+                    activiteFields.style.display = 'block';
+                }
+            }
+
+            document.getElementById('type_evenement_concert_ajouter').addEventListener('change', function() {
+               if(this.checked) toggleEventDetails('concert');
+            });
+            
+            document.getElementById('type_evenement_activite_ajouter').addEventListener('change', function() {
+               if(this.checked) toggleEventDetails('activite');
+            });
+
+            function toggleEventDetailsModify(eventType) {
+                var concertFields = document.getElementById("concert_fields_modifier");
+                var activiteFields = document.getElementById("activite_fields_modifier");
+                concertFields.style.display = "none";
+                activiteFields.style.display = "none";
+                if (eventType === "concert") {
+                    concertFields.style.display = "block";
+                } else if (eventType === "activite") {
+                    activiteFields.style.display = "block";
+                }
+            }
+
+            document.getElementById("type_evenement_concert_modifier").addEventListener("change", function() {
+                if (this.checked) toggleEventDetails("concert");
+            });
+
+            document.getElementById('type_evenement_activite_modifier').addEventListener('change', function() {
+                if(this.checked) toggleEventDetails('activite');
+             });
+        });
+    </script>
+
+{% endblock %}

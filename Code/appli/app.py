@@ -19,9 +19,16 @@ from FaqBD import FaqBD
 from EvenementBD import EvenementBD
 from Style_MusicalBD import Style_MusicalBD
 from Groupe_StyleBD import Groupe_StyleBD
+from ConcertBD import ConcertBD
+from Activite_AnnexeBD import Activite_AnnexeBD
+from LieuBD import LieuBD
+from BilletBD import BilletBD
+from Type_BilletBD import Type_BilletBD
+from SpectateurBD import SpectateurBD
+from InstrumentBD import InstrumentBD
 
-from BD import Groupe, Hebergement
-from BD import Membre_Groupe
+from BD import * 
+
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
@@ -356,8 +363,8 @@ def supprimer_hebergement():
 def ajouter_groupe():
     connexionbd = ConnexionBD()
     groupebd = GroupeBD(connexionbd)
-    nom_groupe = request.form["nom_nouveau_groupe"]
-    description_groupe = request.form["description_nouveau_groupe"]
+    nom_groupe = request.form["nom_nouveau_groupe"] if request.form["nom_nouveau_groupe"] else None
+    description_groupe = request.form["description_nouveau_groupe"] if request.form["description_nouveau_groupe"] else None
     groupe = Groupe(None, None, nom_groupe, description_groupe)
     groupebd.insert_groupe(groupe)
     idG = groupebd.get_id_groupe_by_name(nom_groupe)
@@ -392,6 +399,8 @@ def consulter_groupe(id_groupe):
     groupebd = GroupeBD(connexionbd)
     groupe = groupebd.get_groupe_by_id(id_groupe)
     membres_groupe = groupebd.get_membres_groupe(id_groupe)
+    if not membres_groupe:
+        return render_template("membres_groupe.html", groupe=groupe, membres_groupe=[])
     return render_template("membres_groupe.html", groupe=groupe, membres_groupe=membres_groupe)
 
 @app.route("/consulter_hebergement/<int:id_hebergement>")
@@ -456,9 +465,9 @@ def ajouter_membre_groupe():
     connexionbd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexionbd)
     id_groupe = request.form["id_groupe"]
-    nom_membre_groupe = request.form["nom_nouveau_membre"]
-    prenom_membre_groupe = request.form["prenom_nouveau_membre"]
-    nom_scene_membre_groupe = request.form["nom_scene_nouveau_membre"]
+    nom_membre_groupe = request.form["nom_nouveau_membre"] if request.form["nom_nouveau_membre"] else None
+    prenom_membre_groupe = request.form["prenom_nouveau_membre"] if request.form["prenom_nouveau_membre"] else None
+    nom_scene_membre_groupe = request.form["nom_scene_nouveau_membre"] if request.form["nom_scene_nouveau_membre"] else None
     membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe)
     membre_groupebd.insert_membre_groupe(membre_groupe)
     return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
@@ -474,6 +483,158 @@ def ajouter_groupe_hebergement():
     groupebd.update_groupe(groupe)
     return redirect(url_for("consulter_hebergement", id_hebergement=id_hebergement))
 
+@app.route("/evenements_festival")
+def evenements_festival():
+    connexionbd = ConnexionBD()
+    concertbd = ConcertBD(connexionbd)
+    evenementbd = EvenementBD(connexionbd)
+    groupebd = GroupeBD(connexionbd)
+    activite_annexe_bd = Activite_AnnexeBD(connexionbd)
+    liste_groupes = groupebd.get_all_groupes()
+    liste_concerts = concertbd.get_all_concerts()
+    liste_activites_annexes = activite_annexe_bd.get_all_activites_annexes()
+    liste_evenements = evenementbd.get_all_evenements()
+    liste_evenements_concerts = []
+    liste_evenements_activites_annexes = []
+    if not liste_evenements:
+        return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=[], liste_groupes=[])
+    lieubd = LieuBD(connexionbd)
+    liste_lieux = lieubd.get_all_lieux()
+    for evenement in liste_evenements:
+        if evenementbd.verify_id_in_concert(evenement.get_idE()):
+            liste_evenements_concerts.append(evenement)
+        elif evenementbd.verify_id_in_activite_annexe(evenement.get_idE()):
+            liste_evenements_activites_annexes.append(evenement)
+    return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_evenements_concerts=liste_evenements_concerts, liste_evenements_activites_annexes=liste_evenements_activites_annexes, liste_lieux=liste_lieux, liste_groupes=liste_groupes)
+
+@app.route("/modifier_evenement", methods=["POST"])
+def modifier_evenement():
+    connexionbd = ConnexionBD()
+    evenementbd = EvenementBD(connexionbd)
+    id_evenement = request.form["id_evenement"]
+    id_lieu = request.form["lieu_evenement"] if request.form["lieu_evenement"] else None
+    id_groupe = request.form["groupe_evenement"] if request.form["groupe_evenement"] else None
+    nom_evenement = request.form["nom_evenement"]
+    date_debut = request.form["date_debut"]
+    date_fin = request.form["date_fin"]
+    heure_debut = request.form["heure_debut"]
+    heure_fin = request.form["heure_fin"]
+    evenement = evenementbd.get_evenement_by_id(id_evenement)
+    evenement.set_idG(id_groupe)
+    evenement.set_idL(id_lieu)
+    evenement.set_nomE(nom_evenement)
+    evenement.set_dateDebutE(date_debut)
+    evenement.set_dateFinE(date_fin)
+    evenement.set_heureDebutE(heure_debut)
+    evenement.set_heureFinE(heure_fin)
+    succes = evenementbd.update_evenement(evenement)
+    if succes:
+        print(f"L'événement {id_evenement} a été mis à jour.")
+    else:
+        print(f"La mise à jour de l'événement {id_evenement} a échoué.")
+    return redirect(url_for("evenements_festival"))
+
+@app.route("/supprimer_evenement", methods=["POST"])
+def supprimer_evenement():
+    connexionbd = ConnexionBD()
+    evenementbd = EvenementBD(connexionbd)
+    concert_bd = ConcertBD(connexionbd)
+    id_evenement = request.form["id_evenement"]
+    evenement = evenementbd.get_evenement_by_id(id_evenement)
+    nom_evenement = evenement.get_nomE()
+    if evenementbd.verify_id_in_concert(id_evenement):
+        concert_bd.delete_concert_by_id(id_evenement)
+    elif evenementbd.verify_id_in_activite_annexe(id_evenement):
+        activite_annexe_bd = Activite_AnnexeBD(connexionbd)
+        activite_annexe_bd.delete_activite_annexe_by_id(id_evenement)
+    evenementbd.delete_evenement_by_name(evenement, nom_evenement)
+    return redirect(url_for("evenements_festival"))
+
+@app.route("/ajouter_evenement", methods=["POST"])
+def ajouter_evenement():
+    connexionbd = ConnexionBD()
+    evenementbd = EvenementBD(connexionbd)
+    id_lieu = request.form["lieu_evenement"] if request.form["lieu_evenement"] else None
+    id_groupe = request.form["groupe_evenement"] if request.form["groupe_evenement"] else None
+    nom_evenement = request.form["nom_evenement"] if request.form["nom_evenement"] else None
+    date_debut = request.form["date_debut"] if request.form["date_debut"] else None
+    date_fin = request.form["date_fin"] if request.form["date_fin"] else None
+    heure_debut = request.form["heure_debut"] if request.form["heure_debut"] else None
+    heure_fin = request.form["heure_fin"] if request.form["heure_fin"] else None
+    evenement = Evenement(None, id_groupe, id_lieu, nom_evenement, heure_debut, heure_fin, date_debut, date_fin)
+    id_evenement = evenementbd.insert_evenement(evenement)
+    type_evenement = request.form["type_evenement"]
+
+    if type_evenement == "concert":
+        temps_montage = request.form["temps_montage"] if request.form["temps_montage"] else None
+        temps_demontage = request.form["temps_demontage"] if request.form["temps_demontage"] else None
+        concert_bd = ConcertBD(connexionbd)
+        concert = Concert(id_evenement, temps_montage, temps_demontage)
+        concert_bd.insert_concert(concert)
+
+    elif type_evenement == "activite":
+        type_activite = request.form["type_activite"] if request.form["type_activite"] else None
+        ouvert_public = True if "ouvert_public" in request.form else False
+        print(ouvert_public)
+        activite_annexebd = Activite_AnnexeBD(connexionbd)
+        activite_annexe = Activite_Annexe(id_evenement, type_activite, ouvert_public)
+        print(activite_annexe.get_ouvertAuPublic())
+        activite_annexebd.insert_activite_annexe(activite_annexe)
+    return redirect(url_for("evenements_festival"))
+
+@app.route("/billets_festival")
+def billets_festival():
+    connexionbd = ConnexionBD()
+    billetbd = BilletBD(connexionbd)
+    liste_billets = billetbd.get_all_billets()
+    if not liste_billets:
+        return render_template("admin_billets.html", liste_billets=[])
+    return render_template("admin_billets.html", liste_billets=liste_billets)
+
+@app.route("/lieux_festival")
+def lieux_festival():
+    connexionbd = ConnexionBD()
+    lieubd = LieuBD(connexionbd)
+    liste_lieux = lieubd.get_all_lieux()
+    if not liste_lieux:
+        return render_template("admin_lieux.html", liste_lieux=[])
+    return render_template("admin_lieux.html", liste_lieux=liste_lieux)
+
+@app.route("/types_billet_festival")
+def types_billet_festival():
+    connexionbd = ConnexionBD()
+    type_billetbd = Type_BilletBD(connexionbd)
+    liste_types_billet = type_billetbd.get_all_types_billets()
+    if not liste_types_billet:
+        return render_template("admin_types_billet.html", liste_types_billet=[])
+    return render_template("admin_types_billet.html", liste_types_billet=liste_types_billet)
+
+@app.route("/spectateurs_festival")
+def spectateurs_festival():
+    connexionbd = ConnexionBD()
+    spectateurbd = SpectateurBD(connexionbd)
+    liste_spectateurs = spectateurbd.get_all_spectateurs()
+    if not liste_spectateurs:
+        return render_template("admin_spectateurs.html", liste_spectateurs=[])
+    return render_template("admin_spectateurs.html", liste_spectateurs=liste_spectateurs)
+
+@app.route("/styles_musicaux_festival")
+def styles_musicaux_festival():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    liste_styles_musicaux = style_musicalbd.get_all_styles()
+    if not liste_styles_musicaux:
+        return render_template("admin_styles.html", liste_styles_musicaux=[])
+    return render_template("admin_styles.html", liste_styles_musicaux=liste_styles_musicaux)
+
+@app.route("/instruments_festival")
+def instruments_festival():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    liste_instruments = instrumentbd.get_all_instruments()
+    if not liste_instruments:
+        return render_template("admin_instruments.html", liste_instruments=[])
+    return render_template("admin_instruments.html", liste_instruments=liste_instruments)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
