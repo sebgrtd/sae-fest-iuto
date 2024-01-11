@@ -642,6 +642,45 @@ def users_festival():
         return render_template("admin_users.html", liste_users=[])
     return render_template("admin_users.html", liste_users=liste_users)
 
+@app.route("/ajouter_user", methods=["POST"])
+def ajouter_user():
+    connexionbd = ConnexionBD()
+    userbd = UserBD(connexionbd)
+    pseudo_user = request.form["pseudo_user"]
+    email_user = request.form["email_user"]
+    mdp_user = request.form["mdp_user"]
+    statut_user = request.form["statut_user"]
+    user = User(None, pseudo_user, mdp_user, email_user, statut_user)
+    userbd.insert_user_admin(user)
+    return redirect(url_for("users_festival"))
+
+@app.route("/supprimer_user", methods=["POST"])
+def supprimer_user():
+    connexionbd = ConnexionBD()
+    userbd = UserBD(connexionbd)
+    id_user = request.form["id_user"]
+    userbd.delete_user_by_id(id_user)
+    return redirect(url_for("users_festival"))
+
+@app.route("/modifier_user", methods=["POST"])
+def modifier_user():
+    connexionbd = ConnexionBD()
+    userbd = UserBD(connexionbd)
+    id_user = request.form["id_user"]
+    pseudo_user = request.form["pseudo_user"]
+    email_user = request.form["email_user"]
+    mdp_user = request.form["mdp_user"]
+    user = userbd.get_user_by_id(id_user)
+    user.set_pseudoUser(pseudo_user)
+    user.set_emailUser(email_user)
+    user.set_mdpUser(mdp_user)
+    success = userbd.update_user_admin(user)
+    if success:
+        print(f"L'utilisateur {id_user} a été mis à jour.")
+    else:
+        print(f"La mise à jour de l'utilisateur {id_user} a échoué.")
+    return redirect(url_for("users_festival"))
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
     

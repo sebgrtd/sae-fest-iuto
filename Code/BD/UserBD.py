@@ -118,3 +118,50 @@ class UserBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return False
+        
+    def insert_user_admin(self, user):
+        try:
+            query = text("INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser) VALUES (:pseudo, :password, :email, :statut)")
+            result = self.connexion.get_connexion().execute(query, {"pseudo": user.get_pseudoUser(), "password": user.get_mdpUser(), "email": user.get_emailUser(), "statut": user.get_statutUser()})
+            id_user = result.lastrowid
+            print(f"L'utilisateur {id_user} a été ajouté")
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            if ("emailUser" in str(e) and "Duplicate entry" in str(e)):
+                return "emailErr"
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def delete_user_by_id(self, idUser):
+        try:
+            query = text("DELETE FROM USER WHERE idUser = :idUser")
+            self.connexion.get_connexion().execute(query, {"idUser": idUser})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def update_user_admin(self, user):
+        try:
+            query = text("UPDATE USER SET pseudoUser = :pseudo, mdpUser = :password, emailUser = :email WHERE idUser = :idUser")
+            self.connexion.get_connexion().execute(query, {"pseudo": user.get_pseudoUser(), "password": user.get_mdpUser(), "email": user.get_emailUser(), "idUser": user.get_idUser()})
+            print(f"L'utilisateur {user.get_idUser()} a été modifié")
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            if ("emailUser" in str(e) and "Duplicate entry" in str(e)):
+                return "emailErr"
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def get_user_by_id(self, idUser):
+        try:
+            query = text("SELECT idUser, pseudoUser, mdpUser, emailUser, statutUser FROM USER WHERE idUser = :idUser")
+            result = self.connexion.get_connexion().execute(query, {"idUser": idUser})
+            idUser, pseudoUser, mdpUser, emailUser, statutUser = result.fetchone()
+            return User(idUser, pseudoUser, mdpUser, emailUser, statutUser)
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
