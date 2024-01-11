@@ -486,18 +486,14 @@ def ajouter_groupe_hebergement():
 @app.route("/evenements_festival")
 def evenements_festival():
     connexionbd = ConnexionBD()
-    concertbd = ConcertBD(connexionbd)
     evenementbd = EvenementBD(connexionbd)
     groupebd = GroupeBD(connexionbd)
-    activite_annexe_bd = Activite_AnnexeBD(connexionbd)
     liste_groupes = groupebd.get_all_groupes()
-    liste_concerts = concertbd.get_all_concerts()
-    liste_activites_annexes = activite_annexe_bd.get_all_activites_annexes()
     liste_evenements = evenementbd.get_all_evenements()
     liste_evenements_concerts = []
     liste_evenements_activites_annexes = []
     if not liste_evenements:
-        return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=[], liste_groupes=[])
+        return render_template("evenements_festival.html", liste_evenements=[], liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=[], liste_groupes=[])
     lieubd = LieuBD(connexionbd)
     liste_lieux = lieubd.get_all_lieux()
     for evenement in liste_evenements:

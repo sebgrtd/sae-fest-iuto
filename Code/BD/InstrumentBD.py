@@ -9,7 +9,7 @@ class InstrumentBD:
         
     def get_all_instruments(self):
         try:
-            query = text("SELECT idI, nomI FROM instrument")
+            query = text("SELECT idI, nomI FROM INSTRUMENT")
             result = self.connexion.get_connexion().execute(query)
             instruments = []
             for idI, nomI in result:
@@ -20,7 +20,7 @@ class InstrumentBD:
 
     def get_id_instrument_by_name(self, nom):
         try:
-            query = text("SELECT idI FROM instrument WHERE nomI = :nom")
+            query = text("SELECT idI FROM INSTRUMENT WHERE nomI = :nom")
             result = self.connexion.get_connexion().execute(query, {"nom": nom})
             for idI in result:
                 return idI[0]
@@ -30,7 +30,7 @@ class InstrumentBD:
     
     def get_instrument_by_id(self, idI):
         try:
-            query = text("SELECT idI, nomI FROM instrument WHERE idI = :idI")
+            query = text("SELECT idI, nomI FROM INSTRUMENT WHERE idI = :idI")
             result = self.connexion.get_connexion().execute(query, {"idI": idI})
             for idI, nomI in result:
                 return Instrument(idI, nomI)
@@ -39,7 +39,7 @@ class InstrumentBD:
             
     def insert_instrument(self, instrument):
         try:
-            query = text("INSERT INTO instrument (nomI) VALUES (:nom)")
+            query = text("INSERT INTO INSTRUMENT (nomI) VALUES (:nom)")
             self.connexion.get_connexion().execute(query, {"nom": instrument.get_nomI()})
             print(f"L'instrument {instrument.get_nomI()} a été ajouté")
         except SQLAlchemyError:
@@ -47,7 +47,7 @@ class InstrumentBD:
             
     def update_instrument(self, instrument):
         try:
-            query = text("UPDATE instrument SET nomI = :nom WHERE idI = :idI")
+            query = text("UPDATE INSTRUMENT SET nomI = :nom WHERE idI = :idI")
             self.connexion.get_connexion().execute(query, {"idI": instrument.get_idI(), "nom": instrument.get_nomI()})
             print(f"L'instrument {instrument.get_idI()} a été modifié")
         except SQLAlchemyError:
