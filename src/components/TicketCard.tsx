@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import Button from '../components/form/Button';
 import { getCookie, setCookie } from '../cookies/CookiesLib.tsx';
+import { CartContext } from '../App';
 
 
 type Props = {
@@ -14,39 +15,47 @@ type Props = {
 
 const initialDays = { '20Juillet': false, '21Juillet': false, '22Juillet': false };
 
+type Props = {
+  id: number;
+  title: string;
+  price: number|string;
+  nbTicket: number;
+  isForfait?: boolean; 
+};
 
-export default function TicketCard(props: Props) {
+const initialDays = { '20Juillet': false, '21Juillet': false, '22Juillet': false };
+
+export default function TicketCard({ id, title, price, nbTicket, isForfait }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [tickets, setTickets] = useState(props.nbTicket);
+  const [tickets, setTickets] = useState(nbTicket);
   const [rotation, setRotation] = useState(0);
   const [days, setDays] = useState(initialDays);
+  const { cart, setCart } = useContext(CartContext);
 
   const addToCartHandler = () => {
-    const selectedDays = isForfait 
-      ? Object.entries(days).filter(([day, isChosen]) => isChosen).map(([day, _]) => day) 
-      : [];
+    const selectedDays = isForfait ? 
+      Object.entries(days).filter(([_, isChosen]) => isChosen).map(([day, _]) => day) : 
+      [];
 
     const itemForCart = {
-      id: props.id,
-      title: props.title,
-      price: typeof props.price === 'number' ? props.price : 0,
+      id,
+      title,
+      price: typeof price === 'number' ? price : 0,
       quantity: tickets,
-      selectedDays: selectedDays,
+      selectedDays,
     };
 
-    let cart = getCookie('cart') || []; 
-    const billetIndex = cart.findIndex((billet: any) => billet.id === itemForCart.id);
+    let newCart = cart.slice(); 
+    const billetIndex = newCart.findIndex(billet => billet.id === itemForCart.id);
     if (billetIndex > -1) {
-      cart[billetIndex].quantity += itemForCart.quantity;
+      newCart[billetIndex].quantity += itemForCart.quantity;
     } else {
-      cart.push(itemForCart);
+      newCart.push(itemForCart);
     }
-    setCookie('cart', cart, { expires: 7 }); 
+    setCart(newCart); // Met à jour l'état global du panier
+    setCookie('cart', newCart, { expires: 7, sameSite: 'None', secure: true }); // Met à jour le cookie
   };
-  const handleTicketChange = (newTickets: number, event: React.MouseEvent) => {
-    event.stopPropagation();
-    setTickets(newTickets);
-  };
+
 
   const contentVariants = {
     closed: {
@@ -117,12 +126,12 @@ export default function TicketCard(props: Props) {
     >
       <div className="content">
         <div className='left-part'>
-          <h4>{props.title}</h4>
+          <h4>{title}</h4>
           <p>Les tickets ne sont pas remboursables.</p>
           <p>Dernière entrée à 11H.</p>
         </div>
         <div className='right-part'>
-          <p>{props.price}€</p>
+          <p>{price}€</p>
           <motion.div className="svg-container" animate={{ rotate: rotation }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="20" viewBox="0 0 13 20" fill="none">
               <path d="M2 18L10 10L2 2" stroke="#4E4E4E" strokeWidth="4" />

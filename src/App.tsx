@@ -4,19 +4,39 @@ import Navbar from './components/nav/Navbar'
 import { AnimatePresence } from 'framer-motion'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Accueil from './pages/Accueil/Accueil'
-import { useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import Programmation from './pages/Programmation/Programmation'
 import PageArtiste from './pages/Artiste/PageArtiste'
 import Billeterie from './pages/Billeterie/Billeterie'
 import Faq from './pages/faq/Faq'
+import { getCookie } from './cookies/CookiesLib'
+  
+interface cartContext{
+  cart: any[],
+  setCart: (cart: any[]) => void,
+}
+
+
+export const CartContext = createContext<cartContext>({
+  cart: [],
+  setCart: () => {},
+})
 
 function App() {
+  const [cart, setCart] = useState<any[]>(() => getCookie('cart') || []);
+  const [cart, setCart] = useState<any[]>([]);
   const [isNavInFocus, setIsNavInFocus] = useState(false)
   const[isNavTransparent, setIsNavTransparent] = useState(true);
   const location = useLocation();
+  
+
+  useEffect(() => {
+
+  }, []);
+
 
   return (
-    <>
+    <CartContext.Provider value = {{cart, setCart}}>
       <Navbar setNavInFocus={setIsNavInFocus} isTransparent={isNavTransparent}/>
       <AnimatePresence>
 
@@ -29,7 +49,7 @@ function App() {
         </Routes>
 
       </AnimatePresence>
-    </>
+    </CartContext.Provider>
   )
 }
 

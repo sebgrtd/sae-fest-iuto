@@ -93,6 +93,7 @@ body{
 #Navbar .btns .nav-btn{
   display: block;
   text-decoration: none;
+  position: relative;
 
   background-color: var(--color-dark);
   border: 2px solid var(--color-orange);
@@ -136,6 +137,18 @@ body{
   justify-content: center;
   align-items: center;
 }
+
+.cart-notification {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 0.8em;
+}
+
 
 #Navbar .cross{
   height: 3rem;
@@ -1117,6 +1130,7 @@ input[type="number"]::-webkit-outer-spin-button {
   line-height: normal;
 }
 
+
 #Billeterie .header-billet h2{
   font-size: 40px;
 }
@@ -1272,6 +1286,10 @@ input[type="number"]::-webkit-outer-spin-button {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+}
+
+.ticket-card{
+  cursor: pointer;
 }
 
 .ticket-control {

@@ -23,6 +23,8 @@ export const removeCookie = (key: string) => {
   Cookies.remove(key);
 };
 
+// removeCookie('cart');
+
 type userData= {
     pseudoUser: string;
     emailUser: string;
