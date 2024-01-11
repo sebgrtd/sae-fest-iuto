@@ -7,7 +7,25 @@
     <h1>Les comptes utilisateurs</h1>
     <table>
         <thead>
-            
+            <tr>
+                <th>id User</th>
+                <th>Pseudo</th>
+                <th>Mdp</th>
+                <th>Email</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr> 
         </thead>
+        <tbody>
+            {% for user in liste_users %}
+                <tr>
+                    <td>{{ user.get_idUser() }}</td>
+                    <td>{{ user.get_pseudoUser() }}</td>
+                    <td>{{ user.get_mdpUser() }}</td>
+                    <td>{{ user.get_emailUser() }}</td>
+                    <td>{{ user.get_statutUser() }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

@@ -633,7 +633,7 @@ def instruments_festival():
         return render_template("admin_instruments.html", liste_instruments=[])
     return render_template("admin_instruments.html", liste_instruments=liste_instruments)
 
-@app.route("/users_festival", methods=["POST"])
+@app.route("/users_festival")
 def users_festival():
     connexionbd = ConnexionBD()
     userbd = UserBD(connexionbd)
