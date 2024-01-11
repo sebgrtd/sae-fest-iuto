@@ -134,10 +134,14 @@ class Billet:
         self.__idType = idType
         self.__idS = idS
         self.__prix = prix
-        self.__dateAchat = dateAchat if isinstance(dateAchat, date) else datetime.strptime(dateAchat, '%Y-%m-%d').date()
-        self.__dateDebutB = dateDebutB if isinstance(dateDebutB, date) else datetime.strptime(dateDebutB, '%Y-%m-%d').date()
-        self.__dateFinB = dateFinB if isinstance(dateFinB, date) else datetime.strptime(dateFinB, '%Y-%m-%d').date()
-        
+        self.__dateAchat = dateAchat if isinstance(dateAchat, date) else datetime.strptime(dateAchat, '%Y-%m-%d').date() or datetime.strptime('0000-00-00', '%Y-%m-%d %H:%M:%S').date() 
+        if dateDebutB != None and dateFinB != None:
+            self.__dateDebutB = dateDebutB if isinstance(dateDebutB, date) else datetime.strptime(dateDebutB, '%Y-%m-%d').date() or datetime.strptime('0000-00-00', '%Y-%m-%d %H:%M:%S').date() 
+            self.__dateFinB = dateFinB if isinstance(dateFinB, date) else datetime.strptime(dateFinB, '%Y-%m-%d').date() or datetime.strptime('0000-00-00', '%Y-%m-%d %H:%M:%S').date() 
+        else:
+            self.__dateDebutB = None
+            self.__dateFinB = None
+            
     def get_idB(self):
         return self.__idB
     
