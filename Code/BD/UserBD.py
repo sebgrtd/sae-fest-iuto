@@ -43,7 +43,7 @@ class UserBD:
 
     def add_user(self, pseudo, email, password):
         try:
-            query = text("INSERT INTO USER (pseudoUser, emailUser, mdpUser) VALUES (:pseudo, :email, :password)")
+            query = text("INSERT INTO USER (pseudoUser, emailUser, mdpUser, statutUser) VALUES (:pseudo, :email, :password, 'user')")
             print("INSERT INTO USER : " + "\n"
                   + "pseudoUser = " + pseudo + "\n"
                   + "emailUser = " + email + "\n"

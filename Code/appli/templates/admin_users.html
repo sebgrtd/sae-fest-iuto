@@ -1,3 +1,13 @@
 {% block styles %}
     <link rel="stylesheet" href=" {{ url_for('static', filename='admin_users.css')}}">
 {% endblock %}
+
+{% block content %}
+    <a id="retour" href="{{ url_for('menu_admin') }}" class="btn-retour">Retour</a>
+    <h1>Les comptes utilisateurs</h1>
+    <table>
+        <thead>
+            
+        </thead>
+    </table>
+{% endblock %}

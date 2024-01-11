@@ -633,6 +633,15 @@ def instruments_festival():
         return render_template("admin_instruments.html", liste_instruments=[])
     return render_template("admin_instruments.html", liste_instruments=liste_instruments)
 
+@app.route("/users_festival", methods=["POST"])
+def users_festival():
+    connexionbd = ConnexionBD()
+    userbd = UserBD(connexionbd)
+    liste_users = userbd.get_all_users()
+    if not liste_users:
+        return render_template("admin_users.html", liste_users=[])
+    return render_template("admin_users.html", liste_users=liste_users)
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
     
