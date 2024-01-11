@@ -14,10 +14,14 @@ class ConnexionBD:
 
     def __init__(self):
         self.__connexion = None
-        self.__user = "coursimault"
-        self.__passwd = "coursimault"
-        self.__host = "servinfo-mariadb"
-        self.__database = "DBcoursimault"
+        # self.__user = "coursimault"
+        # self.__passwd = "coursimault"
+        # self.__host = "servinfo-mariadb"
+        # self.__database = "DBcoursimault"
+        self.__user = "root"
+        self.__passwd = "root"
+        self.__host = "localhost"
+        self.__database = "festiuto"
         self.ouvrir_connexion()
 
     def ouvrir_connexion(self, con: bool = True):

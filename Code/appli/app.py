@@ -34,7 +34,8 @@ MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://coursimault:coursimault@servinfo-mariadb/DBcoursimault'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://coursimault:coursimault@servinfo-mariadb/DBcoursimault'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/gestiuto'
 CORS(app, resources={r"/*": {"origins": "*"}})
 db = SQLAlchemy(app)
 
