@@ -23,11 +23,27 @@ class Faq:
         }
 
 class User:         
-    def __init__(self, idUser: int, pseudoUser: str, mdpUser: str, emailUser: str):
+    def __init__(self, idUser: int, pseudoUser: str, mdpUser: str, emailUser: str, statutUser: str):
         self.__idUser = idUser
         self.__pseudoUser = pseudoUser
         self.__mdpUser = mdpUser
         self.__emailUser = emailUser
+        self.__statutUser = statutUser
+        
+    def get_idUser(self):
+        return self.__idUser
+    
+    def get_pseudoUser(self):
+        return self.__pseudoUser
+    
+    def get_mdpUser(self):
+        return self.__mdpUser
+    
+    def get_emailUser(self):
+        return self.__emailUser
+    
+    def get_statutUser(self):
+        return self.__statutUser
 
     def to_dict(self):
         return {
