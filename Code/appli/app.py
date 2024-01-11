@@ -266,9 +266,13 @@ def filtrer_styles():
             liste_groupes = groupe_stylebd.get_groupes_selon_style(idStyle)
     return render_template("styles_musicaux.html", styles_musicaux=styles_musicaux, liste_groupes=liste_groupes)
 
-@app.route("/menu_admin")
+@app.route("/menu_admin/", methods=["GET", "POST"])
 def menu_admin():
     return render_template("menu_admin.html")
+
+@app.route("/login_admin")
+def login_admin():
+    return render_template("login.html")
 
 @app.route("/groupes_festival")
 def groupes_festival():

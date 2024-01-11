@@ -1,0 +1,82 @@
+html {
+    font-family: "Poppins", sans-serif;
+  }
+  
+  body{
+    margin: 10% 25%;
+  }
+  
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+  }
+  
+  .partie-connexion {
+    background-color: white; 
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 100%;
+    flex-grow: 1;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 5%;
+    margin: 2% 3% 0 3%;
+  }
+  
+  .div-textfield{
+    margin: 2% 3% 0 3%;
+  }
+  
+  .textfield-position {
+    display: flex;
+    flex-direction: column;
+    margin-top: 7%;
+  }
+  
+  .textfield-position input {
+    background-color: lightgrey;
+    border: none;
+    border-radius: 10px;
+    padding: 2%;
+    width: 95%;
+  }
+  
+  input::placeholder {
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .bouton-connexion {
+    margin: 5% 0 0% 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .bouton-connexion button{
+    font-size: 1rem;
+    padding: 1.25rem 2.5rem;
+    display: block;
+    background-color: #000000;
+    border: 1px solid transparent;
+    color: #ffffff;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .bouton-connexion button:hover{
+    background-color: #3f3f3f;
+    cursor: pointer;
+  }
+  
+  .flash-error {
+    color: red;
+  }
+  
