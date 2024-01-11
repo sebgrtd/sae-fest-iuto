@@ -1,6 +1,6 @@
 
 import { useContext, useEffect, useState } from 'react'
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { easeOut } from 'framer-motion/dom';
 import { setCookie, getCookie } from '../../cookies/CookiesLib';
 import { CartContext } from '../../App';
@@ -15,6 +15,14 @@ type Props =
 export default function NavButton(props:Props) {
     const [cartItemCount, setCartItemCount] = useState(0);
     const {cart, setCart} = useContext(CartContext);
+    const controls = useAnimation();
+
+    
+    const popAnim = {
+    scale: [1, 1.5, 1], // de sa taille a 1,5x fois sa taille puis retour a sa taille initiale
+    transition: { duration: 0.5 }, 
+  };
+
       
     // Handler pour mettre à jour le nombre total d’articles dans l’état local
     const updateCartItemCount = () => {
@@ -28,9 +36,12 @@ export default function NavButton(props:Props) {
         };
         useEffect(() => {
           updateCartItemCount();
-      }, [cart]);
+          if (cart.length > 0) {
+            controls.start(popAnim); // Trigger the animation
+          }
+        }, [cart]);
 
-      
+
   const bgVariants = {
     default : {
         backgroundColor: '#E45A3B00',
@@ -61,7 +72,12 @@ export default function NavButton(props:Props) {
                {props.isCart ?
          <>
          {cartItemCount > 0 && (
-           <div className="cart-notification">{cartItemCount}</div>
+            <motion.div
+            animate={controls}
+            className="cart-notification"
+          >
+            {cartItemCount}
+          </motion.div>
          )}
             <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12.4856 30.6457C13.1125 30.6457 13.6206 30.1375 13.6206 29.5106C13.6206 28.8838 13.1125 28.3756 12.4856 28.3756C11.8588 28.3756 11.3506 28.8838 11.3506 29.5106C11.3506 30.1375 11.8588 30.6457 12.4856 30.6457Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
