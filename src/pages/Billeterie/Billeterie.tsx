@@ -66,14 +66,12 @@ export default function Billeterie(props: Props) {
             <source src={videoSrc} type="video/mp4" />
             Votre navigateur ne supporte pas la vidéo.
           </video>
-          <div className="header">
             <h2>BILLETERIE</h2>
-          </div>
-          <img
-            src="images/billet_pass1j.png"
-            alt="bgbilleterie"
-            className="billetExemple"
-          ></img>
+                <img
+                  src="images/billet_pass1j.png"
+                  alt="bgbilleterie"
+                  className="billetExemple"
+                ></img>
         </header>
 
         <main className="billets">
@@ -123,8 +121,8 @@ export default function Billeterie(props: Props) {
                 price={billet.prix}
                 nbTicket={billet.nbTicket}
                 isForfait={billet.idB === 4}
-              />
-            ))}
+                />
+                ))}
             </div>
           </section>
         </main>

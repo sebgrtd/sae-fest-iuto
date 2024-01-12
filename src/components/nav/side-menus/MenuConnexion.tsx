@@ -54,8 +54,6 @@ export default function MenuConnexion(props: Props) {
   }, [codeVerification])
   
 
-  console.log(getUserCookie());
-
   const goTo = (menu : menuConnexionTabs, e? : React.MouseEvent<HTMLAnchorElement>) => {
     if(e) {e.preventDefault();}
     //reset tous les champs

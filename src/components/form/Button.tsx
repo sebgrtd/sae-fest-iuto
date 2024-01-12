@@ -5,10 +5,17 @@ type Prop = {
     text:string;
     formRef?:React.RefObject<HTMLFormElement>;
     isLoading?:boolean;
-}
+    isSmallPading?:boolean;
+    onClick?:(event: React.MouseEvent<HTMLDivElement>) => void;
+};
 
 export default function Button(props:Prop) {
-  
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => { // Ajoutez le paramètre event ici
+    if (props.onClick) {
+        props.onClick(event); 
+    }
+  };
   const[isHovered, setIsHovered] = useState(false);
 
   const animRectVariants = {
@@ -124,20 +131,21 @@ export default function Button(props:Prop) {
     }
   }
 
-  const handleClick = () => {
-    if(props.formRef){
-      props.formRef.current?.requestSubmit()
-    }
-  }
+  // const handleClick = () => {
+  //   if(props.formRef){
+  //     props.formRef.current?.requestSubmit()
+  //   }
+  // }
 
   return (
     <motion.div className='btn' 
+    onClick = {props.onClick}
     onMouseEnter={() => setIsHovered(true)}
     onMouseLeave={() => setIsHovered(false)}
     variants={bgVariants}
     initial="hidden"
     animate={props.isLoading || isHovered ? "visible" : "hidden"}
-    onClick={handleClick}
+    // onClick={handleClick}
     >
 
       <motion.input type="submit" value={props.text}

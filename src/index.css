@@ -1093,10 +1093,10 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 #Billeterie .billets {
-  padding: 0 325px 0 325px;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
 }
 
 #Billeterie .bgbillet{
@@ -1106,11 +1106,11 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 #Billeterie .billetExemple {
   position: absolute;
-  top: 18vh;
+  top: 200px;
   width: 35vw; 
 }
 
-#Billeterie .header h2{
+#Billeterie header h2{
     font-family: 'TuskerGrotesk';
     font-weight: bold;
     color: var(--color-orange);
@@ -1131,7 +1131,8 @@ input[type="number"]::-webkit-outer-spin-button {
   font-weight: 300;
   line-height: normal;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 4em;
+  width: 60vw;
 }
 
 #Billeterie .header-billet h2, #Billeterie h3, .ticket-card h4{
@@ -1194,7 +1195,7 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: white;
   box-shadow: 0px 20px 23.8px -28px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  width: 95%;
+  width: 55vw;
   margin: 1rem 0;
 }
 #Billeterie .ticket-card .content{
@@ -1245,10 +1246,15 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: space-between;
   padding-bottom: 10px;
+  align-items: center;
+  padding-top: 10px;
 }
 
-#Billeterie .bottom-part-left{display: flex;
+#Billeterie .bottom-part-left{
+  display: flex;
   gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 #Billeterie .delimiter-submenu{
@@ -1272,9 +1278,10 @@ input[type="number"]::-webkit-outer-spin-button {
   align-items: center;
 }
 
-.day-checkbox {
-  display: inline-block; 
-  margin: 5px;
+
+.day-checkbox-container {
+  display: flex;
+  gap: 5px;
 }
 
 .day-button:hover {
@@ -1302,7 +1309,7 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 12px;
 }
 
-.ticket-card img{
+.ticket-card .petitBillet{
   position: absolute;
   width: 100px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -1344,11 +1351,6 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0 1em;
 }
 
-.ticket-control .sommeButton {
-  margin-bottom: 2px;
-  font-size: 1.7em;
-}
-
 .sub-menu.forfait-2j {
   height: 300px; 
 }
@@ -1360,6 +1362,45 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: center;
 }
 
+.ticket-card .right-part p{
+  font-weight: bold;
+  color: #4E4E4E;
+}
+
+.sommeButton, .minusButton {
+  background-color: var(--color-orange); 
+  border: none; 
+  color: white;
+  padding: 7px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s; 
+}
+
+.minusButton:hover, .sommeButton:hover {
+  background-color: #e65c00; 
+}
+
+.minusButton, .sommeButton {
+  border-radius: 4px;
+}
+
+#Billeterie .btn{
+  font-size: 15px;
+  padding: 5px;
+}
+
+.ticket-card .rect img{
+  position: absolute;
+  width: 100px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  top: calc(50% - 35px / 2); 
+  left: calc(50% - 100px / 2); 
+}
+
+.ticket-card .btn-small-padding{
+  padding: 5px;
+}
 
 
 footer{
@@ -1459,6 +1500,18 @@ footer .bottom-content h5{
   html {
     font-size: 14px;
   }
+  #Billeterie .billetExemple {
+    top: 250px;
+    width: 45vw; 
+  }
+
+  #Billeterie .header-billet{
+    margin-top: 5em;
+  }
+
+  .ticket-card .sub-menu{
+    font-size: 15px;
+  }
 }
 
 /* Point de rupture pour les écrans MD */
@@ -1466,6 +1519,12 @@ footer .bottom-content h5{
   html {
     font-size: 12px;
   }
+
+  #Billeterie .header-billet{
+    width: 50vw;
+    }
+
+
 }
 
 /* Point de rupture pour les écrans SM */
@@ -1473,11 +1532,98 @@ footer .bottom-content h5{
   html {
     font-size: 10px;
   }
+
+  #Billeterie .billetExemple {
+    width: 70vw; 
+  }
+
+  #Billeterie .header-billet{
+    margin-top: 7em;
+  }
+
+  #Billeterie header h2{
+    font-size: 7em;
+    left: 1em;
+  }
+  .ticket-card .rect{
+    display: none;
+  }
+
+  .ticket-card .right-part p{
+    font-size: 15px;
+  }
+
+  #Billeterie .bottom-part-left{
+    gap: 5px;
+  }
+
+  #Billeterie .sub-menu-left-part{
+    gap: 0px;
+  }
+
+  .sub-menu.forfait-2j .bottom-part-left{
+    padding-top: 17px;
+  }
+
+  .day-button{
+    padding: 3px 15px;
+  }
+
 }
 
 /* Point de rupture pour les écrans XS */
 @media (max-width: 576px) {
   html {
     font-size: 8px;
+  }
+
+  #Billeterie .billetExemple {
+    top: 300px;
+    width: 66vw; 
+  }
+
+  #Billeterie .header-billet{
+    margin-top: 8em;
+    width: 80%;
+  }
+
+  .ticket-card .sub-menu{
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 450px) {
+  html {
+    font-size: 8px;
+  }
+
+  #Billeterie .bgbillet {
+    position: relative;
+    min-width: 100%;
+  }
+
+  #Billeterie .billetExemple {
+    top: 270px;
+    width: 75vw; 
+  }
+
+  #Billeterie .header-billet{
+    margin-top: 4em;
+    width: 80%;
+  }
+
+  #Billeterie .header-billet h2{
+    font-size: 35px;
+  }
+
+  #Billeterie .ticket-card{
+    width: 75vw;
+  }
+.ticket-card .left-part p{
+    font-size: 13px;
+  }
+
+  .ticket-card .right-part p{
+    font-size: 15px;
   }
 }
