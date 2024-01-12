@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { CartContext } from '../../../../App.tsx'; // Assurez-vous que le chemin est correct
 import { ItemPanier } from './ItemPanier';
 import { motion } from 'framer-motion';
+import Button from '../../../../components/form/Button';
+
 
 type Props = {
   isOpen: boolean;
@@ -38,27 +40,35 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
       initial="hidden"
       animate={isOpen ? "visible" : "hidden"}
     >
-      <img className="cross" onClick={() => setIsOpen(false)}>
-            {/* SVG ou autre élément pour fermer le panier */}
-      </img>
+      <svg className="cross" onClick={() => setIsOpen(false)} width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="6.52539" y="0.321533" width="35.8974" height="3.58974" rx="1.79487" transform="rotate(45 6.52539 0.321533)" fill="#E45A3B"/>
+  <rect x="3.87891" y="25.5957" width="35.8974" height="3.58974" rx="1.79487" transform="rotate(-45 3.87891 25.5957)" fill="#E45A3B"/>
+</svg>
       <div className="container">
         <h2>Mon panier</h2>
         <section className='le-panier'>
-          {cart.map((item) => (
-            <ItemPanier 
-              key={item.id}
-              id={item.id}
-              typeBillet={item.id}
-              title={item.title}
-              price={typeof item.price === 'number' ? item.price : parseInt(item.price, 10)}
-              quantite={item.quantity}
-            />
-          ))}
+          {cart.length > 0 ? (
+            cart.map((item) => (
+              <ItemPanier
+                key={item.id}
+                id={item.id}
+                typeBillet={item.id}
+                title={item.title}
+                price={typeof item.price === 'number' ? item.price : parseInt(item.price, 10)}
+                quantite={item.quantity}
+              />
+            ))
+          ) : (
+            <p>Panier Vide</p>
+          )}
         </section>
+
         <div className="sous-total">
           <h4>Sous total: </h4>
           <h4>{subtotal.toFixed(2)}€</h4>
         </div>
+
+        <Button text="RESERVER"></Button>
       </div>
     </motion.div>
   );

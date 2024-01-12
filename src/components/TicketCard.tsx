@@ -1,66 +1,103 @@
-import { motion } from 'framer-motion';
-import { useContext, useState } from 'react';
-import Button from '../components/form/Button';
-import { getCookie, setCookie } from '../cookies/CookiesLib.tsx';
-import { CartContext } from '../App';
+import { TargetAndTransition, motion } from "framer-motion";
+import { useContext, useState } from "react";
+import Button from "../components/form/Button";
+import { getCookie, setCookie } from "../cookies/CookiesLib.tsx";
+import { CartContext } from "../App";
 
-
-const initialDays = { '20Juillet': false, '21Juillet': false, '22Juillet': false };
+const initialDays = {
+  "20Juillet": false,
+  "21Juillet": false,
+  "22Juillet": false,
+};
 
 type Props = {
   id: number;
   title: string;
-  price: number|string;
+  price: number | string;
   nbTicket: number;
-  isForfait?: boolean; 
+  isForfait?: boolean;
 };
 
-export default function TicketCard({ id, title, price, nbTicket, isForfait }: Props) {
+export default function TicketCard({
+  id,
+  title,
+  price,
+  nbTicket,
+  isForfait,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [tickets, setTickets] = useState(nbTicket);
   const [rotation, setRotation] = useState(0);
   const [days, setDays] = useState(initialDays);
   const { cart, setCart } = useContext(CartContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
+
   
+
   const handleTicketChange = (newTickets: number, event: React.MouseEvent) => {
     event.stopPropagation();
     setTickets(newTickets);
-    };
-  const addToCartHandler = () => {
-    const selectedDays = isForfait ? 
-      Object.entries(days).filter(([_, isChosen]) => isChosen).map(([day, _]) => day) : 
-      [];
+  };
+  const addToCartHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setIsLoading(true);
+
+    // Longueur actuelle du panier dans les cookies
+    const currentCartLength = (getCookie("cart") || []).length;
+
+    const selectedDays = isForfait
+      ? Object.entries(days)
+          .filter(([_, isChosen]) => isChosen)
+          .map(([day, _]) => day)
+      : [];
+
 
     const itemForCart = {
       id,
       title,
-      price: typeof price === 'number' ? price : 0,
+      price: typeof price === "number" ? price : 0,
       quantity: tickets,
       selectedDays,
     };
 
-    let newCart = cart.slice(); 
-    const billetIndex = newCart.findIndex(billet => billet.id === itemForCart.id);
+    let newCart = cart.slice();
+    const billetIndex = newCart.findIndex(
+      (billet) => billet.id === itemForCart.id
+    );
     if (billetIndex > -1) {
       newCart[billetIndex].quantity += itemForCart.quantity;
     } else {
       newCart.push(itemForCart);
     }
     setCart(newCart); // Met à jour l'état global du panier
-    setCookie('cart', newCart, { expires: 7, sameSite: 'None', secure: true }); 
+    setCookie("cart", newCart, { expires: 7, sameSite: "None", secure: true });
 
+    const newCartLength = (getCookie("cart") || []).length;
+    setIsLoading(false);
+
+    if (newCartLength > currentCartLength) {
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 2000);
+    }
   };
+  const displayDay = (day: string) => day.replace("Juillet", "Juillet");
 
+  const buttonVariants: { [key: string]: TargetAndTransition } = {
+    tap: { scale: 0.95 },
+    selected: { scale: 1.1, backgroundColor: "#E45A3B" },
+    unselected: { scale: 1, backgroundColor: "#FFFFFF" },
+  };
 
   const contentVariants = {
     closed: {
       opacity: 0,
       height: 0,
-      overflow: 'hidden',
+      overflow: "hidden",
       transition: {
         duration: 0.2,
-        ease: 'easeInOut',
-        when: 'afterChildren',
+        ease: "easeInOut",
+        when: "afterChildren",
       },
     },
     open: {
@@ -68,9 +105,9 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
       height: title === "Forfait 2 jours" ? 150 : 120,
       transition: {
         duration: 0.2,
-        ease: 'easeInOut',
-        when: 'beforeChildren',
-      }
+        ease: "easeInOut",
+        when: "beforeChildren",
+      },
     },
   };
 
@@ -80,12 +117,22 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: "spring",
         stiffness: 120,
       },
     },
   };
 
+  const loadVariants = {
+    loading: {
+      scale: [1, 1.2, 1],
+      borderRadius: ["20%", "50%", "20%"],
+      transition: {
+        duration: 1.5,
+        repeat: Infinity,
+      }
+    }
+  };
   const maxSelectedDays = 2;
 
   const selectedDayCount = () => {
@@ -93,18 +140,18 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
   };
 
   const toggleDaySelection = (day: keyof typeof initialDays) => {
-    setDays(prevDays => {
+    setDays((prevDays) => {
       const isSelected = prevDays[day];
       const count = selectedDayCount();
-  
+
       if (!isSelected && count >= maxSelectedDays) {
         return prevDays;
       }
-      
+
       return { ...prevDays, [day]: !prevDays[day] };
     });
   };
-  
+
   return (
     <motion.div
       className="ticket-card"
@@ -118,67 +165,114 @@ export default function TicketCard({ id, title, price, nbTicket, isForfait }: Pr
       }}
     >
       <div className="content">
-        <div className='left-part'>
+        <div className="left-part">
           <h4>{title}</h4>
           <p>Les tickets ne sont pas remboursables.</p>
           <p>Dernière entrée à 11H.</p>
         </div>
-        <div className='right-part'>
+        <div className="right-part">
           <p>{price}€</p>
           <motion.div className="svg-container" animate={{ rotate: rotation }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="20" viewBox="0 0 13 20" fill="none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="20"
+              viewBox="0 0 13 20"
+              fill="none"
+            >
               <path d="M2 18L10 10L2 2" stroke="#4E4E4E" strokeWidth="4" />
             </svg>
           </motion.div>
         </div>
       </div>
       <motion.div
-  className={`sub-menu ${title === "Forfait 2 jours" ? "forfait-2j" : ""}`}
-  variants={contentVariants}
-  initial="closed"
-  animate={isOpen ? "open" : "closed"}
-  exit="closed"
->
-  <div className='top-partsubmenu'>
-        <div className='left-part-sub'>
-        {isForfait && (Object.keys(days) as Array<keyof typeof days>).map(day => (
-          <label key={day}>
-            <input 
-              type="checkbox"
-              checked={days[day]}
-              onChange={() => toggleDaySelection(day)}
-            />
-            {day}
-          </label>
-        ))}
-          <div className='sub-menu-left-part'>
-          <div className ="rect">
-            <img src="images/billet_pass1j.png" alt="Billet pass 1 jour" />
-          </div>
-          <div className='article-select'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 22 21" fill="none">
-            <path d="M22 9.03848H14.6966L19.8599 4.10947L17.6953 2.04109L12.532 6.97007V0H9.46799V6.97007L4.30475 2.04109L2.13807 4.10947L7.30131 9.03848H0V11.9615H7.30131L2.13807 16.8906L4.30475 18.9589L9.46799 14.0299V21H12.532V14.0299L17.6953 18.9589L19.8599 16.8906L14.6966 11.9615H22V9.03848Z" fill="#FFD600"/>
-          </svg>
-          <p>x{tickets} Article(s) sélectionné(s)</p>
-          </div>
-          </div>
-        <div className="ticket-control">
-          <button onClick={(event) => handleTicketChange(Math.max(tickets - 1, 0), event)}>-</button>
-          <span>{tickets}</span>
-          <button className='sommeButton' onClick={(event) => handleTicketChange(tickets + 1, event)}>+</button>
-        </div>
-        </div>
-      </div>
-      <div className='delimiter-submenu'></div>
-      <div className='bottom-partsubmenu'>
-        <div className='bottom-part-left'>
-        <p>Sous-total</p>
-          <p>{tickets * price}€</p>
-        </div>
-        <button onClick={addToCartHandler}>AJOUTER AU PANIER</button>
-      </div>
+        className={`sub-menu ${
+          title === "Forfait 2 jours" ? "forfait-2j" : ""
+        }`}
+        variants={contentVariants}
+        initial="closed"
+        animate={isOpen ? "open" : "closed"}
+        exit="closed"
+      >
+        <div className="top-partsubmenu">
+          <div className="left-part-sub">
+            <div className="sub-menu-left-part">
+              <div className="rect">
+                <img src="images/billet_pass1j.png" alt="Billet pass 1 jour" />
+              </div>
+              <div className="article-select">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 22 21" fill="none">
+<path d="M22 9.03848H14.6966L19.8599 4.10947L17.6953 2.04109L12.532 6.97007V0H9.46799V6.97007L4.30475 2.04109L2.13807 4.10947L7.30131 9.03848H0V11.9615H7.30131L2.13807 16.8906L4.30475 18.9589L9.46799 14.0299V21H12.532V14.0299L17.6953 18.9589L19.8599 16.8906L14.6966 11.9615H22V9.03848Z" fill="#FFD600"/>
+</svg>
+<p>x{tickets} Article(s) sélectionné(s)</p>
+              </div>
 
-      </motion.div>
-    </motion.div>
-  );
+              {isForfait &&
+                (Object.keys(days) as Array<keyof typeof initialDays>).map(
+                  (day) => (
+                    <motion.label
+                      key={day}
+                      className="day-checkbox"
+                      whileTap="tap"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={days[day]}
+                        onChange={() => toggleDaySelection(day)}
+                        style={{ display: "none" }}
+                      />
+                      <motion.div
+                        className="day-button"
+                        variants={buttonVariants}
+                        animate={days[day] ? "selected" : "unselected"}
+                      >
+                        {displayDay(day)}
+                      </motion.div>
+                    </motion.label>
+                  )
+                )}
+            </div>
+
+            <div className="ticket-control">
+              <button
+                onClick={(event) =>
+                  handleTicketChange(Math.max(tickets - 1, 0), event)
+                }
+              >
+                -
+              </button>
+              <span>{tickets}</span>
+              <button
+                className="sommeButton"
+                onClick={(event) => handleTicketChange(tickets + 1, event)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="delimiter-submenu"></div>
+        <div className="bottom-partsubmenu">
+          <div className="bottom-part-left">
+            <p>Sous-total</p>
+            <p>{tickets * (typeof price === "number" ? price : 0)}€</p>
+          </div>
+          <motion.button
+  className={`add-to-cart-button ${isLoading ? "loading" : isAdded ? "added" : ""}`}
+  onClick={!isLoading && !isAdded ? addToCartHandler : undefined}
+  whileHover={{ backgroundColor: '#FFFF00', color: '#000000' }} 
+  whileTap={{ scale: 0.95 }}
+  animate={isLoading ? "loading" : undefined}
+  variants={loadVariants}
+>
+  {isLoading
+    ? "Chargement…"
+    : isAdded
+    ? "ARTICLE AJOUTE"
+    : "AJOUTER AU PANIER"}
+</motion.button>
+</div>
+</motion.div>
+</motion.div>
+);
 }

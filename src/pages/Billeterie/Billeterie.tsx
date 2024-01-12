@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import TicketCard from "../../components/TicketCard";
 import Footer from "../../components/footer";
 import axios from 'axios';
+const videoSrc = "images/bgbilleterie.mp4"
 
 
 type Props = {
@@ -61,11 +62,10 @@ export default function Billeterie(props: Props) {
     <>
       <div className="page-defaut" id="Billeterie">
         <header>
-          <img
-            src="images/bgbilletterie.png"
-            alt="bgbilleterie"
-            className="bgbillet"
-          />
+        <video className="bgbillet" autoPlay muted loop>
+            <source src={videoSrc} type="video/mp4" />
+            Votre navigateur ne supporte pas la vidéo.
+          </video>
           <div className="header">
             <h2>BILLETERIE</h2>
           </div>
