@@ -33,38 +33,57 @@ export default function TicketCard({
   const { cart, setCart } = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  
+  type DayKey = "20 Jui" |"21 Jui"|"22 Jui";
+  const pricesByDay:{[key in DayKey]: number} = {
+    "20 Jui": 60,
+    "21 Jui": 80,
+    "22 Jui": 90,
+  };
+
   
   const selectedDayCount = () => {
     return Object.values(days).filter(Boolean).length;
   }
-
   const isDisabled = tickets === 0 || (isForfait && selectedDayCount() !== 2); 
 
   const handleTicketChange = (newTickets: number, event: React.MouseEvent) => {
     event.stopPropagation();
     setTickets(newTickets);
   }
+
+  
   const addToCartHandler = async (
     event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.stopPropagation();
-    setIsLoading(true);
-
-    // Longueur actuelle du panier dans les cookies
-    const selectedDays = isForfait
-    ? Object.entries(days)
-    .filter(([_, isChosen]) => isChosen)
-    .map(([day, _]) => day)
-    : [];
-
+    ) => {
+      event.stopPropagation();
+      setIsLoading(true);
+      
+      // Longueur actuelle du panier dans les cookies
+      const selectedDaysSortedString = isForfait
+      ? Object.entries(days)
+          .filter(([_, isChosen]) => isChosen)
+          .map(([day, _]) => day)
+          .sort()
+          .join('-')
+      : null;
+      
+      const calculPrixSelonJourSelec = isForfait && selectedDaysSortedString
+    ? selectedDaysSortedString.split('-').reduce((total, dayKey) => {
+        return total + pricesByDay[dayKey as DayKey];
+      }, 0)
+    : (typeof price === "number" ? price : 0);
+      
+    const uniqueId = isForfait && selectedDaysSortedString 
+          ? `${id}-${selectedDaysSortedString}` 
+          : `${id}`;    
 
     const itemForCart = {
       id,
+      uniqueId,
       title,
-      price: typeof price === "number" ? price : 0,
+      price: isForfait ? calculPrixSelonJourSelec : (typeof price === "number" ? price : 0),
       quantity: tickets,
-      selectedDays,
+      selectedDaysSortedString: isForfait ? selectedDaysSortedString : null,
     };
     
     
@@ -73,55 +92,45 @@ export default function TicketCard({
     // l'ajout des nouveaux billets ne ferons que changer la valeur de quantité dans le tableau et 
     // donc la longueur du tableau ne changera pas
      // Initialise la vérification de l'ajout
-  let previousQuantity = 0;
   let expectedNewQuantity = itemForCart.quantity;
   let newCart = [...cart];
 
 
-  const billetIndex = newCart.findIndex(
-    (billet) => billet.id === itemForCart.id
-  );
+  const forfaitIndex = newCart.findIndex((billet) => billet.uniqueId === uniqueId);
 
-  // Si l'article existait déjà dans le panier, on garde la quantité précédente et on détermine la nouvelle quantité attendue
-  if (billetIndex > -1) {
-    previousQuantity = newCart[billetIndex].quantity;
-    expectedNewQuantity += previousQuantity;
-    newCart[billetIndex].quantity = expectedNewQuantity; 
+  // si l'article existait déjà dans le panie on garde la quantité précédente et on détermine la nouvelle quantité attendue
+  if (forfaitIndex > -1) {
+    // si ce type de billet existe déjà, ajoute à la quantité et calcule la nouvelle quantité attendue
+    expectedNewQuantity += newCart[forfaitIndex].quantity;
+    newCart[forfaitIndex].quantity = expectedNewQuantity;
   } else {
+    // sinon on l'ajoute au panier
     newCart.push(itemForCart);
   }
-
-  // Met à jour le panier
-  setCart(newCart);
+    setCart(newCart);
   setCookie("cart", newCart, { expires: 7, sameSite: "None", secure: true });
-
-  // Vérification finale si l'ajout est correct en quantité
-  const newBilletIndex = newCart.findIndex(
-    (billet) => billet.id === itemForCart.id
-  );
-  const hasCorrectQuantity = billetIndex > -1 ?
-    newCart[newBilletIndex].quantity === expectedNewQuantity :
-    newCart.some(billet => billet.id === itemForCart.id && billet.quantity === itemForCart.quantity);
+  
+  setTimeout(() => {
+    // trouver l'article après la mise à jour pour vérifier que la quantité est correcte
+    const newForfaitIndex = newCart.findIndex((billet) => billet.uniqueId === uniqueId);
+    const hasCorrectQuantity = newForfaitIndex > -1
+      ? newCart[newForfaitIndex].quantity === expectedNewQuantity
+      : false;
 
     if (hasCorrectQuantity) {
-      setTimeout(() => {
-        setIsAdded(true);
-        setIsLoading(false);  //arrete l'animation de chargement une fois l'article ajouté + le timeout
-  
-        // fixe un autre délai pour afficher “ARTICLE AJOUTÉ” pendant un moment
-        setTimeout(() => {
-          setIsAdded(false);
-        }, 2000);  // Temps pendant lequel “ARTICLE AJOUTÉ” est visible
-  
-      }, 400);  // Temps simulant le processus de chargement
+      setIsAdded(true);
     } else {
-      // ssi l'article a pas été ajouté correctement, j'arrete l'animation de chargement.
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500); 
+      console.error('Erreur : la quantité dans le panier ne correspond pas à la quantité attendue.');
     }
-  };
-  
+
+    setIsLoading(false);
+
+    // Afficher le message 'ARTICLE AJOUTÉ' pendant un certain temps
+    setTimeout(() => {
+      setIsAdded(false);
+    }, 2000);
+  }, 400);
+};
   const displayDay = (day: string) => day.replace("Juillet", "Juillet");
 
   const buttonVariants: { [key: string]: TargetAndTransition } = {

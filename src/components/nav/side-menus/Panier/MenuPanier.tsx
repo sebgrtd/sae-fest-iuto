@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../../../../App.tsx'; // Assurez-vous que le chemin est correct
 import { ItemPanier } from './ItemPanier';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../../../components/form/Button';
 
 
@@ -47,20 +47,24 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
       <div className="container">
         <h2>Mon panier</h2>
         <section className='le-panier'>
+          <AnimatePresence>
           {cart.length > 0 ? (
             cart.map((item) => (
               <ItemPanier
-                key={item.id}
+                key={item.uniqueId}
                 id={item.id}
                 typeBillet={item.id}
                 title={item.title}
                 price={typeof item.price === 'number' ? item.price : parseInt(item.price, 10)}
                 quantite={item.quantity}
-              />
-            ))
-          ) : (
-            <p>Panier Vide</p>
-          )}
+                selectedDays={item.selectedDaysSortedString ? item.selectedDaysSortedString.split('-') : undefined}
+                uniqueId={item.uniqueId}
+                />
+                ))
+                ) : (
+                  <p>Panier Vide</p>
+                  )}
+              </AnimatePresence>
         </section>
 
         <div className="sous-total">

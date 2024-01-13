@@ -48,7 +48,7 @@ export default function Billeterie(props: Props) {
     {
       idB: 5,
       title: "Forfait 3 jours",
-      prix: "180",
+      prix: 60+80+90,
       nbTicket: 0,
     },
   ];
