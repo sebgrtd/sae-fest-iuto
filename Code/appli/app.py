@@ -578,7 +578,6 @@ def ajouter_evenement():
     elif type_evenement == "activite":
         type_activite = request.form["type_activite"] if request.form["type_activite"] else None
         ouvert_public = True if "ouvert_public" in request.form else False
-        print(ouvert_public)
         activite_annexebd = Activite_AnnexeBD(connexionbd)
         activite_annexe = Activite_Annexe(id_evenement, type_activite, ouvert_public)
         print(activite_annexe.get_ouvertAuPublic())
@@ -589,10 +588,57 @@ def ajouter_evenement():
 def billets_festival():
     connexionbd = ConnexionBD()
     billetbd = BilletBD(connexionbd)
+    spectateurbd = SpectateurBD(connexionbd)
+    type_billet = Type_BilletBD(connexionbd)
     liste_billets = billetbd.get_all_billets()
+    liste_types = type_billet.get_all_types_billets()
+    liste_spectateurs = spectateurbd.get_all_spectateurs()
     if not liste_billets:
-        return render_template("admin_billets.html", liste_billets=[])
-    return render_template("admin_billets.html", liste_billets=liste_billets)
+        return render_template("admin_billets.html", liste_billets=[], liste_types=[], liste_spectateurs=[])
+    return render_template("admin_billets.html", liste_billets=liste_billets, liste_types=liste_types, liste_spectateurs=liste_spectateurs)
+
+@app.route("/ajouter_billet", methods=["POST"])
+def ajouter_billet():
+    connexionbd = ConnexionBD()
+    billetbd = BilletBD(connexionbd)
+    id_spectateur = request.form["spectateur_billet"]
+    id_type_billet = request.form["type_billet"]
+    prix_billet = request.form["prix"]
+    date_achat_billet = request.form["date_achat"]
+    date_debut_billet = request.form["date_debut"]
+    date_fin_billet = request.form["date_fin"]
+    billet = Billet(None, 1, id_type_billet, id_spectateur, prix_billet, date_achat_billet, date_debut_billet, date_fin_billet)
+    billetbd.insert_billet(billet)
+    return redirect(url_for("billets_festival"))
+
+@app.route("/modifier_billet", methods=["POST"])
+def modifier_billet():
+    connexionbd = ConnexionBD()
+    billetbd = BilletBD(connexionbd)
+    id_billet = request.form["id_billet"]
+    id_spectateur = request.form["spectateur_billet"]
+    id_type_billet = request.form["type_billet"]
+    prix_billet = request.form["prix"]
+    date_achat_billet = request.form["date_achat"]
+    date_debut_billet = request.form["date_debut"]
+    date_fin_billet = request.form["date_fin"]
+    billet = billetbd.get_billet_by_id(id_billet)
+    billet.set_idSpectateur(id_spectateur)
+    billet.set_idType(id_type_billet)
+    billet.set_prix(prix_billet)
+    billet.set_dateAchat(date_achat_billet) 
+    billet.set_dateDebutB(date_debut_billet)
+    billet.set_dateFinB(date_fin_billet)
+    billetbd.update_billet(billet)
+    return redirect(url_for("billets_festival"))
+
+@app.route("/supprimer_billet", methods=["POST"])
+def supprimer_billet():
+    connexionbd = ConnexionBD()
+    billetbd = BilletBD(connexionbd)
+    id_billet = request.form["id_billet"]
+    billetbd.delete_billet_by_id(id_billet)
+    return redirect(url_for("billets_festival"))
 
 @app.route("/lieux_festival")
 def lieux_festival():

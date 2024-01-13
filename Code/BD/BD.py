@@ -191,6 +191,24 @@ class Billet:
     def get_dateFinB(self):
         return self.__dateFinB
     
+    def set_idType(self, idType):
+        self.__idType = idType
+    
+    def set_idSpectateur(self, idS):
+        self.__idS = idS
+        
+    def set_prix(self, prix):
+        self.__prix = prix
+        
+    def set_dateAchat(self, dateAchat):
+        self.__dateAchat = dateAchat
+        
+    def set_dateDebutB(self, dateDebutB):
+        self.__dateDebutB = dateDebutB
+        
+    def set_dateFinB(self, dateFinB):
+        self.__dateFinB = dateFinB
+    
     def to_dict(self):
         return {
             "idB": self.__idB,
