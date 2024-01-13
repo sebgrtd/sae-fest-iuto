@@ -179,7 +179,8 @@ export default function MenuConnexion(props: Props) {
 
     const data = {
       email,
-      password
+      password,
+      statUser: "user"
     }
 
     axios.post("http://localhost:8080/connecter", data).then((res) => {

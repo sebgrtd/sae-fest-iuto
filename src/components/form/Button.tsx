@@ -13,11 +13,16 @@ type Prop = {
 
 export default function Button(props:Prop) {
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => { 
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
     if (props.onClick) {
-        props.onClick(event); 
+      props.onClick(event);
+    }
+    if (props.formRef && props.formRef.current) {
+      props.formRef.current.requestSubmit();
     }
   };
+
   const buttonClasses = `btn ${props.className || ''} ${props.isDisabled ? 'disabled' : ''}`;
   const[isHovered, setIsHovered] = useState(false);
 
@@ -142,7 +147,7 @@ export default function Button(props:Prop) {
 
   return (
     <motion.div className={buttonClasses}
-    onClick={!props.isDisabled ? props.onClick : undefined}
+    onClick={!props.isDisabled ? handleClick : undefined}
     onMouseEnter={!props.isDisabled ? () => setIsHovered(true) : undefined}
     onMouseLeave={!props.isDisabled ? () => setIsHovered(false) : undefined}
     variants={bgVariants}

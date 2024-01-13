@@ -9,8 +9,7 @@ import Programmation from './pages/Programmation/Programmation'
 import PageArtiste from './pages/Artiste/PageArtiste'
 import Billeterie from './pages/Billeterie/Billeterie'
 import Faq from './pages/faq/Faq'
-import { getCookie } from './cookies/CookiesLib'
-  
+import { getCookie } from './cookies/CookiesLib'  
 interface cartContext{
   cart: any[],
   setCart: (cart: any[]) => void,

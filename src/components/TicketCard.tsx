@@ -131,6 +131,8 @@ export default function TicketCard({
     }, 2000);
   }, 400);
 };
+
+
   const displayDay = (day: string) => day.replace("Juillet", "Juillet");
 
   const buttonVariants: { [key: string]: TargetAndTransition } = {
@@ -171,6 +173,21 @@ export default function TicketCard({
         stiffness: 120,
       },
     },
+  };
+
+  const calculateSubTotal = () => {
+    if (isForfait) {
+      // Calculer le prix total en fonction des jours sélectionnés
+      const totalSelectedDaysPrice = Object.entries(days)
+        .filter(([_, isSelected]) => isSelected)
+        .reduce((total, [day]) => {
+          return total + pricesByDay[day as keyof typeof pricesByDay];
+        }, 0);
+
+      return tickets * totalSelectedDaysPrice;
+    } else {
+      return tickets * (typeof price === 'number' ? price : parseInt(price, 10));
+    }
   };
 
   const maxSelectedDays = 2;
@@ -308,7 +325,7 @@ export default function TicketCard({
                   )}
               </div>
             <p>Sous-total</p>
-            <p>{tickets * (typeof price === "number" ? price : 0)}€</p>
+            <p>{calculateSubTotal().toFixed(2)}€</p>
           </div>
           <Button
             text={
@@ -322,7 +339,7 @@ export default function TicketCard({
             onClick={(event: React.MouseEvent<HTMLElement>) =>
               addToCartHandler(event as React.MouseEvent<HTMLButtonElement>)
             }
-            isDisabled={isDisabled} // Passer la prop disabled ici
+            isDisabled={isDisabled} 
           />
         </div>
       </motion.div>

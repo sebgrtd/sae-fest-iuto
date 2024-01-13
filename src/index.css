@@ -423,6 +423,12 @@ input[type="number"]::-ms-reveal {
   height: 0;
 }
 
+#Navbar .side-menu.cart .reservation-message p{
+  font-size: 2em;
+  font-weight: bold;
+
+}
+
 
 #Navbar .side-menu.cart .le-panier .item-panier .informations .compteur-quantitee .quantite{
   border:none;
