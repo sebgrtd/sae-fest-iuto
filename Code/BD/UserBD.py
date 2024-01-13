@@ -1,3 +1,4 @@
+from flask import session
 from BD import User
 from ConnexionBD import ConnexionBD
 from sqlalchemy.exc import SQLAlchemyError
@@ -23,7 +24,19 @@ class UserBD:
             return result.fetchone()[0] == 1
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
-
+    
+    def get_user_id_by_email(self, email):
+        try:
+            query = text("SELECT idUser FROM USER WHERE emailUser = :email")
+            result = self.connexion.get_connexion().execute(query, {"email": email})
+            user_id = result.fetchone()
+            if user_id is None:
+                return None
+            return user_id[0]
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return None
+        
     def exist_user_with_id(self, idUser, password):
         try:
             query = text("SELECT count(*) FROM USER WHERE idUser = :idUser AND mdpUser = :password")
@@ -34,10 +47,10 @@ class UserBD:
 
     def get_user_by_email(self, email):
         try:
-            query = text("SELECT idUser, pseudoUser, mdpUser, emailUser FROM USER WHERE emailUser = :email")
+            query = text("SELECT idUser, pseudoUser, mdpUser, emailUser, statutUser FROM USER WHERE emailUser = :email")
             result = self.connexion.get_connexion().execute(query, {"email": email})
-            idUser, pseudoUser, mdpUser, emailUser = result.fetchone()
-            return User(idUser, pseudoUser, mdpUser, emailUser)
+            idUser, pseudoUser, mdpUser, emailUser, statutUser = result.fetchone()
+            return User(idUser, pseudoUser, mdpUser, emailUser, statutUser)
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
 
@@ -165,3 +178,4 @@ class UserBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return False
+        

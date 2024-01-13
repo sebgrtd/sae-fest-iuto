@@ -1,4 +1,5 @@
-from flask import Flask, send_file
+import datetime
+from flask import Flask, send_file, session
 from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -101,6 +102,7 @@ def connecter():
     email = data["email"]
     password = data["password"]
     if userbd.exist_user(email, password):
+
         return userbd.user_to_json(userbd.get_user_by_email(email))
     else:
         return jsonify({"error": "Utilisateur non trouve"})
@@ -119,11 +121,15 @@ def inscription():
     else:
         res = userbd.add_user(pseudo, email, password)
         if res:
-            return userbd.user_to_json(userbd.get_user_by_email(email))
+            user = userbd.get_user_by_email(email)
+            if user is not None:
+                return userbd.user_to_json(user)
+            else:
+                return jsonify({"error": "Utilisateur ajouté mais non retrouvé"})  # Nouvelle gestion d'erreur
         elif res == "emailErr":
-            return jsonify({"error": "Email déjà existant"})
+                return jsonify({"error": "Email déjà existant"})
         else:
-            return jsonify({"error": "Erreur lors de l'ajout de l'utilisateur"})
+                return jsonify({"error": "Erreur lors de l'ajout de l'utilisateur"})
         
 @app.route('/modifierProfil', methods=['POST'])
 def modifierProfil():
@@ -652,6 +658,8 @@ def types_billet_festival():
         return render_template("admin_types_billet.html", liste_types_billet=[])
     return render_template("admin_types_billet.html", liste_types_billet=liste_types_billet)
 
+
+
 @app.route("/spectateurs_festival")
 def spectateurs_festival():
     connexionbd = ConnexionBD()
@@ -727,6 +735,12 @@ def modifier_user():
         print(f"La mise à jour de l'utilisateur {id_user} a échoué.")
     return redirect(url_for("users_festival"))
 
-if __name__ == '__main__':
-    app.run(debug=True, port=8080)
-    
+@app.route('/reserver_billets', methods=['POST'])
+def reserver_billets():
+    connexion_bd = ConnexionBD()
+    billet_bd = BilletBD(connexion_bd)
+    data = request.get_json()
+    print(f"data: {data}") 
+    idUser = data[0]['id'] 
+    billet_bd.reserver_billets(data, idUser)
+    return jsonify({"success": "Les billets ont été réservés avec succès"})

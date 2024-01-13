@@ -14,6 +14,7 @@ CREATE TABLE USER(
     mdpUser VARCHAR(9999) NOT NULL,
     codeTempUser VARCHAR(6),
     emailUser VARCHAR(99) UNIQUE,
+    statutUser VARCHAR(99) NOT NULL,
     PRIMARY KEY(idUser)
 );
 
@@ -276,17 +277,17 @@ CALL listeFestivals();
 
 -- BILLET :
 -- Trigger pour vérifier la date d'achat par rapport à la fin du festival
-delimiter |
-create or replace trigger billetAchetable before insert on BILLET
-for each row
-begin
-    declare dateFinFestival DATE;
-    select dateFinF into dateFinFestival from FESTIVAL where idF = new.idF;
-    if (new.dateAchat > dateFinFestival) then
-        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Impossible d'acheter un billet pour un événement qui a déjà eu lieu";
-    end if;
-end |
-delimiter ;
+-- delimiter |
+-- create or replace trigger billetAchetable before insert on BILLET
+-- for each row
+-- begin
+--     declare dateFinFestival DATE;
+--     select dateFinF into dateFinFestival from FESTIVAL where idF = new.idF;
+--     if (new.dateAchat > dateFinFestival) then
+--         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Impossible d'acheter un billet pour un événement qui a déjà eu lieu";
+--     end if;
+-- end |
+-- delimiter ;
 
 -- Trigger pour vérifier la durée du billet par rapport à la durée du festival
 delimiter |
