@@ -125,11 +125,11 @@ def inscription():
             if user is not None:
                 return userbd.user_to_json(user)
             else:
-                return jsonify({"error": "Utilisateur ajouté mais non retrouvé"})  # Nouvelle gestion d’erreur
+                return jsonify({"error": "Utilisateur ajouté mais non retrouvé"})  # Nouvelle gestion d'erreur
         elif res == "emailErr":
                 return jsonify({"error": "Email déjà existant"})
         else:
-                return jsonify({"error": "Erreur lors de l’ajout de l’utilisateur"})
+                return jsonify({"error": "Erreur lors de l'ajout de l'utilisateur"})
         
 @app.route('/modifierProfil', methods=['POST'])
 def modifierProfil():
@@ -692,29 +692,9 @@ def modifier_user():
 @app.route('/reserver_billets', methods=['POST'])
 def reserver_billets():
     connexion_bd = ConnexionBD()
-    userbd = UserBD(connexion_bd)
+    billet_bd = BilletBD(connexion_bd)
     data = request.get_json()
-    idUser =data['id']
-    data = request.get_json()
-    billets_a_ajouter = []
-    
-    for billet_json in data['billets']:
-        date_debut_b = datetime.strptime(billet_json['selectedDaysSortedString'].split('-')[0], '%d %b %Y').date() if billet_json['selectedDaysSortedString'] else None
-        date_fin_b = datetime.strptime(billet_json['selectedDaysSortedString'].split('-')[1], '%d %b %Y').date() if billet_json['selectedDaysSortedString'] else None
-        id_festival = 1 
-        
-        # Exemple d'ajout des billets à la base de données
-        for i in range(billet_json['quantity']):
-            billet = Billet(
-                idF=id_festival,
-                idType=billet_json['id'],
-                idS=idUser,
-                prix=billet_json['price'],
-                dateAchat=datetime.utcnow(),
-                dateDebutB=date_debut_b,
-                dateFinB=date_fin_b
-            )
-            billets_a_ajouter.append(billet)
-    
-    db.session.add_all(billets_a_ajouter)
-    db.session.commit()
+    print(f"data: {data}") 
+    idUser = data[0]['id'] 
+    billet_bd.reserver_billets(data, idUser)
+    return jsonify({"success": "Les billets ont été réservés avec succès"})

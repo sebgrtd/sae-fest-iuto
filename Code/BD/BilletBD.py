@@ -1,3 +1,4 @@
+from datetime import datetime
 from BD import Billet
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
@@ -47,4 +48,60 @@ class BilletBD:
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
-        
+            
+            
+    def billet_id_dispo(self):
+        try:
+            query = text("SELECT MAX(idB) FROM BILLET")
+            result = self.connexion.get_connexion().execute(query)
+            max_id = result.fetchone()[0]
+            if max_id is None:
+                return 1
+            return max_id + 1
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return None
+    
+    def reserver_billets(self, data, idUser):
+            idType = None
+            for billet_json in data:
+                if billet_json['selectedDaysSortedString']:
+                   date_debut_b = datetime.strptime('2024 ' + billet_json['selectedDaysSortedString'].split('-')[0].replace('Jui', 'Jul'), '%Y %d %b').date()
+                   date_fin_b = datetime.strptime('2024 ' + billet_json['selectedDaysSortedString'].split('-')[1].replace('Jui', 'Jul'), '%Y %d %b').date()
+                   idType =2
+                else:
+                    date_debut_b = date_fin_b = None
+                id_festival = 4
+                if not date_debut_b or not date_fin_b:
+                    date = None
+                    if billet_json['title'] == "Accès Samedi 20 Juillet":
+                        date = datetime.strptime('2024/07/20', '%Y/%m/%d').date()
+                        idType =1
+                        date_debut_b, date_fin_b = date, date
+                    elif billet_json['title'] == "Accès Dimanche 21 Juillet":
+                        date = datetime.strptime('2024/07/21', '%Y/%m/%d').date()
+                        idType =1
+                        date_debut_b, date_fin_b = date, date
+                    elif billet_json['title'] == "Accès Lundi 22 Juillet":
+                        date = datetime.strptime('2024/07/22', '%Y/%m/%d').date()
+                        date_debut_b, date_fin_b = date, date
+                        idType =1
+                    elif billet_json['title'] == "Forfait 3 jours":
+                        idType = 3
+                        date_debut_b = datetime.strptime('2024/07/20', '%Y/%m/%d').date()
+                        date_fin_b = datetime.strptime('2024/07/20', '%Y/%m/%d').date()                    
+                for i in range(billet_json['quantity']):
+                    idBilletDisponible = self.billet_id_dispo()
+                    query = text("""INSERT INTO billet (idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB)
+                                    VALUES (:idB, :idF, :idType, :idS, :prix, :dateAchat, :dateDebutB, :dateFinB)""")
+                    self.connexion.get_connexion().execute(query, {
+                        "idB": idBilletDisponible,
+                        "idF": id_festival,
+                        "idType":idType,
+                        "idS": idUser,
+                        "prix": billet_json['price'],
+                        "dateAchat": datetime.now().date(),
+                        "dateDebutB": date_debut_b,
+                        "dateFinB": date_fin_b
+                    })
+            self.connexion.get_connexion().commit()

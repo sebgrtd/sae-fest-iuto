@@ -26,7 +26,8 @@ VALUES
 INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
     ('Festival 1', 'Ville 1', '2023-08-01', '2023-08-05'),
     ('Festival 2', 'Ville 2', '2023-07-15', '2023-07-20'),
-    ('Festival 3', 'Ville 3', '2023-08-01', '2023-08-03');
+    ('Festival 3', 'Ville 3', '2023-08-01', '2023-08-03'),
+    ('Festival 4', 'Ville 3', '2024-07-20', '2024-07-22');
 
 -- Insérer des données dans la table LIEU
 INSERT INTO LIEU (idF, nomL, adresseL, jaugeL) VALUES
