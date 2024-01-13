@@ -54,6 +54,10 @@ export default function Programmation(props : Props) {
     })
   }
   }, [])
+
+  useEffect(() => {
+    console.log("oldGroupes : ", lesGroupes)
+  }, [lesGroupes])
   
 
 
