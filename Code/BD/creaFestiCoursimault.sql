@@ -33,8 +33,8 @@ CREATE TABLE BILLET (
     idS INT NOT NULL,
     prix INT,
     dateAchat DATE NOT NULL,
-    dateDebutB DATE NOT NULL,
-    dateFinB DATE NOT NULL,
+    dateDebutB DATE NOT NULL CHECK (dateDebutB <= dateFinB),
+    dateFinB DATE NOT NULL CHECK (dateFinB >= dateDebutB),
     PRIMARY KEY (idB)
 );
 
