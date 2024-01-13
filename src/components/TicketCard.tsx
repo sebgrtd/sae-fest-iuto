@@ -16,6 +16,7 @@ type Props = {
   price: number | string;
   nbTicket: number;
   isForfait?: boolean;
+  disabled?: boolean;
 };
 
 export default function TicketCard({
@@ -32,11 +33,18 @@ export default function TicketCard({
   const { cart, setCart } = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  
+  
+  const selectedDayCount = () => {
+    return Object.values(days).filter(Boolean).length;
+  }
+
+  const isDisabled = tickets === 0 || (isForfait && selectedDayCount() !== 2); 
 
   const handleTicketChange = (newTickets: number, event: React.MouseEvent) => {
     event.stopPropagation();
     setTickets(newTickets);
-  };
+  }
   const addToCartHandler = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -64,7 +72,7 @@ export default function TicketCard({
     // condition non valide car si on ajoute un typê billet déjà présent dans le panier, 
     // l'ajout des nouveaux billets ne ferons que changer la valeur de quantité dans le tableau et 
     // donc la longueur du tableau ne changera pas
-     // Initialise la vérification de l’ajout
+     // Initialise la vérification de l'ajout
   let previousQuantity = 0;
   let expectedNewQuantity = itemForCart.quantity;
   let newCart = [...cart];
@@ -74,7 +82,7 @@ export default function TicketCard({
     (billet) => billet.id === itemForCart.id
   );
 
-  // Si l’article existait déjà dans le panier, on garde la quantité précédente et on détermine la nouvelle quantité attendue
+  // Si l'article existait déjà dans le panier, on garde la quantité précédente et on détermine la nouvelle quantité attendue
   if (billetIndex > -1) {
     previousQuantity = newCart[billetIndex].quantity;
     expectedNewQuantity += previousQuantity;
@@ -87,7 +95,7 @@ export default function TicketCard({
   setCart(newCart);
   setCookie("cart", newCart, { expires: 7, sameSite: "None", secure: true });
 
-  // Vérification finale si l’ajout est correct en quantité
+  // Vérification finale si l'ajout est correct en quantité
   const newBilletIndex = newCart.findIndex(
     (billet) => billet.id === itemForCart.id
   );
@@ -98,7 +106,7 @@ export default function TicketCard({
     if (hasCorrectQuantity) {
       setTimeout(() => {
         setIsAdded(true);
-        setIsLoading(false);  //arrete l'animation de chargement une fois l’article ajouté + le timeout
+        setIsLoading(false);  //arrete l'animation de chargement une fois l'article ajouté + le timeout
   
         // fixe un autre délai pour afficher “ARTICLE AJOUTÉ” pendant un moment
         setTimeout(() => {
@@ -107,7 +115,7 @@ export default function TicketCard({
   
       }, 400);  // Temps simulant le processus de chargement
     } else {
-      // ssi l'article a pas été ajouté correctement, j'arrete l’animation de chargement.
+      // ssi l'article a pas été ajouté correctement, j'arrete l'animation de chargement.
       setTimeout(() => {
         setIsLoading(false);
       }, 500); 
@@ -135,7 +143,7 @@ export default function TicketCard({
     },
     open: {
       opacity: 1,
-      height: title === "Forfait 2 jours" ? 160 : 140,
+      height: title === "Forfait 2 jours" ? 160 : 150,
       transition: {
         duration: 0.2,
         ease: "easeInOut",
@@ -157,10 +165,6 @@ export default function TicketCard({
   };
 
   const maxSelectedDays = 2;
-
-  const selectedDayCount = () => {
-    return Object.values(days).filter(Boolean).length;
-  };
 
   const toggleDaySelection = (day: keyof typeof initialDays) => {
     setDays((prevDays) => {
@@ -309,6 +313,7 @@ export default function TicketCard({
             onClick={(event: React.MouseEvent<HTMLElement>) =>
               addToCartHandler(event as React.MouseEvent<HTMLButtonElement>)
             }
+            isDisabled={isDisabled} // Passer la prop disabled ici
           />
         </div>
       </motion.div>

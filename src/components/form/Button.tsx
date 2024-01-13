@@ -7,15 +7,18 @@ type Prop = {
     isLoading?:boolean;
     isSmallPading?:boolean;
     onClick?:(event: React.MouseEvent<HTMLDivElement>) => void;
+    isDisabled?: boolean;
+    className?: string;
 };
 
 export default function Button(props:Prop) {
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => { // Ajoutez le paramètre event ici
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => { 
     if (props.onClick) {
         props.onClick(event); 
     }
   };
+  const buttonClasses = `btn ${props.className || ''} ${props.isDisabled ? 'disabled' : ''}`;
   const[isHovered, setIsHovered] = useState(false);
 
   const animRectVariants = {
@@ -111,7 +114,7 @@ export default function Button(props:Prop) {
         duration: 0.25,
         ease: [1, 0, 0,1]
       }
-    }
+    },
   }
 
   const inputVariants = {
@@ -138,14 +141,13 @@ export default function Button(props:Prop) {
   // }
 
   return (
-    <motion.div className='btn' 
-    onClick = {props.onClick}
-    onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
+    <motion.div className={buttonClasses}
+    onClick={!props.isDisabled ? props.onClick : undefined}
+    onMouseEnter={!props.isDisabled ? () => setIsHovered(true) : undefined}
+    onMouseLeave={!props.isDisabled ? () => setIsHovered(false) : undefined}
     variants={bgVariants}
     initial="hidden"
     animate={props.isLoading || isHovered ? "visible" : "hidden"}
-    // onClick={handleClick}
     >
 
       <motion.input type="submit" value={props.text}

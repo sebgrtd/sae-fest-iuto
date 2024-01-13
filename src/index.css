@@ -510,6 +510,12 @@ input[type="number"]::-webkit-outer-spin-button {
   pointer-events: none;
 }
 
+.btn.disabled{
+  background-color: grey;
+  cursor: not-allowed;
+  border: 2px solid grey;
+}
+
 #Accueil {
   height: 100vh;
   width: 100%;
@@ -1401,7 +1407,6 @@ input[type="number"]::-webkit-outer-spin-button {
 .ticket-card .btn-small-padding{
   padding: 5px;
 }
-
 
 footer{
   background-color: var(--color-orange);
