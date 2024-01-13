@@ -5,10 +5,25 @@ type Prop = {
     text:string;
     formRef?:React.RefObject<HTMLFormElement>;
     isLoading?:boolean;
-}
+    isSmallPading?:boolean;
+    onClick?:(event: React.MouseEvent<HTMLDivElement>) => void;
+    isDisabled?: boolean;
+    className?: string;
+};
 
 export default function Button(props:Prop) {
-  
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    if (props.onClick) {
+      props.onClick(event);
+    }
+    if (props.formRef && props.formRef.current) {
+      props.formRef.current.requestSubmit();
+    }
+  };
+
+  const buttonClasses = `btn ${props.className || ''} ${props.isDisabled ? 'disabled' : ''}`;
   const[isHovered, setIsHovered] = useState(false);
 
   const animRectVariants = {
@@ -104,7 +119,7 @@ export default function Button(props:Prop) {
         duration: 0.25,
         ease: [1, 0, 0,1]
       }
-    }
+    },
   }
 
   const inputVariants = {
@@ -124,20 +139,20 @@ export default function Button(props:Prop) {
     }
   }
 
-  const handleClick = () => {
-    if(props.formRef){
-      props.formRef.current?.requestSubmit()
-    }
-  }
+  // const handleClick = () => {
+  //   if(props.formRef){
+  //     props.formRef.current?.requestSubmit()
+  //   }
+  // }
 
   return (
-    <motion.div className='btn' 
-    onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
+    <motion.div className={buttonClasses}
+    onClick={!props.isDisabled ? handleClick : undefined}
+    onMouseEnter={!props.isDisabled ? () => setIsHovered(true) : undefined}
+    onMouseLeave={!props.isDisabled ? () => setIsHovered(false) : undefined}
     variants={bgVariants}
     initial="hidden"
     animate={props.isLoading || isHovered ? "visible" : "hidden"}
-    onClick={handleClick}
     >
 
       <motion.input type="submit" value={props.text}
