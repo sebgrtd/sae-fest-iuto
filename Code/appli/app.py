@@ -4,11 +4,8 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
-
-
 sys.path.append('../BD')
 sys.path.append('../mail')
-
 from LienRS_Membre import LienRS_Membre_BD
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
@@ -60,7 +57,9 @@ def getNomsArtistes():
 
 @app.route('/getArtistes')
 def getArtistes():
+    print("test")
     connexion_bd = ConnexionBD()
+    print("test1")
     groupebd = GroupeBD(connexion_bd)
     res = groupebd.get_groupes_json()
     if res is None:
@@ -80,14 +79,14 @@ def getRS(id):
     
 @app.route('/getGroupesWithEvenements')
 def get_groupes_with_evenements():
-    print("test")
     connexion_bd = ConnexionBD()
-    print("test")
     evenement_bd = EvenementBD(connexion_bd)
     groupes = evenement_bd.programmation_to_json()
+    print(groupes)
     if not groupes:
         return jsonify({"error": "Aucun groupe avec événement trouvé"}), 404
-    return jsonify(groupes)
+    res = jsonify(groupes)
+    return res
 
 @app.route('/filtrerArtistes')
 def filtrerArtistes():
@@ -761,6 +760,34 @@ def styles_musicaux_festival():
     if not liste_styles_musicaux:
         return render_template("admin_styles.html", liste_styles_musicaux=[])
     return render_template("admin_styles.html", liste_styles_musicaux=liste_styles_musicaux)
+
+@app.route("/modifier_style_musical", methods=["POST"])
+def modifier_style_musical():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    id_style_musical = request.form["idSt"]
+    nom_style_musical = request.form["nomSt"]
+    style_musical = style_musicalbd.get_style_by_id(id_style_musical)
+    style_musical.set_nomSt(nom_style_musical)
+    style_musicalbd.update_style(style_musical)
+    return redirect(url_for("styles_musicaux_festival"))
+
+@app.route("/supprimer_style_musical", methods=["POST"])
+def supprimer_style_musical():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    id_style_musical = request.form["idSt"]
+    style_musicalbd.delete_style_by_id(id_style_musical)
+    return redirect(url_for("styles_musicaux_festival"))
+
+@app.route("/ajouter_style_musical", methods=["POST"])
+def ajouter_style_musical():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    nom_style_musical = request.form["nomSt"]
+    style_musical = Style_Musical(None, nom_style_musical)
+    style_musicalbd.insert_style(style_musical)
+    return redirect(url_for("styles_musicaux_festival"))
 
 @app.route("/instruments_festival")
 def instruments_festival():
