@@ -5,9 +5,11 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
 
+
 sys.path.append('../BD')
 sys.path.append('../mail')
 
+from LienRS_Membre import LienRS_Membre_BD
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
 from HebergementBD import HebergementBD
@@ -65,10 +67,22 @@ def getArtistes():
             return jsonify({"error": "Aucun artiste trouve"})
     else:
         return res
+
+@app.route('/socialLink/<int:id>')
+def getRS(id):
+    connexion_bd = ConnexionBD()
+    lienRS = LienRS_Membre_BD(connexion_bd)
+    res = lienRS.get_lienRS_Membre_json(id)
+    if res is None:
+        return jsonify({"error": "Aucun artiste trouve"})
+    else:
+        return res
     
 @app.route('/getGroupesWithEvenements')
 def get_groupes_with_evenements():
+    print("test")
     connexion_bd = ConnexionBD()
+    print("test")
     evenement_bd = EvenementBD(connexion_bd)
     groupes = evenement_bd.programmation_to_json()
     if not groupes:

@@ -1,4 +1,4 @@
-from BD import Evenement
+from BD import Evenement, Membre_Groupe
 from BD import Groupe
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
@@ -101,7 +101,58 @@ class EvenementBD:
             for groupe, evenement in groupes:
                 res.append((groupe.to_dict(), evenement.to_dict()))
             return res
+    
+    def get_programmation_with_groupes_and_artistes(self):
+        try:
+            query = text("""
+            SELECT e.idE, e.idG, g.nomG, g.descriptionG, e.idL, e.nomE, e.heureDebutE, e.heureFinE, e.dateDebutE, e.dateFinE,
+                mg.nomMG, mg.prenomMG, mg.nomDeSceneMG, mg.descriptionA
+            FROM EVENEMENT e
+            LEFT JOIN GROUPE g ON e.idG = g.idG
+            LEFT JOIN MEMBRE_GROUPE mg ON g.idG = mg.idG
+            """)
+            programmation = []
+            result = self.connexion.get_connexion().execute(query)
+            for idE, idG, nomG, descriptionG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
+                programmation.append((Groupe(idG, None, nomG, descriptionG), Evenement(idE, idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE), Membre_Groupe(None, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA)))
+            return programmation
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+
+    def programmation_to_json(self):
+        programmation = self.get_programmation_with_groupes_and_artistes()
+        if programmation is None:
+            return None
+        else:
+            res = []
+            for groupe, evenement, membre_groupe in programmation:
+                res.append((groupe.to_dict(), evenement.to_dict(), membre_groupe.to_dict()))
+            return res
         
+    def get_all_groupes_with_evenement(self):
+        try:
+            query = text("select idG, idH, nomG, descriptionG, idE, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE from EVENEMENT natural join GROUPE")
+            groupes = []
+            result = self.connexion.get_connexion().execute(query)
+            for idG, idH, nomG, descriptionG, idE, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE in result:
+                groupes.append((Groupe(idG, idH, nomG, descriptionG), Evenement(idE, idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE)))
+            return groupes
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
+            
+    def get_all_groupes_with_evenement_to_json(self):
+        groupes = self.get_all_groupes_with_evenement()
+        if groupes is None:
+            return None
+        else:
+            res = []
+            for groupe, evenement in groupes:
+                merged_dict = groupe.to_dict()
+                merged_dict.update(evenement.to_dict())
+                res.append(merged_dict)
+            return res
+
     def get_evenement_by_id(self, id):
         try:
             query = text("SELECT idE, idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE FROM EVENEMENT WHERE idE = :id")
