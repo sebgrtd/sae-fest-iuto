@@ -22,7 +22,7 @@ type Groupe = {
     heurePassage: string;
   }
 
-export default function CarteArtiste(props: Props) {
+export default function CarteProgrammation(props: Props) {
   // change le nomArtiste en majuscule et remplace les espaces par des retours à la ligne
   const nomArtiste = props.nomArtiste.toUpperCase().split(" ")
   const[isHovered, setIsHovered] = useState(false)
