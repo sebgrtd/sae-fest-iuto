@@ -5,11 +5,11 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
 
-from LienRS_Membre import LienRS_Membre_BD
 
 sys.path.append('../BD')
 sys.path.append('../mail')
 
+from LienRS_Membre import LienRS_Membre_BD
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
 from HebergementBD import HebergementBD
@@ -80,7 +80,9 @@ def getRS(id):
     
 @app.route('/getGroupesWithEvenements')
 def get_groupes_with_evenements():
+    print("test")
     connexion_bd = ConnexionBD()
+    print("test")
     evenement_bd = EvenementBD(connexion_bd)
     groupes = evenement_bd.programmation_to_json()
     if not groupes:
