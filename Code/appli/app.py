@@ -4,11 +4,8 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
-
-
 sys.path.append('../BD')
 sys.path.append('../mail')
-
 from LienRS_Membre import LienRS_Membre_BD
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
@@ -60,7 +57,9 @@ def getNomsArtistes():
 
 @app.route('/getArtistes')
 def getArtistes():
+    print("test")
     connexion_bd = ConnexionBD()
+    print("test1")
     groupebd = GroupeBD(connexion_bd)
     res = groupebd.get_groupes_json()
     if res is None:
@@ -80,14 +79,14 @@ def getRS(id):
     
 @app.route('/getGroupesWithEvenements')
 def get_groupes_with_evenements():
-    print("test")
     connexion_bd = ConnexionBD()
-    print("test")
     evenement_bd = EvenementBD(connexion_bd)
     groupes = evenement_bd.programmation_to_json()
+    print(groupes)
     if not groupes:
         return jsonify({"error": "Aucun groupe avec événement trouvé"}), 404
-    return jsonify(groupes)
+    res = jsonify(groupes)
+    return res
 
 @app.route('/filtrerArtistes')
 def filtrerArtistes():
