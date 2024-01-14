@@ -31,6 +31,8 @@ class Style_MusicalBD:
         try:
             query = text("INSERT INTO STYLE_MUSICAL (nomSt) VALUES (:nom)")
             self.connexion.get_connexion().execute(query, {"nom": style.get_nomSt()})
+            print(f"Le style musical {style.get_nomSt()} a été ajouté")
+            self.connexion.get_connexion().commit()
         except SQLAlchemyError:
             print("Erreur lors de l'insertion du style musical")
             
@@ -39,13 +41,24 @@ class Style_MusicalBD:
             query = text("UPDATE STYLE_MUSICAL SET nomSt = :nom WHERE idSt = :idSt")
             self.connexion.get_connexion().execute(query, {"idSt": style.get_idSt(), "nom": style.get_nomSt()})
             print(f"Le style musical {style.get_idSt()} a été modifié")
+            self.connexion.get_connexion().commit()
         except SQLAlchemyError:
             print("Erreur lors de la modification du style musical")
 
-    def delete_style_by_name(self, style, nom):
+    def delete_style_by_id(self, idSt):
         try:
-            query = text("DELETE FROM STYLE_MUSICAL WHERE idSt = :idSt AND nomSt = :nom")
-            self.connexion.get_connexion().execute(query, {"idSt": style.get_idSt(), "nom": nom})
-            print(f"Le style musical {style.get_idSt()} a été supprimé")
+            query = text("DELETE FROM STYLE_MUSICAL WHERE idSt = :idSt")
+            self.connexion.get_connexion().execute(query, {"idSt": idSt})
+            print(f"Le style musical {idSt} a été supprimé")
+            self.connexion.get_connexion().commit()
         except SQLAlchemyError:
             print("Erreur lors de la suppression du style musical")
+            
+    def get_style_by_id(self, idSt):
+        try:
+            query = text("SELECT * FROM STYLE_MUSICAL WHERE idSt = :idSt")
+            result = self.connexion.get_connexion().execute(query, {"idSt": idSt})
+            for idSt, nomSt in result:
+                return Style_Musical(idSt, nomSt)
+        except SQLAlchemyError:
+            print("Erreur lors de la récupération du style musical")
