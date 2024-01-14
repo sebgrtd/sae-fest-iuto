@@ -32,8 +32,8 @@ class BilletBD:
             
     def insert_billet(self, billet):
         try:
-            query = text("INSERT INTO billet (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES (:idF, :idType, :idS, :prix, :dateAchat, :dateDebutB, :dateFinB)")
-            result = self.connexion.get_connexion().execute(query, {"idF": billet.get_idFestival(), "idType": billet.get_idType(), "idS": billet.get_idSpectateur(), "prix": billet.get_prix(), "dateAchat": billet.get_dateAchat(), "dateDebutB": billet.get_dateDebutB(), "dateFinB": billet.get_dateFinB()})
+            query = text("INSERT INTO billet (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES (1, :idType, :idS, :prix, :dateAchat, :dateDebutB, :dateFinB)")
+            result = self.connexion.get_connexion().execute(query, {"idType": billet.get_idType(), "idS": billet.get_idSpectateur(), "prix": billet.get_prix(), "dateAchat": billet.get_dateAchat(), "dateDebutB": billet.get_dateDebutB(), "dateFinB": billet.get_dateFinB()})
             billet_id = result.lastrowid
             print(f"Le billet {billet_id} a été ajouté")
             self.connexion.get_connexion().commit()
@@ -49,6 +49,34 @@ class BilletBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
+    def delete_billet_by_id(self, id_billet):
+        try:
+            query = text("DELETE FROM billet WHERE idB = :idB")
+            self.connexion.get_connexion().execute(query, {"idB": id_billet})
+            self.connexion.get_connexion().commit()
+            print(f"Le billet {id_billet} a été supprimé")
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
+    def update_billet(self, billet):
+        try:
+            query = text("UPDATE billet SET idType = :idType, idS = :idS, prix = :prix, dateAchat = :dateAchat, dateDebutB = :dateDebutB, dateFinB = :dateFinB WHERE idB = :idB")
+            self.connexion.get_connexion().execute(query, {"idType": billet.get_idType(), "idS": billet.get_idSpectateur(), "prix": billet.get_prix(), "dateAchat": billet.get_dateAchat(), "dateDebutB": billet.get_dateDebutB(), "dateFinB": billet.get_dateFinB(), "idB": billet.get_idB()})
+            self.connexion.get_connexion().commit()
+            print(f"Le billet {billet.get_idB()} a été modifié")
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
+    def get_billet_by_id(self, id_billet):
+        try:
+            query = text("SELECT idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB FROM billet WHERE idB = :idB")
+            result = self.connexion.get_connexion().execute(query, {"idB": id_billet})
+            for idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB in result:
+                return Billet(idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB)
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
             
     def billet_id_dispo(self):
         try:

@@ -28,9 +28,149 @@
                     <td> {{ billet.get_dateAchat() }} </td>
                     <td> {{ billet.get_dateDebutB() }} </td>
                     <td> {{ billet.get_dateFinB() }} </td>
+                    <td>
+                        <button class="btn-modifier"
+                            data-id="{{ billet.get_idB() }}"
+                            data-idType="{{ billet.get_idType() }}"
+                            data-idSpectateur="{{ billet.get_idSpectateur() }}"
+                            data-prix="{{ billet.get_prix() }}"
+                            data-dateAchat="{{ billet.get_dateAchat() }}"
+                            data-dateDebutB="{{ billet.get_dateDebutB() }}"
+                            data-dateFinB="{{ billet.get_dateFinB() }}">Modifier</button>
+                        <button class="btn-supprimer" data-id="{{ billet.get_idB() }}">Supprimer</button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     <button id="ajouter">Ajouter</button>
+
+    <!-- Modale pour modifier un billet -->
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="modifier_billet" method="POST">
+                <input type="hidden" name="id_billet" id="id_billet_modifier">
+                <label for="type_billet">Type de billet</label>
+                <select name="type_billet" id="type_billet_modifier" required>
+                    <option value="" disabled selected>Choisir un type de billet</option>
+                    {% for type in liste_types %}
+                        <option value="{{ type.get_idType() }}">{{ type.get_duree() }}</option>
+                    {% endfor %}
+                </select>
+                <label for="spectateur_billet">Spectateur</label>
+                <select name="spectateur_billet" id="spectateur_billet_modifier" required>
+                    <option value="" disabled selected>Choisir un spectateur</option>
+                    {% for spectateur in liste_spectateurs %}
+                        <option value="{{ spectateur.get_idS() }}">{{ spectateur.get_nomS() }}</option>
+                    {% endfor %}
+                </select>
+                <label for="prix">prix</label>
+                <input type="text" name="prix" id="prix_modifier" required>
+                <label for="dateAchat">date d'achat</label>
+                <input type="date" name="date_achat" id="date_achat_modifier" required>
+                <label for="date_debutB">date de début</label>
+                <input type="date" name="date_debut" id="date_debutB_modifier" max="2024-07-23" min="2024-07-21" required>
+                <label for="date_finB">date de fin</label>
+                <input type="date" name="date_fin" id="date_finB_modifier" max="2024-07-23" min="2024-07-21" required>
+                <button id="modifier" type="submit"> Modifier </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour supprimer un évènement -->
+    <div id ="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/supprimer_billet" method="POST">
+                <input type="hidden" name="id_billet" id="id_billet_supprimer">
+                <p>Êtes-vous sûr de vouloir supprimer ce billet ?</p>
+                <button id="supprimer" type="submit"> Supprimer </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un billet -->
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/ajouter_billet" method="POST">
+                <label for="type_billet">Type de billet</label>
+                <select name="type_billet" id="type_billet_ajouter" required>
+                    <option value="" disabled selected>Choisir un type de billet</option>
+                    {% for type in liste_types %}
+                        <option value="{{ type.get_idType() }}">{{ type.get_duree() }}</option>
+                    {% endfor %}
+                </select>
+                <select name="spectateur_billet" id="spectateur_billet_ajouter" required>
+                    <option value="" disabled selected>Choisir un spectateur</option>
+                    {% for spectateur in liste_spectateurs %}
+                        <option value="{{ spectateur.get_idS() }}">{{ spectateur.get_nomS() }}</option>
+                    {% endfor %}
+                </select>
+                <label for="prix">prix</label>
+                <input type="text" name="prix" id="prix_ajouter" required>
+                <label for="dateAchat">date d'achat</label>
+                <input type="date" name="date_achat" id="date_achat_ajouter" required>
+                <label for="date_debutB">date de début</label>
+                <input type="date" name="date_debut" id="date_debutB_ajouter" max="2024-07-23" min="2024-07-21" required>
+                <label for="date_finB">date de fin</label>
+                <input type="date" name="date_fin" id="date_finB_ajouter" max="2024-07-23" min="2024-07-21" required>
+                <button class="btn-ajouter" type="submit"> Ajouter </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    modalModifier.style.display = "block";
+                    document.getElementById("id_billet_modifier").value = btn.getAttribute("data-id");
+                    document.querySelectorAll('#type_billet_modifier option').forEach(option => {
+                        if(option.value == btn.getAttribute("data-idType")) {
+                            option.selected = true;
+                        }
+                    });
+                    document.querySelectorAll('#spectateur_billet_modifier option').forEach(option => {
+                        if(option.value == btn.getAttribute("data-idSpectateur")) {
+                            option.selected = true;
+                        }
+                    });
+                    document.getElementById("prix_modifier").value = btn.getAttribute("data-prix");
+                    document.getElementById("date_achat_modifier").value = btn.getAttribute("data-dateAchat");
+                    document.getElementById("date_debutB_modifier").value = btn.getAttribute("data-dateDebutB");
+                    document.getElementById("date_finB_modifier").value = btn.getAttribute("data-dateFinB");
+                };
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    modalSupprimer.style.display = "block";
+                    document.getElementById("id_billet_supprimer").value = btn.getAttribute("data-id");
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            }
+
+        });
+    </script>
 {% endblock %}

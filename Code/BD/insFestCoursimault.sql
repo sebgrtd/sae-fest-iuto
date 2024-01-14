@@ -1,7 +1,7 @@
 -- Table USER
 
 INSERT INTO FAQ (question, reponse) VALUES
-    ('Quand aura lieu le festival ?', "Le festival aura lieu le 30 juillet 2023."),
+    ('Quand aura lieu le festival ?', "Le festival aura lieu le 30 juillet 2024."),
     ('Où aura lieu le festival ?', "Le festival aura lieu à Nantes."),
     ('Quelles sont les horaires de chaque jour du festival ?', "Le festival aura lieu de 18h à 23h."),
     ('Y a-t-il un camping sur place ?', "Oui, un camping sera disponible à proximité du site du festival pour offrir aux festivaliers une expérience pratique et agréable."),
@@ -24,10 +24,9 @@ VALUES
 
 -- Insérer des données dans la table FESTIVAL
 INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
-    ('Festival 1', 'Ville 1', '2023-08-01', '2023-08-05'),
-    ('Festival 2', 'Ville 2', '2023-07-15', '2023-07-20'),
-    ('Festival 3', 'Ville 3', '2023-08-01', '2023-08-03'),
-    ('Festival 4', 'Ville 3', '2024-07-20', '2024-07-22');
+    ('Festival 1', 'Ville 1', '2024-08-01', '2024-08-05'),
+    ('Festival 2', 'Ville 2', '2024-07-15', '2024-07-20'),
+    ('Festival 3', 'Ville 3', '2024-08-01', '2024-08-03');
 
 -- Insérer des données dans la table LIEU
 INSERT INTO LIEU (idF, nomL, adresseL, jaugeL) VALUES
@@ -134,16 +133,16 @@ INSERT INTO STYLE_MUSICAL (nomSt) VALUES
 
 -- Insérer des données dans la table EVENEMENT
 INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
-    (1, 'Concert Groupe 1', '9:00:00', '10:00:00', '2023-07-21', '2023-07-21'),
-    (2, 'Concert Groupe 2', '13:00:00', '14:00:00', '2023-07-21', '2023-07-21'),
-    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2023-07-21', '2023-07-21'),
-    (4, 'Concert Groupe 4', '9:00:00', '10:00:00', '2023-07-22', '2023-07-22'),
-    (5, 'Concert Groupe 5', '13:00:00', '14:00:00', '2023-07-22', '2023-07-22'),
-    (6, 'Concert Groupe 6', '17:00:00', '18:00:00', '2023-07-22', '2023-07-22'),
-    (7, 'Concert Groupe 7', '8:00:00', '9:00:00', '2023-07-23', '2023-07-23'),
-    (8, 'Concert Groupe 8', '11:00:00', '12:00:00', '2023-07-23', '2023-07-23'),
-    (9, 'Concert Groupe 9', '14:00:00', '15:00:00', '2023-07-23', '2023-07-23'),
-    (10, 'Concert Groupe 10', '17:00:00', '18:00:00', '2023-07-23', '2023-07-23');
+    (1, 'Concert Groupe 1', '9:00:00', '10:00:00', '2024-07-21', '2024-07-21'),
+    (2, 'Concert Groupe 2', '13:00:00', '14:00:00', '2024-07-21', '2024-07-21'),
+    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21'),
+    (4, 'Concert Groupe 4', '9:00:00', '10:00:00', '2024-07-22', '2024-07-22'),
+    (5, 'Concert Groupe 5', '13:00:00', '14:00:00', '2024-07-22', '2024-07-22'),
+    (6, 'Concert Groupe 6', '17:00:00', '18:00:00', '2024-07-22', '2024-07-22'),
+    (7, 'Concert Groupe 7', '8:00:00', '9:00:00', '2024-07-23', '2024-07-23'),
+    (8, 'Concert Groupe 8', '11:00:00', '12:00:00', '2024-07-23', '2024-07-23'),
+    (9, 'Concert Groupe 9', '14:00:00', '15:00:00', '2024-07-23', '2024-07-23'),
+    (10, 'Concert Groupe 10', '17:00:00', '18:00:00', '2024-07-23', '2024-07-23');
 
 INSERT INTO TYPE_BILLET(duree) VALUES
     (1),
@@ -177,22 +176,22 @@ INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2023-08-06', '08:00:00', '2023-08-07', '16:00:00');
+    (1, 1, 1, '2024-08-06', '08:00:00', '2024-08-07', '16:00:00');
 
 -- test des triggers
 
 -- Impossible d'acheter un billet pour un événement qui a déjà eu lieu
 INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
-    (1, 1, 1, 50, '2023-10-01', '2023-07-21', '2023-07-21');
+    (1, 1, 1, 50, '2024-10-01', '2024-07-21', '2024-07-21');
 
 -- La durée du billet est trop grande par rapport à celle du festival
 INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
-    (3, 1, 1, 50, '2023-08-01', '2023-08-01', '2023-08-06');
+    (3, 1, 1, 50, '2024-08-01', '2024-08-01', '2024-08-06');
 
 -- Le groupe ne peut pas arriver avant le début du festival
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2023-05-06', '08:00:00', '2023-05-07', '16:00:00');
+    (1, 1, 1, '2024-05-06', '08:00:00', '2024-05-07', '16:00:00');
 
 -- Le groupe ne peut pas arriver après la fin du festival
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2023-10-06', '08:00:00', '2023-10-07', '16:00:00');
+    (1, 1, 1, '2024-10-06', '08:00:00', '2024-10-07', '16:00:00');
