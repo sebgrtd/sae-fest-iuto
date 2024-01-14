@@ -668,7 +668,33 @@ def types_billet_festival():
         return render_template("admin_types_billet.html", liste_types_billet=[])
     return render_template("admin_types_billet.html", liste_types_billet=liste_types_billet)
 
+@app.route("/ajouter_type_billet", methods=["POST"])
+def ajouter_type_billet():
+    connexionbd = ConnexionBD()
+    type_billetbd = Type_BilletBD(connexionbd)
+    duree = request.form["duree"]
+    type_billet = Type_Billet(None, duree)
+    type_billetbd.insert_type_billet(type_billet)
+    return redirect(url_for("types_billet_festival"))
 
+@app.route("/modifier_type_billet", methods=["POST"])
+def modifier_type_billet():
+    connexionbd = ConnexionBD()
+    type_billetbd = Type_BilletBD(connexionbd)
+    id_type_billet = request.form["idType"]
+    duree = request.form["duree"]
+    type_billet = type_billetbd.get_type_billet_by_id(id_type_billet)
+    type_billet.set_duree(duree)
+    type_billetbd.update_type_billet(type_billet)
+    return redirect(url_for("types_billet_festival"))
+
+@app.route("/supprimer_type_billet", methods=["POST"])
+def supprimer_type_billet():
+    connexionbd = ConnexionBD()
+    type_billetbd = Type_BilletBD(connexionbd)
+    id_type_billet = request.form["idType"]
+    type_billetbd.delete_type_billet_by_id(id_type_billet)
+    return redirect(url_for("types_billet_festival"))
 
 @app.route("/spectateurs_festival")
 def spectateurs_festival():
