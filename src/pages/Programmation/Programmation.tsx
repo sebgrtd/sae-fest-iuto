@@ -63,10 +63,11 @@ export default function Programmation(props : Props) {
   useEffect(() => {
     axios.get('http://localhost:8080/getGroupesWithEvenements').then((res) => {
       const groupedData = res.data as Programme[][];
-
-      const listeGroupes: Groupe[] = [];
-      const listeArtistes: Artiste[] = [];
       console.log(groupedData);
+  
+      const listeGroupes: Groupe[] = [];
+      const groupSet = new Set<number>();
+      const listeArtistes: Artiste[] = [];
   
       groupedData.forEach((groupArray) => {
         let groupeObj: Partial<Groupe> = {};
@@ -74,12 +75,12 @@ export default function Programmation(props : Props) {
   
         groupArray.forEach((item) => {
           if ('nomG' in item) {
-            groupeObj = { ...groupeObj, ...item }; // Copier les infos du groupe
+            groupeObj = { ...groupeObj, ...item };
           } else if ('nomDeSceneMG' in item) {
-            artisteObj = { ...artisteObj, ...item }; // Copier les infos de l'artiste
+            artisteObj = { ...artisteObj, ...item }; 
           } else if ('dateDebutE' in item) {
-            // S'assurer que l'évènement correspond au groupe ou à l'artiste actuellement traité
-            const datePassage = item.dateDebutE; 
+
+            const datePassage = item.dateDebutE;
             const heurePassage = item.heureDebutE;
             if (groupeObj.idG === item.idG) {
               groupeObj.datePassage = datePassage;
@@ -91,29 +92,27 @@ export default function Programmation(props : Props) {
             }
           }
         });
-          if (groupeObj.idG != null) {
-          listeGroupes.push(groupeObj as Groupe); 
+  
+        // si l'id n'a pas encore était ajoutée à la liste on ajoute le groupe
+        if (groupeObj.idG !== undefined && !groupSet.has(groupeObj.idG)) {
+          listeGroupes.push(groupeObj as Groupe);
+          groupSet.add(groupeObj.idG); 
         }
-        if (artisteObj.nomDeSceneMG != null) {
-          listeArtistes.push(artisteObj as Artiste); 
+        if (artisteObj.nomDeSceneMG !== undefined) {
+          listeArtistes.push(artisteObj as Artiste);
         }
       });
   
-      setLesGroupes(listeGroupes);
-      console.log("listeGroupes : ")
-      console.log(listeGroupes)
+      setLesGroupes(listeGroupes); 
+      groupePassageMap.current.clear();
       listeGroupes.forEach((groupe) => {
         groupePassageMap.current.set(groupe.idG, {
             datePassage: groupe.datePassage,
             heurePassage: groupe.heurePassage,
         });
-    });
-
+      });
+  
       setLesArtistes(listeArtistes);
-      console.log("listeArtistes : ")
-      console.log(listeArtistes)
-
-      
     });
   }, []);
 
@@ -198,7 +197,6 @@ export default function Programmation(props : Props) {
                   id={artiste.idMG}
                   nomArtiste={artiste.nomDeSceneMG}
                   description={artiste.descriptionA}
-                  // date inconnue si l'artiste n'a pas de groupe associé
                   date={groupeInfo?.datePassage ?? "Date inconnue"} 
                   heure={groupeInfo?.heurePassage ?? "Heure inconnue"} 
                   setIsNavTransparent={props.setIsNavTransparent}
