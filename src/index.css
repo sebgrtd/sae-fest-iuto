@@ -57,6 +57,7 @@
 
 body{
   background-color: var(--color-light);
+  overflow-x: hidden;
 }
 
 #Navbar{
@@ -490,7 +491,6 @@ input[type="number"]::-ms-reveal {
   font-family: "TuskerGrotesk";
   font-size: 1.625rem;
   font-weight: medium;
-  padding: 0.875rem 5rem 0.875rem 2.25rem;
   border-radius: 5000px;
   align-self: center;
   display: flex;
@@ -501,13 +501,7 @@ input[type="number"]::-ms-reveal {
   cursor: pointer;
 }
 
-.btn input{
-  background-color: transparent;
-  border:none;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  cursor: inherit;
+.btn p{
   z-index: 2;
 }
 
@@ -542,6 +536,10 @@ input[type="number"]::-ms-reveal {
   pointer-events: none;
 }
 
+.btn .anim-rectangle.dark{
+  background-color: var(--color-dark);
+}
+
 .btn.disabled{
   background-color: grey;
   cursor: not-allowed;
@@ -556,6 +554,7 @@ input[type="number"]::-ms-reveal {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 
 #Accueil .content{
@@ -571,26 +570,36 @@ input[type="number"]::-ms-reveal {
   display: flex;
   flex-direction: column;
   gap: 4.25rem;
+  position: relative;
 }
 
-#Accueil .content .texts{
+#Accueil .content .main-content h1{
+  font-family: 'TuskerGrotesk';
+  font-weight: 1000;
+  color:var(--color-orange);
+  text-align: center;
+  font-size: 8rem;
+  line-height: 1.03;
+}
+
+#Accueil .content .main-content svg{
+  position: absolute;
+  right:-20%;
+  top: -10%;
+  z-index: -1;
+}
+
+#Accueil .bottom-content{
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
   align-items: center;
-  text-align: center;
-  gap:1.625rem;
 }
 
-#Accueil .content .texts h2{
-  font-size: 1.625rem;
-  color:var(--color-yellow);
-  font-weight: 700;
-}
-
-#Accueil .content .texts h1{
-  font-size: 4.25rem;
-  color: var(--color-light);
-  font-weight: 800;
+#Accueil .bottom-content .bottom-arrow{
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-yellow);
 }
 
 #Accueil .img-container{
@@ -600,19 +609,17 @@ input[type="number"]::-ms-reveal {
   height: 100vh;
   overflow: hidden;
   position: absolute;
-  z-index: -2;
+  z-index: 1;
 }
 
 #Accueil .img-container img{
   object-fit: cover;
-  left:-10%;
-  bottom: -10%;
   object-position: center;
   position: absolute;
-  height: 120%;
-  width: 120%;
+  height: 100%;
+  width: 100%;
   z-index: -10;
-  filter: blur(16px);
+  /* ajoutes un inner shadow sur toute la page */
 } 
 
 #Accueil .marquee{
@@ -660,6 +667,130 @@ input[type="number"]::-ms-reveal {
 
 .exit.dark{
   background-color: var(--color-dark);
+}
+
+/* Section journal */
+
+#SectionJournal{
+  height: 300vh;
+  position: relative;
+  z-index: 0;
+}
+
+#SectionJournal > img{
+  position: sticky;
+  width: 100%;
+  top: -50%;
+  z-index: 2;
+}
+
+#SectionJournal .content{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap:3rem;
+  max-width: 30vw;
+  position: sticky;
+  z-index: 300;
+  top:50%;
+  left: 50%;
+  z-index: 1;
+}
+
+#SectionJournal .content .infos{
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.text-etoile{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#SectionJournal .content .infos .text-etoile h2{
+  font-family: 'TuskerGrotesk';
+  font-weight: 700;
+  color:var(--color-orange);
+  font-size: 3.5rem;
+}
+
+#SectionJournal .content .infos .text-etoile svg{
+  width: 2.5rem;
+}
+
+#SectionJournal .content .infos p{
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--color-orange-tertiary);
+}
+
+#SectionJournal a{
+  align-self: end;
+}
+
+/* Accueil: Section billeterie */
+
+#SectionBilleterie{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10%;
+  gap:2.875rem;
+}
+
+#SectionBilleterie .content{
+  display: flex;
+  flex-direction: column;
+  gap:4rem;
+}
+
+#SectionBilleterie .content p{
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 1.625rem;
+  opacity: 0.6;
+  color:var(--color-orange)
+}
+
+#SectionBilleterie .text-etoile h2{
+  font-family: 'TuskerGrotesk';
+  font-weight: 700;
+  font-size: 6.625rem;
+  color: var(--color-orange);
+  line-height: 1;
+}
+
+#SectionBilleterie .text-etoile svg{
+  width: 4.375rem;
+  height: 4.375rem;
+}
+
+#SectionBilleterie .content .infos{
+  display: flex;
+  gap: 1.625rem;
+}
+
+#SectionBilleterie .content .infos .info{
+  display: flex;
+  gap:1rem;
+  align-items: center;
+}
+
+#SectionBilleterie .content .infos .info p{
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+#SectionBilleterie .btn-link{
+  align-self: flex-end;
 }
 
 /* Programmation */
@@ -788,6 +919,10 @@ input[type="number"]::-ms-reveal {
   font-family: "Montserrat";
   font-size: 1rem;
   font-weight: 500;
+}
+
+.btn-link{
+  text-decoration: none;
 }
 
 .combo .always-visible .btn-open .bar{

@@ -60,7 +60,7 @@ export default function Programmation(props : Props) {
   const groupePassageMap = useRef<Map<number, { datePassage: string; heurePassage: string }>>(new Map());
   
 
-  useEffect(() => {
+useEffect(() => {
     axios.get('http://localhost:8080/getGroupesWithEvenements').then((res) => {
       const groupedData = res.data as Programme[][];
 
@@ -116,6 +116,7 @@ export default function Programmation(props : Props) {
       
     });
   }, []);
+
 
   const[filtreDate, setFiltreDate] = useState("Tout");
   const[filtreAffichage, setFiltreAffichage] = useState("Grille");

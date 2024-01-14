@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 
 type Prop = {
     text:string;
-    formRef?:React.RefObject<HTMLFormElement>;
     isLoading?:boolean;
+    isDark?:boolean;
     isSmallPading?:boolean;
     onClick?:(event: React.MouseEvent<HTMLDivElement>) => void;
     isDisabled?: boolean;
     className?: string;
-};
+}
 
 export default function Button(props:Prop) {
 
@@ -124,7 +124,7 @@ export default function Button(props:Prop) {
 
   const inputVariants = {
     hidden:{
-      color:"#FFFFFF",
+      color:props.isDark ? "#19212C" : "#FFFFFF",
       transition:{
         duration: 0.25,
         ease: [1, 0, 0,1]
@@ -139,11 +139,6 @@ export default function Button(props:Prop) {
     }
   }
 
-  // const handleClick = () => {
-  //   if(props.formRef){
-  //     props.formRef.current?.requestSubmit()
-  //   }
-  // }
 
   return (
     <motion.div className={buttonClasses}
@@ -155,12 +150,13 @@ export default function Button(props:Prop) {
     animate={props.isLoading || isHovered ? "visible" : "hidden"}
     >
 
-      <motion.input type="submit" value={props.text}
+      <motion.p
       variants={inputVariants}
       initial="hidden"
       animate={props.isLoading || isHovered ? "visible":"hidden"}
-      onClick={(e) => e.preventDefault()}
-      />
+      >
+      {props.text}
+      </motion.p>
 
       <motion.img 
       src="/icones/right-arrow.svg" 
@@ -181,12 +177,12 @@ export default function Button(props:Prop) {
       </motion.svg>
 
       
-      <motion.div className='anim-rectangle' 
+      <motion.div className={`anim-rectangle ${props.isDark ? "dark" : ""}`} 
       variants={animRectVariants}
       initial="hidden"
       animate={props.isLoading || isHovered ? "visible" : "hidden"}
       />
 
-    </motion.div>
+    </motion.button>
   )
 }
