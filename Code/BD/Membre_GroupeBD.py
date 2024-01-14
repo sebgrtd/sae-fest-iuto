@@ -10,30 +10,30 @@ class Membre_GroupeBD:
     
     def get_artistes_of_groupe(self):
         try:
-            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG FROM membre_groupe")
+            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionG FROM membre_groupe")
             artistes = []
             result = self.connexion.get_connexion().execute(query)
-            for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
-                artistes.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG))
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionG in result:
+                artistes.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionG))
             return artistes
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
     def get_all_artistes(self):
         try:
-            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG FROM membre_groupe")
+            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA FROM membre_groupe")
             artistes = []
             result = self.connexion.get_connexion().execute(query)
-            for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
-                artistes.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG))
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
+                artistes.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA))
             return artistes
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
     def insert_membre_groupe(self, membre_groupe):
         try:
-            query = text("INSERT INTO membre_groupe (idG, nomMG, prenomMG, nomDeSceneMG) VALUES (:idG, :nomMG, :prenomMG, :nomDeSceneMG)")
-            result = self.connexion.get_connexion().execute(query, {"idG": membre_groupe.get_idGroupe(), "nomMG": membre_groupe.get_nomMG(), "prenomMG": membre_groupe.get_prenomMG(), "nomDeSceneMG": membre_groupe.get_nomDeSceneMG()})
+            query = text("INSERT INTO membre_groupe (idG, nomMG, prenomMG, nomDeSceneMG, descriptionG) VALUES (:idG, :nomMG, :prenomMG, :nomDeSceneMG, :descriptionG)")
+            result = self.connexion.get_connexion().execute(query, {"idG": membre_groupe.get_idGroupe(), "nomMG": membre_groupe.get_nomMG(), "prenomMG": membre_groupe.get_prenomMG(), "nomDeSceneMG": membre_groupe.get_nomDeSceneMG(), "descriptionG": membre_groupe.get_descriptionG()})
             membre_groupe_id = result.lastrowid
             print(f"Le membre_groupe {membre_groupe_id} a été ajouté")
             self.connexion.get_connexion().commit()

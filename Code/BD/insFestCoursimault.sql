@@ -46,30 +46,69 @@ INSERT INTO HEBERGEMENT (nomH, limitePlacesH, adresseH) VALUES
 
 -- Insérer des données dans la table GROUPE
 INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
-    (1, 'Vladimir Cauchemar', 'Desc'),
-    (1, 'Booba', 'Desc'),
-    (1, 'Freeze Corleone', 'Desc'),
-    (2, 'Damso', 'Desc'),
-    (2, 'Ashe 22', 'Desc'),
-    (2, "Heuss l'Enfoiré", 'Desc'),
-    (3, 'Zola', 'Desc'),
-    (3, 'Sch', 'Desc'),
-    (3, 'H Jeunecrack', 'Desc'),
-    (3, 'Luther', 'Desc');
-    
+    (1, 'Saturn Citizen', 'Saturn Citizen est un groupe de rap français originaire de La Réunion et basé à Lyon, composé de Bushi et Mussy.
+    Créé durant les années de collège de ces deux derniers, le groupe a fait partie intégrante du collectif Lyonzon de 2018 à 2023. 
+    Il a également intégré le troisième membre Azur de 2018 à 2020 qui avait déjà collaboré avec Bushi en 2016 sous le nom Cool Kids pour un projet éponyme.'),
+
+    (1, 'Opium', "Opium est un label américain et une agence de création fondée par le rappeur et chanteur américain Playboi Carti. Le label compte actuellement parmi ses membres Carti, les rappeurs américains Ken Carson et Destroy Lonely, ainsi que le duo de hip-hop Homixide Gang.
+    Musicalement, le collectif Opium partageait un son similaire, avec des synthés sombres, grinçants et avant-gardistes mélangés à un beat rageur rappelant l'ère du punk rock des années 70 et 80. 
+    Ce son expérimental s'éloignait du genre hip-hop trap actuel et s'était attiré les faveurs d'un groupe culte."),
+
+
+    (1, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
+    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.'),
 
 -- Insérer des données dans la table MEMBRE_GROUPE
-INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG) VALUES
-    (1, 'Vlad', 'Cauchemar', 'Vladimir Cauchemar'),
-    (2, 'Booba', 'Elie', 'Booba'),
-    (3, 'Freeze', 'Hugo', 'Freeze Corleone'),
-    (4, 'Damso', 'William', 'Damso'),
-    (5, 'Ashe', 'Achille', 'Ashe 22'),
-    (6, 'Heuss', 'Karim', "Heuss l'Enfoiré"),
-    (7, 'Zola', 'Evans', 'Zola'),
-    (8, 'Sch', 'Julien', 'Sch'),
-    (9, 'H', 'Hugo', 'H Jeunecrack'),
-    (10, 'Luther', 'Luther', 'Luther');
+INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
+    (1, 'Bushi', 'Bushi', 'Bushi', 'BUSHI, jeune rappeur de Lyon, fait énormément parler de lui ces derniers temps par rapport à ses diverses apparitions aux quatre coins du monde ainsi que sa productivité et 
+    sa communication qui font tourner beaucoup de mystère autour de ce personnage.L’artiste peut paraître des plus underground. Egotrip monstre, placements particuliers, ces éléments font sa force. Il se démarque par sa prestance, 
+    sa nonchalance et ses placements sortis de nulle part. Un vrai rappeur US en somme.'),
+
+
+    (1, 'Mussy', 'Mussy', 'Mussy', "Mussy est un rappeur français d'origine Tutsi (Rwanda) ayant grandi à La Réunion. Il est membre du groupe Saturn Citizen et du collectif Lyonzon. Le rappeur crée Saturn Citizen avec son ami Bushi durant ses années de collège et rejoint Lyonzon en 2017. Cependant, il reste très discret et c'est réellement lors du “Freestyle Arah #3” que Mussy officialise son appartenance et signe son grand retour au sein des deux groupes, 
+    avant de s'envoler à Lyon (69). L'artiste dévoile en 2020 son premier projet en solo, intitulé Jig."),
+
+    (2, 'Playboi', 'Jordan', 'Playboi Carti', "Jordan Terrell Carter, plus connu sous le nom de Playboi Carti, est un rappeur, chanteur et compositeur américain. Il est né le 13 septembre 1996 à Atlanta, en Géorgie. 
+    Reconnu pour son style musical expérimental, passant volontiers de sonorités douces et vaporeuses à des ambiances trash et gothiques, il se démarque aussi par la rareté de ses apparitions médiatiques."),
+
+    (2, 'Ken', 'Ken', 'Ken Carson', 'Kenyatta Lee Frazier Jr. (né le 11 avril 2000), connu professionnellement sous le nom de Ken Carson est un rappeur, auteur-compositeur et producteur de disques américain. Il est connu pour son album studio X qui a culminé au numéro 115 du Billboard 2003.
+    Son style de musique est appelée de la Rage Music ou Opium Music en réference avec le label du meme nom dans lequel il est signé. Son style est comparable a des artistes tel que Destroy Lonely, Yeat, Playboi Carti, le groupe Homixide Gang , ou encore Lancey Foux.'),
+        
+    (2, 'Destroy', 'Destroy', 'Destroy Lonely', "Bobby Wardell Sandimanie, connu professionnellement sous le nom de Destroy Lonely, est un rappeur et auteur-compositeur-interprète américain. Son premier album studio, If Looks Could Kill (2023), a débuté à la 18e place du Billboard 200 américain. Auparavant, sa cinquième mixtape, 
+        No Stylist (2022), a marqué sa première entrée dans le classement en se classant à la 91e place."),
+
+    (2, 'Homixide', 'Homixide', 'Homixide Gang', "Tous deux âgés de 22 ans, Homixide Meechie et Homixide Beno forme le duo Homixide Gang. Avec leur premier EP Snotty World, les deux rappeurs originaires d’Atlanta se font rapidement remarquer en 2021 avec le titre SSN. Un succès qui leur permet de passer à la vitesse supérieure en signant avec Opium, le label de Playboi Carti. S’en suit un premier album Homixide Lifestyle, puis SNOT OR NOT, leur deuxième opus fraichement dévoilé en avril dernier. Directement classé dans le top 10 des nouveaux albums sur Spotify après la sortie, 
+    Homixide Beno et Homixide Meechie continuent leur ascension, prouvant qu’avec de la persévérance, rien n’est impossible !"),
+
+    (3, 'La Fève', 'La Fève', 'La Fève', "La Fève, de son vrai nom Louis Ambroise Germain1, est un rappeur et producteur français.
+Il est un membre du mouvement musical new wave du hip-hop français. Sa musique est jugée innovante, utilisant une sélection éclectique de flows, productions et refrains."),
+
+
+    (3, 'Khali', 'Khali', 'Khali', "Khali, né à Lyon le 20 novembre 1999 et de son vrai nom Khalil Lakbir, est un rappeur, producteur et chanteur franco-marocain. Il fait partie du mouvement musical new wave du hip-hop français."),
+
+    (3, 'J9ueve', 'J9ueve', 'J9ueve', "J9ueve, de son vrai nom Jules Vincent est un rappeur et producteur français. Il est un membre clé du mouvement New Wave au sein du rap français.
+     l'instar de nombreux rappeurs du mouvement New Wave, J9ueve se fait connaître via la plateforme Soundcloud, dès 2019. Il est réputé pour son style mélancolique, ses ambiances romantiques, sa voix atypique et sa musicalité novatrice. Il est signé chez le label ALSO/A+LSO3"),
+
+    (3, 'DMS', 'DMS', 'DMS', "DMS est un rappeur français originaire des Hauts-de-Seine (92). Affilié au studio 99 à ses débuts, il créé en 2021 le label Ciel.
+De 2019 à 2021, il travaille sur son premier projet Rideaux bleus, qu'il sort en décembre de cette dernière année. Sept mois plus tard, il dévoile l'EP YEYEYE, comprenant des collaborations avec EDGE et Malo.
+En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et Rounhaa y sont présents.");
+
+
+
+
+
+
+
+    -- (1, 'Vlad', 'Cauchemar', 'Vladimir Cauchemar', 'Description pour Vladimir Cauchemar'),
+    -- (2, 'Booba', 'Elie', 'Booba', 'Description pour Booba'),
+    -- (3, 'Freeze', 'Hugo', 'Freeze Corleone', 'Description pour Freeze Corleone'),
+    -- (4, 'Damso', 'William', 'Damso', 'Description pour Damso'),
+    -- (5, 'Ashe', 'Achille', 'Ashe 22', 'Description pour Ashe 22'),
+    -- (6, 'Heuss', 'Karim', "Heuss l'Enfoiré", 'Description pour Heuss lEnfoiré'),
+    -- (7, 'Zola', 'Evans', 'Zola', 'Description pour Zola'),
+    -- (8, 'Sch', 'Julien', 'Sch', 'Description pour Sch'),
+    -- (9, 'H', 'Hugo', 'H Jeunecrack', 'Description pour H Jeunecrack'),
+    -- (10, 'Luther', 'Luther', 'Luther', 'Description pour Luther');
 
 -- Insérer des données dans la table INSTRUMENT
 INSERT INTO INSTRUMENT (idMG, nomI) VALUES
@@ -102,19 +141,13 @@ INSERT INTO LIEN_VIDEO (idG, video) VALUES
 
 -- Insérer des données dans la table LIEN_RESEAUX_SOCIAUX
 INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
-    (1, 'Réseau 1'),
-    (1, 'Réseau 2'),
+    (1, 'https://www.youtube.com/channel/UCQxeWQ_K8aQ0KOXMDi03H5Q'),
+    (1, 'https://www.instagram.com/saturnciti/'),
+    (1, 'https://open.spotify.com/intl-fr/artist/7siKy5Wrq7TwvyJ21KushJ'),
     (2, 'Réseau 1'),
     (3, 'Réseau 1'),
     (3, 'Réseau 2'),
     (3, 'Réseau 3'),
-    (4, 'Réseau 1'),
-    (5, 'Réseau 1'),
-    (6, 'Réseau 1'),
-    (7, 'Réseau 1'),
-    (8, 'Réseau 1'),
-    (9, 'Réseau 1'),
-    (10, 'Réseau 1');
 
 -- Insérer des données dans la table SPECTATEUR
 INSERT INTO SPECTATEUR (nomS, prenomS, adresseS, emailS, mdpS) VALUES

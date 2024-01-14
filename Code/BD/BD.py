@@ -373,15 +373,50 @@ class Groupe:
         
     def set_descriptionG(self, descriptionG):
         self.__descriptionG = descriptionG
+
+
+# class Groupe:
+#     def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str):
+#         self._idG = idG
+#         self._idH = idH
+#         self._nomG = nomG
+#         self._descriptionG = descriptionG
+        
+#     def get_idG(self):
+#         return self._idG
     
+#     def get_idHebergement(self):
+#         return self._idH
+    
+#     def get_nomG(self):
+#         return self._nomG
+    
+#     def get_descriptionG(self):
+#         return self._descriptionG
+    
+#     def get_datePassage(self):
+#         return "2021-05-20"
+    
+#     def get_heurePassage(self):
+#         return "20:00:00"
+    
+#     def to_dict(self):
+#         return {
+#             "idG": self._idG,
+#             "nomG": self._nomG,
+#             "descriptionG": self._descriptionG,
+#             "datePassage": seFlf.get_datePassage(),
+#             "heurePassage": self.get_heurePassage()
+#         }
 
 class Membre_Groupe:
-    def __init__(self, idMG: int, idG, nomMG: str, prenomMG: str, nomDeSceneMG: str):
+    def __init__(self, idMG: int, idG, nomMG: str, prenomMG: str, nomDeSceneMG: str, descriptionA: str):
         self.__idMG = idMG
         self.__idG = idG
         self.__nomMG = nomMG
         self.__prenomMG = prenomMG
         self.__nomDeSceneMG = nomDeSceneMG
+        self.__descriptionA = descriptionA
         
     def get_idMG(self):
         return self.__idMG
@@ -407,7 +442,8 @@ class Membre_Groupe:
             "idG": self.__idG,
             "nomMG": self.__nomMG,
             "prenomMG": self.__prenomMG,
-            "nomDeSceneMG": self.__nomDeSceneMG
+            "nomDeSceneMG": self.__nomDeSceneMG,
+            "descriptionA": self.__descriptionA
         }
     
     def set_nomMG(self, nomMG):
@@ -497,6 +533,34 @@ class Lien_Reseaux_Sociaux:
             "reseau": self.__reseau
         }
     
+    
+class Lien_Reseaux_Sociaux_Membre:
+    def init(self, idLRSM: int, idMG: int, reseau: str, URL: str):
+        self.__idLRSM = idLRSM
+        self.__idMG = idMG
+        self.__reseau = reseau
+        self.__URL = URL
+        
+    def get_idLRSM(self):
+        return self.__idLRSM
+    
+    def get_idMG(self):
+        return self.__idMG
+    
+    def get_reseau(self):
+        return self.__reseau
+    
+    def get_URL(self):
+        return self.__URL
+    
+    def to_dict(self):
+        return {
+            "idLRSM": self.__idLRSM,
+            "idMG": self.__idMG,
+            "reseau": self.__reseau,
+            "URL": self.__URL
+        }
+
 class Evenement:
     def __init__(self, idE: int, idG: int, idL: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
         self.__idE = idE
@@ -633,3 +697,5 @@ class Groupe_Style:
             "idG": self.__idG,
             "idSt": self.__idSt
         }
+        
+        

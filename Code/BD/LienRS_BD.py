@@ -28,7 +28,7 @@ class LienRS_BD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
 
-    def get_lienRS_json(self, idG):
+    def get_liensRS_membre_json(self, idG):
         lienRS = self.get_lienRS_by_groupe(idG)
         if lienRS is None:
             return None
