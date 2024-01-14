@@ -6,20 +6,17 @@ type Prop = {
     isLoading?:boolean;
     isDark?:boolean;
     isSmallPading?:boolean;
-    onClick?:(event: React.MouseEvent<HTMLDivElement>) => void;
+    onClick?:(event: React.MouseEvent<HTMLButtonElement>) => void;
     isDisabled?: boolean;
     className?: string;
 }
 
 export default function Button(props:Prop) {
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (props.onClick) {
       props.onClick(event);
-    }
-    if (props.formRef && props.formRef.current) {
-      props.formRef.current.requestSubmit();
     }
   };
 
@@ -141,8 +138,8 @@ export default function Button(props:Prop) {
 
 
   return (
-    <motion.div className={buttonClasses}
-    onClick={!props.isDisabled ? handleClick : undefined}
+    <motion.button className={buttonClasses}
+    onClick={(!props.isDisabled && props.onClick) ? handleClick : undefined}
     onMouseEnter={!props.isDisabled ? () => setIsHovered(true) : undefined}
     onMouseLeave={!props.isDisabled ? () => setIsHovered(false) : undefined}
     variants={bgVariants}

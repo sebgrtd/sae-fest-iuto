@@ -1585,6 +1585,7 @@ footer{
   width: 100%;
   padding:6rem;
   overflow-x: hidden;
+  z-index: 9999;
 }
 
 footer .top-content{

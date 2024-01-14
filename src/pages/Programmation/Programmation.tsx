@@ -5,7 +5,7 @@ import CarteArtiste from '../../components/Artiste/CarteProgrammation';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import Footer from '../../components/footer';
+import Footer from '../../components/Footer';
 import CarteProgrammation from '../../components/Artiste/CarteProgrammation';
 
 type Props = {

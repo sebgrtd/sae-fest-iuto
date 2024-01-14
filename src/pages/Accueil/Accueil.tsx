@@ -3,7 +3,7 @@ import MarqueeScroll from '../../components/bandeau-effet-scroll-infini/MarqueeS
 import Button from '../../components/form/Button';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import axios from 'axios';
-import Footer from '../../components/footer';
+import Footer from '../../components/Footer';
 import SectionJournal from './SectionJournal';
 import SectionBilleterie from './SectionBilleterie';
 
