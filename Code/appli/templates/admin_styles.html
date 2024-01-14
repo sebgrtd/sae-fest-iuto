@@ -18,9 +18,92 @@
                 <tr>
                     <td> {{ style.get_idSt() }} </td>
                     <td> {{ style.get_nomSt() }} </td>
+                    <td>
+                        <button class="btn-modifier"
+                            data-id="{{ style.get_idSt() }}"
+                            data-nom="{{ style.get_nomSt() }}">Modifier</button>
+                        <button class="btn-supprimer" data-id="{{ style.get_idSt() }}">Supprimer</button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     <button id="ajouter">Ajouter</button>
+
+    <!-- Modale pour modifier un style musical -->
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="{{ url_for('modifier_style_musical') }}" method="post">
+                <input type="hidden" name="idSt" id="idSt_modifier">
+                <label for="nomSt">Nom du style musical</label>
+                <input type="text" name="nomSt" id="nomSt_modifier">
+                <button id="modifier" type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour supprimer un style musical -->
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="{{ url_for('supprimer_style_musical') }}" method="post">
+                <input type="hidden" name="idSt" id="idSt_supprimer">
+                <p>Êtes-vous sûr de vouloir supprimer ce style musical ?</p>
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un style musical -->
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="{{ url_for('ajouter_style_musical') }}" method="post">
+                <label for="nomSt">Nom du style musical</label>
+                <input type="text" name="nomSt" id="nomSt_ajouter">
+                <button class="btn-ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                }
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("idSt_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("nomSt_modifier").value = btn.getAttribute("data-nom");
+                    modalModifier.style.display = "block";
+                }
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("idSt_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                }
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            }
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            }
+        });
+    </script>
 {% endblock %}

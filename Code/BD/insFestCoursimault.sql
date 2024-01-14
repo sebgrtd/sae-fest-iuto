@@ -18,10 +18,9 @@ INSERT INTO FAQ (question, reponse) VALUES
     ("Les billets sont-ils remboursables en cas d'annulation ?", "Les billets ne sont généralement pas remboursables. Cependant, veuillez consulter nos politiques d'annulation pour toute information spécifique sur les remboursements."),
     ('Proposez-vous des activités pour les personnes à mobilité réduite ?', "Oui, nous nous efforçons de rendre le festival accessible à tous. Des installations spéciales seront mises en place pour garantir une expérience agréable aux personnes à mobilité réduite.");
 
-INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser)
-VALUES
-    ('irvyncsm', 'abc', 'irvyncsm@gmail.com', 'user'),
-    ('admin', 'admin', '', 'admin');
+INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser) VALUES
+    ('admin', 'admin', '', 'admin'),
+    ('irvyncsm', 'abc', 'irvyncsm@gmail.com', 'user');
 
 -- Insérer des données dans la table FESTIVAL
 INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
@@ -151,12 +150,12 @@ INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (3, 'Réseau 3'),
 
 -- Insérer des données dans la table SPECTATEUR
-INSERT INTO SPECTATEUR (nomS, prenomS, adresseS, emailS, mdpS) VALUES
-    ('Spectateur 1', 'Prénom 1', 'Adresse 1', 'email1@example.com', 'mdp1'),
-    ('Spectateur 2', 'Prénom 2', 'Adresse 2', 'email2@example.com', 'mdp2'),
-    ('Spectateur 3', 'Prénom 3', 'Adresse 3', 'email3@example.com', 'mdp3'),
-    ('Spectateur 4', 'Prénom 4', 'Adresse 4', 'email4@example.com', 'mdp4'),
-    ('Spectateur 5', 'Prénom 5', 'Adresse 5', 'email5@example.com', 'mdp5');
+INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
+    ('Spectateur 1', 'Prénom 1', 2),
+    ('Spectateur 2', 'Prénom 2', 2),
+    ('Spectateur 3', 'Prénom 3', 2),
+    ('Spectateur 4', 'Prénom 4', 2),
+    ('Spectateur 5', 'Prénom 5', 2);
 
 -- Insérer des données dans la table STYLE_MUSICAL
 INSERT INTO STYLE_MUSICAL (nomSt) VALUES
