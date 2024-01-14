@@ -459,6 +459,9 @@ class Style_Musical:
     def get_nomSt(self):
         return self.__nomSt
     
+    def set_nomSt(self, nomSt):
+        self.__nomSt = nomSt
+    
     def to_dict(self):
         return {
             "idSt": self.__idSt,

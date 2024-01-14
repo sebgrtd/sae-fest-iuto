@@ -748,6 +748,34 @@ def styles_musicaux_festival():
         return render_template("admin_styles.html", liste_styles_musicaux=[])
     return render_template("admin_styles.html", liste_styles_musicaux=liste_styles_musicaux)
 
+@app.route("/modifier_style_musical", methods=["POST"])
+def modifier_style_musical():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    id_style_musical = request.form["idSt"]
+    nom_style_musical = request.form["nomSt"]
+    style_musical = style_musicalbd.get_style_by_id(id_style_musical)
+    style_musical.set_nomSt(nom_style_musical)
+    style_musicalbd.update_style(style_musical)
+    return redirect(url_for("styles_musicaux_festival"))
+
+@app.route("/supprimer_style_musical", methods=["POST"])
+def supprimer_style_musical():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    id_style_musical = request.form["idSt"]
+    style_musicalbd.delete_style_by_id(id_style_musical)
+    return redirect(url_for("styles_musicaux_festival"))
+
+@app.route("/ajouter_style_musical", methods=["POST"])
+def ajouter_style_musical():
+    connexionbd = ConnexionBD()
+    style_musicalbd = Style_MusicalBD(connexionbd)
+    nom_style_musical = request.form["nomSt"]
+    style_musical = Style_Musical(None, nom_style_musical)
+    style_musicalbd.insert_style(style_musical)
+    return redirect(url_for("styles_musicaux_festival"))
+
 @app.route("/instruments_festival")
 def instruments_festival():
     connexionbd = ConnexionBD()
