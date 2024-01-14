@@ -1576,6 +1576,7 @@ input[type="number"]::-ms-reveal {
 }
 
 footer{
+  position: relative;
   background-color: var(--color-orange);
   color: var(--color-light-secondary);
   display: flex;
@@ -1585,7 +1586,7 @@ footer{
   width: 100%;
   padding:6rem;
   overflow-x: hidden;
-  z-index: 9999;
+  z-index: 10;
 }
 
 footer .top-content{
