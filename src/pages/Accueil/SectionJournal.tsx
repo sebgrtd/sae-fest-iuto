@@ -10,11 +10,16 @@ type Props = {
 export default function SectionJournal(props : Props) {
     const targetRef = useRef(null);
   const{ scrollYProgress } = useScroll({target:targetRef, offset:["start end", "end start"]});
-  
+  const scrollYProgressForBlur = useScroll({target:targetRef, offset:["end end", "start end"]}).scrollYProgress;
+  const scrollYProgressForScale = useScroll({target:targetRef, offset:["end end", "start start"]}).scrollYProgress;
+
+  const blur = useTransform(scrollYProgressForBlur, [0, 0.7, 0.9], ["blur(0px)", "blur(0px)", "blur(10px)"]); 
+
   const scale = useTransform(scrollYProgress, [0, 0.25, 0.7], [1.5, 1, 0.25]);
   const y = useTransform(scrollYProgress, [0, 0.25, 0.4, 0.5], ["0%", "5%", "20%", "20%"]);
   const x = useTransform(scrollYProgress, [0, 0.5, 0.7], ["0%", "0%", "20%"]);
   const rotate = useTransform(scrollYProgress, [0, 0.5, 0.7], ["0deg", "0deg", "-25deg"]);
+  const imagePosition = useTransform(scrollYProgress, (latest) => latest > 0.7 ? "fixed" : "sticky")
 
   const contentX = useTransform(scrollYProgress, [0, 0.5, 0.7], ["-50%", "-50%", "-110%"]);
   const contentOpacity = useTransform(scrollYProgress, [0.49,0.5], [0, 1]);
@@ -31,11 +36,11 @@ export default function SectionJournal(props : Props) {
   return (
     <section id="SectionJournal" ref={targetRef}>
         <motion.img 
-        style={{scale:scale, y: y, x:x, rotate}}
+        style={{scale:scale, y: y, x:x, rotate, position: imagePosition, filter: blur}}
         src="images/journal.png" alt="Section Journal" />
 
         <motion.section className='content'
-        style={{x:contentX, y:"-50%", opacity:contentOpacity}}
+        style={{x:contentX, y:"-50%", opacity:contentOpacity, filter: blur}}
         >
             <div className="infos">
                 <div className="text-etoile">

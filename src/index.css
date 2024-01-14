@@ -690,7 +690,7 @@ input[type="number"]::-ms-reveal {
   align-items: start;
   gap:3rem;
   max-width: 30vw;
-  position: sticky;
+  position: fixed;
   z-index: 300;
   top:50%;
   left: 50%;
