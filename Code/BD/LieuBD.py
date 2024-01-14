@@ -37,19 +37,19 @@ class LieuBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
-    def delete_lieu_by_nom(self, lieu, nom):
+    def delete_lieu_by_id(self, idLieu):
         try:
-            query = text("DELETE FROM lieu WHERE idL = :idL AND nomL = :nom")
-            self.connexion.get_connexion().execute(query, {"idL": lieu.get_idL(), "nom": nom})
-            print(f"Le lieu {lieu.get_idL()} a été supprimé")
+            query = text("DELETE FROM lieu WHERE idL = :idLieu")
+            self.connexion.get_connexion().execute(query, {"idLieu": idLieu})
             self.connexion.get_connexion().commit()
+            print(f"Le lieu {idLieu} a été supprimé")
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
-    def update_lieu_by_id(self, lieu, idLieu):
+    def update_lieu(self, lieu):
         try:
-            query = text("UPDATE lieu SET idF = :idF, nomL = :nomL, adresseL = :adresseL, jaugeL = :jaugeL WHERE idL = :idLieu")
-            self.connexion.get_connexion().execute(query, {"idF": lieu.get_idFestival(), "nomL": lieu.get_nomL(), "adresseL": lieu.get_adresseL(), "jaugeL": lieu.get_jaugeL(), "idLieu": idLieu})
+            query = text("UPDATE lieu SET nomL = :nomL, adresseL = :adresseL, jaugeL = :jaugeL WHERE idL = :idL")
+            self.connexion.get_connexion().execute(query, {"nomL": lieu.get_nomL(), "adresseL": lieu.get_adresseL(), "jaugeL": lieu.get_jaugeL(), "idL": lieu.get_idL()})
             print(f"Le lieu {lieu.get_idL()} a été modifié")
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:

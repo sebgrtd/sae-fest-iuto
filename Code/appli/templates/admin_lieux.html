@@ -22,9 +22,105 @@
                     <td> {{ lieu.get_nomL() }} </td>
                     <td> {{ lieu.get_adresseL() }} </td>
                     <td> {{ lieu.get_jaugeL() }} </td>
+                    <td>
+                        <button class="btn-modifier"
+                            data-id="{{ lieu.get_idL() }}"
+                            data-nom="{{ lieu.get_nomL() }}"
+                            data-adresse="{{ lieu.get_adresseL() }}"
+                            data-jauge="{{ lieu.get_jaugeL() }}">Modifier</button>
+                        <button class="btn-supprimer" data-id =" {{ lieu.get_idL() }}">Supprimer</button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     <button id="ajouter">Ajouter</button>
+
+    <!-- Modale pour modifier un lieu -->
+    <div id ="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="{{url_for("modifier_lieu") }}" method="POST">
+                <input type="hidden" name="idL" id="idL_modifier">
+                <label for="nomL">Nom du lieu</label>
+                <input type="text" name="nomL" id="nomL_modifier">
+                <label for="adresseL">Adresse du lieu</label>
+                <input type="text" name="adresseL" id="adresseL_modifier">
+                <label for="jaugeL">Jauge du lieu</label>
+                <input type="number" name="jaugeL" id="jaugeL_modifier">
+                <button id="modifier" type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour supprimer un lieu -->
+    <div id ="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="{{url_for("supprimer_lieu") }}" method="POST">
+                <input type="hidden" name="idL" id="idL_supprimer">
+                <p>Êtes-vous sûr de vouloir supprimer ce lieu ?</p>
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale pour ajouter un lieu -->
+    <div id ="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="{{url_for("ajouter_lieu") }}" method="POST">
+                <label for="nomL">Nom du lieu</label>
+                <input type="text" name="nomL" id="nomL_ajouter">
+                <label for="adresseL">Adresse du lieu</label>
+                <input type="text" name="adresseL" id="adresseL_ajouter">
+                <label for="jaugeL">Jauge du lieu</label>
+                <input type="number" name="jaugeL" id="jaugeL_ajouter">
+                <button class="btn-ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                }
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("idL_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("nomL_modifier").value = btn.getAttribute("data-nom");
+                    document.getElementById("adresseL_modifier").value = btn.getAttribute("data-adresse");
+                    document.getElementById("jaugeL_modifier").value = btn.getAttribute("data-jauge");
+                    modalModifier.style.display = "block";
+                }
+            });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("idL_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                }
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            }
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            }
+
+        });
+    </script>
 {% endblock %}

@@ -27,6 +27,10 @@ th, td {
     text-align: left;
 }
 
+th {
+    width: 20%;
+}
+
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
@@ -68,3 +72,115 @@ button {
 #retour:hover {
     background-color: #0b7dda;
 }
+
+.btn-ajouter {
+    background-color: #2196F3;
+}
+
+.btn-ajouter:hover {
+    background-color: #0b7dda;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+#modal-ajouter form {
+    display: flex;
+    flex-direction: column;
+}
+
+#modal-ajouter input {
+    margin-bottom: 1rem;
+    width: 150px;
+}
+
+#retour {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 15px;
+    margin-left: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+#retour:hover {
+    background-color: #0b7dda;
+}
+
+.btn-supprimer {
+    background-color: #f44336;
+}
+
+.btn-supprimer:hover {
+    background-color: #da190b;
+}
+
+#supprimer {
+    background-color: #f44336;
+}
+
+#supprimer:hover {
+    background-color: #da190b;
+}
+
+.btn-modifier {
+    background-color: #4CAF50;
+}
+
+.btn-modifier:hover {
+    background-color: #45a049;
+}
+
+#modifier {
+    background-color: #4CAF50;
+}
+
+#modifier:hover {
+    background-color: #45a049;
+}
+

@@ -18,9 +18,10 @@ INSERT INTO FAQ (question, reponse) VALUES
     ("Les billets sont-ils remboursables en cas d'annulation ?", "Les billets ne sont généralement pas remboursables. Cependant, veuillez consulter nos politiques d'annulation pour toute information spécifique sur les remboursements."),
     ('Proposez-vous des activités pour les personnes à mobilité réduite ?', "Oui, nous nous efforçons de rendre le festival accessible à tous. Des installations spéciales seront mises en place pour garantir une expérience agréable aux personnes à mobilité réduite.");
 
-INSERT INTO USER (pseudoUser, mdpUser, emailUser)
+INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser)
 VALUES
-    ('irvyncsm', 'abc', 'irvyncsm@gmail.com');
+    ('irvyncsm', 'abc', 'irvyncsm@gmail.com', 'user'),
+    ('admin', 'admin', '', 'admin');
 
 -- Insérer des données dans la table FESTIVAL
 INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
