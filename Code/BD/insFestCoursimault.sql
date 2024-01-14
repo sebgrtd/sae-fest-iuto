@@ -50,13 +50,13 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
     Créé durant les années de collège de ces deux derniers, le groupe a fait partie intégrante du collectif Lyonzon de 2018 à 2023. 
     Il a également intégré le troisième membre Azur de 2018 à 2020 qui avait déjà collaboré avec Bushi en 2016 sous le nom Cool Kids pour un projet éponyme.'),
 
-    (1, 'Opium', "Opium est un label américain et une agence de création fondée par le rappeur et chanteur américain Playboi Carti. Le label compte actuellement parmi ses membres Carti, les rappeurs américains Ken Carson et Destroy Lonely, ainsi que le duo de hip-hop Homixide Gang.
+    (2, 'Opium', "Opium est un label américain et une agence de création fondée par le rappeur et chanteur américain Playboi Carti. Le label compte actuellement parmi ses membres Carti, les rappeurs américains Ken Carson et Destroy Lonely, ainsi que le duo de hip-hop Homixide Gang.
     Musicalement, le collectif Opium partageait un son similaire, avec des synthés sombres, grinçants et avant-gardistes mélangés à un beat rageur rappelant l'ère du punk rock des années 70 et 80. 
     Ce son expérimental s'éloignait du genre hip-hop trap actuel et s'était attiré les faveurs d'un groupe culte."),
 
 
-    (1, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
-    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.'),
+    (3, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
+    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.');
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
@@ -130,14 +130,7 @@ INSERT INTO LIEN_VIDEO (idG, video) VALUES
     (2, 'Video 1'),
     (3, 'Video 1'),
     (3, 'Video 2'),
-    (3, 'Video 3'),
-    (4, 'Video 1'),
-    (5, 'Video 1'),
-    (6, 'Video 1'),
-    (7, 'Video 1'),
-    (8, 'Video 1'),
-    (9, 'Video 1'),
-    (10, 'Video 1');
+    (3, 'Video 3');
 
 -- Insérer des données dans la table LIEN_RESEAUX_SOCIAUX
 INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
@@ -147,7 +140,7 @@ INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (2, 'Réseau 1'),
     (3, 'Réseau 1'),
     (3, 'Réseau 2'),
-    (3, 'Réseau 3'),
+    (3, 'Réseau 3');
 
 -- Insérer des données dans la table SPECTATEUR
 INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
@@ -168,14 +161,7 @@ INSERT INTO STYLE_MUSICAL (nomSt) VALUES
 INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
     (1, 'Concert Groupe 1', '9:00:00', '10:00:00', '2024-07-21', '2024-07-21'),
     (2, 'Concert Groupe 2', '13:00:00', '14:00:00', '2024-07-21', '2024-07-21'),
-    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21'),
-    (4, 'Concert Groupe 4', '9:00:00', '10:00:00', '2024-07-22', '2024-07-22'),
-    (5, 'Concert Groupe 5', '13:00:00', '14:00:00', '2024-07-22', '2024-07-22'),
-    (6, 'Concert Groupe 6', '17:00:00', '18:00:00', '2024-07-22', '2024-07-22'),
-    (7, 'Concert Groupe 7', '8:00:00', '9:00:00', '2024-07-23', '2024-07-23'),
-    (8, 'Concert Groupe 8', '11:00:00', '12:00:00', '2024-07-23', '2024-07-23'),
-    (9, 'Concert Groupe 9', '14:00:00', '15:00:00', '2024-07-23', '2024-07-23'),
-    (10, 'Concert Groupe 10', '17:00:00', '18:00:00', '2024-07-23', '2024-07-23');
+    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21');
 
 INSERT INTO TYPE_BILLET(duree) VALUES
     (1),
@@ -186,26 +172,12 @@ INSERT INTO TYPE_BILLET(duree) VALUES
 INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
     (1, '01:00:00', '01:00:00'),
     (2, '01:00:00', '01:00:00'),
-    (3, '01:00:00', '01:00:00'),
-    (4, '01:00:00', '01:00:00'),
-    (5, '01:00:00', '01:00:00'),
-    (6, '01:00:00', '01:00:00'),
-    (7, '01:00:00', '01:00:00'),
-    (8, '01:00:00', '01:00:00'),
-    (9, '01:00:00', '01:00:00'),
-    (10, '01:00:00', '01:00:00');
+    (3, '01:00:00', '01:00:00');
 
 INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
     (1, 1),
     (2, 2),
-    (3, 3),
-    (4, 1),
-    (5, 2),
-    (6, 3),
-    (7, 1),
-    (8, 2),
-    (9, 3),
-    (10, 1);
+    (3, 3);
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES

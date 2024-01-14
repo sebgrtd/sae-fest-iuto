@@ -13,6 +13,7 @@
                 <th>Nom du membre</th>
                 <th>Prenom du membre</th>
                 <th>Nom de scene</th>
+                <th>Description</th> 
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,12 +25,14 @@
                     <td>{{ membre.get_nomMG() }}</td>
                     <td>{{ membre.get_prenomMG() }}</td>
                     <td>{{ membre.get_nomDeSceneMG() }}</td>
+                    <td>{{ membre.get_descriptionA() }}</td>
                     <td>
                         <button class="btn-modifier" 
                         data-id="{{ membre.get_idMG() }}" 
                         data-nom="{{ membre.get_nomMG() }}" 
                         data-prenom="{{ membre.get_prenomMG() }}" 
-                        data-nomscene="{{ membre.get_nomDeSceneMG() }}">Modifier</button>
+                        data-nomscene="{{ membre.get_nomDeSceneMG() }}"
+                        data-description="{{ membre.get_descriptionA() }}">Modifier</button>
                         <button class="btn-supprimer" data-id="{{ membre.get_idMG() }}">Supprimer</button>
                     </td>
                 </tr>
@@ -48,6 +51,7 @@
                 <input type="text" name="nom_membre" id="nom_modifier" placeholder="Nom du membre">
                 <input type="text" name="prenom_membre" id="prenom_modifier" placeholder="Prénom du membre">
                 <input type="text" name="nom_scene_membre" id="nom_scene_modifier" placeholder="Nom de scène du membre">
+                <input type="text" name="description_membre" id="description_modifier" placeholder="Description du membre">
                 <button id="modifier" type="submit">Modifier</button>
             </form>
         </div>
@@ -75,6 +79,7 @@
                 <input type="text" name="nom_nouveau_membre" placeholder="Nom du groupe">
                 <input type="text" name="prenom_nouveau_membre" placeholder="Prénom du groupe">
                 <input type="text" name="nom_scene_nouveau_membre" placeholder="Nom de scène du groupe">
+                <input type="text" name="description_nouveau_membre" placeholder="Description du groupe">
                 <button class="btn-ajouter" type="submit">Ajouter</button>
             </form>
         </div>
@@ -100,6 +105,7 @@
                     document.getElementById("nom_modifier").value = btn.getAttribute("data-nom");
                     document.getElementById("prenom_modifier").value = btn.getAttribute("data-prenom");
                     document.getElementById("nom_scene_modifier").value = btn.getAttribute("data-nomscene");
+                    document.getElementById("description_modifier").value = btn.getAttribute("data-description");
                     modalModifier.style.display = "block";
                 };
             });

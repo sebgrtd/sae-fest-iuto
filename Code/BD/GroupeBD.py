@@ -111,11 +111,11 @@ class GroupeBD:
         
     def get_membres_groupe(self, idGroupe):
         try:
-            query = text("select idMG, idG, nomMG, prenomMG, nomDeSceneMG from MEMBRE_GROUPE natural join GROUPE where idG=:idG")
+            query = text("select idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA from MEMBRE_GROUPE natural join GROUPE where idG=:idG")
             membres = []
             result = self.connexion.get_connexion().execute(query, {"idG": idGroupe})
-            for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
-                membres.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG))
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
+                membres.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA))
             return membres
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
