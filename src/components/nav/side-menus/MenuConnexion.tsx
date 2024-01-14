@@ -7,13 +7,16 @@ import Button from '../../form/Button';
 import axios from 'axios';
 import { setUserCookie, getUserCookie, isConnected, removeUserCookie } from '../../../cookies/CookiesLib';
 import ChampCode from '../../form/ChampCode';
+import Combo from '../../form/Combo';
+import SearchBar from '../../form/SearchBar';
+import SelectionneurArtiste from '../../Artiste/SelectionneurArtiste';
 
 type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen : boolean) => void;
 }
 
-type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification" | "changerMdp";
+type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification" | "changerMdp" | "planification";
 
 type typeErreur = "email" | "password" | "pseudo" | "oldPassword" | "verifPassword" | "codeVerification";
 
@@ -26,9 +29,13 @@ export default function MenuConnexion(props: Props) {
   const formCodeVerificationRef = useRef<HTMLFormElement>(null);
   const formModifMdpRef = useRef<HTMLFormElement>(null);
   const[isLoading, setIsLoading] = useState(false);
+  const[filtreDate, setFiltreDate] = useState("Tout");
+  const[filtreAffichage, setFiltreAffichage] = useState("Grille");
+  const[filtreGenre, setFiltreGenre] = useState("Tout");
 
   useEffect(() => {
-    setCurrentMenu(isConnected() ? "connecte" : "connexion");
+    setCurrentMenu("planification")
+    //setCurrentMenu(isConnected() ? "connecte" : "connexion");
   }, [props.isOpen === true])
 
   const[email, setEmail] = useState("");
@@ -430,7 +437,7 @@ export default function MenuConnexion(props: Props) {
   }
 
   return (
-    <motion.div className='side-menu connexion'
+    <motion.div className={`side-menu connexion ${currentMenu === "planification" ? "large":""}`}
     variants={menuVariants}
     initial="hidden"
     animate={props.isOpen ? "visible" : "hidden"}>
@@ -453,7 +460,7 @@ export default function MenuConnexion(props: Props) {
               <form onSubmit={handleConnexion} ref={formConnexionRef}>
                 <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
                 <TextField errorText={errorPassword} text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
-                <Button isLoading={isLoading} text="CONNEXION" formRef={formConnexionRef}/>
+                <Button isLoading={isLoading} text="CONNEXION"/>
               </form>
               <div className="other">
                 <a href="" onClick={(e) => goTo("aideConnexion",e)}>Je n'arrive pas à me connecter</a>
@@ -474,11 +481,49 @@ export default function MenuConnexion(props: Props) {
               }
               <div className="other">
                 <a href="" onClick={(e) => goTo("modifierInfos",e)}>Modifier mes informations</a>
-                <a href="" onClick={handleDeconnexion} className='deconnexion'>Déconnexion</a>
+                <a href="" onClick={(e) => goTo("planification",e)}>Planifier mon festival</a>
+                <a href="" onClick={handleDeconnexion} className='error'>Déconnexion</a>
               </div>
               
             </motion.div>
           )
+        : currentMenu === "planification" ? (
+          <motion.div className="container"
+            variants={menuSwitchVariants}
+              initial="appearing"
+              animate="default"
+              exit="exit"
+              key={currentMenu}
+            >  
+            <main>
+              <h2>Planifier mon festival</h2>
+              
+              <section className='planification'>
+                <header className='filters-container'>
+                  <div className="filters">
+                      <Combo title="DATE" choices={["Tout", "21 Juillet", "22 Juillet", "23 Juillet"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
+                      <Combo title="GENRE" choices={["Tout", "Rap", "Rock", "Pop"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
+                  </div>
+                  <SearchBar text="Rechercher un artiste"/>
+                </header>
+
+                <div className="liste-artistes">
+                  <SelectionneurArtiste nomArtiste="PLAYBOI CARTI" datePassage="22 JUILLET"/>
+                  <SelectionneurArtiste nomArtiste="TRAVIS SCOTT" datePassage="22 JUILLET"/>
+                  <SelectionneurArtiste nomArtiste="PLAYBOI CARTI" datePassage="22 JUILLET"/>
+                  <SelectionneurArtiste nomArtiste="TRAVIS SCOTT" datePassage="22 JUILLET"/>
+                  <SelectionneurArtiste nomArtiste="PLAYBOI CARTI" datePassage="22 JUILLET"/>
+                  <SelectionneurArtiste nomArtiste="TRAVIS SCOTT" datePassage="22 JUILLET"/>
+                </div>
+              </section>
+            </main>
+
+              <div className="other">
+                <a href="" onClick={(e) => goTo("connecte",e)}>Retour</a>
+              </div>
+              
+            </motion.div>
+        )
         : currentMenu === "inscription" ? (
           <motion.div className="container"
             variants={menuSwitchVariants}
@@ -494,7 +539,7 @@ export default function MenuConnexion(props: Props) {
                 <TextField errorText={errorPseudo} text="pseudo" textVar={pseudo} setTextVar={setPseudo}/>
                 <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
                 <TextField errorText={errorPassword} text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
-                <Button isLoading={isLoading} text="M'INSCRIRE" formRef={formInscriptionRef}/>
+                <Button isLoading={isLoading} text="M'INSCRIRE"/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("aideConnexion",e)}>Je n'arrive pas à me connecter</a>
@@ -515,7 +560,7 @@ export default function MenuConnexion(props: Props) {
             ref={formResetMdpRef}
             >
                 <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
-                <Button isLoading={isLoading} text="REINITIALISER" formRef={formResetMdpRef}/>
+                <Button isLoading={isLoading} text="REINITIALISER" />
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("inscription",e)}>Créer un compte</a>
@@ -539,7 +584,7 @@ export default function MenuConnexion(props: Props) {
                 <TextField errorText={errorEmail} text="e-mail" textVar={email} setTextVar={setEmail}/>
                 <TextField errorText={errorPassword} text="mot de passe" textVar={password} setTextVar={setPassword} isPassword/>
                 <TextField errorText={errorOldPassword} text="ancien mot de passe" textVar={oldPassword} setTextVar={setOldPassword} isPassword/>
-                <Button isLoading={isLoading} text="MODIFIER" formRef={formModifierInfosRef}/>
+                <Button isLoading={isLoading} text="MODIFIER"/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("connecte",e)}>Retour</a>
@@ -562,7 +607,7 @@ export default function MenuConnexion(props: Props) {
             ref={formCodeVerificationRef}
             >
                 <ChampCode errorText={errorCodeVerification} codeVar={codeVerification} setCodeVar={setCodeVerification} nbChar={6}/>
-                <Button isLoading={isLoading} text="VALIDER" formRef={formCodeVerificationRef}/>
+                <Button isLoading={isLoading} text="VALIDER"/>
             </form>
             <div className="other">
                 <a href="" onClick={(e) => goTo("connexion",e)}>Retour</a>
@@ -583,7 +628,7 @@ export default function MenuConnexion(props: Props) {
             >
                  <TextField errorText={errorPassword} isPassword text="Mot de passe" textVar={password} setTextVar={setPassword}/>
                 <TextField errorText={errorVerifPassword} isPassword text="Vérifiez votre mot de passe" textVar={verifierPassword} setTextVar={setVerifierPassword}/>
-                <Button isLoading={isLoading} text="VALIDER" formRef={formModifMdpRef}/>
+                <Button isLoading={isLoading} text="VALIDER" />
             </form>
           </motion.div>
         )

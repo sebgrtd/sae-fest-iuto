@@ -41,6 +41,7 @@
   --color-light: #FFFBEE;
   --color-yellow: #FFD600;
   --color-light-secondary: #F3D6CB;
+  --color-error: #C14242;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -211,6 +212,15 @@ body{
   overflow-x: hidden;
 }
 
+#Navbar .side-menu.large{
+  width: 80rem;
+  max-height: 100vh;
+  overflow-y: hidden;
+  justify-content: space-between;
+  align-items: start;
+  padding: 2rem;
+}
+
 #Navbar .side-menu .container{
   position: absolute;
   display: flex;
@@ -220,6 +230,61 @@ body{
   padding: 6rem;
 }
 
+#Navbar .side-menu.large .container{
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  overflow-y:hidden;
+}
+
+
+#Navbar .side-menu.large .container main{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap:4rem;
+}
+
+#Navbar .side-menu.large .container main .filters-container{
+  width: 100%;
+}
+
+#Navbar .side-menu.large .container main .planification{
+  display: flex;
+  flex-direction: column;
+  gap:3rem;
+}
+
+#Navbar .side-menu.large .container main .planification .liste-artistes{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 50vh;
+  gap: 1rem;
+}
+
+/* changes la barre de scroll de la liste des artistes */
+
+/* Personnalise l'ensemble de la barre de défilement */
+.liste-artistes::-webkit-scrollbar {
+  width: 5px; /* Largeur de la barre de défilement */
+}
+
+/* Personnalise le fond de la barre de défilement */
+.liste-artistes::-webkit-scrollbar-track {
+  background: var(--color-light-secondary); /* Couleur de fond */
+}
+
+/* Personnalise la poignée de la barre de défilement */
+.liste-artistes::-webkit-scrollbar-thumb {
+  background: var(--color-orange); /* Couleur de la poignée */
+}
+
+/* Change la couleur de la poignée de la barre de défilement au survol */
+.liste-artistes::-webkit-scrollbar-thumb:hover {
+  background: var(--color-orange-tertiary);
+}
+
 .container-champ-code{
   display: flex;
   flex-direction: column;
@@ -227,7 +292,7 @@ body{
 }
 
 .container-champ-code .error{
-  color:red;
+  color:var(--color-error);
   font-weight: 600;
 }
 
@@ -254,6 +319,8 @@ body{
 #Navbar .side-menu h2{
   font-size: 2.625rem;
   font-weight: 600;
+  z-index: 200;
+  position: relative;
 }
 
 
@@ -269,6 +336,10 @@ body{
   font-weight: 600;
   color: var(--color-orange-secondary);
   transition: all 0.2s ease;
+}
+
+#Navbar .side-menu a.error{
+  color: var(--color-error);
 }
 
 
@@ -290,7 +361,7 @@ body{
 }
 
 .textfield-container .error{
-  color:red;
+  color:var(--color-error);
   font-weight: 600;
 }
 
@@ -831,7 +902,7 @@ input[type="number"]::-ms-reveal {
   font-size: 4.375rem;
 }
 
-#Programmation header .filters-container{
+.filters-container{
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -840,7 +911,7 @@ input[type="number"]::-ms-reveal {
   width: 95%;
 }
 
-#Programmation header .filters-container .filters{
+.filters-container .filters{
   display: flex;
   align-items: center;
   gap: 3.75rem;
@@ -942,7 +1013,7 @@ input[type="number"]::-ms-reveal {
   background-color: var(--color-orange);
 }
 
-.combo .menu{
+.combo .combo-menu{
   position: absolute;
   background-color: var(--color-orange);
   width: 100%;
@@ -956,7 +1027,7 @@ input[type="number"]::-ms-reveal {
   z-index: -3;
 }
 
-.combo .menu h4{
+.combo .combo-menu h4{
   color:var(--color-light-secondary);
   font-weight: 500;
   padding: 0.45rem 1rem;
@@ -966,18 +1037,18 @@ input[type="number"]::-ms-reveal {
   cursor: pointer;
 }
 
-.combo .menu h4:hover{
+.combo .combo-menu h4:hover{
   background-color: var(--color-light-secondary);
   color:var(--color-orange);
 }
 
-.combo .menu h4.active:hover{
+.combo .combo-menu h4.active:hover{
   background-color: transparent;
   color:var(--color-light-secondary);
 
 }
 
-.combo .menu h4.active{
+.combo .combo-menu h4.active{
   color:var(--color-orange);
   background-color: var(--color-light-secondary);
   cursor: default;
@@ -1665,6 +1736,144 @@ footer .bottom-content h4{
 footer .bottom-content h5{
   font-size: 1rem;
   font-weight: 500;
+}
+
+/* Selectionneur Artiste */
+
+.selectionneur-artiste{
+  display: flex;
+  border: none;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 99%;
+  max-height: 8rem;
+  min-height: 8rem;
+  cursor: pointer;
+  position: relative;
+  border-radius: 0.5rem;
+}
+
+/* ajoutes un backdrop shadow sur l'image comme avant */
+.selectionneur-artiste img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.selectionneur-artiste .image-mask{
+  content: "";
+  z-index: 2;
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 -110px 72px -33px rgba(0, 0, 0, 0.6);
+}
+
+.selectionneur-artiste .content{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  left: 2rem;
+  z-index: 10;
+}
+
+.selectionneur-artiste .content h3{
+  font-family: "TuskerGrotesk";
+  font-size: 2.5rem;
+  font-weight: 1000;
+  color: var(--color-yellow);
+}
+
+.selectionneur-artiste .content h4{
+  font-family: "TuskerGrotesk";
+  font-weight: 700;
+  color: var(--color-light);
+  font-size: 1.875rem;
+}
+
+
+.selectionneur-artiste .bookmark-container{
+  position: absolute;
+  right:0;
+  bottom:0;
+  height: 100%;
+  width: 27%;
+  z-index: 10;
+}
+
+.selectionneur-artiste .bookmark-container .bookmark{
+  position: absolute;
+  z-index: 11;
+  bottom: 0.8rem;
+  left: 0.8rem;
+}
+
+.selectionneur-artiste .bookmark-container .text-feedback{
+  position: absolute;
+  right:1rem;
+  top: 50%;
+  width: 80%;
+  transform: translateY(-50%);
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.selectionneur-artiste .bookmark-container .text-feedback p{
+  font-size: 2rem;
+  font-family: "TuskerGrotesk";
+  font-weight: 700;
+  color: var(--color-orange);
+  line-height: 1;
+}
+
+.selectionneur-artiste .bookmark-container .text-feedback img{
+  width: 2rem;
+}
+
+.selectionneur-artiste .bookmark-container .rect{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  right: -90%;
+  bottom: -170%;
+}
+
+.selectionneur-artiste .bookmark-container .rect.yellow{
+  background-color: var(--color-yellow);
+}
+
+.selectionneur-artiste .bookmark-container .orange{
+  background-color: var(--color-orange);
+}
+
+.selectionneur-artiste .bookmark-container .rect.wrapper{
+  transform: translateX(-280%) scale(3.5) rotate(125deg);
+  transform: translateX(-95%) scale(3.5) rotate(125deg);
+  overflow: hidden;
+}
+
+.selectionneur-artiste .bookmark-container .rect.wrapper .real-rect{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  right: -90%;
+  bottom: -170%;
+  transform: translateX(-95%) scale(3.5) rotate(0) translateY(15.3%);
+}
+
+.selectionneur-artiste .bookmark-container .loading p{
+  color: var(--color-light);
 }
 
 /* fais des media queries qui ne changent que le fontsize du body */
