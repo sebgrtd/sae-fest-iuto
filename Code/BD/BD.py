@@ -106,7 +106,7 @@ class Type_Billet:
         return self.__idType
     
     def get_duree(self):
-        return self.__duree
+       return self.__duree
     
     def set_duree(self, duree):
         self.__duree = duree
@@ -247,6 +247,15 @@ class Lieu:
     
     def get_jaugeL(self):
         return self.__jaugeL
+    
+    def set_nomL(self, nomL):
+        self.__nomL = nomL
+        
+    def set_adresseL(self, adresseL):
+        self.__adresseL = adresseL
+        
+    def set_jaugeL(self, jaugeL):
+        self.__jaugeL = jaugeL
     
     def to_dict(self):
         return {
