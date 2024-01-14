@@ -66,6 +66,15 @@ def getArtistes():
     else:
         return res
     
+@app.route('/getGroupesWithEvenements')
+def get_groupes_with_evenements():
+    connexion_bd = ConnexionBD()
+    evenement_bd = EvenementBD(connexion_bd)
+    groupes = evenement_bd.programmation_to_json()
+    if not groupes:
+        return jsonify({"error": "Aucun groupe avec événement trouvé"}), 404
+    return jsonify(groupes)
+
 @app.route('/filtrerArtistes')
 def filtrerArtistes():
     connexion_bd = ConnexionBD()
@@ -92,6 +101,7 @@ def getArtiste(id):
     mb = membre_groupebd.get_artiste_by_id(id)
     res = mb.to_dict()
     return jsonify({"error": "Aucun artiste trouve"}) if res is None else res
+
 
 @app.route('/connecter', methods=['POST'])
 def connecter():
