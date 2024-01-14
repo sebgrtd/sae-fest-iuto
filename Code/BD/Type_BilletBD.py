@@ -46,11 +46,20 @@ class Type_BilletBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
-    def delete_type_billet_by_duree(self, type):
+    def delete_type_billet_by_id(self, id):
         try:
-            query = text("DELETE FROM TYPE_BILLET WHERE duree = :duree")
-            self.connexion.get_connexion().execute(query, {"duree": type.get_duree()})
-            print(f"Le type {type.get_duree()} a été supprimé")
+            query = text("DELETE FROM TYPE_BILLET WHERE idType = :id")
+            result = self.connexion.get_connexion().execute(query, {"id": id})
+            print(f"Le type {id} a été supprimé")
+            self.connexion.get_connexion().commit()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
+    def update_type_billet(self, billet):
+        try:
+            query = text("UPDATE TYPE_BILLET SET duree = :duree WHERE idType = :id")
+            result = self.connexion.get_connexion().execute(query, {"duree": billet.get_duree(), "id": billet.get_idType()})
+            print(f"Le type {billet.get_idType()} a été modifié")
             self.connexion.get_connexion().commit()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")

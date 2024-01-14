@@ -108,6 +108,9 @@ class Type_Billet:
     def get_duree(self):
         return self.__duree
     
+    def set_duree(self, duree):
+        self.__duree = duree
+    
     def to_dict(self):
         return {
             "idType": self.__idType,
