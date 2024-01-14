@@ -659,6 +659,40 @@ def lieux_festival():
         return render_template("admin_lieux.html", liste_lieux=[])
     return render_template("admin_lieux.html", liste_lieux=liste_lieux)
 
+@app.route("/ajouter_lieu", methods=["POST"])
+def ajouter_lieu():
+    connexionBD = ConnexionBD()
+    lieubd = LieuBD(connexionBD)
+    nom_lieu = request.form["nomL"]
+    adresse_lieu = request.form["adresseL"]
+    jauge_lieu = request.form["jaugeL"]
+    lieu = Lieu(None, 1, nom_lieu, adresse_lieu, jauge_lieu)
+    lieubd.insert_lieu(lieu)
+    return redirect(url_for("lieux_festival"))
+
+@app.route("/modifier_lieu", methods=["POST"])
+def modifier_lieu():
+    connexionBD = ConnexionBD()
+    lieubd = LieuBD(connexionBD)
+    id_lieu = request.form["idL"]
+    nom_lieu = request.form["nomL"]
+    adresse_lieu = request.form["adresseL"]
+    jauge_lieu = request.form["jaugeL"]
+    lieu = lieubd.get_lieu_by_id(id_lieu)
+    lieu.set_nomL(nom_lieu)
+    lieu.set_adresseL(adresse_lieu)
+    lieu.set_jaugeL(jauge_lieu)
+    lieubd.update_lieu(lieu)
+    return redirect(url_for("lieux_festival"))
+
+@app.route("/supprimer_lieu", methods=["POST"])
+def supprimer_lieu():
+    connexionBD = ConnexionBD()
+    lieubd = LieuBD(connexionBD)
+    id_lieu = request.form["idL"]
+    lieubd.delete_lieu_by_id(id_lieu)
+    return redirect(url_for("lieux_festival"))
+
 @app.route("/types_billet_festival")
 def types_billet_festival():
     connexionbd = ConnexionBD()
