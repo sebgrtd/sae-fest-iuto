@@ -54,8 +54,6 @@ export default function MenuConnexion(props: Props) {
   }, [codeVerification])
   
 
-  console.log(getUserCookie());
-
   const goTo = (menu : menuConnexionTabs, e? : React.MouseEvent<HTMLAnchorElement>) => {
     if(e) {e.preventDefault();}
     //reset tous les champs
@@ -181,7 +179,8 @@ export default function MenuConnexion(props: Props) {
 
     const data = {
       email,
-      password
+      password,
+      statUser: "user"
     }
 
     axios.post("http://localhost:8080/connecter", data).then((res) => {

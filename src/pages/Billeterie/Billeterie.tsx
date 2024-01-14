@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import TicketCard from "../../components/TicketCard";
 import Footer from "../../components/footer";
 import axios from 'axios';
+const videoSrc = "images/bgbilleterie.mp4"
+
 
 type Props = {
   isNavInFocus: boolean;
@@ -46,7 +48,7 @@ export default function Billeterie(props: Props) {
     {
       idB: 5,
       title: "Forfait 3 jours",
-      prix: "180",
+      prix: 60+80+90,
       nbTicket: 0,
     },
   ];
@@ -60,19 +62,16 @@ export default function Billeterie(props: Props) {
     <>
       <div className="page-defaut" id="Billeterie">
         <header>
-          <img
-            src="images/bgbilletterie.png"
-            alt="bgbilleterie"
-            className="bgbillet"
-          />
-          <div className="header">
+        <video className="bgbillet" autoPlay muted loop>
+            <source src={videoSrc} type="video/mp4" />
+            Votre navigateur ne supporte pas la vidéo.
+          </video>
             <h2>BILLETERIE</h2>
-          </div>
-          <img
-            src="images/billet_pass1j.png"
-            alt="bgbilleterie"
-            className="billetExemple"
-          ></img>
+                <img
+                  src="images/billet_pass1j.png"
+                  alt="bgbilleterie"
+                  className="billetExemple"
+                ></img>
         </header>
 
         <main className="billets">
@@ -122,8 +121,8 @@ export default function Billeterie(props: Props) {
                 price={billet.prix}
                 nbTicket={billet.nbTicket}
                 isForfait={billet.idB === 4}
-              />
-            ))}
+                />
+                ))}
             </div>
           </section>
         </main>

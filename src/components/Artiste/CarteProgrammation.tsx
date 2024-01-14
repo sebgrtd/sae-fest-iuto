@@ -3,7 +3,7 @@ import {useState,useRef, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 
 type Props = {
-    id:number,
+    id:number|undefined,
     date: string,
     heure: string,
     nomArtiste: string,
@@ -12,6 +12,7 @@ type Props = {
     oldX?: number;
     oldY?: number;
     oldGroupes?: Groupe[];
+    description?: string;
 }
 
 type Groupe = {
@@ -22,8 +23,7 @@ type Groupe = {
     heurePassage: string;
   }
 
-export default function CarteArtiste(props: Props) {
-  // change le nomArtiste en majuscule et remplace les espaces par des retours à la ligne
+export default function CarteProgrammation(props: Props) {
   const nomArtiste = props.nomArtiste.toUpperCase().split(" ")
   const[isHovered, setIsHovered] = useState(false)
   const[isSwitching, setIsSwitching] = useState(false)
@@ -206,7 +206,8 @@ export default function CarteArtiste(props: Props) {
             heure: props.heure,
             oldX: refCarte.current?.offsetLeft,
             oldY: refCarte.current?.offsetTop,
-            oldGroupes: props.oldGroupes
+            oldGroupes: props.oldGroupes,
+            description: props.description
         }}
         onClick={() => {props.setIsNavTransparent(true); setIsSwitching(true)}}
         >

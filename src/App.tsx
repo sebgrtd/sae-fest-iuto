@@ -6,11 +6,10 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import Accueil from './pages/Accueil/Accueil'
 import { createContext, useEffect, useState } from 'react'
 import Programmation from './pages/Programmation/Programmation'
-import PageArtiste from './pages/Artiste/PageArtiste'
+import PageArtiste from './pages/Evenement/PageEvenement'
 import Billeterie from './pages/Billeterie/Billeterie'
 import Faq from './pages/faq/Faq'
-import { getCookie } from './cookies/CookiesLib'
-  
+import { getCookie } from './cookies/CookiesLib'  
 interface cartContext{
   cart: any[],
   setCart: (cart: any[]) => void,

@@ -1,11 +1,12 @@
 import {useEffect, useState, useRef, useLayoutEffect} from 'react'
 import SearchBar from '../../components/form/SearchBar';
 import Combo from '../../components/form/Combo';
-import CarteArtiste from '../../components/Artiste/CarteArtiste';
+import CarteArtiste from '../../components/Artiste/CarteProgrammation';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../../components/footer';
+import CarteProgrammation from '../../components/Artiste/CarteProgrammation';
 
 type Props = {
     isNavInFocus: boolean;
@@ -20,6 +21,31 @@ type Groupe = {
   heurePassage: string;
 }
 
+type Artiste = {
+  descriptionA?: string;
+  idMG?: number;
+  idG: number;
+  nomDeSceneMG: string;
+  nomMG: string;
+  prenomMG?: string;
+  datePassage?: string;
+  heurePassage?: string;
+};
+
+type Evenement = {
+  dateDebutE: string;
+  dateFinE: string;
+  heureDebutE: string,
+  heureFinE: string,
+  idE: number;
+  idG: number;
+  idL: number | null;
+  nomE: string;
+};
+
+
+type Programme = Groupe | Evenement | Artiste;
+
 export default function Programmation(props : Props) {
   const location = useLocation();
   const idArtistComingFrom = location.state?.comesFromPageArtist;
@@ -30,35 +56,66 @@ export default function Programmation(props : Props) {
 
   window.history.replaceState({}, document.title)
   const[lesGroupes, setLesGroupes] = useState<Groupe[]>(location.state? oldGroupes : []);
+  const [lesArtistes, setLesArtistes] = useState<Artiste[]>([]);
+  const groupePassageMap = useRef<Map<number, { datePassage: string; heurePassage: string }>>(new Map());
   
 
-  useEffect(() => {
-    if (!location.state){
-      axios.get('http://localhost:8080/getArtistes').then((res) => {
-        const data = res.data;
-        const listeGroupes : Groupe[] = [];
-        console.log(data)
-        data.forEach((groupe: Groupe) => {
-          if (groupe.datePassage && groupe.heurePassage) {
-            const lesMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-            const date = groupe.datePassage.split("-");
-            const datePassage = date[2] + " " + lesMois[parseInt(date[1])-1];
-            groupe.datePassage = datePassage; 
-            const heure = groupe.heurePassage.split(":");
-            const heurePassage = heure[0] + "H" + heure[1];
-            groupe.heurePassage = heurePassage;
-            listeGroupes.push(groupe);
+useEffect(() => {
+    axios.get('http://localhost:8080/getGroupesWithEvenements').then((res) => {
+      const groupedData = res.data as Programme[][];
+
+      const listeGroupes: Groupe[] = [];
+      const listeArtistes: Artiste[] = [];
+      console.log(groupedData);
+  
+      groupedData.forEach((groupArray) => {
+        let groupeObj: Partial<Groupe> = {};
+        let artisteObj: Partial<Artiste> = {};
+  
+        groupArray.forEach((item) => {
+          if ('nomG' in item) {
+            groupeObj = { ...groupeObj, ...item }; // Copier les infos du groupe
+          } else if ('nomDeSceneMG' in item) {
+            artisteObj = { ...artisteObj, ...item }; // Copier les infos de l'artiste
+          } else if ('dateDebutE' in item) {
+            // S'assurer que l'évènement correspond au groupe ou à l'artiste actuellement traité
+            const datePassage = item.dateDebutE; 
+            const heurePassage = item.heureDebutE;
+            if (groupeObj.idG === item.idG) {
+              groupeObj.datePassage = datePassage;
+              groupeObj.heurePassage = heurePassage;
+            }
+            if (artisteObj.idG === item.idG) {
+              artisteObj.datePassage = datePassage;
+              artisteObj.heurePassage = heurePassage;
+            }
           }
         });
-        setLesGroupes(listeGroupes);
-    })
-  }
-  }, [])
-
-  useEffect(() => {
-    console.log("oldGroupes : ", lesGroupes)
-  }, [lesGroupes])
+          if (groupeObj.idG != null) {
+          listeGroupes.push(groupeObj as Groupe); 
+        }
+        if (artisteObj.nomDeSceneMG != null) {
+          listeArtistes.push(artisteObj as Artiste); 
+        }
+      });
   
+      setLesGroupes(listeGroupes);
+      console.log("listeGroupes : ")
+      console.log(listeGroupes)
+      listeGroupes.forEach((groupe) => {
+        groupePassageMap.current.set(groupe.idG, {
+            datePassage: groupe.datePassage,
+            heurePassage: groupe.heurePassage,
+        });
+    });
+
+      setLesArtistes(listeArtistes);
+      console.log("listeArtistes : ")
+      console.log(listeArtistes)
+
+      
+    });
+  }, []);
 
 
   const[filtreDate, setFiltreDate] = useState("Tout");
@@ -119,16 +176,43 @@ export default function Programmation(props : Props) {
             </div>
         </header>
         <main className='liste-artistes'>
-            {
-              lesGroupes.map((groupe, index) => {
-                return(
-                  <CarteArtiste oldGroupes={lesGroupes} key={groupe.idG} id={groupe.idG} oldX={idArtistComingFrom == groupe.idG ? oldX : null} oldY={idArtistComingFrom == groupe.idG ? oldY : null} comesFromPageArtist={idArtistComingFrom == groupe.idG} nomArtiste={groupe.nomG} date={groupe.datePassage} heure={groupe.heurePassage} setIsNavTransparent={props.setIsNavTransparent} />
-                )
-              })
-            }
+          {
+            lesGroupes.map((groupe) => (
+              <CarteProgrammation
+                key={groupe.idG}
+                id={groupe.idG}
+                nomArtiste={groupe.nomG}
+                description={groupe.descriptionG}
+                date={groupe.datePassage}
+                heure={groupe.heurePassage}
+                setIsNavTransparent={props.setIsNavTransparent}
+                oldGroupes={lesGroupes}
+              />
+            ))
+          }
+          {
+            lesArtistes.map((artiste) => {
+              const groupeInfo = groupePassageMap.current.get(artiste.idG);
+              return (
+                <CarteProgrammation
+                  key={artiste.idMG} 
+                  id={artiste.idMG}
+                  nomArtiste={artiste.nomDeSceneMG}
+                  description={artiste.descriptionA}
+                  // date inconnue si l'artiste n'a pas de groupe associé
+                  date={groupeInfo?.datePassage ?? "Date inconnue"} 
+                  heure={groupeInfo?.heurePassage ?? "Heure inconnue"} 
+                  setIsNavTransparent={props.setIsNavTransparent}
+                  oldGroupes={lesGroupes}
+                />
+              )
+            })
+          }
         </main>
-    </motion.div>
-    <Footer/>
+      </motion.div>
+      <Footer/>
     </>
   )
 }
+
+
