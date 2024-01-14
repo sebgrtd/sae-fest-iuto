@@ -2,6 +2,7 @@ import {useEffect, useState, useRef} from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import BoutonReseau from '../../components/Artiste/BoutonReseau'
 import { motion } from 'framer-motion'
+import axios from 'axios';
 
 
 export default function PageEvenement() {
@@ -15,7 +16,7 @@ export default function PageEvenement() {
     const[heure, setHeure] = useState(location.state?.heure)
     const titleRef = useRef<HTMLHeadingElement>(null);
     const [description, setDescription] = useState(location.state?.description || "Description par défaut si aucune description n'est passée.");
-
+    const [socialLinks, setSocialLinks] = useState([]);
     const params = new URLSearchParams(window.location.search)
     const idArtiste = params.get('id')
 
@@ -23,6 +24,12 @@ export default function PageEvenement() {
     const[infosGridPosition, setInfosGridPosition] = useState<"top" | "bottom">("top")
 
     useEffect(() => {
+
+      // axios.get('http://localhost:8080/getSocialLinks/' + idArtiste).then((response) => {
+      //   setSocialLinks(response.data);
+      // }).catch((error) => {
+      //   console.error("Erreur lors de la récupération des liens de réseaux sociaux", error);
+      // });
       
       const handleResize = () => {
         setWindowWidth(window.innerWidth)
