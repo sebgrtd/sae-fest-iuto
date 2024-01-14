@@ -4,7 +4,7 @@ import BoutonReseau from '../../components/Artiste/BoutonReseau'
 import { motion } from 'framer-motion'
 
 
-export default function PageArtiste() {
+export default function PageEvenement() {
   
     const location = useLocation();
     const oldX = location.state?.oldX;
@@ -13,8 +13,8 @@ export default function PageArtiste() {
     const[nomArtiste, setNomArtiste] = useState(location.state?.nomArtiste)
     const[date, setDate] = useState(location.state?.date)
     const[heure, setHeure] = useState(location.state?.heure)
-    const[description, setDescription] = useState("Tame Impala est un projet musical australien originaire de Perth, créé en 2007 et dirigé par le musicien multi-instrumentiste Kevin Parker. Parker écrit, joue, produit et enregistre la musique seul en studio d'enregistrement. En tournée, il est accompagné de différents musiciens. Tame Impala est né du précédent groupe de Kevin Parker, Dee Dee Dums, qui mêlait des influences blues, jazz et rock psychédélique. Ce groupe était formé de Parker à la guitare et de Luke Epstein à la batterie. Ils remportent la deuxième place au AmpFest de 20051, et terminent troisième la même année au cours de la finale nationale de The Next Big Thing2. En octobre 2006, les Dee Dee Dums remportent la finale nationale de la National Campus Band Competition3.")
     const titleRef = useRef<HTMLHeadingElement>(null);
+    const [description, setDescription] = useState(location.state?.description || "Description par défaut si aucune description n'est passée.");
 
     const params = new URLSearchParams(window.location.search)
     const idArtiste = params.get('id')
@@ -115,9 +115,8 @@ export default function PageArtiste() {
         exit="initial"
         style={{gridArea : infosGridPosition}}
         >
-            <p className='description'>
-            Tame Impala est un projet musical australien originaire de Perth, créé en 2007 et dirigé par le musicien multi-instrumentiste Kevin Parker. Parker écrit, joue, produit et enregistre la musique seul en studio d'enregistrement. En tournée, il est accompagné de différents musiciens.
-Tame Impala est né du précédent groupe de Kevin Parker, Dee Dee Dums, qui mêlait des influences blues, jazz et rock psychédélique. Ce groupe était formé de Parker à la guitare et de Luke Epstein à la batterie. Ils remportent la deuxième place au AmpFest de 20051, et terminent troisième la même année au cours de la finale nationale de The Next Big Thing2. En octobre 2006, les Dee Dee Dums remportent la finale nationale de la National Campus Band Competition3.
+            <p className="description">
+            {description}
             </p>
             <div className="les-reseaux">
                 <BoutonReseau href="https://www.soundcloud.com/" type='soundcloud' />
