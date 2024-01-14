@@ -10,11 +10,11 @@ class Membre_GroupeBD:
     
     def get_artistes_of_groupe(self):
         try:
-            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionG FROM membre_groupe")
+            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA FROM membre_groupe")
             artistes = []
             result = self.connexion.get_connexion().execute(query)
-            for idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionG in result:
-                artistes.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionG))
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
+                artistes.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA))
             return artistes
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
@@ -32,8 +32,8 @@ class Membre_GroupeBD:
             
     def insert_membre_groupe(self, membre_groupe):
         try:
-            query = text("INSERT INTO membre_groupe (idG, nomMG, prenomMG, nomDeSceneMG, descriptionG) VALUES (:idG, :nomMG, :prenomMG, :nomDeSceneMG, :descriptionG)")
-            result = self.connexion.get_connexion().execute(query, {"idG": membre_groupe.get_idGroupe(), "nomMG": membre_groupe.get_nomMG(), "prenomMG": membre_groupe.get_prenomMG(), "nomDeSceneMG": membre_groupe.get_nomDeSceneMG(), "descriptionG": membre_groupe.get_descriptionG()})
+            query = text("INSERT INTO membre_groupe (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES (:idG, :nomMG, :prenomMG, :nomDeSceneMG, :descriptionA)")
+            result = self.connexion.get_connexion().execute(query, {"idG": membre_groupe.get_idGroupe(), "nomMG": membre_groupe.get_nomMG(), "prenomMG": membre_groupe.get_prenomMG(), "nomDeSceneMG": membre_groupe.get_nomDeSceneMG(), "descriptionA": membre_groupe.get_descriptionA()})
             membre_groupe_id = result.lastrowid
             print(f"Le membre_groupe {membre_groupe_id} a été ajouté")
             self.connexion.get_connexion().commit()
@@ -55,10 +55,10 @@ class Membre_GroupeBD:
 
     def get_artiste_by_id(self, idMembreGroupe):
         try:
-            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG FROM membre_groupe WHERE idMG = :idMG")
+            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA FROM membre_groupe WHERE idMG = :idMG")
             result = self.connexion.get_connexion().execute(query, {"idMG": idMembreGroupe})
-            for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
-                return Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG)
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
+                return Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA)
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
@@ -69,11 +69,11 @@ class Membre_GroupeBD:
     def search_membres_groupe(self, artiste_recherche):
         try:
             artiste_recherche = f"%{artiste_recherche}%"
-            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG FROM membre_groupe WHERE nomDeSceneMG LIKE :search")
+            query = text("SELECT idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA FROM membre_groupe WHERE nomDeSceneMG LIKE :search")
             membres = []
             result = self.connexion.get_connexion().execute(query, {"search": artiste_recherche})
-            for idMG, idG, nomMG, prenomMG, nomDeSceneMG in result:
-                membres.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG).to_dict())
+            for idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
+                membres.append(Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA).to_dict())
             return membres
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
@@ -81,8 +81,8 @@ class Membre_GroupeBD:
 
     def update_membre_groupe(self, membre_groupe):
         try:
-            query = text("UPDATE membre_groupe SET nomMG = :nomMG, prenomMG = :prenomMG, nomDeSceneMG = :nomDeSceneMG WHERE idMG = :idMG")
-            self.connexion.get_connexion().execute(query, {"nomMG": membre_groupe.get_nomMG(), "prenomMG": membre_groupe.get_prenomMG(), "nomDeSceneMG": membre_groupe.get_nomDeSceneMG(), "idMG": membre_groupe.get_idMG()})
+            query = text("UPDATE membre_groupe SET nomMG = :nomMG, prenomMG = :prenomMG, nomDeSceneMG = :nomDeSceneMG, descriptionA= :descriptionA WHERE idMG = :idMG")
+            self.connexion.get_connexion().execute(query, {"nomMG": membre_groupe.get_nomMG(), "prenomMG": membre_groupe.get_prenomMG(), "nomDeSceneMG": membre_groupe.get_nomDeSceneMG(), "idMG": membre_groupe.get_idMG(), "descriptionA": membre_groupe.get_descriptionA()})
             self.connexion.get_connexion().commit()
             return True
         except SQLAlchemyError as e:

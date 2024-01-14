@@ -371,6 +371,12 @@ class Groupe:
     
     def set_idHebergement(self, idH):
         self.__idH = idH
+        
+    def set_nomG(self, nomG):
+        self.__nomG = nomG
+        
+    def set_descriptionG(self, descriptionG):
+        self.__descriptionG = descriptionG
     
     def to_dict(self):
         return {
@@ -445,6 +451,21 @@ class Membre_Groupe:
     def get_nomDeSceneMG(self):
         return self.__nomDeSceneMG
     
+    def get_descriptionA(self):
+        return self.__descriptionA
+    
+    def set_nomMG(self, nomMG):
+        self.__nomMG = nomMG
+        
+    def set_prenomMG(self, prenomMG):
+        self.__prenomMG = prenomMG
+        
+    def set_nomDeSceneMG(self, nomDeSceneMG):
+        self.__nomDeSceneMG = nomDeSceneMG
+        
+    def set_descriptionA(self, descriptionA):
+        self.__descriptionA = descriptionA
+    
     def __repr__(self):
         return f"({self.__idMG}, {self.__idG}, {self.__nomMG}, {self.__prenomMG}, {self.__nomDeSceneMG})"
     
@@ -477,6 +498,9 @@ class Instrument:
     
     def get_nomI(self):
         return self.__nomI
+    
+    def set_nomI(self, nomI):
+        self.__nomI = nomI
     
     def to_dict(self):
         return {
@@ -832,16 +856,17 @@ class Type_Billet:
     
 
 class Spectateur:
-    def __init__(self, idS: int, nomS: str, prenomS: str, adresseS: str, emailS: str, mdpS: str):
+    def __init__(self, idS: int, idUser: int, nomS: str, prenomS: str):
         self.__idS = idS
+        self.__idUser = idUser
         self.__nomS = nomS
         self.__prenomS = prenomS
-        self.__adresseS = adresseS
-        self.__emailS = emailS
-        self.__mdpS = mdpS
     
     def get_idS(self):
         return self.__idS
+    
+    def get_idUser(self):
+        return self.__idUser
     
     def get_nomS(self):
         return self.__nomS
@@ -849,23 +874,18 @@ class Spectateur:
     def get_prenomS(self):
         return self.__prenomS
     
-    def get_adresseS(self):
-        return self.__adresseS
-    
-    def get_emailS(self):
-        return self.__emailS
-    
-    def get_mdpS(self):
-        return self.__mdpS
-    
+    def set_nomS(self, nomS):
+        self.__nomS = nomS
+        
+    def set_prenomS(self, prenomS):
+        self.__prenomS = prenomS
+        
     def to_dict(self):
         return {
             "idS": self.__idS,
+            "idUser": self.__idUser,
             "nomS": self.__nomS,
-            "prenomS": self.__prenomS,
-            "adresseS": self.__adresseS,
-            "emailS": self.__emailS,
-            "mdpS": self.__mdpS
+            "prenomS": self.__prenomS
         }
 
 class Billet:
@@ -960,6 +980,15 @@ class Lieu:
     
     def get_jaugeL(self):
         return self.__jaugeL
+    
+    def set_nomL(self, nomL):
+        self.__nomL = nomL
+        
+    def set_adresseL(self, adresseL):
+        self.__adresseL = adresseL
+        
+    def set_jaugeL(self, jaugeL):
+        self.__jaugeL = jaugeL
     
     def to_dict(self):
         return {
@@ -1149,6 +1178,9 @@ class Membre_Groupe:
     def get_nomDeSceneMG(self):
         return self.__nomDeSceneMG
     
+    def get_descriptionA(self):
+        return self.__descriptionA
+    
     def __repr__(self):
         return f"({self.__idMG}, {self.__idG}, {self.__nomMG}, {self.__prenomMG}, {self.__nomDeSceneMG})"
     
@@ -1170,6 +1202,9 @@ class Membre_Groupe:
         
     def set_nomDeSceneMG(self, nomDeSceneMG):
         self.__nomDeSceneMG = nomDeSceneMG
+        
+    def set_descriptionA(self, descriptionA):
+        self.__descriptionA = descriptionA
     
 class Instrument:
     def __init__(self, idI: int, nomI: str):

@@ -9,11 +9,9 @@
         <thead>
             <tr>
                 <td>id Spectateur</td>
+                <td> id User </td>
                 <td>nom</td>
                 <td>prénom</td>
-                <td>adresse</td>
-                <td>email</td>
-                <td>mdp</td>
                 <td>Actions</td>
             </tr>
         </thead>
@@ -21,11 +19,9 @@
             {% for spectateur in liste_spectateurs %}
                 <tr>
                     <td> {{ spectateur.get_idS() }} </td>
+                    <td> {{ spectateur.get_idUser() }} </td>
                     <td> {{ spectateur.get_nomS() }} </td>
                     <td> {{ spectateur.get_prenomS() }} </td>
-                    <td> {{ spectateur.get_adresseS() }} </td>
-                    <td> {{ spectateur.get_emailS() }} </td>
-                    <td> {{ spectateur.get_mdpS() }} </td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -4,8 +4,10 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
+
 sys.path.append('../BD')
 sys.path.append('../mail')
+
 from LienRS_Membre import LienRS_Membre_BD
 from GroupeBD import GroupeBD
 from LienRS_BD import LienRS_BD
@@ -27,7 +29,7 @@ from Type_BilletBD import Type_BilletBD
 from SpectateurBD import SpectateurBD
 from InstrumentBD import InstrumentBD
 
-from BD import * 
+from BD import *
 
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
@@ -35,7 +37,7 @@ MDP_FESTIUTO = "xutxiocjikqolubq"
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://coursimault:coursimault@servinfo-mariadb/DBcoursimault'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/gestiuto'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/festiuto'
 CORS(app, resources={r"/*": {"origins": "*"}})
 db = SQLAlchemy(app)
 
@@ -461,6 +463,7 @@ def modifier_membre_groupe():
     membre_groupe.set_nomMG(nom_membre_groupe)
     membre_groupe.set_prenomMG(prenom_membre_groupe)
     membre_groupe.set_nomDeSceneMG(nom_scene_membre_groupe)
+    membre_groupe.set_descriptionA(request.form["description_membre"])
     succes = membre_groupebd.update_membre_groupe(membre_groupe)
     if succes:
         print(f"Le membre {id_membre_groupe} a été mis à jour.")
@@ -498,7 +501,8 @@ def ajouter_membre_groupe():
     nom_membre_groupe = request.form["nom_nouveau_membre"] if request.form["nom_nouveau_membre"] else None
     prenom_membre_groupe = request.form["prenom_nouveau_membre"] if request.form["prenom_nouveau_membre"] else None
     nom_scene_membre_groupe = request.form["nom_scene_nouveau_membre"] if request.form["nom_scene_nouveau_membre"] else None
-    membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe)
+    description_membre_groupe = request.form["description_nouveau_membre"] if request.form["description_nouveau_membre"] else None
+    membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe, description_membre_groupe)
     membre_groupebd.insert_membre_groupe(membre_groupe)
     return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
 
@@ -612,9 +616,9 @@ def billets_festival():
     connexionbd = ConnexionBD()
     billetbd = BilletBD(connexionbd)
     spectateurbd = SpectateurBD(connexionbd)
-    type_billet = Type_BilletBD(connexionbd)
+    type_billetbd = Type_BilletBD(connexionbd)
     liste_billets = billetbd.get_all_billets()
-    liste_types = type_billet.get_all_types_billets()
+    liste_types = type_billetbd.get_all_types_billets()
     liste_spectateurs = spectateurbd.get_all_spectateurs()
     if not liste_billets:
         return render_template("admin_billets.html", liste_billets=[], liste_types=[], liste_spectateurs=[])
@@ -731,8 +735,8 @@ def modifier_type_billet():
     id_type_billet = request.form["idType"]
     duree = request.form["duree"]
     type_billet = type_billetbd.get_type_billet_by_id(id_type_billet)
-    type_billet.set_duree(duree)
-    type_billetbd.update_type_billet(type_billet)
+    type = Type_Billet(id_type_billet, duree)
+    type_billetbd.update_type_billet(type)
     return redirect(url_for("types_billet_festival"))
 
 @app.route("/supprimer_type_billet", methods=["POST"])
@@ -768,8 +772,8 @@ def modifier_style_musical():
     id_style_musical = request.form["idSt"]
     nom_style_musical = request.form["nomSt"]
     style_musical = style_musicalbd.get_style_by_id(id_style_musical)
-    style_musical.set_nomSt(nom_style_musical)
-    style_musicalbd.update_style(style_musical)
+    style = Style_Musical(id_style_musical, nom_style_musical)
+    style_musicalbd.update_style(style)
     return redirect(url_for("styles_musicaux_festival"))
 
 @app.route("/supprimer_style_musical", methods=["POST"])
