@@ -67,7 +67,8 @@ export default function Programmation(props: Props) {
   useEffect(() => {
     axios.get("http://localhost:8080/getGroupesWithEvenements").then((res) => {
       const groupedData = res.data as Programme[][];
-      console.log(groupedData);
+      // console.log("groupedData")
+      // console.log(groupedData);
 
       const listeGroupes: Groupe[] = [];
       const groupSet = new Set<number>();
@@ -107,6 +108,7 @@ export default function Programmation(props: Props) {
       });
 
       setLesGroupes(listeGroupes);
+      // console.log(listeGroupes);
       groupePassageMap.current.clear();
       listeGroupes.forEach((groupe) => {
         groupePassageMap.current.set(groupe.idG, {
@@ -119,20 +121,62 @@ export default function Programmation(props: Props) {
     });
   }, []);
 
-  let filteredGroupes = lesGroupes;
-    if (searchTerm) {
-      filteredGroupes = lesGroupes.filter((groupe) =>
-        groupe.nomG.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-  let filteredArtistes = lesArtistes;
-  if (searchTerm) {
-    filteredArtistes = lesArtistes.filter((artiste) =>
-      artiste.nomDeSceneMG.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  }
+  // let filteredGroupes = lesGroupes;
+  //   if (searchTerm) {
+  //     filteredGroupes = lesGroupes.filter((groupe) =>
+  //       groupe.nomG.toLowerCase().includes(searchTerm.toLowerCase())
+  //     );
+  //   }
+  // let filteredArtistes = lesArtistes;
+  // if (searchTerm) {
+  //   filteredArtistes = lesArtistes.filter((artiste) =>
+  //     artiste.nomDeSceneMG.toLowerCase().includes(searchTerm.toLowerCase())
+  //   )
+  // }
 
+  
+  
   const [filtreDate, setFiltreDate] = useState("Tout");
+  console.log(filtreDate)
+  let termeRechercher = 'Tout';
+
+if (filtreDate === '21 Juillet') {
+  termeRechercher = '07-21';
+}
+else if (filtreDate === '22 Juillet') {
+  termeRechercher = '07-22';
+}
+else if (filtreDate === '23 Juillet') {
+  termeRechercher = '07-23';
+}
+
+
+  let filteredGroupes = lesGroupes;
+if (searchTerm) {
+  filteredGroupes = filteredGroupes.filter((groupe) =>
+    groupe.nomG.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+}
+if (filtreDate !== 'Tout') {
+  console.log(termeRechercher)
+  filteredGroupes = filteredGroupes.filter((groupe) => {
+    console.log(groupe.datePassage);
+    return groupe.datePassage.includes(termeRechercher);
+  });
+}
+
+let filteredArtistes = lesArtistes;
+if (searchTerm) {
+  filteredArtistes = filteredArtistes.filter((artiste) =>
+    artiste.nomDeSceneMG.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+}
+if (filtreDate !== 'Tout') {
+  filteredArtistes = filteredArtistes.filter((artiste) => {
+    const groupeInfo = groupePassageMap.current.get(artiste.idG);
+    return groupeInfo?.datePassage.includes(termeRechercher);
+  });
+}
   const [filtreAffichage, setFiltreAffichage] = useState("Grille");
   const [filtreGenre, setFiltreGenre] = useState("Tout");
 
