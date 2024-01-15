@@ -67,16 +67,29 @@ def getArtistes():
     else:
         return res
 
-@app.route('/socialLink/<int:id>')
+# @app.route('/socialLink/<int:id>')
+# def getRS(id):
+#     connexion_bd = ConnexionBD()
+#     lienRS = LienRS_Membre_BD(connexion_bd)
+#     res = lienRS.get_lienRS_Membre_json(id)
+#     if res is None:
+#         return jsonify({"error": "Aucun artiste trouve"})
+#     else:
+#         return res
+
+@app.route('/getSocialLinks/<int:id>')
 def getRS(id):
     connexion_bd = ConnexionBD()
-    lienRS = LienRS_Membre_BD(connexion_bd)
-    res = lienRS.get_lienRS_Membre_json(id)
+    lienRS = LienRS_BD(connexion_bd)
+    print("test")
+    res = lienRS.get_liensRS_membre_json(id)
+    print(res)
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
         return res
     
+
 @app.route('/getGroupesWithEvenements')
 def get_groupes_with_evenements():
     connexion_bd = ConnexionBD()
