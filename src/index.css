@@ -839,7 +839,6 @@ input[type="number"]::-ms-reveal {
 .combo .menu h4.active:hover{
   background-color: transparent;
   color:var(--color-light-secondary);
-
 }
 
 .combo .menu h4.active{
@@ -847,6 +846,8 @@ input[type="number"]::-ms-reveal {
   background-color: var(--color-light-secondary);
   cursor: default;
 }
+
+
 
 #Programmation .liste-artistes{
   display: grid;

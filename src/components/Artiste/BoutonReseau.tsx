@@ -3,12 +3,11 @@ import {useState} from 'react'
 
 type Props = {
     href : string;
-    type: "soundcloud" | "spotify" | "instagram" | "twitter" | "youtube";
+    type: "soundcloud" | "spotify" | "instagram" | "twitter" | "youtube" | "inconnu";
 }
 
 export default function BoutonReseau(props: Props) {
   const [isHovered, setIsHovered] = useState(false)
-
   const btnVariants = {
     default:{
         backgroundColor:"#E45A3B00",

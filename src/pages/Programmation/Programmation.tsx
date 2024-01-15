@@ -56,9 +56,7 @@ export default function Programmation(props: Props) {
   const [searchTerm, setSearchTerm] = useState("");
 
   window.history.replaceState({}, document.title);
-  const [lesGroupes, setLesGroupes] = useState<Groupe[]>(
-    location.state ? oldGroupes : []
-  );
+  const [lesGroupes, setLesGroupes] = useState<Groupe[]>(location.state ? oldGroupes : []);
   const [lesArtistes, setLesArtistes] = useState<Artiste[]>([]);
   const groupePassageMap = useRef<
     Map<number, { datePassage: string; heurePassage: string }>
@@ -270,6 +268,7 @@ if (filtreDate !== 'Tout') {
                 heure={groupe.heurePassage}
                 setIsNavTransparent={props.setIsNavTransparent}
                 oldGroupes={lesGroupes}
+                oldX={idArtistComingFrom == groupe.idG ? oldX : null} oldY={idArtistComingFrom == groupe.idG ? oldY : null} comesFromPageArtist={idArtistComingFrom == groupe.idG}
               />
             );
           })}
