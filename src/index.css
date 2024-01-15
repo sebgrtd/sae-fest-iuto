@@ -1797,6 +1797,7 @@ footer .bottom-content h5{
   font-size: 1.875rem;
 }
 
+/* là que ça commence pour les trucs marrants de l'anim */
 
 .selectionneur-artiste .bookmark-container{
   position: absolute;
@@ -1812,6 +1813,12 @@ footer .bottom-content h5{
   z-index: 11;
   bottom: 0.8rem;
   left: 0.8rem;
+  stroke:var(--color-orange);
+}
+
+.selectionneur-artiste .bookmark-container .bookmark.saved{
+  stroke:var(--color-yellow);
+  fill:var(--color-yellow);
 }
 
 .selectionneur-artiste .bookmark-container .text-feedback{
@@ -1831,11 +1838,10 @@ footer .bottom-content h5{
   font-size: 2rem;
   font-family: "TuskerGrotesk";
   font-weight: 700;
-  color: var(--color-orange);
   line-height: 1;
 }
 
-.selectionneur-artiste .bookmark-container .text-feedback img{
+.selectionneur-artiste .bookmark-container .text-feedback .arrow{
   width: 2rem;
 }
 
@@ -1848,8 +1854,20 @@ footer .bottom-content h5{
   bottom: -170%;
 }
 
-.selectionneur-artiste .bookmark-container .rect.yellow{
+.selectionneur-artiste .bookmark-container .yellow{
   background-color: var(--color-yellow);
+}
+
+.selectionneur-artiste .bookmark-container .yellow-text{
+  color: var(--color-yellow);
+}
+
+.selectionneur-artiste .bookmark-container .orange-text{
+  color: var(--color-orange);
+}
+
+.selectionneur-artiste .bookmark-container .light-text{
+  color: var(--color-light);
 }
 
 .selectionneur-artiste .bookmark-container .orange{
@@ -1870,10 +1888,6 @@ footer .bottom-content h5{
   right: -90%;
   bottom: -170%;
   transform: translateX(-95%) scale(3.5) rotate(0) translateY(15.3%);
-}
-
-.selectionneur-artiste .bookmark-container .loading p{
-  color: var(--color-light);
 }
 
 /* fais des media queries qui ne changent que le fontsize du body */
