@@ -32,15 +32,16 @@ export default function CarteProgrammation(props: Props) {
   const[zIndexCard, setZIndexCard] = useState(props.comesFromPageArtist ? 99 : 1)
 
   useEffect(() => {
+    console.log('oldX:', props.oldX);
+    console.log('oldY:', props.oldY);
     
     setTimeout(() => {
-        console.log(props.date)
-        console.log(props.heure)
-
-        setZIndexCard(1)
-        setDelay(0)
+      console.log(props.date)
+      console.log(props.heure)
+  
+      setZIndexCard(1)
+      setDelay(0)
     }, 600);
-    
   }, [])
   
 

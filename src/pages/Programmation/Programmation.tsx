@@ -54,6 +54,7 @@ export default function Programmation(props: Props) {
   const oldY = location.state?.oldY;
   const oldGroupes = location.state?.oldGroupes;
   const [searchTerm, setSearchTerm] = useState("");
+  
 
   window.history.replaceState({}, document.title);
   const [lesGroupes, setLesGroupes] = useState<Groupe[]>(location.state ? oldGroupes : []);
@@ -131,50 +132,62 @@ export default function Programmation(props: Props) {
   //     artiste.nomDeSceneMG.toLowerCase().includes(searchTerm.toLowerCase())
   //   )
   // }
-
-  
   
   const [filtreDate, setFiltreDate] = useState("Tout");
   console.log(filtreDate)
   let termeRechercher = 'Tout';
-
-if (filtreDate === '21 Juillet') {
-  termeRechercher = '07-21';
-}
-else if (filtreDate === '22 Juillet') {
-  termeRechercher = '07-22';
-}
-else if (filtreDate === '23 Juillet') {
-  termeRechercher = '07-23';
-}
-
+  
+  if (filtreDate === '21 Juillet') {
+    termeRechercher = '07-21';
+  }
+  else if (filtreDate === '22 Juillet') {
+    termeRechercher = '07-22';
+  }
+  else if (filtreDate === '23 Juillet') {
+    termeRechercher = '07-23';
+  }
+  
 
   let filteredGroupes = lesGroupes;
 if (searchTerm) {
-  filteredGroupes = filteredGroupes.filter((groupe) =>
-    groupe.nomG.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  filteredGroupes = filteredGroupes.filter((groupe) => {
+    console.log(groupe.nomG);
+    if (searchTerm.length > 5) {
+      return groupe.nomG.toLowerCase().includes(searchTerm.toLowerCase());
+    } else {
+      return groupe.nomG.toLowerCase().startsWith(searchTerm.toLowerCase());
+    }
+  });
 }
+
 if (filtreDate !== 'Tout') {
   console.log(termeRechercher)
   filteredGroupes = filteredGroupes.filter((groupe) => {
-    console.log(groupe.datePassage);
     return groupe.datePassage.includes(termeRechercher);
   });
 }
 
 let filteredArtistes = lesArtistes;
+console.log("Les Artistes avant filtre:", lesArtistes);
 if (searchTerm) {
-  filteredArtistes = filteredArtistes.filter((artiste) =>
-    artiste.nomDeSceneMG.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  console.log("Filtered Artistes après searchTerm:", filteredArtistes);
+  filteredArtistes = filteredArtistes.filter((artiste) => {
+    if (searchTerm.length > 5) {
+      return artiste.nomDeSceneMG.toLowerCase().includes(searchTerm.toLowerCase());
+    } else {
+      return artiste.nomDeSceneMG.toLowerCase().startsWith(searchTerm.toLowerCase());
+    }
+  });
 }
 if (filtreDate !== 'Tout') {
   filteredArtistes = filteredArtistes.filter((artiste) => {
+    console.log("Filtered Artistes après searchTerm:", filteredArtistes);
     const groupeInfo = groupePassageMap.current.get(artiste.idG);
     return groupeInfo?.datePassage.includes(termeRechercher);
   });
 }
+  console.log(filteredGroupes);
+  console.log(filteredArtistes);
   const [filtreAffichage, setFiltreAffichage] = useState("Grille");
   const [filtreGenre, setFiltreGenre] = useState("Tout");
 
@@ -256,37 +269,49 @@ if (filtreDate !== 'Tout') {
           </div>
         </header>
         <main className="liste-artistes">
-          <AnimatePresence>
-          {filteredGroupes.map((groupe) => {
-            return (
-              <CarteProgrammation
-                key={groupe.idG}
-                id={groupe.idG}
-                nomArtiste={groupe.nomG}
-                description={groupe.descriptionG}
-                date={groupe.datePassage}
-                heure={groupe.heurePassage}
-                setIsNavTransparent={props.setIsNavTransparent}
-                oldGroupes={lesGroupes}
-                oldX={idArtistComingFrom == groupe.idG ? oldX : null} oldY={idArtistComingFrom == groupe.idG ? oldY : null} comesFromPageArtist={idArtistComingFrom == groupe.idG}
-              />
-            );
-          })}
-          {filteredArtistes.map((artiste) => {
-            const groupeInfo = groupePassageMap.current.get(artiste.idG);
-            return (
-              <CarteProgrammation
-                key={artiste.idMG}
-                id={artiste.idMG}
-                nomArtiste={artiste.nomDeSceneMG}
-                description={artiste.descriptionA}
-                date={groupeInfo?.datePassage ?? "Date inconnue"}
-                heure={groupeInfo?.heurePassage ?? "Heure inconnue"}
-                setIsNavTransparent={props.setIsNavTransparent}
-                oldGroupes={lesGroupes}
-              />
-            );
-          })}
+        <AnimatePresence>
+  {filteredGroupes.map((groupe) => {
+    console.log('idArtistComingFrom for groupe:', idArtistComingFrom);
+    console.log("groupe.idG : ");
+    console.log(groupe.idG);
+    return (
+      <CarteProgrammation
+        key={groupe.idG}
+        id={groupe.idG}
+        nomArtiste={groupe.nomG}
+        description={groupe.descriptionG}
+        date={groupe.datePassage}
+        heure={groupe.heurePassage}
+        setIsNavTransparent={props.setIsNavTransparent}
+        oldGroupes={lesGroupes}
+        oldX={idArtistComingFrom == groupe.idG ? oldX : null} oldY={idArtistComingFrom == groupe.idG ? oldY : null} comesFromPageArtist={idArtistComingFrom == groupe.idG}
+      />
+    );
+  })}
+  
+  {filteredArtistes.map((artiste) => {
+    console.log('idArtistComingFrom for artiste:', idArtistComingFrom);
+    const groupeInfo = groupePassageMap.current.get(artiste.idG);
+    console.log("artiste.idMG : ");
+    console.log(artiste.idMG);
+    return (
+      <CarteProgrammation
+      
+        key={artiste.idMG}
+        id={artiste.idMG}
+        nomArtiste={artiste.nomDeSceneMG}
+        description={artiste.descriptionA}
+        date={groupeInfo?.datePassage ?? "Date inconnue"}
+        heure={groupeInfo?.heurePassage ?? "Heure inconnue"}
+        setIsNavTransparent={props.setIsNavTransparent}
+        
+        oldGroupes={lesGroupes}
+        
+        oldX={idArtistComingFrom == artiste.idMG ? oldX : null} oldY={idArtistComingFrom == artiste.idMG ? oldY : null} comesFromPageArtist={idArtistComingFrom == artiste.idMG}
+
+      />
+    );
+  })}
           </AnimatePresence>
         </main>
       </motion.div>

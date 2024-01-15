@@ -26,6 +26,8 @@ export default function PageEvenement() {
     "top"
   );
 
+  
+
   function getSocialNetworkType(
     url: string
   ):
@@ -75,6 +77,8 @@ export default function PageEvenement() {
   }, []);
 
   useEffect(() => {
+    console.log('oldXEvenement:', oldX);
+    console.log('oldYEvenement:', oldY);
     if (titleRef.current) {
       // regarde si la width du titre est plus grande que 25% de la width de la fenetre - 2*3rem
       if (titleRef.current.offsetWidth > windowWidth / 4 - 2 * 3 * 16) {
