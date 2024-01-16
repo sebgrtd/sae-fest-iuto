@@ -10,13 +10,15 @@ import ChampCode from '../../form/ChampCode';
 import Combo from '../../form/Combo';
 import SearchBar from '../../form/SearchBar';
 import SelectionneurArtiste from '../../Artiste/SelectionneurArtiste';
+import Artiste from '../../../utilitaires/Artiste';
+import TabArtiste from '../../TabArtiste';
 
 type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen : boolean) => void;
 }
 
-type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification" | "changerMdp" | "planification";
+type menuConnexionTabs = "connexion" | "inscription" | "connecte" | "aideConnexion" | "modifierInfos" | "mesBillets" | "codeVerification" | "changerMdp" | "planification" | "affichage-planification";
 
 type typeErreur = "email" | "password" | "pseudo" | "oldPassword" | "verifPassword" | "codeVerification";
 
@@ -53,6 +55,21 @@ export default function MenuConnexion(props: Props) {
   const[errorCodeVerification, setErrorCodeVerification] = useState("");
 
   const[isWrong, setIsWrong] = useState(false);
+  const[isMenuChanging, setIsMenuChanging] = useState(false);
+
+  const lesArtistes = [
+    new Artiste(1, 1, "CARTI", "Playboi", "Playboi Carti", "22h00", "22 Juillet", ["Rap"], "Scene 1"),
+    new Artiste(2, 2, "SCOTT", "Travis", "Travis Scott", "23h00", "22 Juillet", ["Rap"], "Scene 2"),
+    new Artiste(3, 3, "Koba", "LaD", "Koba LaD", "00h00", "22 Juillet", ["Rap"], "Scene 3"),
+    new Artiste(4, 4, "Zola", "", "Zola", "01h00", "22 Juillet", ["Rap"], "Scene 4"),
+    new Artiste(5, 5, "Ninho", "", "Ninho", "02h00", "22 Juillet", ["Rap"], "Scene 5"),
+    new Artiste(6, 6, "Damso", "", "Damso", "03h00", "22 Juillet", ["Rap"], "Scene 6"),
+    new Artiste(7, 7, "Nekfeu", "", "Nekfeu", "04h00", "22 Juillet", ["Rap"], "Scene 7"),
+    new Artiste(8, 8, "PNL", "", "PNL", "05h00", "22 Juillet", ["Rap"], "Scene 8"),
+    new Artiste(9, 9, "Lomepal", "", "Lomepal", "06h00", "22 Juillet", ["Rap"], "Scene 9"),
+  ]
+
+  const[artistes, setArtistes] = useState<Artiste[]>(lesArtistes);
 
   useEffect(() => {
     if (codeVerification.length === 6){
@@ -72,6 +89,7 @@ export default function MenuConnexion(props: Props) {
 
     clearErrors();
     setIsLoading(false);
+    setIsMenuChanging(true);
 
     if (menu === "modifierInfos"){
       if (isConnected() === false){
@@ -84,6 +102,9 @@ export default function MenuConnexion(props: Props) {
     }
 
     setCurrentMenu(menu);
+    setTimeout(() => {
+      setIsMenuChanging(false);
+    }, 500);
   }
 
   const clearErrors = () => {
@@ -385,7 +406,8 @@ export default function MenuConnexion(props: Props) {
 
   const menuVariants = {
     hidden:{
-      x: "42rem",
+      x: (currentMenu === "planification" || currentMenu === "affichage-planification") ? "80rem" : "42rem",
+      width: (currentMenu === "planification" || currentMenu === "affichage-planification") ? "80rem" : "42rem",
       transition:{
         duration: 0.5,
         ease: [1, -0.02, 0,1]
@@ -393,6 +415,7 @@ export default function MenuConnexion(props: Props) {
     },
     visible:{
       x: 0,
+      width: (currentMenu === "planification" || currentMenu === "affichage-planification") ? "80rem" : "42rem",
       transition:{
         duration: 0.5,
         ease: [1, -0.02, 0,1]
@@ -437,11 +460,11 @@ export default function MenuConnexion(props: Props) {
   }
 
   return (
-    <motion.div className={`side-menu connexion ${currentMenu === "planification" ? "large":""}`}
+    <motion.div className={`side-menu connexion ${((currentMenu === "planification" || currentMenu === "affichage-planification") && !isMenuChanging) ? "large":""}`}
     variants={menuVariants}
     initial="hidden"
     animate={props.isOpen ? "visible" : "hidden"}>
-        <div className="cross" onClick={() =>  {props.setIsOpen(false); }}>
+        <div className="cross" onClick={() =>  {props.setIsOpen(false)}}>
           <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="6.52539" y="0.321533" width="35.8974" height="3.58974" rx="1.79487" transform="rotate(45 6.52539 0.321533)" fill="#E45A3B"/>
             <rect x="3.87891" y="25.5957" width="35.8974" height="3.58974" rx="1.79487" transform="rotate(-45 3.87891 25.5957)" fill="#E45A3B"/>
@@ -520,6 +543,40 @@ export default function MenuConnexion(props: Props) {
 
               <div className="other">
                 <a href="" onClick={(e) => goTo("connecte",e)}>Retour</a>
+
+                <a href="" onClick={(e) => goTo("affichage-planification",e)} className="btn-link">
+                  <Button text="Voir ma planification" />
+                </a>
+              </div>
+              
+            </motion.div>
+        )
+        : currentMenu === "affichage-planification" ? (
+          <motion.div className="container"
+            variants={menuSwitchVariants}
+              initial="appearing"
+              animate="default"
+              exit="exit"
+              key={currentMenu}
+            >  
+            <main>
+              <h2>Ma planification</h2>
+              
+              <section className='liste-artistes liste-planification'>
+
+                <TabArtiste date="Samedi 21 juin" artistes={artistes} setArtistes={setArtistes}/>
+                <TabArtiste date="Samedi 21 juin" artistes={artistes} setArtistes={setArtistes}/>
+                <TabArtiste date="Samedi 21 juin" artistes={artistes} setArtistes={setArtistes}/>
+
+              </section>
+            </main>
+
+              <div className="other">
+                <a href="" onClick={(e) => goTo("planification",e)}>Retour</a>
+
+                <a href="" onClick={(e) => goTo("affichage-planification",e)} className="btn-link">
+                  <Button text="Voir ma planification" />
+                </a>
               </div>
               
             </motion.div>
