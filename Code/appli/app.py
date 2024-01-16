@@ -859,3 +859,15 @@ def reserver_billets():
     idUser = data[0]['id'] 
     billet_bd.reserver_billets(data, idUser)
     return jsonify({"success": "Les billets ont été réservés avec succès"})
+
+@app.route('/saveArtiste', methods=['POST'])
+def save_artiste():
+    connexion_bd = ConnexionBD()
+    user_bd = UserBD(connexion_bd)
+    data = request.get_json()
+    id_artiste = data["idArtiste"]
+    id_user = data["idUser"]
+    res = user_bd.save_artiste(id_artiste, id_user)
+    # res est un booleen
+    connexion_bd.fermer_connexion()
+    return jsonify({"success": "Artiste sauvegardé"}) if res else jsonify({"error": "Erreur lors de la sauvegarde de l'artiste"})
