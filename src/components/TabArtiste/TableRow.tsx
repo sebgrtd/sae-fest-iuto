@@ -129,7 +129,7 @@ export default function TableRow(props : Props) {
     exit="closed"
     animate="open"
     >
-        <td>{Groupe.getHeurePassage(props.artiste.heurePassage)}</td>
+        <td>{Groupe.getHeurePassage(props.artiste.heurePassage)} - {Groupe.getHeurePassage(props.artiste.heureFinPassage)}</td>
         <td>{props.artiste.nomG}</td>
         <td>{props.artiste.genresMusicaux?.join(', ')}</td>
         <td>{props.artiste.scene}</td>
