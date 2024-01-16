@@ -5,7 +5,7 @@ from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
 
 class LienRS_Membre_BD:
-    def init(self, conx: ConnexionBD):
+    def __init__(self, conx: ConnexionBD):
         self.connexion = conx
 
     def get_all_liensRS_membres(self):

@@ -1251,7 +1251,7 @@ class Lien_Reseaux_Sociaux:
     
     
 class Lien_Reseaux_Sociaux_Membre:
-    def init(self, idLRSM: int, idMG: int, reseau: str, URL: str):
+    def __init__(self, idLRSM: int, idMG: int, reseau: str, URL: str):
         self.__idLRSM = idLRSM
         self.__idMG = idMG
         self.__reseau = reseau

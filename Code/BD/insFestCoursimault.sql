@@ -26,7 +26,10 @@ INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser) VALUES
 INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
     ('Festival 1', 'Ville 1', '2024-08-01', '2024-08-05'),
     ('Festival 2', 'Ville 2', '2024-07-15', '2024-07-20'),
-    ('Festival 3', 'Ville 3', '2024-08-01', '2024-08-03');
+    ('Festival 3', 'Ville 3', '2024-08-01', '2024-08-03'),
+    ('Festival 4', 'Ville 3', '2024-08-01', '2024-08-03');
+
+
 
 -- Insérer des données dans la table LIEU
 INSERT INTO LIEU (idF, nomL, adresseL, jaugeL) VALUES
@@ -56,7 +59,7 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
 
 
     (1, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
-    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.'),
+    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.');
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
@@ -127,17 +130,7 @@ INSERT INTO INSTRUMENT (idMG, nomI) VALUES
 INSERT INTO LIEN_VIDEO (idG, video) VALUES
     (1, 'Video 1'),
     (1, 'Video 2'),
-    (2, 'Video 1'),
-    (3, 'Video 1'),
-    (3, 'Video 2'),
-    (3, 'Video 3'),
-    (4, 'Video 1'),
-    (5, 'Video 1'),
-    (6, 'Video 1'),
-    (7, 'Video 1'),
-    (8, 'Video 1'),
-    (9, 'Video 1'),
-    (10, 'Video 1');
+    (2, 'Video 1');
 
 -- Insérer des données dans la table LIEN_RESEAUX_SOCIAUX
 INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
@@ -147,7 +140,15 @@ INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (2, 'Réseau 1'),
     (3, 'Réseau 1'),
     (3, 'Réseau 2'),
-    (3, 'Réseau 3'),
+    (3, 'Réseau 3');
+
+
+INSERT INTO LIEN_RESEAUX_SOCIAUX_MEMBRE (idMG, reseau) VALUES
+    (1, 'https://www.instagram.com/bushi_lz/'),
+    (1, 'https://open.spotify.com/intl-fr/artist/2GIoAorOnT0Yp1jKyTzW7K'),
+    (3, 'https://www.instagram.com/playboicarti/'),
+    (3, 'https://twitter.com/playboicarti?lang=fr'),
+    (3, 'https://open.spotify.com/intl-fr/artist/699OTQXzgjhIYAHMy9RyPD');
 
 -- Insérer des données dans la table SPECTATEUR
 INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
@@ -159,23 +160,18 @@ INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
 
 -- Insérer des données dans la table STYLE_MUSICAL
 INSERT INTO STYLE_MUSICAL (nomSt) VALUES
-    ('Style 1'),
-    ('Style 2'),
-    ('Style 3');
+    ('Rock'),
+    ('Pop'),
+    ('New wave'),
+    ('Jazz'),
+    ('Trap');
 
 
 -- Insérer des données dans la table EVENEMENT
 INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
     (1, 'Concert Groupe 1', '9:00:00', '10:00:00', '2024-07-21', '2024-07-21'),
     (2, 'Concert Groupe 2', '13:00:00', '14:00:00', '2024-07-21', '2024-07-21'),
-    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21'),
-    (4, 'Concert Groupe 4', '9:00:00', '10:00:00', '2024-07-22', '2024-07-22'),
-    (5, 'Concert Groupe 5', '13:00:00', '14:00:00', '2024-07-22', '2024-07-22'),
-    (6, 'Concert Groupe 6', '17:00:00', '18:00:00', '2024-07-22', '2024-07-22'),
-    (7, 'Concert Groupe 7', '8:00:00', '9:00:00', '2024-07-23', '2024-07-23'),
-    (8, 'Concert Groupe 8', '11:00:00', '12:00:00', '2024-07-23', '2024-07-23'),
-    (9, 'Concert Groupe 9', '14:00:00', '15:00:00', '2024-07-23', '2024-07-23'),
-    (10, 'Concert Groupe 10', '17:00:00', '18:00:00', '2024-07-23', '2024-07-23');
+    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21');
 
 INSERT INTO TYPE_BILLET(duree) VALUES
     (1),
@@ -186,26 +182,14 @@ INSERT INTO TYPE_BILLET(duree) VALUES
 INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
     (1, '01:00:00', '01:00:00'),
     (2, '01:00:00', '01:00:00'),
-    (3, '01:00:00', '01:00:00'),
-    (4, '01:00:00', '01:00:00'),
-    (5, '01:00:00', '01:00:00'),
-    (6, '01:00:00', '01:00:00'),
-    (7, '01:00:00', '01:00:00'),
-    (8, '01:00:00', '01:00:00'),
-    (9, '01:00:00', '01:00:00'),
-    (10, '01:00:00', '01:00:00');
+    (3, '01:00:00', '01:00:00');
 
 INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
     (1, 1),
     (2, 2),
     (3, 3),
-    (4, 1),
-    (5, 2),
-    (6, 3),
-    (7, 1),
-    (8, 2),
-    (9, 3),
-    (10, 1);
+    (1, 1),
+    (2, 1);
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
