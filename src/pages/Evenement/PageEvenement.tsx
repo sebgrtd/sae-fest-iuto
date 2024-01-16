@@ -17,6 +17,7 @@ export default function PageEvenement() {
     location.state?.description ||
       "Description par défaut si aucune description n'est passée."
   );
+  const estArtiste = location.state?.estArtiste;
   const [socialLinks, setSocialLinks] = useState<{ reseau: string }[]>([]);
   const params = new URLSearchParams(window.location.search);
   const idArtiste = params.get("id");
@@ -52,11 +53,17 @@ export default function PageEvenement() {
     }
   }
 
+
   useEffect(() => {
+    let endpoint = estArtiste 
+      ? "http://localhost:8080/getSocialLinksM/" + idArtiste
+      : "http://localhost:8080/getSocialLinksG/" + idArtiste;
+  
     axios
-      .get("http://localhost:8080/getSocialLinks/" + idArtiste)
+      .get(endpoint)
       .then((response) => {
         setSocialLinks(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error(
@@ -64,18 +71,17 @@ export default function PageEvenement() {
           error
         );
       });
-
+  
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-
+  
     window.addEventListener("resize", handleResize);
-
+  
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
-
+  }, [idArtiste, estArtiste]);
   useEffect(() => {
     console.log('oldXEvenement:', oldX);
     console.log('oldYEvenement:', oldY);

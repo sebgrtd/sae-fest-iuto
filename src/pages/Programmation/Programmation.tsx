@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import SearchBar from "../../components/form/SearchBar";
 import Combo from "../../components/form/Combo";
-import CarteArtiste from "../../components/Artiste/CarteProgrammation";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -54,6 +53,7 @@ export default function Programmation(props: Props) {
   const oldY = location.state?.oldY;
   const oldGroupes = location.state?.oldGroupes;
   const [searchTerm, setSearchTerm] = useState("");
+  const pageRef = useRef<HTMLDivElement>(null);
   
 
   window.history.replaceState({}, document.title);
@@ -191,7 +191,6 @@ if (filtreDate !== 'Tout') {
   const [filtreAffichage, setFiltreAffichage] = useState("Grille");
   const [filtreGenre, setFiltreGenre] = useState("Tout");
 
-  const pageRef = useRef<HTMLDivElement>(null);
 
   const contentVariants = {
     visible: {
@@ -284,6 +283,7 @@ if (filtreDate !== 'Tout') {
         heure={groupe.heurePassage}
         setIsNavTransparent={props.setIsNavTransparent}
         oldGroupes={lesGroupes}
+        estArtiste={false}
         oldX={idArtistComingFrom == groupe.idG ? oldX : null} oldY={idArtistComingFrom == groupe.idG ? oldY : null} comesFromPageArtist={idArtistComingFrom == groupe.idG}
       />
     );
@@ -306,7 +306,7 @@ if (filtreDate !== 'Tout') {
         setIsNavTransparent={props.setIsNavTransparent}
         
         oldGroupes={lesGroupes}
-        
+        estArtiste={true}
         oldX={idArtistComingFrom == artiste.idMG ? oldX : null} oldY={idArtistComingFrom == artiste.idMG ? oldY : null} comesFromPageArtist={idArtistComingFrom == artiste.idMG}
 
       />
