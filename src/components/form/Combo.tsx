@@ -69,7 +69,7 @@ export default function Combo(props: Props) {
         </div>
         <div className="container-menu">
             <div className="menu-underline"/>
-            <motion.div className="menu"
+            <motion.div className="combo-menu"
             variants={menuVariants}
             initial="closed"
             animate={isOpen ? "open" : "closed"}>

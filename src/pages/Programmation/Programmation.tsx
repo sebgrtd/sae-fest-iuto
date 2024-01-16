@@ -1,13 +1,12 @@
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
-import SearchBar from "../../components/form/SearchBar";
-import Combo from "../../components/form/Combo";
-import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import Footer from "../../components/footer";
-import CarteProgrammation from "../../components/Artiste/CarteProgrammation";
-import { AnimatePresence } from "framer-motion";
-
+import {useEffect, useState, useRef, useLayoutEffect} from 'react'
+import SearchBar from '../../components/form/SearchBar';
+import Combo from '../../components/form/Combo';
+import CarteArtiste from '../../components/Artiste/CarteProgrammation';
+import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import Footer from '../../components/Footer';
+import CarteProgrammation from '../../components/Artiste/CarteProgrammation';
 
 type Props = {
   isNavInFocus: boolean;
@@ -63,8 +62,10 @@ export default function Programmation(props: Props) {
     Map<number, { datePassage: string; heurePassage: string }>
   >(new Map());
 
-  useEffect(() => {
-    axios.get("http://localhost:8080/getGroupesWithEvenements").then((res) => {
+
+useEffect(() => {
+    axios.get('http://localhost:8080/getGroupesWithEvenements').then((res) => {
+
       const groupedData = res.data as Programme[][];
       // console.log("groupedData")
       // console.log(groupedData);
@@ -120,19 +121,7 @@ export default function Programmation(props: Props) {
     });
   }, []);
 
-  // let filteredGroupes = lesGroupes;
-  //   if (searchTerm) {
-  //     filteredGroupes = lesGroupes.filter((groupe) =>
-  //       groupe.nomG.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
-  //   }
-  // let filteredArtistes = lesArtistes;
-  // if (searchTerm) {
-  //   filteredArtistes = lesArtistes.filter((artiste) =>
-  //     artiste.nomDeSceneMG.toLowerCase().includes(searchTerm.toLowerCase())
-  //   )
-  // }
-  
+
   const [filtreDate, setFiltreDate] = useState("Tout");
   console.log(filtreDate)
   let termeRechercher = 'Tout';
