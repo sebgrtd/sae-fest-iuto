@@ -22,9 +22,58 @@
                     <td> {{ spectateur.get_idUser() }} </td>
                     <td> {{ spectateur.get_nomS() }} </td>
                     <td> {{ spectateur.get_prenomS() }} </td>
+                    <td> 
+                        <button class="btn-modifier"
+                            data-id="{{ spectateur.get_idS() }}"
+                            data-idUser="{{ spectateur.get_idUser() }}"
+                            data-nomS="{{ spectateur.get_nomS() }}"
+                            data-prenomS="{{ spectateur.get_prenomS() }}">Modifier</button>
+                        <button class="btn-supprimer" data-id="{{ spectateur.get_idS() }}">Supprimer</button>
+                    </td> 
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     <button id="ajouter">Ajouter</button>
+
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/modifier_spectateur" method="POST">
+                <input type="hidden" name="idS" id="idS_modifier">
+                <input type="hidden" name="idUser" id="idUser_modifier">
+                <label for="nomS">Nom :</label>
+                <input type="text" name="nomS" id="nomS_modifier">
+                <label for="prenomS">Prénom :</label>
+                <input type="text" name="prenomS" id="prenomS_modifier">
+                <button id="modifier" type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalModifier = document.getElementById("modal-modifier");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var btnClose = document.querySelectorAll(".close-button");
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display = "none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("idS_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("idUser_modifier").value = btn.getAttribute("data-idUser");
+                    document.getElementById("nomS_modifier").value = btn.getAttribute("data-nomS");
+                    document.getElementById("prenomS_modifier").value = btn.getAttribute("data-prenomS");
+                    modalModifier.style.display = "block";
+                };
+            });
+        });
+            
+    </script>
 {% endblock %}

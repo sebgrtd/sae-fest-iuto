@@ -116,44 +116,7 @@ class Type_Billet:
             "idType": self.__idType,
             "duree": self.__duree
         }
-    
 
-class Spectateur:
-    def __init__(self, idS: int, nomS: str, prenomS: str, adresseS: str, emailS: str, mdpS: str):
-        self.__idS = idS
-        self.__nomS = nomS
-        self.__prenomS = prenomS
-        self.__adresseS = adresseS
-        self.__emailS = emailS
-        self.__mdpS = mdpS
-    
-    def get_idS(self):
-        return self.__idS
-    
-    def get_nomS(self):
-        return self.__nomS
-    
-    def get_prenomS(self):
-        return self.__prenomS
-    
-    def get_adresseS(self):
-        return self.__adresseS
-    
-    def get_emailS(self):
-        return self.__emailS
-    
-    def get_mdpS(self):
-        return self.__mdpS
-    
-    def to_dict(self):
-        return {
-            "idS": self.__idS,
-            "nomS": self.__nomS,
-            "prenomS": self.__prenomS,
-            "adresseS": self.__adresseS,
-            "emailS": self.__emailS,
-            "mdpS": self.__mdpS
-        }
 
 class Billet:
     def __init__(self, idB: int, idF: int, idType: int, idS: int, prix: int, dateAchat: str, dateDebutB: str, dateFinB: str):
