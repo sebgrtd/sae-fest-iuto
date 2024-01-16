@@ -751,10 +751,48 @@ def supprimer_type_billet():
 def spectateurs_festival():
     connexionbd = ConnexionBD()
     spectateurbd = SpectateurBD(connexionbd)
+    userbd = UserBD(connexionbd)
     liste_spectateurs = spectateurbd.get_all_spectateurs()
+    liste_users = userbd.get_all_users()
     if not liste_spectateurs:
-        return render_template("admin_spectateurs.html", liste_spectateurs=[])
-    return render_template("admin_spectateurs.html", liste_spectateurs=liste_spectateurs)
+        return render_template("admin_spectateurs.html", liste_spectateurs=[], liste_users=[])
+    return render_template("admin_spectateurs.html", liste_spectateurs=liste_spectateurs, liste_users=liste_users)
+
+@app.route("/modifier_spectateur", methods=["POST"])
+def modifier_spectateur():
+    connexionbd = ConnexionBD()
+    spectateurbd = SpectateurBD(connexionbd)
+    id_spectateur = request.form["idS"] if request.form["idS"] else None
+    nom_spectateur = request.form["nomS"] if request.form["nomS"] else None
+    prenom_spectateur = request.form["prenomS"] if request.form["prenomS"] else None
+    spectateur = spectateurbd.get_spectateur_by_id(id_spectateur)
+    spectateur.set_nomS(nom_spectateur)
+    spectateur.set_prenomS(prenom_spectateur)
+    succes = spectateurbd.update_spectateur(spectateur)
+    if succes:
+        print(f"Le spectateur {id_spectateur} a été mis à jour.")
+    else:
+        print(f"La mise à jour du spectateur {id_spectateur} a échoué.")
+    return redirect(url_for("spectateurs_festival"))
+
+@app.route("/supprimer_spectateur", methods=["POST"])
+def supprimer_spectateur():
+    connexionbd = ConnexionBD()
+    spectateurbd = SpectateurBD(connexionbd)
+    id_spectateur = request.form["idS"] if request.form["idS"] else None
+    spectateurbd.delete_spectateur_by_id(id_spectateur)
+    return redirect(url_for("spectateurs_festival"))
+
+@app.route("/ajouter_spectateur", methods=["POST"])
+def ajouter_spectateur():
+    connexionbd = ConnexionBD()
+    spectateurbd = SpectateurBD(connexionbd)
+    id_user = request.form["pseudo_user"] if request.form["pseudo_user"] else None
+    nom_spectateur = request.form["nomS"] if request.form["nomS"] else None
+    prenom_spectateur = request.form["prenomS"] if request.form["prenomS"] else None
+    spectateur = Spectateur(None, id_user, nom_spectateur, prenom_spectateur)
+    spectateurbd.insert_spectateur(spectateur)
+    return redirect(url_for("spectateurs_festival"))
 
 @app.route("/styles_musicaux_festival")
 def styles_musicaux_festival():
