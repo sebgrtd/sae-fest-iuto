@@ -909,3 +909,30 @@ def save_artiste():
     # res est un booleen
     connexion_bd.fermer_connexion()
     return jsonify({"success": "Artiste sauvegardé"}) if res else jsonify({"error": "Erreur lors de la sauvegarde de l'artiste"})
+
+@app.route('/getArtistesWithSave')
+def getArtistesWithSave():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    idUser = request.args.get("idUser", "")
+    # je dois passer les éléments dans ma requete de la sorte suivante:
+    # http:// ... /getArtistesWithSave?idUser=1
+    res = groupebd.get_groupes_with_save_json(idUser)
+    connexion_bd.fermer_connexion()
+    if res is None:
+            return jsonify({"error": "Aucun artiste trouve"})
+    else:
+        return res
+    
+@app.route('/getMonPlanning')
+def getMonPlanning():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    idUser = request.args.get("idUser", "")
+    res = groupebd.get_mon_planning_json(idUser)
+    print(res)
+    
+    if res is None:
+            return jsonify({"error": "Aucun evenement trouve"})
+    else:
+        return res

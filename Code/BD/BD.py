@@ -314,11 +314,18 @@ class Programmer:
     
 
 class Groupe:
-    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str):
+    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False):
         self.__idG = idG
         self.__idH = idH
         self.__nomG = nomG
         self.__descriptionG = descriptionG
+        self.__heurePassage = self.timedelta_to_time(heurePassage) if isinstance(heurePassage, timedelta) else datetime.strptime(heurePassage, '%H:%M').time()
+        self.__datePassage = datePassage if isinstance(datePassage, date) else datetime.strptime(datePassage, '%Y-%m-%d').date()
+        self.__isSaved = isSaved
+        
+    @staticmethod
+    def timedelta_to_time(td):
+        return (datetime.min + td).time()
         
     def get_idG(self):
         return self.__idG
@@ -346,11 +353,32 @@ class Groupe:
             "idG": self.__idG,
             "idH": self.__idH,
             "nomG": self.__nomG,
-            "descriptionG": self.__descriptionG
+            "descriptionG": self.__descriptionG,
+            "datePassage": self.__datePassage.isoformat(),
+            "heurePassage": self.__heurePassage.strftime("%H:%M:%S"),
+            "isSaved": self.__isSaved
         }
         
     def set_nomG(self, nomG):
         self.__nomG = nomG
+        
+    def set_heurePassage(self, heurePassage):
+        self.__heurePassage = heurePassage
+        
+    def set_datePassage(self, datePassage):
+        self.__datePassage = datePassage
+        
+    def get_heurePassage(self):
+        return self.__heurePassage
+    
+    def get_datePassage(self):
+        return self.__datePassage
+    
+    def get_isSaved(self):
+        return self.__isSaved
+    
+    def set_isSaved(self, isSaved):
+        self.__isSaved = isSaved
         
     def set_descriptionG(self, descriptionG):
         self.__descriptionG = descriptionG
@@ -1045,78 +1073,6 @@ class Programmer:
             "heureDepart": self.__heureDepart.strftime("%H:%M:%S")
         }
     
-
-class Groupe:
-    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str):
-        self.__idG = idG
-        self.__idH = idH
-        self.__nomG = nomG
-        self.__descriptionG = descriptionG
-        
-    def get_idG(self):
-        return self.__idG
-    
-    def get_idHebergement(self):
-        return self.__idH
-    
-    def get_nomG(self):
-        return self.__nomG
-    
-    def get_descriptionG(self):
-        return self.__descriptionG
-    
-    def set_idHebergement(self, idH):
-        self.__idH = idH
-    
-    def to_dict(self):
-        return {
-            "idG": self.__idG,
-            "idH": self.__idH,
-            "nomG": self.__nomG,
-            "descriptionG": self.__descriptionG
-        }
-        
-    def set_nomG(self, nomG):
-        self.__nomG = nomG
-        
-    def set_descriptionG(self, descriptionG):
-        self.__descriptionG = descriptionG
-
-
-# class Groupe:
-#     def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str):
-#         self._idG = idG
-#         self._idH = idH
-#         self._nomG = nomG
-#         self._descriptionG = descriptionG
-        
-#     def get_idG(self):
-#         return self._idG
-    
-#     def get_idHebergement(self):
-#         return self._idH
-    
-#     def get_nomG(self):
-#         return self._nomG
-    
-#     def get_descriptionG(self):
-#         return self._descriptionG
-    
-#     def get_datePassage(self):
-#         return "2021-05-20"
-    
-#     def get_heurePassage(self):
-#         return "20:00:00"
-    
-#     def to_dict(self):
-#         return {
-#             "idG": self._idG,
-#             "nomG": self._nomG,
-#             "descriptionG": self._descriptionG,
-#             "datePassage": seFlf.get_datePassage(),
-#             "heurePassage": self.get_heurePassage()
-#         }
-
 class Membre_Groupe:
     def __init__(self, idMG: int, idG, nomMG: str, prenomMG: str, nomDeSceneMG: str, descriptionA: str):
         self.__idMG = idMG

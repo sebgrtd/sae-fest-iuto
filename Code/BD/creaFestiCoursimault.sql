@@ -170,6 +170,13 @@ CREATE TABLE LIEN_RESEAUX_SOCIAUX_MEMBRE (
     FOREIGN KEY (idMG) REFERENCES MEMBRE_GROUPE (idMG)
 );
 
+CREATE TABLE SAUVEGARDER_GROUPE(
+	idUser INT,
+    idG INT,
+    FOREIGN KEY (idUser) REFERENCES user (idUser),
+    FOREIGN KEY (idG) REFERENCES groupe (idG)
+);
+
 
 ALTER TABLE BILLET ADD FOREIGN KEY (idF) REFERENCES FESTIVAL (idF);
 ALTER TABLE BILLET ADD FOREIGN KEY (idType) REFERENCES TYPE_BILLET (idType);
@@ -245,6 +252,18 @@ BEGIN
     END IF;
     UPDATE BILLET SET prix = nouveauPrix WHERE idB = idBillet;
 END |
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `isSaved`(idU INT, idGroupe INT) RETURNS tinyint(1)
+    READS SQL DATA
+BEGIN
+	DECLARE RES BOOLEAN;
+    SET RES = FALSE;
+    SELECT count(*) > 0 into RES FROM sauvegarder_groupe
+    WHERE idUser = idU AND idG = idGroupe;
+    RETURN RES;
+END$$
 DELIMITER ;
 
 -- Les procédures 
@@ -471,4 +490,30 @@ BEGIN
     END IF;
 END |
 
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupesDate`(idUser INT, dateDebutE DATE)
+BEGIN
+	SELECT * FROM (
+		SELECT idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(idUser, groupe.idg) as isSaved 
+		FROM evenement 
+		INNER JOIN groupe ON groupe.idG = evenement.idG
+		WHERE dateDebutE = dateDebutE
+	) AS subquery
+	WHERE isSaved = true;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupesDate`(idUser INT, dateDebutE DATE)
+BEGIN
+	SELECT * FROM (
+		SELECT idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(idUser, groupe.idg) as isSaved 
+		FROM evenement 
+		INNER JOIN groupe ON groupe.idG = evenement.idG
+		WHERE dateDebutE = dateDebutE
+	) AS subquery
+	WHERE isSaved = true;
+END$$
 DELIMITER ;
