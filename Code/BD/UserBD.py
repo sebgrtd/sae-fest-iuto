@@ -179,3 +179,39 @@ class UserBD:
             print(f"La requête a échoué : {e}")
             return False
         
+    def est_sauvegarde(self, id_artiste, id_user):
+        try:
+            query = text("SELECT count(*) FROM SAUVEGARDER_GROUPE WHERE idUser = :idUser AND idG = :idG")
+            result = self.connexion.get_connexion().execute(query, {"idUser": id_user, "idG": id_artiste})
+            return result.fetchone()[0] == 1
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+    
+    def save_artiste(self, id_artiste,id_user):
+        try:
+            """
+            la table c'est ça:
+            CREATE TABLE SAUVEGARDER_GROUPE(
+	idUser INT,
+    idG INT,
+    FOREIGN KEY (idUser) REFERENCES user (idUser)
+);
+    
+            """
+            if (self.est_sauvegarde(id_artiste, id_user)):
+                # on supprime
+                query = text("DELETE FROM SAUVEGARDER_GROUPE WHERE idUser = :idUser AND idG = :idG")
+                self.connexion.get_connexion().execute(query, {"idUser": id_user, "idG": id_artiste})
+                self.connexion.get_connexion().commit()
+                return False
+            else:
+                query = text("INSERT INTO SAUVEGARDER_GROUPE (idUser, idG) VALUES (:idUser, :idG)")
+                result = self.connexion.get_connexion().execute(query, {"idUser": id_user, "idG": id_artiste})
+                id_user = result.lastrowid
+                self.connexion.get_connexion().commit()
+                return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
+        
