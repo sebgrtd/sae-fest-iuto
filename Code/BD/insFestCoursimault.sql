@@ -56,7 +56,10 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
 
 
     (3, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
-    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.');
+    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.'),
+
+    (3, 'IAM', "IAM est un groupe de hip-hop français, originaire de Marseille, dans les Bouches-du-Rhône. Formé en 1989, il se compose d'Akhenaton (Philippe Fragione), Shurik'n (Geoffroy Mussard), Khéops (Éric Mazel), Imhotep (Pascal Perez), Kephren (François Mendy) et Freeman (Malek Brahimi)."),
+
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
@@ -92,6 +95,19 @@ Il est un membre du mouvement musical new wave du hip-hop français. Sa musique 
     (3, 'DMS', 'DMS', 'DMS', "DMS est un rappeur français originaire des Hauts-de-Seine (92). Affilié au studio 99 à ses débuts, il créé en 2021 le label Ciel.
 De 2019 à 2021, il travaille sur son premier projet Rideaux bleus, qu'il sort en décembre de cette dernière année. Sept mois plus tard, il dévoile l'EP YEYEYE, comprenant des collaborations avec EDGE et Malo.
 En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et Rounhaa y sont présents.");
+
+    (4, "Fragione", "Philippe", "Akhenaton", "Akhenaton, de son vrai nom Philippe Fragione, né le 17 septembre 1968 à Marseille, est un rappeur, producteur, réalisateur, écrivain et acteur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Shurik'n, Kheops, Imhotep, Kephren et Freeman. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004. Il est le frère du rappeur Faf Larage."),
+
+    (4, "Mussard", "Geoffroy", "Shurik'n", "Geoffroy Mussard, dit Shurik'n, né le 9 mars 1966 à Marseille, est un rappeur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Kheops, Imhotep, Kephren et Freeman. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+
+    (4, "Mazel", "Éric", "Khéops", "Éric Mazel, dit Khéops, né le 18 octobre 1966 à Marseille, est un DJ et producteur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Imhotep, Kephren et Freeman. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+
+    (4, "Perez", "Pascal", "Imhotep", "Pascal Perez, dit Imhotep, né le 19 mars 1960 à Marseille, est un DJ et producteur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Kephren et Freeman. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+
+    (4, "Mendy", "François", "Kephren", "François Mendy, dit Kephren, né le 18 octobre 1966 à Marseille, est un DJ et producteur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Freeman. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+
+    (4, "Brahimi", "Malek", "Freeman", "Malek Brahimi, dit Freeman, né le 13 avril 1968 à Marseille, est un rappeur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Kephren. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+
 
 
 
@@ -152,9 +168,11 @@ INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
 
 -- Insérer des données dans la table STYLE_MUSICAL
 INSERT INTO STYLE_MUSICAL (nomSt) VALUES
-    ('Style 1'),
-    ('Style 2'),
-    ('Style 3');
+    ("Rap"),
+    ("Pop"),
+    ("New-disco"),
+    ("Electro"),
+    
 
 
 -- Insérer des données dans la table EVENEMENT
@@ -175,9 +193,10 @@ INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
     (3, '01:00:00', '01:00:00');
 
 INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
-    (1, 1),
-    (2, 2),
-    (3, 3);
+    (1, 6),
+    (2, 6),
+    (3, 6),
+    (4, 6);
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
