@@ -60,11 +60,25 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
 
     (3, 'IAM', "IAM est un groupe de hip-hop français, originaire de Marseille, dans les Bouches-du-Rhône. Formé en 1989, il se compose d'Akhenaton (Philippe Fragione), Shurik'n (Geoffroy Mussard), Khéops (Éric Mazel), Imhotep (Pascal Perez), Kephren (François Mendy) et Freeman (Malek Brahimi)."),
 
+    (3, "L'impératrice", "L'Impératrice est un groupe de musique français originaire de Paris. Il est composé de Charles de Boisseguin, Hagni Gwon, Achille Trocellier, David Gaugué, Tom Daveau, Flore Benguigui et Marion Brunetto. Le groupe est formé en 2012 et sort son premier album Matahari en 2018."),
+
+    (3, "Luther", "Luther est un rappeur français originaire de Paris. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Kephren. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+
+    (3, "Booba", "Booba, de son vrai nom Élie Yaffa, né le 9 décembre 1976 à Boulogne-Billancourt, dans les Hauts-de-Seine, est un rappeur, producteur, entrepreneur et ancien boxeur français. Il est le fondateur du label indépendant 92i, sous-label de Tallac Records, et cofondateur du site web OKLM. Il est également le fondateur de la marque de vêtements et de lignes de parfums Ünkut."),
+
+    (3, "Damso", "Damso, de son vrai nom William Kalubi, né le 10 mai 1992 à Kinshasa, au Zaïre, est un rappeur et auteur-compositeur belge. Il est membre du 92i, un collectif de rap français dont il est considéré comme le pilier. Il commence sa carrière en tant que membre du groupe OPG en 2006, et se fait connaître en 2015 avec sa mixtape Salle d'attente."),
+
+    (3, "Vladimir Cauchemar", "Vladimir Cauchemar, de son vrai nom Charles de Boisseguin, né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (3, "4am-Liam", "4am-Liam, de son vrai nom Liam Sottier, est un jeune informaticien et artiste indépendant qui a publié en fin 2023 son EP Aujourd'hui."),
+
+    (3, "Daft Punk", "Daft Punk est un groupe de musique électronique français, originaire de Paris. Composé de Thomas Bangalter et Guy-Manuel de Homem-Christo, le groupe est actif depuis 1993, et participe à la création et à la démocratisation du mouvement de musique électronique baptisé french touch. Il est considéré comme l'un des groupes de musique électronique les plus influents de l'histoire."),
+
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
     (1, 'Bushi', 'Bushi', 'Bushi', 'BUSHI, jeune rappeur de Lyon, fait énormément parler de lui ces derniers temps par rapport à ses diverses apparitions aux quatre coins du monde ainsi que sa productivité et 
-    sa communication qui font tourner beaucoup de mystère autour de ce personnage.L’artiste peut paraître des plus underground. Egotrip monstre, placements particuliers, ces éléments font sa force. Il se démarque par sa prestance, 
+    sa communication qui font tourner beaucoup de mystère autour de ce personnage. L’artiste peut paraître des plus underground. Egotrip monstre, placements particuliers, ces éléments font sa force. Il se démarque par sa prestance, 
     sa nonchalance et ses placements sortis de nulle part. Un vrai rappeur US en somme.'),
 
 
@@ -94,7 +108,7 @@ Il est un membre du mouvement musical new wave du hip-hop français. Sa musique 
 
     (3, 'DMS', 'DMS', 'DMS', "DMS est un rappeur français originaire des Hauts-de-Seine (92). Affilié au studio 99 à ses débuts, il créé en 2021 le label Ciel.
 De 2019 à 2021, il travaille sur son premier projet Rideaux bleus, qu'il sort en décembre de cette dernière année. Sept mois plus tard, il dévoile l'EP YEYEYE, comprenant des collaborations avec EDGE et Malo.
-En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et Rounhaa y sont présents.");
+En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et Rounhaa y sont présents."),
 
     (4, "Fragione", "Philippe", "Akhenaton", "Akhenaton, de son vrai nom Philippe Fragione, né le 17 septembre 1968 à Marseille, est un rappeur, producteur, réalisateur, écrivain et acteur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Shurik'n, Kheops, Imhotep, Kephren et Freeman. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004. Il est le frère du rappeur Faf Larage."),
 
@@ -107,24 +121,32 @@ En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et R
     (4, "Mendy", "François", "Kephren", "François Mendy, dit Kephren, né le 18 octobre 1966 à Marseille, est un DJ et producteur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Freeman. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
 
     (4, "Brahimi", "Malek", "Freeman", "Malek Brahimi, dit Freeman, né le 13 avril 1968 à Marseille, est un rappeur français. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Kephren. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+    
+    (5, "de Boisseguin", "Charles", "Charles de Boisseguin", "né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (5, "Gwon", "Hagni", "Hagni Gwon", "né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (5, "Trocellier", "Achille", "Achille Trocellier", "né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (5, "Gaugué", "David", "David Gaugué", "né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (5, "Daveau", "Tom", "Tom Daveau", "né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (5, "Benguigui", "Flore", "Flore Benguigui", "née le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (5, "Brunetto", "Marion", "Marion Brunetto", "née le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (6, "Luther", "Luther", "Luther", "Luther est un rappeur français originaire de Paris. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Kephren. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+
+    (7, "Yaffa", "Élie", "Booba", "Élie Yaffa, né le 9 décembre 1976 à Boulogne-Billancourt, dans les Hauts-de-Seine, est un rappeur, producteur, entrepreneur et ancien boxeur français. Il est le fondateur du label indépendant 92i, sous-label de Tallac Records, et cofondateur du site web OKLM. Il est également le fondateur de la marque de vêtements et de lignes de parfums Ünkut."),
+
+    (8, "Kalubi", "William", "Damso", "William Kalubi, né le 10 mai 1992 à Kinshasa, au Zaïre, est un rappeur et auteur-compositeur belge. Il est membre du 92i, un collectif de rap français dont il est considéré comme le pilier. Il commence sa carrière en tant que membre du groupe OPG en 2006, et se fait connaître en 2015 avec sa mixtape Salle d'attente."),
+
+    (9, "de Boisseguin", "Charles", "Vladimir Cauchemar", "Charles de Boisseguin, né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+
+    (10, "Sottier", "Liam", "4am-Liam", "Liam Sottier, est un jeune informaticien et artiste indépendant qui a publié en fin 2023 son EP Aujourd'hui."),
 
 
-
-
-
-
-
-
-    -- (1, 'Vlad', 'Cauchemar', 'Vladimir Cauchemar', 'Description pour Vladimir Cauchemar'),
-    -- (2, 'Booba', 'Elie', 'Booba', 'Description pour Booba'),
-    -- (3, 'Freeze', 'Hugo', 'Freeze Corleone', 'Description pour Freeze Corleone'),
-    -- (4, 'Damso', 'William', 'Damso', 'Description pour Damso'),
-    -- (5, 'Ashe', 'Achille', 'Ashe 22', 'Description pour Ashe 22'),
-    -- (6, 'Heuss', 'Karim', "Heuss l'Enfoiré", 'Description pour Heuss lEnfoiré'),
-    -- (7, 'Zola', 'Evans', 'Zola', 'Description pour Zola'),
-    -- (8, 'Sch', 'Julien', 'Sch', 'Description pour Sch'),
-    -- (9, 'H', 'Hugo', 'H Jeunecrack', 'Description pour H Jeunecrack'),
-    -- (10, 'Luther', 'Luther', 'Luther', 'Description pour Luther');
 
 -- Insérer des données dans la table INSTRUMENT
 INSERT INTO INSTRUMENT (idMG, nomI) VALUES
@@ -171,7 +193,7 @@ INSERT INTO STYLE_MUSICAL (nomSt) VALUES
     ("Rap"),
     ("Pop"),
     ("New-disco"),
-    ("Electro"),
+    ("Electro");
     
 
 
@@ -193,10 +215,10 @@ INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
     (3, '01:00:00', '01:00:00');
 
 INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
-    (1, 6),
-    (2, 6),
-    (3, 6),
-    (4, 6);
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (4, 1);
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
