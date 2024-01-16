@@ -28,8 +28,8 @@ class GroupeBD:
                 result = self.connexion.get_connexion().execute(query, {"idUser": idUser, "dateDebutE": "2024-07-21"})
                 # affiche le résultat de la requête
                 print(result.keys())
-                for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved in result:
-                    res[date].append(Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, isSaved == 1).to_dict())
+                for idE, idG, nomG, heureDebutE, heureFinE, dateDebutE, descriptionG, isSaved in result:
+                    res[date].append(Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, isSaved == 1, heureFinE).to_dict())
             
             return res
         except SQLAlchemyError as e:

@@ -314,7 +314,7 @@ class Programmer:
     
 
 class Groupe:
-    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False):
+    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False, heureFinPassage: str = None):
         self.__idG = idG
         self.__idH = idH
         self.__nomG = nomG
@@ -322,6 +322,7 @@ class Groupe:
         self.__heurePassage = self.timedelta_to_time(heurePassage) if isinstance(heurePassage, timedelta) else datetime.strptime(heurePassage, '%H:%M').time()
         self.__datePassage = datePassage if isinstance(datePassage, date) else datetime.strptime(datePassage, '%Y-%m-%d').date()
         self.__isSaved = isSaved
+        self.__heureFinPassage = heureFinPassage if heureFinPassage == None else  self.timedelta_to_time(heureFinPassage) if isinstance(heureFinPassage, timedelta) else datetime.strptime(heureFinPassage, '%H:%M').time()
         
     @staticmethod
     def timedelta_to_time(td):
@@ -356,7 +357,8 @@ class Groupe:
             "descriptionG": self.__descriptionG,
             "datePassage": self.__datePassage.isoformat(),
             "heurePassage": self.__heurePassage.strftime("%H:%M:%S"),
-            "isSaved": self.__isSaved
+            "isSaved": self.__isSaved,
+            "heureFinPassage": self.__heureFinPassage.strftime("%H:%M:%S") if self.__heureFinPassage != None else ""
         }
         
     def set_nomG(self, nomG):
