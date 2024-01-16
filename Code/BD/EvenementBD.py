@@ -105,7 +105,7 @@ class EvenementBD:
     def get_programmation_with_groupes_and_artistes(self):
         try:
             query = text("""
-            SELECT e.idE, e.idG, g.nomG, g.descriptionG, e.idL, e.nomE, e.heureDebutE, e.heureFinE, e.dateDebutE, e.dateFinE,
+            SELECT e.idE, e.idG, g.nomG, g.descriptionG, e.idL, e.nomE, e.heureDebutE, e.heureFinE, e.dateDebutE, e.dateFinE, mg.idMG,
                 mg.nomMG, mg.prenomMG, mg.nomDeSceneMG, mg.descriptionA
             FROM EVENEMENT e
             LEFT JOIN GROUPE g ON e.idG = g.idG
@@ -113,8 +113,8 @@ class EvenementBD:
             """)
             programmation = []
             result = self.connexion.get_connexion().execute(query)
-            for idE, idG, nomG, descriptionG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
-                programmation.append((Groupe(idG, None, nomG, descriptionG), Evenement(idE, idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE), Membre_Groupe(None, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA)))
+            for idE, idG, nomG, descriptionG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE, idMG, nomMG, prenomMG, nomDeSceneMG, descriptionA in result:
+                programmation.append((Groupe(idG, None, nomG, descriptionG), Evenement(idE, idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE), Membre_Groupe(idMG, idG, nomMG, prenomMG, nomDeSceneMG, descriptionA)))
             return programmation
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")

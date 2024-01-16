@@ -19,12 +19,14 @@ class LienRS_BD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
 
-    def get_lienRS_by_groupe(self, idG):
+    def get_lienRS_by_groupe(self, id):
         try:
             query = text("SELECT idLRS, idG, reseau FROM LIEN_RESEAUX_SOCIAUX WHERE idG = :idG")
-            result = self.connexion.get_connexion().execute(query, {"idG": idG})
+            result = self.connexion.get_connexion().execute(query, {"idG": id})
+            liens = []
             for idLRS, idG, reseau in result:
-                return Lien_Reseaux_Sociaux(idLRS, idG, reseau)
+                liens.append(Lien_Reseaux_Sociaux(idLRS, idG, reseau))
+            return liens
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
 
@@ -33,4 +35,8 @@ class LienRS_BD:
         if lienRS is None:
             return None
         else:
-            return json.dumps(lienRS.to_dict(), ensure_ascii=False)
+            groupe_json = []
+            for lien in lienRS:
+                print(lien.to_dict())
+                groupe_json.append(lien.to_dict())
+        return json.dumps(groupe_json)

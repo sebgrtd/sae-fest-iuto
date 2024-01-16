@@ -26,7 +26,10 @@ INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser) VALUES
 INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
     ('Festival 1', 'Ville 1', '2024-08-01', '2024-08-05'),
     ('Festival 2', 'Ville 2', '2024-07-15', '2024-07-20'),
-    ('Festival 3', 'Ville 3', '2024-08-01', '2024-08-03');
+    ('Festival 3', 'Ville 3', '2024-08-01', '2024-08-03'),
+    ('Festival 4', 'Ville 3', '2024-08-01', '2024-08-03');
+
+
 
 -- Insérer des données dans la table LIEU
 INSERT INTO LIEU (idF, nomL, adresseL, jaugeL) VALUES
@@ -127,10 +130,7 @@ INSERT INTO INSTRUMENT (idMG, nomI) VALUES
 INSERT INTO LIEN_VIDEO (idG, video) VALUES
     (1, 'Video 1'),
     (1, 'Video 2'),
-    (2, 'Video 1'),
-    (3, 'Video 1'),
-    (3, 'Video 2'),
-    (3, 'Video 3');
+    (2, 'Video 1');
 
 -- Insérer des données dans la table LIEN_RESEAUX_SOCIAUX
 INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
@@ -142,6 +142,14 @@ INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (3, 'Réseau 2'),
     (3, 'Réseau 3');
 
+
+INSERT INTO LIEN_RESEAUX_SOCIAUX_MEMBRE (idMG, reseau) VALUES
+    (1, 'https://www.instagram.com/bushi_lz/'),
+    (1, 'https://open.spotify.com/intl-fr/artist/2GIoAorOnT0Yp1jKyTzW7K'),
+    (3, 'https://www.instagram.com/playboicarti/'),
+    (3, 'https://twitter.com/playboicarti?lang=fr'),
+    (3, 'https://open.spotify.com/intl-fr/artist/699OTQXzgjhIYAHMy9RyPD');
+
 -- Insérer des données dans la table SPECTATEUR
 INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
     ('Spectateur 1', 'Prénom 1', 2),
@@ -152,9 +160,11 @@ INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
 
 -- Insérer des données dans la table STYLE_MUSICAL
 INSERT INTO STYLE_MUSICAL (nomSt) VALUES
-    ('Style 1'),
-    ('Style 2'),
-    ('Style 3');
+    ('Rock'),
+    ('Pop'),
+    ('New wave'),
+    ('Jazz'),
+    ('Trap');
 
 
 -- Insérer des données dans la table EVENEMENT

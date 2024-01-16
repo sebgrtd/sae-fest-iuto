@@ -69,15 +69,30 @@ def getArtistes():
     else:
         return res
 
-@app.route('/socialLink/<int:id>')
+
+@app.route('/getSocialLinksG/<int:id>')
 def getRS(id):
     connexion_bd = ConnexionBD()
-    lienRS = LienRS_Membre_BD(connexion_bd)
-    res = lienRS.get_lienRS_Membre_json(id)
+    lienRS = LienRS_BD(connexion_bd)
+    print("test")
+    res = lienRS.get_liensRS_membre_json(id)
+    print(res)
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
         return res
+    
+@app.route('/getSocialLinksM/<int:idMG>')
+def get_member_social_links(idMG):
+    connexion_bd = ConnexionBD()
+    lienRS = LienRS_Membre_BD(connexion_bd)
+    res = lienRS.get_liensRS_membre_json(idMG)
+    print(res)
+    if res is None:
+        return jsonify({"error": "Aucun lien de réseau social trouvé pour le membre"})
+    else:
+        return res
+    
     
 @app.route('/getGroupesWithEvenements')
 def get_groupes_with_evenements():
@@ -893,7 +908,7 @@ def reserver_billets():
     connexion_bd = ConnexionBD()
     billet_bd = BilletBD(connexion_bd)
     data = request.get_json()
-    print(f"data: {data}") 
+    # print(f"data: {data}") 
     idUser = data[0]['id'] 
     billet_bd.reserver_billets(data, idUser)
     return jsonify({"success": "Les billets ont été réservés avec succès"})
