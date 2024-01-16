@@ -9,13 +9,58 @@ class GroupeBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
         
+    def get_mon_planning_json(self, idUser):
+        try:
+            # on doit renvoyer un dico avec les dates de passages en clé et les groupes qui passent ces jours là en valeur
+            res = dict()
+            
+            # on va récuprérer les dates de passage en faisant un call sur la fonctiion getDatesPassage
+            
+            query = text("call getDatesPassage()")
+            result = self.connexion.get_connexion().execute(query)
+            for date in result:
+                res[str(date[0])] = []
+            # on va récupérer les groupes qui passent ces jours là en faisant un call sur la fonction getGroupesDate
+            self.connexion = ConnexionBD()
+            
+            for date in res.keys():
+                query = text("call getGroupesDate(:idUser, :dateDebutE)")
+                result = self.connexion.get_connexion().execute(query, {"idUser": idUser, "dateDebutE": "2024-07-21"})
+                # affiche le résultat de la requête
+                print(result.keys())
+                for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved in result:
+                    res[date].append(Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, isSaved == 1).to_dict())
+            
+            return res
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+        
+    def get_groupes_with_save_json(self, idUser):
+        try:
+            # select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(#IDUSER, groupe.idg) as isSaved from evenement INNER JOIN groupe ON groupe.idG = evenement.idG;
+            query = text("SELECT idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(:idUser, groupe.idg) as isSaved FROM evenement INNER JOIN groupe ON groupe.idG = evenement.idG;")
+            groupes = []
+            result = self.connexion.get_connexion().execute(query, {"idUser": idUser})
+            for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved in result:
+                groupe = Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, isSaved == 1)
+                print(groupe.get_isSaved())
+                print(groupe.get_datePassage())
+                print(type(groupe.get_heurePassage()))
+                groupes.append(groupe.to_dict())
+            return json.dumps(groupes)
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+        
     def get_all_groupes(self):
         try:
-            query = text("SELECT idG, idH, nomG, descriptionG FROM GROUPE")
+            query = text("select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG;")
             groupes = []
             result = self.connexion.get_connexion().execute(query)
-            for idG, idH, nomG, descriptionG in result:
-                groupes.append(Groupe(idG, idH, nomG, descriptionG))
+            for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH in result:
+                print(idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH)
+                groupe = Groupe(idG, idH, nomG, descriptionG, dateDebutE, heureDebutE)
+                groupes.append(groupe)
+                
             return groupes
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
