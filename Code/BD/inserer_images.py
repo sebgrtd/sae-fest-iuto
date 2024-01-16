@@ -1,3 +1,5 @@
+# Exécuter ce fichier en étant dans l'environnement flask
+
 import sys
 import os
 import re

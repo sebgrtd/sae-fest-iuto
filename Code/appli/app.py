@@ -52,6 +52,7 @@ def getNomsArtistes():
     connexion_bd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexion_bd)
     res = membre_groupebd.getNomsArtistes_json()
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -64,6 +65,7 @@ def getArtistes():
     print("test1")
     groupebd = GroupeBD(connexion_bd)
     res = groupebd.get_groupes_json()
+    connexion_bd.fermer_connexion()
     if res is None:
             return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -74,6 +76,7 @@ def getRS(id):
     connexion_bd = ConnexionBD()
     lienRS = LienRS_Membre_BD(connexion_bd)
     res = lienRS.get_lienRS_Membre_json(id)
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -84,7 +87,7 @@ def get_groupes_with_evenements():
     connexion_bd = ConnexionBD()
     evenement_bd = EvenementBD(connexion_bd)
     groupes = evenement_bd.programmation_to_json()
-    print(groupes)
+    connexion_bd.fermer_connexion()
     if not groupes:
         return jsonify({"error": "Aucun groupe avec événement trouvé"}), 404
     res = jsonify(groupes)
@@ -97,6 +100,7 @@ def filtrerArtistes():
     liste_groupes_21 = evenementbd.groupes_21_juillet_to_json()
     liste_groupes_22 = evenementbd.groupes_22_juillet_to_json()
     liste_groupes_23 = evenementbd.groupes_23_juillet_to_json()
+    connexion_bd.fermer_connexion()
     return jsonify({"21 juillet": liste_groupes_21, "22 juillet": liste_groupes_22, "23 juillet": liste_groupes_23})
 
 @app.route('/getInformationsSupplementairesArtiste/<int:id>')
@@ -104,6 +108,7 @@ def getInformationsSupplementairesArtiste(id):
     connexion_bd = ConnexionBD()
     lienRS = LienRS_BD(connexion_bd)
     res = lienRS.get_lienRS_json(id)
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -115,6 +120,7 @@ def getArtiste(id):
     membre_groupebd = Membre_GroupeBD(connexion_bd)
     mb = membre_groupebd.get_artiste_by_id(id)
     res = mb.to_dict()
+    connexion_bd.fermer_connexion()
     return jsonify({"error": "Aucun artiste trouve"}) if res is None else res
 
 
@@ -128,8 +134,10 @@ def connecter():
     password = data["password"]
     if userbd.exist_user(email, password):
 
-        return userbd.user_to_json(userbd.get_user_by_email(email))
+        res = userbd.user_to_json(userbd.get_user_by_email(email))
+        connexion_bd.fermer_connexion()
     else:
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Utilisateur non trouve"})
     
 @app.route('/inscription', methods=['POST'])

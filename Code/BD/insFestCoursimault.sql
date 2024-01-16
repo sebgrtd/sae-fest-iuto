@@ -74,6 +74,17 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
 
     (3, "Daft Punk", "Daft Punk est un groupe de musique électronique français, originaire de Paris. Composé de Thomas Bangalter et Guy-Manuel de Homem-Christo, le groupe est actif depuis 1993, et participe à la création et à la démocratisation du mouvement de musique électronique baptisé french touch. Il est considéré comme l'un des groupes de musique électronique les plus influents de l'histoire."),
 
+    (3, "Louise attaque", "Louise Attaque est un groupe de rock français, originaire de Paris. Il est formé en 1994 par Gaëtan Roussel, Arnaud Samuel et Robin Feix, rejoints par Alexandre Margraff en 1995. Le groupe se sépare en 2001, puis se reforme en 2005."),
+
+    (3, "Phoenix", "Phoenix est un groupe de rock français, originaire de Versailles, dans les Yvelines. Il est formé en 1999 par Thomas Mars, Deck d'Arcy, Christian Mazzalai et Laurent Brancowitz. Le groupe est nommé aux Grammy Awards en 2010 et 2014."),
+
+    (3, "Gojira", "Gojira est un groupe français de heavy metal, originaire d'Ondres, dans les Landes. Il est initialement formé en 1996 sous le nom de Godzilla, puis adopte le nom de Gojira en 2001. Le groupe est composé de quatre membres : Joseph Duplantier (chant et guitare), Mario Duplantier (batterie), frère du premier, Christian Andreu (guitare) et Jean-Michel Labadie (basse). Depuis sa formation, Gojira compte un total de sept albums studio et trois DVD live. Associé au death metal technique ainsi qu'au metal progressif, Gojira se distingue dans la scène metal par la sensibilité écologiste et spirituelle de leurs chansons."),
+
+    (3, "Modern Talking", "Modern Talking est un groupe new wave/synthpop allemand. Constitué de Dieter Bohlen et Thommas Anders. Le duo compte plus de 120 millions de disques vendus à travers le monde4, notamment grâce à leurs tubes You're My Heart, You're My Soul (1984), Cheri, Cheri Lady (1985), Brother Louie (1986) et Atlantis Is Calling (S.O.S. for Love) (1986)."),
+
+    (3, "Suprême NTM", "Suprême NTM est un groupe de hip-hop français, originaire de Seine-Saint-Denis. Il est formé en 1988 par deux amis d'enfance, Kool Shen et JoeyStarr, qui sont rapidement rejoints par DJ Clyde puis DJ S. Le groupe se sépare en 1998, puis se reforme en 2008. Il fait cette année son retour au festival d'Orléans"),
+
+    
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
@@ -145,6 +156,40 @@ En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et R
     (9, "de Boisseguin", "Charles", "Vladimir Cauchemar", "Charles de Boisseguin, né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
 
     (10, "Sottier", "Liam", "4am-Liam", "Liam Sottier, est un jeune informaticien et artiste indépendant qui a publié en fin 2023 son EP Aujourd'hui."),
+
+    (11, "Bangalter", "Thomas", "Daft Punk", "Thomas Bangalter, né le 3 janvier 1975 à Paris, est un musicien, compositeur, producteur, réalisateur et scénariste français. Il est membre du duo Daft Punk, formé avec Guy-Manuel de Homem-Christo en 1993. Il est également le fondateur du label indépendant Roulé, créé en 1995, et du label indépendant Crydamoure, créé en 1997."),
+
+    (11, "de Homem-Christo", "Guy-Manuel", "Daft Punk", "Guy-Manuel de Homem-Christo, né le 8 février 1974 à Neuilly-sur-Seine, est un musicien, compositeur, producteur, réalisateur et scénariste français. Il est membre du duo Daft Punk, formé avec Thomas Bangalter en 1993. Il est également le fondateur du label indépendant Roulé, créé en 1995, et du label indépendant Crydamoure, créé en 1997."),
+
+    (12, "Rousset", "Gaëtan", "Louise attaque", "Gaëtan Roussel, né le 13 octobre 1972 à Rodez, est un auteur-compositeur-interprète, guitariste et producteur français. Il est le chanteur du groupe de rock Louise Attaque, qu'il a fondé en 1994 avec Arnaud Samuel et Robin Feix. Il est également le fondateur du label indépendant Tôt ou tard, créé en 1996."),
+
+    (12, "Samuel", "Arnaud", "Louise attaque", "Arnaud Samuel, né le 13 octobre 1972 à Rodez, est un auteur-compositeur-interprète, guitariste et producteur français. Il est le chanteur du groupe de rock Louise Attaque, qu'il a fondé en 1994 avec Gaëtan Roussel et Robin Feix. Il est également le fondateur du label indépendant Tôt ou tard, créé en 1996."),
+
+    (12, "Feix", "Robin", "Louise attaque", "Robin Feix, né le 13 octobre 1972 à Rodez, est un auteur-compositeur-interprète, guitariste et producteur français. Il est le chanteur du groupe de rock Louise Attaque, qu'il a fondé en 1994 avec Gaëtan Roussel et Arnaud Samuel. Il est également le fondateur du label indépendant Tôt ou tard, créé en 1996."),
+
+    (13, "Mazzalai", "Christian", "Phoenix", "Christian Mazzalai, né le 19 février 1976 à Versailles, est un musicien, compositeur, producteur et réalisateur français. Il est le guitariste du groupe de rock Phoenix, qu'il a fondé en 1999 avec Thomas Mars, Deck d'Arcy et Laurent Brancowitz. Il est également le fondateur du label indépendant Ghettoblaster, créé en 2000."),
+
+    (13, "Brancowitz", "Laurent", "Phoenix", "Laurent Brancowitz, né le 19 février 1976 à Versailles, est un musicien, compositeur, producteur et réalisateur français. Il est le guitariste du groupe de rock Phoenix, qu'il a fondé en 1999 avec Thomas Mars, Deck d'Arcy et Christian Mazzalai. Il est également le fondateur du label indépendant Ghettoblaster, créé en 2000."),
+
+    (13, "Mars", "Thomas", "Phoenix", "Thomas Mars, né le 19 février 1976 à Versailles, est un musicien, compositeur, producteur et réalisateur français. Il est le chanteur du groupe de rock Phoenix, qu'il a fondé en 1999 avec Deck d'Arcy, Christian Mazzalai et Laurent Brancowitz. Il est également le fondateur du label indépendant Ghettoblaster, créé en 2000."),
+
+    (14, "Duplantier", "Joseph", "Gojira", "Joseph Duplantier, né le 19 octobre 1976 à Bayonne, est un musicien, compositeur, producteur et réalisateur français. Il est le chanteur et guitariste du groupe de heavy metal Gojira, qu'il a fondé en 1996 avec son frère Mario Duplantier, Christian Andreu et Jean-Michel Labadie. Il est également le fondateur du label indépendant Silver Cord Studio, créé en 2014."),
+
+    (14, "Duplantier", "Mario", "Gojira", "Mario Duplantier, né le 19 octobre 1976 à Bayonne, est un musicien, compositeur, producteur et réalisateur français. Il est le batteur du groupe de heavy metal Gojira, qu'il a fondé en 1996 avec son frère Joseph Duplantier, Christian Andreu et Jean-Michel Labadie. Il est également le fondateur du label indépendant Silver Cord Studio, créé en 2014."),
+
+    (14, "Andreu", "Christian", "Gojira", "Christian Andreu, né le 19 octobre 1976 à Bayonne, est un musicien, compositeur, producteur et réalisateur français. Il est le guitariste du groupe de heavy metal Gojira, qu'il a fondé en 1996 avec Joseph Duplantier, Mario Duplantier et Jean-Michel Labadie. Il est également le fondateur du label indépendant Silver Cord Studio, créé en 2014."),
+
+    (14, "Labadie", "Jean-Michel", "Gojira", "Jean-Michel Labadie, né le 19 octobre 1976 à Bayonne, est un musicien, compositeur, producteur et réalisateur français. Il est le bassiste du groupe de heavy metal Gojira, qu'il a fondé en 1996 avec Joseph Duplantier, Mario Duplantier et Christian Andreu. Il est également le fondateur du label indépendant Silver Cord Studio, créé en 2014."),
+
+    (15, "Anders", "Thomas", "Modern Talking", "Thomas Anders, né le 1er mars 1963 à Münstermaifeld, est un chanteur, compositeur, producteur et réalisateur allemand. Il est le chanteur du groupe de new wave/synthpop Modern Talking, qu'il a fondé en 1984 avec Dieter Bohlen. Il est également le fondateur du label indépendant Hansa Records, créé en 1978."),
+
+    (15, "Bohlen", "Dieter", "Modern Talking", "Dieter Bohlen, né le 7 février 1954 à Berne, est un chanteur, compositeur, producteur et réalisateur allemand. Il est le chanteur du groupe de new wave/synthpop Modern Talking, qu'il a fondé en 1984 avec Thomas Anders. Il est également le fondateur du label indépendant Hansa Records, créé en 1978."),
+
+    (16, "Lopes", "Bruno", "Kool Shen", "Bruno Lopes, dit Kool Shen, né le 9 février 1966 à Saint-Denis, est un rappeur, producteur, entrepreneur et ancien joueur de poker français. Il est membre du groupe de hip-hop Suprême NTM, qu'il a fondé en 1989 avec JoeyStarr. Il est également le fondateur du label indépendant IV My People, créé en 1998."),
+
+    (16, "Morville", "Didier", "JoeyStarr", "Didier Morville, dit JoeyStarr, né le 27 octobre 1967 à Saint-Denis, est un rappeur, producteur, entrepreneur et acteur français. Il est membre du groupe de hip-hop Suprême NTM, qu'il a fondé en 1989 avec Kool Shen. Il est également le fondateur du label indépendant IV My People, créé en 1998."),
+
+
 
 
 
