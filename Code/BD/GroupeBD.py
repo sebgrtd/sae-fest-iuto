@@ -130,3 +130,13 @@ class GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return None
+        
+    def update_image(self, groupe, image):
+        try:
+            query = text("UPDATE GROUPE SET imgG = :imgG WHERE idG = :idG")
+            self.connexion.get_connexion().execute(query, {"imgG": image, "idG": groupe.get_idG()})
+            self.connexion.get_connexion().commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return False
