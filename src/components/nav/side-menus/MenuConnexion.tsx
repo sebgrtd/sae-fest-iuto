@@ -11,7 +11,8 @@ import Combo from '../../form/Combo';
 import SearchBar from '../../form/SearchBar';
 import SelectionneurArtiste from '../../Artiste/SelectionneurArtiste';
 import Artiste from '../../../utilitaires/Artiste';
-import TabArtiste from '../../TabArtiste';
+import TabArtiste from '../../TabArtiste/TabArtiste';
+import Groupe from '../../../utilitaires/Groupe';
 
 type Props = {
   isOpen: boolean;
@@ -57,19 +58,9 @@ export default function MenuConnexion(props: Props) {
   const[isWrong, setIsWrong] = useState(false);
   const[isMenuChanging, setIsMenuChanging] = useState(false);
 
-  const lesArtistes = [
-    new Artiste(1, 1, "CARTI", "Playboi", "Playboi Carti", "22h00", "22 Juillet", ["Rap"], "Scene 1"),
-    new Artiste(2, 2, "SCOTT", "Travis", "Travis Scott", "23h00", "22 Juillet", ["Rap"], "Scene 2"),
-    new Artiste(3, 3, "Koba", "LaD", "Koba LaD", "00h00", "22 Juillet", ["Rap"], "Scene 3"),
-    new Artiste(4, 4, "Zola", "", "Zola", "01h00", "22 Juillet", ["Rap"], "Scene 4"),
-    new Artiste(5, 5, "Ninho", "", "Ninho", "02h00", "22 Juillet", ["Rap"], "Scene 5"),
-    new Artiste(6, 6, "Damso", "", "Damso", "03h00", "22 Juillet", ["Rap"], "Scene 6"),
-    new Artiste(7, 7, "Nekfeu", "", "Nekfeu", "04h00", "22 Juillet", ["Rap"], "Scene 7"),
-    new Artiste(8, 8, "PNL", "", "PNL", "05h00", "22 Juillet", ["Rap"], "Scene 8"),
-    new Artiste(9, 9, "Lomepal", "", "Lomepal", "06h00", "22 Juillet", ["Rap"], "Scene 9"),
-  ]
-
-  const[artistes, setArtistes] = useState<Artiste[]>(lesArtistes);
+  const[artistes, setArtistes] = useState<Groupe[]>([]);
+  // j'ai envie d'avoir une sdd de type Map <String> : Groupe[]
+  const[tableauxArtistes, setTableauxArtistes] = useState<Map<string, Groupe[]>>(new Map());
 
   useEffect(() => {
     if (codeVerification.length === 6){
@@ -77,6 +68,46 @@ export default function MenuConnexion(props: Props) {
     }
   }, [codeVerification])
   
+  useEffect(() => {   
+    if (props.isOpen){
+      
+      if (currentMenu === "planification"){
+        axios.get("http://localhost:8080/getArtistesWithSave?idUser="+getUserCookie().idUser).then(((res) => {
+          if (res.status === 200){
+            const data = res.data;
+            const listeArtistes : Groupe[] = [];
+            data.forEach((artiste: Groupe) => {
+              listeArtistes.push(artiste);
+            })
+            setArtistes(listeArtistes);
+          }
+        })).catch((err:any) => {
+          console.log(err)
+        })
+      }
+
+      if (currentMenu === "affichage-planification"){
+        axios.get("http://localhost:8080/getMonPlanning?idUser="+getUserCookie().idUser).then((res) => {
+          if (res.status === 200){
+            const data = res.data;
+            for (let key in data){
+              console.log(key);
+              if (data.hasOwnProperty(key)){
+                console.log(key,data[key])
+                setTableauxArtistes((oldArtistes:any) => {
+                  return { ...oldArtistes, [key] :data[key]}
+                })
+              }
+            }
+          }
+        }).catch((err:any) => {
+          console.log(err)
+          alert("Une erreur est survenue, veuillez réessayer plus tard")
+        })
+      }
+    }
+    
+  }, [props.isOpen, currentMenu])
 
   const goTo = (menu : menuConnexionTabs, e? : React.MouseEvent<HTMLAnchorElement>) => {
     if(e) {e.preventDefault();}
@@ -531,12 +562,13 @@ export default function MenuConnexion(props: Props) {
                 </header>
 
                 <div className="liste-artistes">
-                  <SelectionneurArtiste nomArtiste="PLAYBOI CARTI" datePassage="22 JUILLET"/>
-                  <SelectionneurArtiste nomArtiste="TRAVIS SCOTT" datePassage="22 JUILLET"/>
-                  <SelectionneurArtiste nomArtiste="PLAYBOI CARTI" datePassage="22 JUILLET"/>
-                  <SelectionneurArtiste nomArtiste="TRAVIS SCOTT" datePassage="22 JUILLET"/>
-                  <SelectionneurArtiste nomArtiste="PLAYBOI CARTI" datePassage="22 JUILLET"/>
-                  <SelectionneurArtiste nomArtiste="TRAVIS SCOTT" datePassage="22 JUILLET"/>
+                  {
+                    artistes.map((artiste) => {
+                      return (
+                        <SelectionneurArtiste key={artiste.idG + " " + artiste.isSaved} idArtiste={artiste.idG} nomArtiste={artiste.nomG} datePassage={Groupe.getJourPassage(artiste.datePassage)} isSaved={artiste.isSaved}/>
+                      )
+                    })
+                  }
                 </div>
               </section>
             </main>
@@ -564,9 +596,19 @@ export default function MenuConnexion(props: Props) {
               
               <section className='liste-artistes liste-planification'>
 
-                <TabArtiste date="Samedi 21 juin" artistes={artistes} setArtistes={setArtistes}/>
-                <TabArtiste date="Samedi 21 juin" artistes={artistes} setArtistes={setArtistes}/>
-                <TabArtiste date="Samedi 21 juin" artistes={artistes} setArtistes={setArtistes}/>
+                {
+                  Object.entries(tableauxArtistes).map(([key, value]) => (
+                    value.length > 0 && 
+                    <TabArtiste key={key} date={key} artistes={value} setArtistes={setTableauxArtistes} />
+                  ))
+                }
+
+                {
+                  // si tous les tableaux sont vides on affiche que c'est vide
+                  Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0) && (
+                    <p className="empty">Votre planification est vide. <br></br> Ajoutez des artistes dans votre liste d'artistes à voir en allant dans le menu précédent (bouton "Retour").</p>
+                  )
+                }
 
               </section>
             </main>
@@ -575,7 +617,11 @@ export default function MenuConnexion(props: Props) {
                 <a href="" onClick={(e) => goTo("planification",e)}>Retour</a>
 
                 <a href="" onClick={(e) => goTo("affichage-planification",e)} className="btn-link">
-                  <Button text="Voir ma planification" />
+                  <Button text="Télécharger ma planification" isDisabled={
+                    // si tous les tableaux sont vides on affiche que c'est vide
+                    Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0)
+                  
+                  } />
                 </a>
               </div>
               

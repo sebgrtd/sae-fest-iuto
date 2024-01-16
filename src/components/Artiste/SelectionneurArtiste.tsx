@@ -1,14 +1,18 @@
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
+import { getUserCookie } from '../../cookies/CookiesLib';
 
 type Props = {
+    idArtiste: number;
     nomArtiste: string;
     datePassage: string;
+    isSaved: boolean;
 }
 
 export default function SelectionneurArtiste(props:Props) {
     const[isHovering, setIsHovering] = useState(false);
-    const[isSaved, setIsSaved] = useState(false);
+    const[isSaved, setIsSaved] = useState(props.isSaved);
     const[isLoading, setIsLoading] = useState(false);
     const[hasLoaded, setHasLoaded] = useState(false);
     const[hasFinished, setHasFinished] = useState(false);
@@ -26,38 +30,79 @@ export default function SelectionneurArtiste(props:Props) {
         if (isLoading ||hasLoaded || hasFinished || noTransition){
             return;
         }
-        
+
         setIsLoading(true);
 
         let newSavedState = false;
 
-        setTimeout(() => {
-            setHasLoaded(true);
-            setTimeout(() => {
-                setHasLoaded(false);
-                setIsLoading(false);
-                setIsSaved((oldSavedProperty: boolean) => {
-                    newSavedState = !oldSavedProperty;
-                    return !isSaved});
-                setHasFinished(true);
-                setIsHovering(false);
+        axios.post("http://localhost:8080/saveArtiste", {
+            idArtiste: props.idArtiste,
+            idUser: getUserCookie().idUser
+        }).then((res) => {
+            // si la requete était bonne
+            if (res.status === 200) {
+                setHasLoaded(true);
                 setTimeout(() => {
-                    setFirstRectBackgroundColor(newSavedState ? "orange" : "yellow");
-                    setSecondRectBackgroundColor(newSavedState ? "yellow" : "orange");
-                    setNoTransition(true);
-                    setHasFinished(false);
-                    setFirstTextColor(newSavedState ? "light-text" : "orange-text");
-                    setSecondTextColor(newSavedState ? "orange-text" : "light-text");
-                    setFirstTextValue(newSavedState ? "RETIRER L’ARTISTE" : "VOIR CET ARTISTE");
-                    setSecondTextValue(newSavedState ? "SUPPRESSION..." : "AJOUT...");
-                    setThirdTextValue(newSavedState ? "ARTISTE SUPPRIMÉ" : "ARTISTE AJOUTÉ");
-
+                    setHasLoaded(false);
+                    setIsLoading(false);
+                    setIsSaved((oldSavedProperty: boolean) => {
+                        newSavedState = !oldSavedProperty;
+                        return !isSaved});
+                    setHasFinished(true);
+                    setIsHovering(false);
                     setTimeout(() => {
-                        setNoTransition(false)
-                    }, 50);
-                }, 400)
-            }, 2500);
-        }, 2500);
+                        setFirstRectBackgroundColor(newSavedState ? "orange" : "yellow");
+                        setSecondRectBackgroundColor(newSavedState ? "yellow" : "orange");
+                        setNoTransition(true);
+                        setHasFinished(false);
+                        setFirstTextColor(newSavedState ? "light-text" : "orange-text");
+                        setSecondTextColor(newSavedState ? "orange-text" : "light-text");
+                        setFirstTextValue(newSavedState ? "RETIRER L’ARTISTE" : "VOIR CET ARTISTE");
+                        setSecondTextValue(newSavedState ? "SUPPRESSION..." : "AJOUT...");
+                        setThirdTextValue(newSavedState ? "ARTISTE SUPPRIMÉ" : "ARTISTE AJOUTÉ");
+    
+                        setTimeout(() => {
+                            setNoTransition(false)
+                        }, 50);
+                    }, 400)
+                }, 1000);
+            }
+            else{
+                alert("Erreur lors de la sauvegarde de l'artiste");
+            }
+        }).catch((err) => {
+            // si la requete était mauvaise
+            setIsLoading(false);
+            alert("Erreur lors de la sauvegarde de l'artiste");
+        })
+
+        // setTimeout(() => {
+        //     setHasLoaded(true);
+        //     setTimeout(() => {
+        //         setHasLoaded(false);
+        //         setIsLoading(false);
+        //         setIsSaved((oldSavedProperty: boolean) => {
+        //             newSavedState = !oldSavedProperty;
+        //             return !isSaved});
+        //         setHasFinished(true);
+        //         setIsHovering(false);
+        //         setTimeout(() => {
+        //             setFirstRectBackgroundColor(newSavedState ? "orange" : "yellow");
+        //             setSecondRectBackgroundColor(newSavedState ? "yellow" : "orange");
+        //             setNoTransition(true);
+        //             setHasFinished(false);
+        //             setFirstTextColor(newSavedState ? "light-text" : "orange-text");
+        //             setSecondTextColor(newSavedState ? "orange-text" : "light-text");
+        //             setFirstTextValue(newSavedState ? "RETIRER L’ARTISTE" : "VOIR CET ARTISTE");
+        //             setSecondTextValue(newSavedState ? "SUPPRESSION..." : "AJOUT...");
+        //             setThirdTextValue(newSavedState ? "ARTISTE SUPPRIMÉ" : "ARTISTE AJOUTÉ");
+
+        //             setTimeout(() => {
+        //                 setNoTransition(false)
+        //             }, 50);
+        //         }, 400)
+        //     }, 2500);
+        // }, 2500);
     }
 
     const containerVariants = {
@@ -232,11 +277,11 @@ export default function SelectionneurArtiste(props:Props) {
     return (
     <button className='selectionneur-artiste'>
         
-        <img src={"/images/" + (props.nomArtiste.startsWith("P") ? "test-playboi-carti.png" : "test-travis.png")} alt="image de l'artiste"/>
+        <img src={"http://localhost:8080/getImageArtiste/"+props.idArtiste} alt="image de l'artiste"/>
         <div className="image-mask"></div>
 
         <div className="content">
-            <h3>{props.nomArtiste}</h3>
+            <h3>{props.nomArtiste.toUpperCase()}</h3>
             <h4>{props.datePassage}</h4>
         </div>
 
