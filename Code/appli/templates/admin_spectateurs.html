@@ -51,6 +51,35 @@
         </div>
     </div>
 
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/supprimer_spectateur" method="POST">
+                <input type="hidden" name="idS" id="idS_supprimer">
+                <p>Êtes-vous sûr de vouloir supprimer ce spectateur ?</p>
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-button">x</span>
+            <form action="/ajouter_spectateur" method="POST">
+                <label for="pseudo_user">Pseudo User :</label>
+                <select name="pseudo_user" id="pseudo_user_ajouter">
+                    {% for user in liste_users %}
+                        <option value="{{ user.get_idUser() }}">{{ user.get_pseudoUser() }}</option>
+                    {% endfor %}
+                <label for="nomS">Nom :</label>
+                <input type="text" name="nomS" id="nomS_ajouter">
+                <label for="prenomS">Prénom :</label>
+                <input type="text" name="prenomS" id="prenomS_ajouter">
+                <button id="ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var modalModifier = document.getElementById("modal-modifier");
@@ -73,6 +102,23 @@
                     modalModifier.style.display = "block";
                 };
             });
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("idS_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            }
         });
             
     </script>
