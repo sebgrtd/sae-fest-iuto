@@ -18,6 +18,8 @@ export default function (props: Props) {
   const targetRef = useRef(null);
 
   useEffect(() => {
+
+    window.scrollTo(0,0)
     
     const fetchArtistes = async () => {
       const res = await axios.get('http://localhost:8080/getNomsArtistes')

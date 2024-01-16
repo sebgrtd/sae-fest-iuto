@@ -1056,9 +1056,7 @@ input[type="number"]::-ms-reveal {
 }
 
 .combo .combo-menu h4.active:hover{
-  background-color: transparent;
-  color:var(--color-light-secondary);
-
+  cursor: default;
 }
 
 .combo .combo-menu h4.active{
@@ -1929,11 +1927,11 @@ footer .bottom-content h5{
   border-collapse: collapse;
 }
 
-.tab-artiste .heading{
+.tab-artiste thead tr{
   background-color: var(--color-dark);
 }
 
-.tab-artiste .heading th{
+.tab-artiste thead tr th{
   color:var(--color-light);
   width: 4rem;
 }
@@ -1942,38 +1940,50 @@ footer .bottom-content h5{
   color: var(--color-dark);
 }
 
-.tab-artiste .heading th, .tab-artiste td{
+.tab-artiste thead tr th, .tab-artiste td{
   text-align: start;
   padding: 1rem 2rem;
 }
 
-.tab-artiste .heading th:first-of-type{
+.tab-artiste thead tr th:first-of-type{
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
 }
 
-.tab-artiste .heading th:last-of-type{
+.tab-artiste thead tr th:last-of-type{
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   padding-right: 0;
+  max-width: 3rem;
   position: relative;
   cursor: pointer;
 }
 
 .tab-artiste td:last-of-type{
-  position: relative;
   color: var(--color-error);
+  padding-right: 0;
+  max-width: 3rem;
+  height: 3rem;
+  position: relative;
   cursor: pointer;
 }
 
 .tab-artiste svg{
-  width: 1.5rem;
-  position: absolute;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  max-width: 1.5rem;
+  max-height: 1.5rem;
   right: 1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
+.tab-artiste .spinner{
+  position: absolute;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  max-width: 1.5rem;
+  max-height: 1.5rem;
+  left: 50%;
+}
 
 /* fais des media queries qui ne changent que le fontsize du body */
 
