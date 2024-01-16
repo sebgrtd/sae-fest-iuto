@@ -84,7 +84,13 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
 
     (3, "Suprême NTM", "Suprême NTM est un groupe de hip-hop français, originaire de Seine-Saint-Denis. Il est formé en 1988 par deux amis d'enfance, Kool Shen et JoeyStarr, qui sont rapidement rejoints par DJ Clyde puis DJ S. Le groupe se sépare en 1998, puis se reforme en 2008. Il fait cette année son retour au festival d'Orléans"),
 
-    
+    (3, "Red Hot Chili Peppers", "Red Hot Chili Peppers est un groupe de rock américain, originaire de Los Angeles, en Californie. Il est formé en 1983 par Anthony Kiedis et Michael Balzary (surnommé « Flea », basse), auxquels se joignent Hillel Slovak et Jack Irons (guitares). Le groupe a connu de nombreux changements de musiciens au cours de son existence avec Kiedis et Flea comme seuls membres stables. Il est actuellement composé de Flea, Anthony Kiedis, Chad Smith et John Frusciante."),
+
+    (3, "Lana Del Rey", "Elizabeth Woolridge Grant, dite Lana Del Rey, né le 21 juin 1985 à New York, est une auteure-compositrice-interprète américaine."),
+
+    (3, "Coldplay", "Coldplay est un groupe pop rock britannique originaire de Londres en Angleterre, formé en 1996."),
+
+    (3, "ABBA", "ABBA est un groupe suédois de pop, originaire de Stockholm. Formé le 1er novembre 1971, le groupe est originellement composé d'Agnetha Fältskog, Benny Andersson, Björn Ulvaeus et Anni-Frid « Frida » Lyngstad. Lors de leur formation, ils sont deux couples mariés : Agnetha et Björn, Frida et Benny. Le nom du groupe est à la fois un acronyme et un palindrome, composé des initiales des prénoms des membres. Ce n'est qu'à partir de 1976 que l'ambigramme — AᗺBA, avec un B inversé — est utilisé comme logo.");
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
@@ -189,9 +195,29 @@ En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et R
 
     (16, "Morville", "Didier", "JoeyStarr", "Didier Morville, dit JoeyStarr, né le 27 octobre 1967 à Saint-Denis, est un rappeur, producteur, entrepreneur et acteur français. Il est membre du groupe de hip-hop Suprême NTM, qu'il a fondé en 1989 avec Kool Shen. Il est également le fondateur du label indépendant IV My People, créé en 1998."),
 
+    (17, "Kiedis", "Anthony", "Anthony Kiedis est un chanteur, acteur et producteur américain né le 1er novembre 1962, à Grand Rapids, dans le Michigan. Il est chanteur principal du groupe de rock Red Hot Chili Peppers, qu'il a fondé en 1983 avec le bassiste Michael Balzary dit « Flea »."),
 
+    (17, "Balzary", "Michael", "Flea", "Michael Peter Balzary, dit Flea (« puce » en anglais), est un bassiste, pianiste, trompettiste et acteur australo-américain, né le 16 octobre 1962 à Melbourne, en Australie. Il est l'un des membres fondateurs du groupe de rock Red Hot Chili Peppers, avec le chanteur Anthony Kiedis. Son surnom vient à la fois de sa petite taille et de sa façon assez sautillante d'occuper l'espace d'une scène."),
 
+    (17, "Gaylord", "Chadwick", "Chad Smith", "Chadwick Gaylord Smith, dit Chad Smith, né le 25 octobre 1961 à Saint Paul dans le Minnesota, est un batteur américain, membre des Red Hot Chili Peppers depuis 1988."),
 
+    (17, "Frusciante", "John", "John Fruisciante", "John Anthony Frusciante, né le 5 mars 1970 à Astoria (New York), est un auteur-compositeur-interprète, multi-instrumentiste, et producteur américain. Depuis 2019, il est le guitariste du groupe de rock américain Red Hot Chili Peppers, poste qu'il occupe déjà entre 1988 et 1992 puis entre 1998 et 2009. Entamant une carrière solo en 1994, il enregistre quinze albums et onze EP, certains étant publiés sous son pseudonyme Trickfinger."),
+
+    (18, "Grant", "Elizabeth", "Lana Del Rey", "Elizabeth Woolridge Grant, dite Lana Del Rey, né le 21 juin 1985 à New York, est une auteure-compositrice-interprète américaine."),
+
+    (19, "Martin", "Chris", "Coldpay", "Chris Martin est un auteur-compositeur-interprète et producteur anglais, né le 2 mars 1977 à Exeter dans le Devon. Il est leader du groupe Coldplay, qu'il forme à Londres, en 1996, avec Jon Buckland (guitare), Guy Berryman (basse) et Will Champion (batterie)")
+
+    (19, "Buckland", "Jonathan", "Coldplay", "Jonathan Mark Buckland, né le 11 septembre 1977, dans le quartier londonien d'Islington est un guitariste anglais, membre du groupe Coldplay."),
+
+    (19, "Berryman", "Guy", "Coldplay", "Guy Berryman est né à Kirkcaldy dans la région du Fife en Écosse d'où il déménage à 12 ans pour aller s'installer dans le Kent, en Angleterre."),
+
+    (20, "Fältskog", "Agnetha", "ABBA", "Agnetha Åse Fältskog, dite Agnetha Fältskog, née le 5 avril 1950 à Jönköping, est une chanteuse, autrice-compositrice-interprète, pianiste et productrice suédoise, et membre du groupe pop suédois ABBA."),
+
+    (20, "Anderson", "Benny", "ABBA", "Benny Bror Göran Andersson, né le 16 décembre 1946 à Stockholm, est un musicien et compositeur suédois. Il est connu pour être un membre du groupe ABBA."),
+
+    (20, "Ulvaues", "Björn", "ABBA", "Björn Kristian Ulvaeus, parfois orthographié Ulvæus, né le 25 avril 1945 à Göteborg, est un guitariste, chanteur, compositeur de chansons, parolier et producteur suédois. Président de la CISAC depuis 2020, il est connu pour avoir été un membre des groupes suédois Hootenanny Singers et surtout ABBA."),
+
+    (20, "Lyngstad", "Anni-Frid", "ABBA", "Anni-Frid Lyngstad, surnommée « Frida », princesse Reuss et comtesse de Plauen par son troisième mariage, née le 15 novembre 1945 à Bjørkåsen près de Narvik en Norvège, est une chanteuse suédoise. Elle est membre du groupe pop suédois ABBA.");
 
 -- Insérer des données dans la table INSTRUMENT
 INSERT INTO INSTRUMENT (idMG, nomI) VALUES
