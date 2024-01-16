@@ -13,6 +13,7 @@ type Props = {
     oldY?: number;
     oldGroupes?: Groupe[];
     description?: string;
+    estArtiste?: boolean;
 }
 
 type Groupe = {
@@ -32,16 +33,18 @@ export default function CarteProgrammation(props: Props) {
   const[zIndexCard, setZIndexCard] = useState(props.comesFromPageArtist ? 99 : 1)
 
   useEffect(() => {
+    console.log('oldX:', props.oldX);
+    console.log('oldY:', props.oldY);
     
     setTimeout(() => {
-        console.log(props.date)
-        console.log(props.heure)
-
-        setZIndexCard(1)
-        setDelay(0)
+      console.log(props.date)
+      console.log(props.heure)
+  
+      setZIndexCard(1)
+      setDelay(0)
     }, 600);
-    
   }, [])
+
   
 
   const titleVariants = {
@@ -207,12 +210,14 @@ export default function CarteProgrammation(props: Props) {
             oldX: refCarte.current?.offsetLeft,
             oldY: refCarte.current?.offsetTop,
             oldGroupes: props.oldGroupes,
-            description: props.description
+            description: props.description,
+            estArtiste: props.estArtiste
         }}
         onClick={() => {props.setIsNavTransparent(true); setIsSwitching(true)}}
         >
             <motion.img 
-            src={"http://localhost:8080/getImageArtiste/" + props.id} 
+            // src={"http://localhost:8080/getImageArtiste/" + props.id} 
+            src={"images/test-travis.png"} 
             alt="image de l'artiste" 
             variants={imageVariants}
             initial="default"

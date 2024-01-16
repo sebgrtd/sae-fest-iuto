@@ -1065,6 +1065,8 @@ input[type="number"]::-ms-reveal {
   cursor: default;
 }
 
+
+
 #Programmation .liste-artistes{
   display: grid;
   gap:1.875rem;
