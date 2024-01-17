@@ -100,23 +100,25 @@ export default function MenuConnexion(props: Props) {
   useEffect(() => {
     console.log("filtreDate:", filtreDate);
     console.log("filtreGenre:", filtreGenre);
-    if (filtreDate !== "Tout" || filtreGenre !== "Tout"){
-      const requete = "http://localhost:8080/getArtistesWithSave?idUser=" + getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreDate !== "Tout" ? "&" : "?") + (filtreGenre !== "Tout" ? "genre="+filtreGenre : "");
-      console.log(requete);
-      axios.get(requete).then((res) => {
-        if (res.status === 200){
-          const data = res.data as Groupe[];
-          setArtistes(data);
-        }
-        else{
-          console.log("erreur lors de la récupération des artistes")
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
-    else{
-      handleResetArtists();
+    if (currentMenu === "planification"){
+      if (filtreDate !== "Tout" || filtreGenre !== "Tout"){
+        const requete = "http://localhost:8080/getArtistesWithSave?idUser=" + getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
+        console.log(requete);
+        axios.get(requete).then((res) => {
+          if (res.status === 200){
+            const data = res.data as Groupe[];
+            setArtistes(data);
+          }
+          else{
+            console.log("erreur lors de la récupération des artistes")
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+      else{
+        handleResetArtists();
+      }
     }
   }, [filtreDate, filtreGenre])
 
@@ -664,7 +666,7 @@ export default function MenuConnexion(props: Props) {
                 <a href="" onClick={(e) => goTo("planification",e)}>Retour</a>
 
                 <a href="" onClick={(e) => goTo("affichage-planification",e)} className="btn-link">
-                  <Button text="Télécharger ma planification" isDisabled={
+                  <Button text="Télécharger" isDisabled={
                     // si tous les tableaux sont vides on affiche que c'est vide
                     Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0)
                   
