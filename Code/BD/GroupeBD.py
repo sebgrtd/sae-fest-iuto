@@ -1,5 +1,6 @@
 import json
 from BD import Groupe
+from BD import Reseaux
 from BD import Membre_Groupe
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
@@ -8,6 +9,54 @@ from sqlalchemy.exc import SQLAlchemyError
 class GroupeBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
+        
+    def get_infos_artiste_json(self, idG):
+        try:
+            # on veut la description du groupe (descriptionG) dans Groupe
+            # et tous les liens des réseaux (reseau) dans lien_reseaux_sociaux
+            
+            query = text("SELECT descriptionG, reseau, nomG, descriptionG, heureDebutE, dateDebutE FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN evenement WHERE idG = :idG") 
+            result = self.connexion.get_connexion().execute(query, {"idG": idG})
+            
+            print(idG)
+            
+            descriptionG = ""
+            nomG = ""
+            heurePassage = ""
+            datePassage = ""
+            reseaux = Reseaux()
+            
+            for description, reseau, nomG, descriptionG, heurePassageG, datePassageG in result:
+                descriptionG = description
+                nomG = nomG
+                heurePassage = heurePassageG
+                datePassage = datePassageG
+                reseaux.ajoute_reseau(reseau)
+            
+            print(str(heurePassage))
+            print(str(datePassage))
+            return Groupe(idG, None, nomG, descriptionG, datePassage, heurePassage, None, None, reseaux).to_dict()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+    
+    def get_infos_supplementaires_artiste_json(self, idG):
+        try:
+            # on veut la description du groupe (descriptionG) dans Groupe
+            # et tous les liens des réseaux (reseau) dans lien_reseaux_sociaux
+            
+            query = text("SELECT descriptionG, reseau FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX WHERE idG = :idG") 
+            result = self.connexion.get_connexion().execute(query, {"idG": idG})
+            
+            descriptionG = ""
+            reseaux = Reseaux()
+            
+            for description, reseau in result:
+                descriptionG = description
+                reseaux.ajoute_reseau(reseau)
+            
+            return Groupe(idG, None, None, descriptionG, None, None, None, None, reseaux).to_dict()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
         
     def get_mon_planning_json(self, idUser):
         try:

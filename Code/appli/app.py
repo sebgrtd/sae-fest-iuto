@@ -951,3 +951,29 @@ def getMonPlanning():
             return jsonify({"error": "Aucun evenement trouve"})
     else:
         return res
+    
+@app.route('/getInfosSupplementairesArtiste')
+def getInfosSupplementairesArtiste():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    idGroupe = request.args.get("idGroupe", "")
+    res = groupebd.get_infos_supplementaires_artiste_json(idGroupe)
+    print(res)
+    
+    if res is None:
+            return jsonify({"error": "Aucun evenement trouve"})
+    else:
+        return res
+    
+@app.route("/getInfosArtiste")
+def getInfosArtiste():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    idGroupe = request.args.get("idGroupe", "")
+    res = groupebd.get_infos_artiste_json(idGroupe)
+    print(res)
+    
+    if res is None:
+            return jsonify({"error": "Aucun evenement trouve"})
+    else:
+        return res

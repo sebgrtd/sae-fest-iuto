@@ -311,22 +311,88 @@ class Programmer:
             "dateDepart": self.__dateDepart.isoformat(),
             "heureDepart": self.__heureDepart.strftime("%H:%M:%S")
         }
+        
+class Reseaux:
+    """
+        même chose que:
+        export class Reseaux{
+    soundcloud: string;
+    spotify: string;
+    instagram: string;
+    twitter: string;
+    youtube: string;
+
+    constructor(soundcloud: string, spotify: string, instagram: string, twitter: string, youtube: string) {
+        this.soundcloud = soundcloud;
+        this.spotify = spotify;
+        this.instagram = instagram;
+        this.twitter = twitter;
+        this.youtube = youtube;
+    }
+}
+    """
+    def __init__(self, soundcloud: str = "", spotify: str = "", instagram: str = "", twitter: str = "", youtube: str = ""):
+        self.__soundcloud = soundcloud
+        self.__spotify = spotify
+        self.__instagram = instagram
+        self.__twitter = twitter
+        self.__youtube = youtube
+        
+    def ajoute_reseau(self, lien:str):
+        if "soundcloud" in lien:
+            self.__soundcloud = lien
+        elif "spotify" in lien:
+            self.__spotify = lien
+        elif "instagram" in lien:
+            self.__instagram = lien
+        elif "twitter" in lien:
+            self.__twitter = lien
+        elif "youtube" in lien:
+            self.__youtube = lien
+    
+    def set_soundcloud(self, soundcloud):
+        self.__soundcloud = soundcloud
+        
+    def set_spotify(self, spotify):
+        self.__spotify = spotify
+        
+    def set_instagram(self, instagram):
+        self.__instagram = instagram
+
+    def set_twitter(self, twitter):
+        self.__twitter = twitter
+        
+    def set_youtube(self, youtube):
+        self.__youtube = youtube
+    
+    def to_dict(self):
+        return {
+            "soundcloud": self.__soundcloud,
+            "spotify": self.__spotify,
+            "instagram": self.__instagram,
+            "twitter": self.__twitter,
+            "youtube": self.__youtube
+        }
     
 
 class Groupe:
-    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False, heureFinPassage: str = None):
+    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False, heureFinPassage: str = None, Reseaux: Reseaux = None):
         self.__idG = idG
         self.__idH = idH
         self.__nomG = nomG
         self.__descriptionG = descriptionG
-        self.__heurePassage = self.timedelta_to_time(heurePassage) if isinstance(heurePassage, timedelta) else datetime.strptime(heurePassage, '%H:%M').time()
-        self.__datePassage = datePassage if isinstance(datePassage, date) else datetime.strptime(datePassage, '%Y-%m-%d').date()
+        self.__heurePassage = heurePassage if heurePassage == None else self.timedelta_to_time(heurePassage) if isinstance(heurePassage, timedelta) else datetime.strptime(heurePassage, '%H:%M').time()
+        self.__datePassage = datePassage if datePassage == None else datePassage if isinstance(datePassage, date) else datetime.strptime(datePassage, '%Y-%m-%d').date()
         self.__isSaved = isSaved
         self.__heureFinPassage = heureFinPassage if heureFinPassage == None else  self.timedelta_to_time(heureFinPassage) if isinstance(heureFinPassage, timedelta) else datetime.strptime(heureFinPassage, '%H:%M').time()
+        self.__Reseaux = Reseaux
         
     @staticmethod
     def timedelta_to_time(td):
         return (datetime.min + td).time()
+    
+    def set_Reseaux(self, Reseaux):
+        self.__Reseaux = Reseaux
         
     def get_idG(self):
         return self.__idG
@@ -355,10 +421,11 @@ class Groupe:
             "idH": self.__idH,
             "nomG": self.__nomG,
             "descriptionG": self.__descriptionG,
-            "datePassage": self.__datePassage.isoformat(),
-            "heurePassage": self.__heurePassage.strftime("%H:%M:%S"),
+            "datePassage": self.__datePassage.isoformat() if self.__datePassage != None else "",
+            "heurePassage": self.__heurePassage.strftime("%H:%M:%S") if self.__heurePassage != None else "",
             "isSaved": self.__isSaved,
-            "heureFinPassage": self.__heureFinPassage.strftime("%H:%M:%S") if self.__heureFinPassage != None else ""
+            "heureFinPassage": self.__heureFinPassage.strftime("%H:%M:%S") if self.__heureFinPassage != None else "",
+            "reseaux": self.__Reseaux.to_dict() if self.__Reseaux != None else None
         }
         
     def set_nomG(self, nomG):
@@ -541,56 +608,6 @@ class Lien_Video:
             "idLV": self.__idLV,
             "idG": self.__idG,
             "video": self.__video
-        }
-    
-class Lien_Reseaux_Sociaux:
-    def __init__(self, idLRS: int, idG: int, reseau: str):
-        self.__idLRS = idLRS
-        self.__idG = idG
-        self.__reseau = reseau
-        
-    def get_idLRS(self):
-        return self.__idLRS
-    
-    def get_idGroupe(self):
-        return self.__idG
-    
-    def get_reseau(self):
-        return self.__reseau
-    
-    def to_dict(self):
-        return {
-            "idLRS": self.__idLRS,
-            "idG": self.__idG,
-            "reseau": self.__reseau
-        }
-    
-    
-class Lien_Reseaux_Sociaux_Membre:
-    def init(self, idLRSM: int, idMG: int, reseau: str, URL: str):
-        self.__idLRSM = idLRSM
-        self.__idMG = idMG
-        self.__reseau = reseau
-        self.__URL = URL
-        
-    def get_idLRSM(self):
-        return self.__idLRSM
-    
-    def get_idMG(self):
-        return self.__idMG
-    
-    def get_reseau(self):
-        return self.__reseau
-    
-    def get_URL(self):
-        return self.__URL
-    
-    def to_dict(self):
-        return {
-            "idLRSM": self.__idLRSM,
-            "idMG": self.__idMG,
-            "reseau": self.__reseau,
-            "URL": self.__URL
         }
 
 class Evenement:
