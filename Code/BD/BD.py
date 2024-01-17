@@ -376,7 +376,7 @@ class Reseaux:
     
 
 class Groupe:
-    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False, heureFinPassage: str = None, Reseaux: Reseaux = None, genresMusicaux: list = None, membresGroupe : list = None, evenementsAnnexes: list = None):
+    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False, heureFinPassage: str = None, Reseaux: Reseaux = None, genresMusicaux: list = None, membresGroupe : list = None, evenementsAnnexes: list = None, nomScene: str = None):
         self.__idG = idG
         self.__idH = idH
         self.__nomG = nomG
@@ -389,6 +389,7 @@ class Groupe:
         self.__genresMusicaux = genresMusicaux
         self.__membresGroupe = membresGroupe
         self.__evenementsAnnexes = evenementsAnnexes
+        self.__nomScene = nomScene
         
     @staticmethod
     def timedelta_to_time(td):
@@ -434,7 +435,8 @@ class Groupe:
             #membresGroupes est une liste de string
             "membresGroupe": self.__membresGroupe,
             #evenementsAnnexes est une liste de Evenement
-            "evenementsAnnexes": [evenement.to_dict() for evenement in self.__evenementsAnnexes] if self.__evenementsAnnexes != None else None
+            "evenementsAnnexes": [evenement.to_dict() for evenement in self.__evenementsAnnexes] if self.__evenementsAnnexes != None else None,
+            "scene": self.__nomScene
         }
         
     def set_datePassage(self, datePassage):

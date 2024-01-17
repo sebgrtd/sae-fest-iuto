@@ -191,9 +191,22 @@ class GroupeBD:
                 # affiche le résultat de la requête
                 print(result.keys())
                 for idE, idG, nomG, heureDebutE, heureFinE, dateDebutE, descriptionG, in result:
-                    res[date].append(Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, True, heureFinE).to_dict())
+                    self.connexion = ConnexionBD()
+                    genres_musicaux = self.get_styles_groupe(idG)
+                    nomScene = self.get_nom_scene(idE)
+                    res[date].append(Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, True, heureFinE, None, genres_musicaux, None, None, nomScene).to_dict())
             
             return res
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
+    def get_nom_scene(self, idE):
+        #select nomL from evenement natural join lieu WHERE....;
+        try:
+            query = text("SELECT nomL FROM evenement natural join lieu WHERE idE = :idE")
+            result = self.connexion.get_connexion().execute(query, {"idE": idE})
+            for nomL in result:
+                return nomL[0]
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
         
