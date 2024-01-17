@@ -433,3 +433,15 @@ class GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             return False
+        
+    def get_all_groupes_bd_normal(self):
+        try:
+            query = text("SELECT idG, idH, nomG, descriptionG FROM GROUPE")
+            groupes = []
+            result = self.connexion.get_connexion().execute(query)
+            for idG, idH, nomG, descriptionG in result:
+                groupes.append(Groupe(idG, idH, nomG, descriptionG))
+            return groupes
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return []
