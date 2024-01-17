@@ -59,11 +59,14 @@ def getNomsArtistes():
 
 @app.route('/getArtistes')
 def getArtistes():
-    print("test")
     connexion_bd = ConnexionBD()
-    print("test1")
     groupebd = GroupeBD(connexion_bd)
-    res = groupebd.get_groupes_json()
+    # on regarde si l'on a passé en paramètre date et genre
+    date = request.args.get("date", None)
+    print(date)
+    genre = request.args.get("genre", None)
+    print(genre)
+    res = groupebd.get_all_groupes_concert_json(date,genre)
     if res is None:
             return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -930,9 +933,11 @@ def getArtistesWithSave():
     connexion_bd = ConnexionBD()
     groupebd = GroupeBD(connexion_bd)
     idUser = request.args.get("idUser", "")
+    date = request.args.get("date", None)
+    genre = request.args.get("genre", None)
     # je dois passer les éléments dans ma requete de la sorte suivante:
     # http:// ... /getArtistesWithSave?idUser=1
-    res = groupebd.get_groupes_with_save_json(idUser)
+    res = groupebd.get_groupes_with_save_json(idUser, date, genre)
     connexion_bd.fermer_connexion()
     if res is None:
             return jsonify({"error": "Aucun artiste trouve"})
@@ -990,3 +995,26 @@ def getNbReservations():
     else:
         # res est un int il faut le renvoyer au client sous la forme d'un string
         return str(res)
+    
+@app.route("/searchUsers", methods=["GET"])
+def searchUsers():
+    recherche = request.args.get("recherche", "")
+    date = request.args.get("date", None)
+    genre = request.args.get("genre", None)
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    groupes = groupebd.search_groupes_json(recherche, date,genre) if recherche else []
+    connexion_bd.fermer_connexion()
+    return groupes
+
+@app.route("/searchUsersWithSave", methods=["GET"])
+def searchUsersWithSave():
+    recherche = request.args.get("recherche", "")
+    date = request.args.get("date", None)
+    genre = request.args.get("genre", None)
+    idUser = request.args.get("idUser", "")
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    groupes = groupebd.search_groupes_with_save_json(recherche, idUser, date,genre) if recherche else []
+    connexion_bd.fermer_connexion()
+    return groupes

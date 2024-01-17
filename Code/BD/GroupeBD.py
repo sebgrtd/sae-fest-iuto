@@ -1,7 +1,10 @@
 import json
 from BD import Groupe
 from BD import Reseaux
+from BD import Evenement
 from BD import Membre_Groupe
+# fais l'import pour datetime
+from datetime import datetime
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
 from sqlalchemy.exc import SQLAlchemyError
@@ -9,13 +12,81 @@ from sqlalchemy.exc import SQLAlchemyError
 class GroupeBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
+     
+    def search_groupes_with_save_json(self, groupe_recherche, idUser, date = None, genre = None):
+        try:
+            groupe_recherche = f"%{groupe_recherche}%"
+            if date:
+                # time data '21 Juillet' does not match format '%d %B'
+                moisVersChiffre = {"Janvier": "01", "Février": "02", "Mars": "03", "Avril": "04", "Mai": "05", "Juin": "06", "Juillet": "07", "Août": "08", "Septembre": "09", "Octobre": "10", "Novembre": "11", "Décembre": "12"}
+                date = date.split(" ")
+                # ajoutes l'année (2024)
+                date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
+                date = datetime.strptime(date, '%d %m %Y').date()
+            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH, isSaved(:idUser, groupe.idg) as isSaved from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert) AND nomG LIKE :search" + (" AND dateDebutE = :date" if date else "") + (" AND groupe.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            query = text(requete)
+            groupes = []
+            result = []
+            if date and genre:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche, "date": date, "genre": genre, "idUser": idUser})
+            elif date:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche, "date": date, "idUser": idUser})
+            elif genre:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche, "genre": genre, "idUser": idUser})
+            else:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche, "idUser": idUser})
+            for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH, isSaved in result:
+                groupe = Groupe(idG, idH, nomG, descriptionG, dateDebutE, heureDebutE, isSaved == 1)
+                groupes.append(groupe)
+            return json.dumps([groupe.to_dict() for groupe in groupes])
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return []
+        
+        
+    def search_groupes_json(self, groupe_recherche, date = None, genre = None):
+        try:
+            groupe_recherche = f"%{groupe_recherche}%"
+            if date:
+                # time data '21 Juillet' does not match format '%d %B'
+                moisVersChiffre = {"Janvier": "01", "Février": "02", "Mars": "03", "Avril": "04", "Mai": "05", "Juin": "06", "Juillet": "07", "Août": "08", "Septembre": "09", "Octobre": "10", "Novembre": "11", "Décembre": "12"}
+                date = date.split(" ")
+                # ajoutes l'année (2024)
+                date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
+                date = datetime.strptime(date, '%d %m %Y').date()
+            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert) AND nomG LIKE :search" + (" AND dateDebutE = :date" if date else "") + (" AND groupe.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            query = text(requete)
+            groupes = []
+            result = []
+            if date and genre:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche, "date": date, "genre": genre})
+            elif date:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche, "date": date})
+            elif genre:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche, "genre": genre})
+            else:
+                result = self.connexion.get_connexion().execute(query, {"search": groupe_recherche})
+            for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH in result:
+                groupe = Groupe(idG, idH, nomG, descriptionG, dateDebutE, heureDebutE)
+                groupes.append(groupe)
+                
+            # convertit en json
+            groupes_json = []
+            
+            for groupe in groupes:
+                groupes_json.append(groupe.to_dict())
+                
+            return json.dumps(groupes_json)
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return []
         
     def get_infos_artiste_json(self, idG):
         try:
             # on veut la description du groupe (descriptionG) dans Groupe
             # et tous les liens des réseaux (reseau) dans lien_reseaux_sociaux
             
-            query = text("SELECT descriptionG, reseau, nomG, descriptionG, heureDebutE, dateDebutE FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN evenement WHERE idG = :idG") 
+            query = text("SELECT descriptionG, reseau, nomG, descriptionG, heureDebutE, dateDebutE FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN evenement WHERE idE in (SELECT idE FROM concert) AND idG = :idG") 
             result = self.connexion.get_connexion().execute(query, {"idG": idG})
             
             print(idG)
@@ -33,9 +104,17 @@ class GroupeBD:
                 datePassage = datePassageG
                 reseaux.ajoute_reseau(reseau)
             
-            print(str(heurePassage))
-            print(str(datePassage))
-            return Groupe(idG, None, nomG, descriptionG, datePassage, heurePassage, None, None, reseaux).to_dict()
+            lesMembres = []
+            
+            for membre in self.get_membres_groupe(idG):
+                if (type(membre) == Membre_Groupe):
+                    lesMembres.append(membre.get_nomDeSceneMG())
+            
+            lesStylesMusicaux = self.get_styles_groupe(idG)
+            
+            lesActivitesAnnexe = self.get_activites_annexe_groupe(idG)
+            
+            return Groupe(idG, None, nomG, descriptionG, datePassage, heurePassage, None, None, reseaux, lesStylesMusicaux, lesMembres, lesActivitesAnnexe).to_dict()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
     
@@ -53,8 +132,41 @@ class GroupeBD:
             for description, reseau in result:
                 descriptionG = description
                 reseaux.ajoute_reseau(reseau)
+                
+            lesMembres = []
             
-            return Groupe(idG, None, None, descriptionG, None, None, None, None, reseaux).to_dict()
+            for membre in self.get_membres_groupe(idG):
+                if (type(membre) == Membre_Groupe):
+                    lesMembres.append(membre.get_nomDeSceneMG())
+            
+            lesStylesMusicaux = self.get_styles_groupe(idG)
+            
+            lesActivitesAnnexe = self.get_activites_annexe_groupe(idG)
+            
+            return Groupe(idG, None, None, descriptionG, None, None, None, None, reseaux, lesStylesMusicaux, lesMembres, lesActivitesAnnexe).to_dict()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
+    def get_activites_annexe_groupe(self, idG):
+        try:
+            query = text("SELECT idG, idH, nomG, descriptionG, dateDebutE, heureDebutE FROM GROUPE NATURAL JOIN evenement WHERE idE in (SELECT idE FROM activite_annexe) AND idG = :idG)")
+            activites_annexe = []
+            result = self.connexion.get_connexion().execute(query, {"idG": idG})
+            for idG, idE, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE in result:
+                activites_annexe.append(Evenement(idE, idG, -1, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE))
+            return activites_annexe
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
+    def get_styles_groupe(self, idG):
+        # SELECT * FROM festiuto.groupe_style NATURAL JOIN style_musical; on doit recup nomSt
+        try:
+            query = text("SELECT * FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE idG = :idG")
+            result = self.connexion.get_connexion().execute(query, {"idG": idG})
+            styles = []
+            for _, _, nomSt in result:
+                styles.append(nomSt)
+            return styles
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
         
@@ -84,25 +196,72 @@ class GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
         
-    def get_groupes_with_save_json(self, idUser):
+    def get_groupes_with_save_json(self, idUser, date = None, genre = None):
         try:
+            if date:
+                # time data '21 Juillet' does not match format '%d %B'
+                moisVersChiffre = {"Janvier": "01", "Février": "02", "Mars": "03", "Avril": "04", "Mai": "05", "Juin": "06", "Juillet": "07", "Août": "08", "Septembre": "09", "Octobre": "10", "Novembre": "11", "Décembre": "12"}
+                date = date.split(" ")
+                # ajoutes l'année (2024)
+                date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
+                date = datetime.strptime(date, '%d %m %Y').date()
             # select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(#IDUSER, groupe.idg) as isSaved from evenement INNER JOIN groupe ON groupe.idG = evenement.idG;
-            query = text("SELECT idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(:idUser, groupe.idg) as isSaved FROM evenement INNER JOIN groupe ON groupe.idG = evenement.idG;")
+            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(:idUser, groupe.idg) as isSaved from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert)" + (" AND dateDebutE = :date" if date else "") + (" AND groupe.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            query = text(requete)
             groupes = []
-            result = self.connexion.get_connexion().execute(query, {"idUser": idUser})
+            result = None
+            if date and genre:
+                result = self.connexion.get_connexion().execute(query, {"date": date, "genre": genre, "idUser": idUser})
+            elif date:
+                result = self.connexion.get_connexion().execute(query, {"date": date, "idUser": idUser})
+            elif genre:
+                result = self.connexion.get_connexion().execute(query, {"genre": genre, "idUser": idUser})
+            else:
+                result = self.connexion.get_connexion().execute(query, {"idUser": idUser})
+                
+            print(result.keys())
             for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved in result:
                 groupe = Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, isSaved == 1)
-                print(groupe.get_isSaved())
-                print(groupe.get_datePassage())
-                print(type(groupe.get_heurePassage()))
                 groupes.append(groupe.to_dict())
             return json.dumps(groupes)
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
-        
+       
+    def get_all_groupes_concert(self, date = None, genre = None):
+        try:
+            if date:
+                # time data '21 Juillet' does not match format '%d %B'
+                moisVersChiffre = {"Janvier": "01", "Février": "02", "Mars": "03", "Avril": "04", "Mai": "05", "Juin": "06", "Juillet": "07", "Août": "08", "Septembre": "09", "Octobre": "10", "Novembre": "11", "Décembre": "12"}
+                date = date.split(" ")
+                # ajoutes l'année (2024)
+                date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
+                date = datetime.strptime(date, '%d %m %Y').date()
+            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert)" + (" AND dateDebutE = :date" if date else "") + (" AND groupe.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            print(requete)
+            query = text(requete)
+            groupes = []
+            result = None
+            if date and genre:
+                result = self.connexion.get_connexion().execute(query, {"date": date, "genre": genre})
+            elif date:
+                result = self.connexion.get_connexion().execute(query, {"date": date})
+            elif genre:
+                result = self.connexion.get_connexion().execute(query, {"genre": genre})
+            else:
+                result = self.connexion.get_connexion().execute(query)
+            for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH in result:
+                print(idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH)
+                groupe = Groupe(idG, idH, nomG, descriptionG, dateDebutE, heureDebutE)
+                groupes.append(groupe)
+                
+            return groupes
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")   
+     
     def get_all_groupes(self):
         try:
-            query = text("select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG;")
+            # on convertit la date qui est en format "22 juillet" en format "2024-07-22"
+            query = text("select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert);")
             groupes = []
             result = self.connexion.get_connexion().execute(query)
             for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH in result:
@@ -141,6 +300,13 @@ class GroupeBD:
                 return Groupe(idG, idH, nomG, descriptionG)
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}") 
+
+    def get_all_groupes_concert_json(self, date=None, genre=None):
+        groupes = self.get_all_groupes_concert(date, genre)
+        groupes_json = []
+        for groupe in groupes:
+            groupes_json.append(groupe.to_dict())
+        return json.dumps(groupes_json)
 
     # renvoie le nom, l'id, la date et l'heure de passage d'un groupe EN JSON
     def get_groupes_json(self):
