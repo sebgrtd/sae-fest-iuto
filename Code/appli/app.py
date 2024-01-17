@@ -534,10 +534,10 @@ def evenements_festival():
     liste_evenements = evenementbd.get_all_evenements()
     liste_evenements_concerts = []
     liste_evenements_activites_annexes = []
-    if not liste_evenements:
-        return render_template("evenements_festival.html", liste_evenements=[], liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=[], liste_groupes=[])
     lieubd = LieuBD(connexionbd)
     liste_lieux = lieubd.get_all_lieux()
+    if not liste_evenements:
+        return render_template("evenements_festival.html", liste_evenements=[], liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=liste_lieux, liste_groupes=liste_groupes)
     for evenement in liste_evenements:
         if evenementbd.verify_id_in_concert(evenement.get_idE()):
             liste_evenements_concerts.append(evenement)
@@ -809,6 +809,33 @@ def instruments_festival():
     if not liste_instruments:
         return render_template("admin_instruments.html", liste_instruments=[])
     return render_template("admin_instruments.html", liste_instruments=liste_instruments)
+
+@app.route("/modifier_instrument", methods=["POST"])
+def modifier_instrument():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    id_instrument = request.form["id"]
+    nom_instrument = request.form["nom"]
+    instrument = Instrument(None, nom_instrument)
+    instrumentbd.update_instrument(instrument)
+    return redirect(url_for("instruments_festival"))
+
+@app.route("/supprimer_instrument", methods=["POST"])
+def supprimer_instrument():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    id_instrument = request.form["id"]
+    instrumentbd.delete_instrument_by_id(id_instrument)
+    return redirect(url_for("instruments_festival"))
+
+@app.route("/ajouter_instrument", methods=["POST"])
+def ajouter_instrument():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    nom_instrument = request.form["nom"]
+    instrument = Instrument(None, nom_instrument)
+    instrumentbd.insert_instrument(instrument)
+    return redirect(url_for("instruments_festival"))
 
 @app.route("/users_festival")
 def users_festival():

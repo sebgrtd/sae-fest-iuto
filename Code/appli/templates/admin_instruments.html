@@ -18,10 +18,90 @@
                 <tr>
                     <td> {{ instrument.get_idI() }} </td>
                     <td> {{ instrument.get_nomI() }} </td>
+                    <td>
+                        <button class="btn-modifier" 
+                        data-id="{{ instrument.get_idI() }}" 
+                        data-nom=" {{ instrument.get_nomI() }}">Modifier</button> 
+                        <button class="btn-supprimer" data-id="{{ instrument.get_idI() }}">Supprimer</button>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     
     <button id="ajouter">Ajouter</button>
+
+    <div id="modal-modifier" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">x</span>
+            <form action="/modifier_instrument" method="post">
+                <input type="hidden" name="id" id="id_modifier">
+                <label for="nom">Nom</label>
+                <input type="text" name="nom" id="nom_modifier">
+                <button id="modifier" type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-supprimer" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">x</span>
+            <form action="/supprimer_instrument" method="post">
+                <input type="hidden" name="id" id="id_supprimer">
+                <p>Êtes-vous sûr de vouloir supprimer cet instrument ?</p>
+                <button id="supprimer" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-ajouter" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">x</span>
+            <form action="/ajouter_instrument" method="post">
+                <label for="nom">Nom</label>
+                <input type="text" name="nom" id="nom_ajouter">
+                <button id="ajouter" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var modalAjouter = document.getElementById("modal-ajouter");
+            var modalSupprimer = document.getElementById("modal-supprimer");
+            var modalModifier = document.getElementById("modal-modifier");
+            var btnClose = document.querySelectorAll(".close-button");
+            
+
+            btnClose.forEach(function(btn) {
+                btn.onclick = function() {
+                    btn.closest(".modal").style.display ="none";
+                };
+            });
+
+            document.querySelectorAll(".btn-modifier").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_modifier").value = btn.getAttribute("data-id");
+                    document.getElementById("nom_modifier").value = btn.getAttribute("data-nom");
+                    modalModifier.style.display = "block";
+                };
+            });
+
+            document.getElementById("ajouter").onclick = function() {
+                modalAjouter.style.display = "block";
+            };
+
+            document.querySelectorAll(".btn-supprimer").forEach(function(btn) {
+                btn.onclick = function() {
+                    document.getElementById("id_user_supprimer").value = btn.getAttribute("data-id");
+                    modalSupprimer.style.display = "block";
+                };
+            });
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.style.display = "none";
+                }
+            }
+        });
+    </script>
 {% endblock %}

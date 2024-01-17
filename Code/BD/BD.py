@@ -527,29 +527,7 @@ class Style_Musical:
             "idSt": self.__idSt,
             "nomSt": self.__nomSt
         }
-    
-class Lien_Video:
-    def __init__(self, idLV: int, idG: int, video: str):
-        self.__idLV = idLV
-        self.__idG = idG
-        self.__video = video
-        
-    def get_idLV(self):
-        return self.__idLV
-    
-    def get_idGroupe(self):
-        return self.__idG
-    
-    def get_video(self):
-        return self.__video
-    
-    def to_dict(self):
-        return {
-            "idLV": self.__idLV,
-            "idG": self.__idG,
-            "video": self.__video
-        }
-    
+
 class Lien_Reseaux_Sociaux:
     def __init__(self, idLRS: int, idG: int, reseau: str):
         self.__idLRS = idLRS

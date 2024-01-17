@@ -1,11 +1,11 @@
 -- Table USER
 
 INSERT INTO FAQ (question, reponse) VALUES
-    ('Quand aura lieu le festival ?', "Le festival aura lieu le 30 juillet 2024."),
-    ('Où aura lieu le festival ?', "Le festival aura lieu à Nantes."),
+    ('Quand aura lieu le festival ?', "Le festival aura lieu du 21 au 23 juin 2024."),
+    ('Où aura lieu le festival ?', "Le festival aura lieu à Orléans."),
     ('Quelles sont les horaires de chaque jour du festival ?', "Le festival aura lieu de 18h à 23h."),
     ('Y a-t-il un camping sur place ?', "Oui, un camping sera disponible à proximité du site du festival pour offrir aux festivaliers une expérience pratique et agréable."),
-    ('Les enfants sont-ils admis ?', "Le festival est ouvert à tous les âges. Cependant, veuillez noter que certaines zones ou activités peuvent être réservées aux personnes de plus de 18 ans."),
+    ('Les enfants sont-ils admis ?', "Le festival est ouvert à tous les âges."),
     ('Peut-on acheter des billets sur place ?', "Il est fortement recommandé d'acheter vos billets à l'avance. Cependant, selon la disponibilité, des billets pourraient être vendus à l'entrée du festival."),
     ('Y aura-t-il une restauration sur place ?', "Oui, il y aura une variété de stands de restauration offrant une large sélection de plats pour satisfaire tous les goûts et régimes alimentaires."),
     ('Les animaux de compagnie sont-ils autorisés ?', "Malheureusement, les animaux de compagnie ne seront pas autorisés à l'intérieur du festival pour des raisons de sécurité et de confort de tous les participants."),
@@ -24,25 +24,20 @@ INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser) VALUES
 
 -- Insérer des données dans la table FESTIVAL
 INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
-    ('Festival 1', 'Ville 1', '2024-08-01', '2024-08-05'),
-    ('Festival 2', 'Ville 2', '2024-07-15', '2024-07-20'),
-    ('Festival 3', 'Ville 3', '2024-08-01', '2024-08-03');
+    ("FestIUT'O", 'Orléans', '2024-06-21', '2024-06-23');
 
 -- Insérer des données dans la table LIEU
 INSERT INTO LIEU (idF, nomL, adresseL, jaugeL) VALUES
-    (1, 'Lieu 1', 'Adresse Lieu 1', 1000),
-    (1, 'Lieu 2', 'Adresse Lieu 2', 1500),
-    (1, 'Lieu 3', 'Adresse Lieu 3', 500),
-
-    (2, 'Lieu 1', 'Adresse Lieu 1', 1000),
-    (2, 'Lieu 2', 'Adresse Lieu 2', 1500),
-    (2, 'Lieu 3', 'Adresse Lieu 3', 500);
+    (1, 'Cathédrale Sainte-Croix', '26 rue Saint-Etienne, 45000 Orléans', 1000),
+    (1, 'Place du Martroi', '28 place du Martroi, 45000 Orléans', 1000),
+    (1, 'Place de Loire', 'Rue de la Poterne, 45000 Orléans', 1000);
 
 -- Insérer des données dans la table HEBERGEMENT
 INSERT INTO HEBERGEMENT (nomH, limitePlacesH, adresseH) VALUES
-    ('Hébergement 1', 100, 'Adresse Hébergement 1'),
-    ('Hébergement 2', 200, 'Adresse Hébergement 2'),
-    ('Hébergement 3', 500, 'Adresse Hébergement 3');
+    ("Comfort Hotel Orléans Sud Co'met", 30, "20 rue du Pont Bordeau, 45000 Orléans"),
+    ("Hôtel Saint-Aignan", 30, "3 place Gambetta, 45000 Orléans"),
+    ("Hôtel de l'Abeille", 50, "64 rue Alsace Lorraine, 45000 Orléans"),
+    ("Hôtel Marguerite", 10, "14 rue Marguerite, 45000 Orléans");
 
 -- Insérer des données dans la table GROUPE
 INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
@@ -232,24 +227,11 @@ INSERT INTO INSTRUMENT (idMG, nomI) VALUES
     (9, 'Chanteur'),
     (10, 'Chanteur');
 
--- Insérer des données dans la table LIEN_VIDEO
-INSERT INTO LIEN_VIDEO (idG, video) VALUES
-    (1, 'Video 1'),
-    (1, 'Video 2'),
-    (2, 'Video 1'),
-    (3, 'Video 1'),
-    (3, 'Video 2'),
-    (3, 'Video 3');
-
 -- Insérer des données dans la table LIEN_RESEAUX_SOCIAUX
 INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (1, 'https://www.youtube.com/channel/UCQxeWQ_K8aQ0KOXMDi03H5Q'),
     (1, 'https://www.instagram.com/saturnciti/'),
-    (1, 'https://open.spotify.com/intl-fr/artist/7siKy5Wrq7TwvyJ21KushJ'),
-    (2, 'Réseau 1'),
-    (3, 'Réseau 1'),
-    (3, 'Réseau 2'),
-    (3, 'Réseau 3');
+    (1, 'https://open.spotify.com/intl-fr/artist/7siKy5Wrq7TwvyJ21KushJ');
 
 -- Insérer des données dans la table SPECTATEUR
 INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
@@ -269,10 +251,11 @@ INSERT INTO STYLE_MUSICAL (nomSt) VALUES
 
 
 -- Insérer des données dans la table EVENEMENT
-INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
-    (1, 'Concert Groupe 1', '9:00:00', '10:00:00', '2024-07-21', '2024-07-21'),
-    (2, 'Concert Groupe 2', '13:00:00', '14:00:00', '2024-07-21', '2024-07-21'),
-    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21');
+INSERT INTO EVENEMENT (idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
+    (1, 1, 'Concert de Saturn Citizen', '09:00:00', '10:00:00', '2024-06-21', '2024-06-21'),
+    (2, 2, 'Concert de Red Hot Chili Peppers', '09:00:00', '10:30:00', '2024-06-21', '2024-06-21'),
+    (3, 3, 'Activité Annexe de Lana Del Rey', '11:00:00', '11:45:00', '2024-06-21', '2024-06-21'),
+
 
 INSERT INTO TYPE_BILLET(duree) VALUES
     (1),
@@ -281,9 +264,12 @@ INSERT INTO TYPE_BILLET(duree) VALUES
 
 -- Insérer des données dans la table CONCERT
 INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
-    (1, '01:00:00', '01:00:00'),
-    (2, '01:00:00', '01:00:00'),
-    (3, '01:00:00', '01:00:00');
+    (1, '00:10:00', '00:10:00'),
+    (2, '00:30:00', '00:15:00'),
+
+INSERT INTO ACTIVITE_ANNEXE (idE, typeA, ouvertAuPublic) VALUES
+    (3, 'Séance de dédicace', true),
+    
 
 INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
     (1, 1),
@@ -293,13 +279,13 @@ INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2024-08-06', '08:00:00', '2024-08-07', '16:00:00');
+    (1, 1, 1, '2024-08-06', '08:00:00', '2024-08-06', '16:00:00');
 
 -- test des triggers
 
 -- Impossible d'acheter un billet pour un événement qui a déjà eu lieu
 INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
-    (1, 1, 1, 50, '2024-10-01', '2024-07-21', '2024-07-21');
+    (1, 1, 1, 50, '2024-10-01', '2024-06-21', '2024-06-21');
 
 -- La durée du billet est trop grande par rapport à celle du festival
 INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
@@ -307,8 +293,8 @@ INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VAL
 
 -- Le groupe ne peut pas arriver avant le début du festival
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2024-05-06', '08:00:00', '2024-05-07', '16:00:00');
+    (1, 1, 1, '2024-05-06', '08:00:00', '2024-05-06', '16:00:00');
 
 -- Le groupe ne peut pas arriver après la fin du festival
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2024-10-06', '08:00:00', '2024-10-07', '16:00:00');
+    (1, 1, 1, '2024-10-06', '08:00:00', '2024-10-06', '16:00:00');

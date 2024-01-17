@@ -30,8 +30,18 @@ class GroupeBD:
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
+    def delete_all_membres_groupe(self, groupe):
+        try:
+            query = text("DELETE FROM MEMBRE_GROUPE WHERE idG = :idG")
+            self.connexion.get_connexion().execute(query, {"idG": groupe.get_idG()})
+            print(f"Les membres du groupe {groupe.get_idG()} ont été supprimés")
+            self.connexion.get_connexion().commit()
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            
     def delete_groupe_by_name(self, groupe, nom):
         try:
+            self.delete_all_membres_groupe(groupe)
             query = text("DELETE FROM GROUPE WHERE idG = :idG AND nomG = :nom")
             self.connexion.get_connexion().execute(query, {"idG": groupe.get_idG(), "nom": nom})
             print(f"Le groupe {groupe.get_idG()} a été supprimé")
