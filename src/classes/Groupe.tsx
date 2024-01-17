@@ -39,6 +39,8 @@ export default class Groupe{
     reseaux: Reseaux = new Reseaux("", "", "", "", "");
     membresGroupe: string[] = [];
     evenementsAnnexes: Evenement[] = [];
+    nomStyle: any;
+    nomSt: any;
 
     constructor(idG: number, nomG: string, descriptionG: string, datePassage: string, heurePassage: string) {
         this.idG = idG;

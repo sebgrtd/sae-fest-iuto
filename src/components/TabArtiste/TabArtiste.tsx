@@ -7,13 +7,15 @@ import { getUserCookie } from '../../cookies/CookiesLib'
 import TableRow from './TableRow'
 
 type Props = {
-    date: string
-    artistes : Groupe[]
+    date: string,
+    artistes : Groupe[],
     setArtistes: (mapArtiste: any) => void
 }
 
 export default function TabArtiste(props : Props) {
-  const [isOpen, setIsOpen] = useState(false);
+    const current = window.location.pathname;
+    console.log(current);
+  const [isOpen, setIsOpen] = useState(true);
 
   const firstBarVariants={
     open:{
@@ -48,6 +50,7 @@ export default function TabArtiste(props : Props) {
             ease:[1,0,0,1]
         }
     }
+    
   }
 
   return (
@@ -81,7 +84,7 @@ export default function TabArtiste(props : Props) {
                     {
                     isOpen && props.artistes.map((artiste, index) => {
                         return (
-                                <TableRow date={props.date} setArtistes={props.setArtistes} artiste={artiste} key={artiste.idG}/>
+                                <TableRow date={props.date} setArtistes={props.setArtistes} artiste={artiste} key={artiste.idG} location={current}/>
                             )
                         })
                     }

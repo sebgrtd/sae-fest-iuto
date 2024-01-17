@@ -4,10 +4,14 @@ import Groupe from '../../classes/Groupe'
 import axios from 'axios'
 import { getUserCookie } from '../../cookies/CookiesLib'
 
+
+// const currentPage = location.pathname;
+// console.log(currentPage);
 type Props = {
     date: string,
     artiste: Groupe,
-    setArtistes: (mapArtiste: any) => void
+    setArtistes: (mapArtiste: any) => void,
+    location?: string; 
 }
 
 export default function TableRow(props : Props) {
