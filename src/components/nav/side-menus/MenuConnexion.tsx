@@ -33,7 +33,6 @@ export default function MenuConnexion(props: Props) {
   const formModifMdpRef = useRef<HTMLFormElement>(null);
   const[isLoading, setIsLoading] = useState(false);
   const[filtreDate, setFiltreDate] = useState("Tout");
-  const[filtreAffichage, setFiltreAffichage] = useState("Grille");
   const[filtreGenre, setFiltreGenre] = useState("Tout");
 
   useEffect(() => {
@@ -61,17 +60,9 @@ export default function MenuConnexion(props: Props) {
   // j'ai envie d'avoir une sdd de type Map <String> : Groupe[]
   const[tableauxArtistes, setTableauxArtistes] = useState<Map<string, Groupe[]>>(new Map());
 
-  useEffect(() => {
-    if (codeVerification.length === 6){
-      formCodeVerificationRef.current?.requestSubmit();
-    }
-  }, [codeVerification])
-  
-  useEffect(() => {   
-    if (props.isOpen){
-      
-      if (currentMenu === "planification"){
-        axios.get("http://localhost:8080/getArtistesWithSave?idUser="+getUserCookie().idUser).then(((res) => {
+  const handleResetArtists = () => {
+    axios.get("http://localhost:8080/getArtistesWithSave?idUser="+getUserCookie().idUser+ (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "")
+    ).then(((res) => {
           if (res.status === 200){
             const data = res.data;
             const listeArtistes : Groupe[] = [];
@@ -83,6 +74,63 @@ export default function MenuConnexion(props: Props) {
         })).catch((err:any) => {
           console.log(err)
         })
+  }
+
+  const handleSearch = (searchText : string) => {
+    if (searchText == ""){
+      handleResetArtists();
+      return;
+    }
+    // on ajoute les filtres dans la requete comme toute à l'heure
+    const requete = "http://localhost:8080/searchUsersWithSave?recherche="+searchText+"&idUser="+getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
+    axios.get(requete).then((res) => {
+      console.log(res)
+      if (res.status === 200){
+        const data = res.data as Groupe[];
+        setArtistes(data);
+      }
+      else{
+        console.log("erreur lors de la récupération des artistes")
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  useEffect(() => {
+    console.log("filtreDate:", filtreDate);
+    console.log("filtreGenre:", filtreGenre);
+    if (filtreDate !== "Tout" || filtreGenre !== "Tout"){
+      const requete = "http://localhost:8080/getArtistesWithSave?idUser=" + getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreDate !== "Tout" ? "&" : "?") + (filtreGenre !== "Tout" ? "genre="+filtreGenre : "");
+      console.log(requete);
+      axios.get(requete).then((res) => {
+        if (res.status === 200){
+          const data = res.data as Groupe[];
+          setArtistes(data);
+        }
+        else{
+          console.log("erreur lors de la récupération des artistes")
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+    else{
+      handleResetArtists();
+    }
+  }, [filtreDate, filtreGenre])
+
+  useEffect(() => {
+    if (codeVerification.length === 6){
+      formCodeVerificationRef.current?.requestSubmit();
+    }
+  }, [codeVerification])
+  
+  useEffect(() => {   
+    if (props.isOpen){
+      
+      if (currentMenu === "planification"){
+        handleResetArtists();
       }
 
       if (currentMenu === "affichage-planification"){
@@ -489,9 +537,6 @@ export default function MenuConnexion(props: Props) {
     
   }
 
-  const handleSearch = (search : string) => {
-  }
-
   return (
     <motion.div className={`side-menu connexion ${((currentMenu === "planification" || currentMenu === "affichage-planification") && !isMenuChanging) ? "large":""}`}
     variants={menuVariants}
@@ -558,14 +603,14 @@ export default function MenuConnexion(props: Props) {
                 <header className='filters-container'>
                   <div className="filters">
                       <Combo title="DATE" choices={["Tout", "21 Juillet", "22 Juillet", "23 Juillet"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
-                      <Combo title="GENRE" choices={["Tout", "Rap", "Rock", "Pop"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
+                      <Combo title="GENRE" choices={["Tout", "Style 1", "Style 2", "Style 3"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
                   </div>
                   <SearchBar onSearch={handleSearch} text="Rechercher un artiste"/>
                 </header>
 
                 <div className="liste-artistes">
                   {
-                    artistes.map((artiste) => {
+                    artistes && artistes.length >0 && artistes.map((artiste) => {
                       return (
                         <SelectionneurArtiste key={artiste.idG + " " + artiste.isSaved} idArtiste={artiste.idG} nomArtiste={artiste.nomG} datePassage={Groupe.getJourPassage(artiste.datePassage)} isSaved={artiste.isSaved}/>
                       )

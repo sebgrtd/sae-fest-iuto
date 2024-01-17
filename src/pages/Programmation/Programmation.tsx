@@ -31,32 +31,32 @@ export default function Programmation(props : Props) {
   window.history.replaceState({}, document.title)
   const[lesGroupes, setLesGroupes] = useState<Groupe[]>(location.state? oldGroupes : []);
   
+  const handleSetArtists = (artists: Groupe[]) => {
+    const listeGroupes : Groupe[] = [];
+    artists.forEach((groupe: Groupe) => {
+      // la datepassage est sous forme 2021-05-20 pour 20 mai 2021
+      // je veux la transformer en 20 mai (pas besoin de l'année)
+      const lesMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+      const date = groupe.datePassage.split("-");
+      const datePassage = date[2] + " " + lesMois[parseInt(date[1])-1];
+      groupe.datePassage = datePassage; 
+      // l'heure est sous forme 20:00:00 pour 20h00 j'ai envie de la transformer en 20H00
+      const heure = groupe.heurePassage.split(":");
+      const heurePassage = heure[0] + "H" + heure[1];
+      groupe.heurePassage = heurePassage;
+      listeGroupes.push(groupe);
+    });
+    setLesGroupes(listeGroupes);
+  }
 
   useEffect(() => {
     if (!location.state || oldGroupes == undefined){
       axios.get('http://localhost:8080/getArtistes').then((res) => {
-        const data = res.data;
-        const listeGroupes : Groupe[] = [];
-        console.log(data)
-        data.forEach((groupe: Groupe) => {
-          // la datepassage est sous forme 2021-05-20 pour 20 mai 2021
-          // je veux la transformer en 20 mai (pas besoin de l'année)
-          const lesMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet","Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-          const date = groupe.datePassage.split("-");
-          const datePassage = date[2] + " " + lesMois[parseInt(date[1])-1];
-          groupe.datePassage = datePassage; 
-          // l'heure est sous forme 20:00:00 pour 20h00 j'ai envie de la transformer en 20H00
-          const heure = groupe.heurePassage.split(":");
-          const heurePassage = heure[0] + "H" + heure[1];
-          groupe.heurePassage = heurePassage;
-          listeGroupes.push(groupe);
-        });
-        setLesGroupes(listeGroupes);
+        const data = res.data as Groupe[];
+        handleSetArtists(data);
     })
   }
   }, [])
-  
-
 
   const[filtreDate, setFiltreDate] = useState("Tout");
   const[filtreAffichage, setFiltreAffichage] = useState("Grille");
@@ -64,6 +64,31 @@ export default function Programmation(props : Props) {
 
   const pageRef = useRef<HTMLDivElement>(null);
   
+  useEffect(() => {
+    console.log("filtreDate:", filtreDate);
+    console.log("filtreGenre:", filtreGenre);
+    if (filtreDate !== "Tout" || filtreGenre !== "Tout"){
+      const requete = "http://localhost:8080/getArtistes" + (filtreDate !== "Tout" ? "?date="+filtreDate : "") + (filtreDate !== "Tout" ? "&" : "?") + (filtreGenre !== "Tout" ? "genre="+filtreGenre : "");
+      console.log(requete);
+      axios.get(requete).then((res) => {
+        if (res.status === 200){
+          const data = res.data as Groupe[];
+          handleSetArtists(data);
+        }
+        else{
+          console.log("erreur lors de la récupération des artistes")
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+    else{
+      axios.get('http://localhost:8080/getArtistes').then((res) => {
+        const data = res.data as Groupe[];
+        handleSetArtists(data);
+      })
+    }
+  }, [filtreDate, filtreGenre])
   
   const contentVariants = {
     visible:{
@@ -91,7 +116,28 @@ export default function Programmation(props : Props) {
     props.setIsNavTransparent(false)
   }, [])
 
-  const handleSearch = (searchText: string) => {}
+  const handleSearch = (searchText: string) => {
+    if (searchText == ""){
+      axios.get('http://localhost:8080/getArtistes').then((res) => {
+        const data = res.data as Groupe[];
+        handleSetArtists(data);
+      })
+      return;
+    }
+    // on ajoute les filtres dans la requete comme toute à l'heure
+    const requete = "http://localhost:8080/searchUsers?recherche="+searchText + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
+    axios.get(requete).then((res) => {
+      if (res.status === 200){
+        const data = res.data as Groupe[];
+        setLesGroupes(data);
+      }
+      else{
+        console.log("erreur lors de la récupération des artistes")
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
   return (
     <>
@@ -112,7 +158,7 @@ export default function Programmation(props : Props) {
                 <div className="filters">
                     <Combo title="DATE" choices={["Tout", "21 Juillet", "22 Juillet", "23 Juillet"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
                     <Combo title="AFFICHAGE" choices={["Grille", "Horaires"]} currentChoice={filtreAffichage} setCurrentChoice={setFiltreAffichage} />
-                    <Combo title="GENRE" choices={["Tout", "Rap", "Rock", "Pop"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
+                    <Combo title="GENRE" choices={["Tout", "Style 1", "Style 2", "Style 3"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
                 </div>
                 <SearchBar onSearch={handleSearch} text="Rechercher un artiste"/>
             </div>
