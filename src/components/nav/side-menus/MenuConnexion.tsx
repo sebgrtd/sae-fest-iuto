@@ -604,8 +604,8 @@ export default function MenuConnexion(props: Props) {
               <section className='planification'>
                 <header className='filters-container'>
                   <div className="filters">
-                      <Combo title="DATE" choices={["Tout", "21 Juillet", "22 Juillet", "23 Juillet"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
-                      <Combo title="GENRE" choices={["Tout", "Style 1", "Style 2", "Style 3"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
+                      <Combo title="DATE" choices={["Tout", "21 Juin", "22 Juin", "23 Juin"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
+                      <Combo title="GENRE" choices={["Tout", "Rap", "Pop", "Disco", "Electro", "House", "Rock", "Métal"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
                   </div>
                   <SearchBar onSearch={handleSearch} text="Rechercher un artiste"/>
                 </header>

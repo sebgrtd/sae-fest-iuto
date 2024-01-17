@@ -3,7 +3,7 @@ import SearchBar from '../../components/form/SearchBar';
 import Combo from '../../components/form/Combo';
 import CarteArtiste from '../../components/Artiste/CarteArtiste';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../../components/Footer';
 
@@ -61,6 +61,14 @@ export default function Programmation(props : Props) {
   const[filtreDate, setFiltreDate] = useState("Tout");
   const[filtreAffichage, setFiltreAffichage] = useState("Grille");
   const[filtreGenre, setFiltreGenre] = useState("Tout");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (filtreAffichage === "Horaires"){
+      navigate("/horaire")
+    }
+  },
+  [filtreAffichage])
 
   const pageRef = useRef<HTMLDivElement>(null);
   
@@ -156,9 +164,9 @@ export default function Programmation(props : Props) {
             </div>
             <div className="filters-container">
                 <div className="filters">
-                    <Combo title="DATE" choices={["Tout", "21 Juillet", "22 Juillet", "23 Juillet"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
+                    <Combo title="DATE" choices={["Tout", "21 Juin", "22 Juin", "23 Juin"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
                     <Combo title="AFFICHAGE" choices={["Grille", "Horaires"]} currentChoice={filtreAffichage} setCurrentChoice={setFiltreAffichage} />
-                    <Combo title="GENRE" choices={["Tout", "Style 1", "Style 2", "Style 3"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
+                    <Combo title="GENRE" choices={["Tout", "Rap", "Pop", "Disco", "Electro", "House", "Rock", "Métal"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
                 </div>
                 <SearchBar onSearch={handleSearch} text="Rechercher un artiste"/>
             </div>
