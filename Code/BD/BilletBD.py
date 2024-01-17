@@ -8,6 +8,16 @@ class BilletBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
         
+    def get_nb_reservations(self):
+        # SELECT count(*) FROM festiuto.billet;
+        try:
+            query = text("SELECT count(*) FROM billet")
+            result = self.connexion.get_connexion().execute(query)
+            return result.fetchone()[0]
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return -1
+        
     def get_all_billets(self):
         try:
             query = text("SELECT idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB FROM BILLET")

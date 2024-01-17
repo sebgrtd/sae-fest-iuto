@@ -977,3 +977,16 @@ def getInfosArtiste():
             return jsonify({"error": "Aucun evenement trouve"})
     else:
         return res
+    
+@app.route("/getNbReservations")
+def getNbReservations():
+    connexion_bd = ConnexionBD()
+    billetbd = BilletBD(connexion_bd)
+    res = billetbd.get_nb_reservations()
+
+    
+    if res is None:
+            return jsonify({"error": "Aucun evenement trouve"})
+    else:
+        # res est un int il faut le renvoyer au client sous la forme d'un string
+        return str(res)
