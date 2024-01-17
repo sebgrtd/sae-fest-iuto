@@ -181,16 +181,17 @@ class GroupeBD:
             result = self.connexion.get_connexion().execute(query)
             for date in result:
                 res[str(date[0])] = []
+                  
             # on va récupérer les groupes qui passent ces jours là en faisant un call sur la fonction getGroupesDate
-            self.connexion = ConnexionBD()
             
             for date in res.keys():
+                self.connexion = ConnexionBD()
                 query = text("call getGroupesDate(:idUser, :dateDebutE)")
-                result = self.connexion.get_connexion().execute(query, {"idUser": idUser, "dateDebutE": "2024-07-21"})
+                result = self.connexion.get_connexion().execute(query, {"idUser": idUser, "dateDebutE": date})
                 # affiche le résultat de la requête
                 print(result.keys())
-                for idE, idG, nomG, heureDebutE, heureFinE, dateDebutE, descriptionG, isSaved in result:
-                    res[date].append(Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, isSaved == 1, heureFinE).to_dict())
+                for idE, idG, nomG, heureDebutE, heureFinE, dateDebutE, descriptionG, in result:
+                    res[date].append(Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, True, heureFinE).to_dict())
             
             return res
         except SQLAlchemyError as e:

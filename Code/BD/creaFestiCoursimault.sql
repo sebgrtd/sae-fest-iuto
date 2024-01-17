@@ -275,8 +275,6 @@ BEGIN
 END |
 DELIMITER ;
 
-CALL listeFestivals();
-
 -- Les triggers
 
 -- Trigger pour vérifier la durée du billet par rapport à la durée du festival
@@ -464,27 +462,24 @@ END |
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupesDate`(idUser INT, dateDebutE DATE)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupesDate`(idUser INT, dateDebut DATE)
 BEGIN
-	SELECT * FROM (
-		SELECT idE, groupe.idG, nomG, heureDebutE,heureFinE, dateDebutE, descriptionG, isSaved(idUser, groupe.idg) as isSaved 
+	SELECT idE, idG, nomG, heureDebutE,heureFinE, dateDebutE, descriptionG FROM (
+		SELECT idE, groupe.idG, nomG, heureDebutE,heureFinE, dateDebutE, descriptionG, isSaved(3, groupe.idg) as isSaved 
 		FROM evenement 
-		INNER JOIN groupe ON groupe.idG = evenement.idG
-		WHERE dateDebutE = dateDebutE
+        INNER JOIN groupe ON groupe.idG = evenement.idG
+        WHERE idE in (SELECT idE FROM concert)
+        and dateDebutE = dateDebut
 	) AS subquery
 	WHERE isSaved = true;
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupesDate`(idUser INT, dateDebutE DATE)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDatesPassage`()
 BEGIN
-	SELECT * FROM (
-		SELECT idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(idUser, groupe.idg) as isSaved 
-		FROM evenement 
-		INNER JOIN groupe ON groupe.idG = evenement.idG
-		WHERE dateDebutE = dateDebutE
-	) AS subquery
-	WHERE isSaved = true;
+		SELECT DISTINCT dateDebutE
+		FROM evenement ;
 END$$
 DELIMITER ;
+
