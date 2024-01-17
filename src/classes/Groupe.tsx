@@ -14,6 +14,18 @@ export class Reseaux{
     }
 }
 
+export class Evenement{
+    dateDebutEvenement: string;
+    heureDebutEvenement: string;
+    nomEvenement: string;
+    
+    constructor(dateDebutEvenement: string, nomEvenement: string, heureDebutEvenement: string) {
+        this.dateDebutEvenement = dateDebutEvenement;
+        this.heureDebutEvenement = heureDebutEvenement;
+        this.nomEvenement = nomEvenement;
+    }
+}
+
 export default class Groupe{
     idG: number;
     nomG: string;
@@ -25,6 +37,8 @@ export default class Groupe{
     scene: string = "";
     heureFinPassage: string = "";
     reseaux: Reseaux = new Reseaux("", "", "", "", "");
+    membresGroupe: string[] = [];
+    evenementsAnnexes: Evenement[] = [];
 
     constructor(idG: number, nomG: string, descriptionG: string, datePassage: string, heurePassage: string) {
         this.idG = idG;
