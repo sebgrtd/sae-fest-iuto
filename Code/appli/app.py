@@ -108,6 +108,7 @@ def get_groupes_with_evenements():
     res = jsonify(groupes)
     return res
 
+
 @app.route('/filtrerArtistes')
 def filtrerArtistes():
     connexion_bd = ConnexionBD()
@@ -943,7 +944,20 @@ def getArtistesWithSave():
             return jsonify({"error": "Aucun artiste trouve"})
     else:
         return res
-    
+@app.route('/getArtistesWithSaveHoraire')
+def getArtistesWithSaveHoraire():
+    connexion_bd = ConnexionBD()
+    groupebd = GroupeBD(connexion_bd)
+    # je dois passer les éléments dans ma requete de la sorte suivante:
+    # http:// ... /getArtistesWithSave?idUser=1
+    res = groupebd.get_groupes_horaire_json()
+    connexion_bd.fermer_connexion()
+    if res is None:
+            return jsonify({"error": "Aucun artiste trouve"})
+    else:
+        return res
+
+
 @app.route('/getMonPlanning')
 def getMonPlanning():
     connexion_bd = ConnexionBD()

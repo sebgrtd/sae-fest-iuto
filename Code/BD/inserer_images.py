@@ -1,6 +1,8 @@
 import sys
 import os
 
+from GroupeBD import GroupeBD
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "../appli"))
 from BD import *
 from app import *
