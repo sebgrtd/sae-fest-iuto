@@ -37,8 +37,7 @@ export default function MenuConnexion(props: Props) {
   const[filtreGenre, setFiltreGenre] = useState("Tout");
 
   useEffect(() => {
-    setCurrentMenu("planification")
-    //setCurrentMenu(isConnected() ? "connecte" : "connexion");
+    setCurrentMenu(isConnected() ? "connecte" : "connexion");
   }, [props.isOpen === true])
 
   const[email, setEmail] = useState("");

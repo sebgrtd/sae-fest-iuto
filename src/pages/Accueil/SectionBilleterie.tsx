@@ -1,8 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '../../components/form/Button'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 export default function SectionBilleterie() {
+  const[nbReservations, setNbReservations] = React.useState(0)
+
+  useEffect(() => {
+        // on recupere le nb de reservations : /getNbReservations
+        axios.get('http://localhost:8080/getNbReservations').then((res) => {
+            console.log(res)
+            if (res.status === 200){
+                setNbReservations(res.data)
+            }
+            else{
+                //alert("erreur lors de la récupération du nombre de réservations")
+            }
+            }).catch((err) => {
+                //alert("erreur lors de la récupération du nombre de réservations")
+            }
+        )
+    },[])
+
   return (
     <section id="SectionBilleterie">
         <div className="content">
@@ -29,7 +48,7 @@ export default function SectionBilleterie() {
                 </section>
                 <section className='info'>
                     <img src="/icones/ticket.svg" alt="Icone prix" />
-                    <p>458 Réservations</p>
+                    <p>{nbReservations} Réservations</p>
                 </section>
             </div>
         </div>
