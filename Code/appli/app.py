@@ -691,7 +691,7 @@ def ajouter_lieu():
     nom_lieu = request.form["nomL"]
     adresse_lieu = request.form["adresseL"]
     jauge_lieu = request.form["jaugeL"]
-    lieu = Lieu(None, 1, nom_lieu, adresse_lieu, jauge_lieu)
+    lieu = Lieu(None, nom_lieu, adresse_lieu, jauge_lieu)
     lieubd.insert_lieu(lieu)
     return redirect(url_for("lieux_festival"))
 

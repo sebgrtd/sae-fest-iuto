@@ -21,6 +21,7 @@ CREATE TABLE USER(
 CREATE TABLE FESTIVAL (
     idF INT NOT NULL AUTO_INCREMENT,
     nomF VARCHAR(50) NOT NULL,
+    UNIQUE(nomF),
     villeF VARCHAR(50) NOT NULL,
     dateDebutF DATE NOT NULL,
     dateFinF DATE NOT NULL,
@@ -55,22 +56,10 @@ CREATE TABLE SPECTATEUR (
 
 CREATE TABLE LIEU (
     idL INT NOT NULL AUTO_INCREMENT,
-    idF INT NOT NULL,
     nomL VARCHAR(50) NOT NULL,
     adresseL VARCHAR(50) NOT NULL,
     jaugeL INT NOT NULL CHECK (jaugeL > 0),
     PRIMARY KEY (idL)
-);
-
-CREATE TABLE PROGRAMMER (
-    idF INT NOT NULL,
-    idG INT NOT NULL,
-    idH INT NOT NULL,
-    dateArrivee DATE NOT NULL,
-    heureArrivee TIME NOT NULL,
-    dateDepart DATE NOT NULL,
-    heureDepart TIME NOT NULL,
-    PRIMARY KEY (idF, idG, idH)
 );
 
 CREATE TABLE HEBERGEMENT (
@@ -102,9 +91,14 @@ CREATE TABLE MEMBRE_GROUPE (
 
 CREATE TABLE INSTRUMENT (
     idI INT NOT NULL AUTO_INCREMENT,
-    idMG INT NOT NULL,
     nomI VARCHAR(50) NOT NULL,
     PRIMARY KEY (idI)
+);
+
+CREATE TABLE JOUER_INSTRUMENT (
+    idMG INT NOT NULL,
+    idI INT NOT NULL,
+    PRIMARY KEY (idMG, idI)
 );
 
 CREATE TABLE STYLE_MUSICAL (
@@ -154,31 +148,14 @@ CREATE TABLE GROUPE_STYLE (
     FOREIGN KEY (idSt) REFERENCES STYLE_MUSICAL (idSt)
 );
 
-CREATE TABLE LIEN_RESEAUX_SOCIAUX_MEMBRE (
-    idLRSM INT NOT NULL AUTO_INCREMENT,
-    idMG INT NOT NULL,
-    reseau VARCHAR(200),
-    URL VARCHAR(255),
-    PRIMARY KEY (idLRSM),
-    FOREIGN KEY (idMG) REFERENCES MEMBRE_GROUPE (idMG)
-);
-
 
 ALTER TABLE BILLET ADD FOREIGN KEY (idF) REFERENCES FESTIVAL (idF);
 ALTER TABLE BILLET ADD FOREIGN KEY (idType) REFERENCES TYPE_BILLET (idType);
 ALTER TABLE BILLET ADD FOREIGN KEY (idS) REFERENCES SPECTATEUR (idS);
 
-ALTER TABLE LIEU ADD FOREIGN KEY (idF) REFERENCES FESTIVAL (idF);
-
-ALTER TABLE PROGRAMMER ADD FOREIGN KEY (idF) REFERENCES FESTIVAL (idF);
-ALTER TABLE PROGRAMMER ADD FOREIGN KEY (idG) REFERENCES GROUPE (idG);
-ALTER TABLE PROGRAMMER ADD FOREIGN KEY (idH) REFERENCES HEBERGEMENT (idH);
-
 ALTER TABLE HEBERGEMENT ADD FOREIGN KEY (idG) REFERENCES GROUPE (idG);
 
 ALTER TABLE MEMBRE_GROUPE ADD FOREIGN KEY (idG) REFERENCES GROUPE (idG);
-
-ALTER TABLE INSTRUMENT ADD FOREIGN KEY (idMG) REFERENCES MEMBRE_GROUPE (idMG);
 
 ALTER TABLE LIEN_RESEAUX_SOCIAUX ADD FOREIGN KEY (idG) REFERENCES GROUPE (idG);
 
@@ -190,53 +167,61 @@ ALTER TABLE EVENEMENT ADD FOREIGN KEY (idG) REFERENCES GROUPE (idG);
 
 ALTER TABLE EVENEMENT ADD FOREIGN KEY (idL) REFERENCES LIEU (idL);
 
+ALTER TABLE JOUER_INSTRUMENT ADD FOREIGN KEY (idMG) REFERENCES MEMBRE_GROUPE (idMG);
+
+ALTER TABLE JOUER_INSTRUMENT ADD FOREIGN KEY (idI) REFERENCES INSTRUMENT (idI);
+
+ALTER TABLE SPECTATEUR ADD FOREIGN KEY (idUser) REFERENCES USER(idUser);
+
+ALTER TABLE GROUPE ADD FOREIGN KEY (idH) REFERENCES HEBERGEMENT(idH);
+
 -- Les Fonctions
 
-DELIMITER |
-CREATE OR REPLACE FUNCTION getNbBilletsVendus(idFestival INT) RETURNS INT
-BEGIN
-    IF NOT EXISTS (SELECT * FROM FESTIVAL WHERE idF = idFestival) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le festival n'existe pas";
-    END IF;
-    DECLARE nbBillets INT;
-    SELECT COUNT(*) INTO nbBillets FROM BILLET WHERE idF = idFestival;
-    RETURN nbBillets;  
-END |
-DELIMITER ;
+-- DELIMITER |
+-- CREATE OR REPLACE FUNCTION getNbBilletsVendus(idFestival INT) RETURNS INT
+-- BEGIN
+--     IF NOT EXISTS (SELECT * FROM FESTIVAL WHERE idF = idFestival) THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le festival n'existe pas";
+--     END IF;
+--     DECLARE nbBillets INT;
+--     SELECT COUNT(*) INTO nbBillets FROM BILLET WHERE idF = idFestival;
+--     RETURN nbBillets;  
+-- END |
+-- DELIMITER ;
 
-DELIMITER |
-CREATE OR REPLACE FUNCTION getGroupesByStyle(nomStyle VARCHAR(50)) RETURNS INT
-BEGIN
-    IF NOT EXISTS (SELECT * FROM STYLE_MUSICAL WHERE nomSt = nomStyle) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le style musical n'existe pas";
-    END IF;
-    DECLARE idStyleMusical INT;
-    SELECT idSt INTO idStyleMusical FROM STYLE_MUSICAL WHERE nomSt = nomStyle;
-    RETURN (SELECT COUNT(*) FROM GROUPE WHERE idSt = idStyleMusical);
-END |
-DELIMITER ;
+-- DELIMITER |
+-- CREATE OR REPLACE FUNCTION getGroupesByStyle(nomStyle VARCHAR(50)) RETURNS INT
+-- BEGIN
+--     IF NOT EXISTS (SELECT * FROM STYLE_MUSICAL WHERE nomSt = nomStyle) THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le style musical n'existe pas";
+--     END IF;
+--     DECLARE idStyleMusical INT;
+--     SELECT idSt INTO idStyleMusical FROM STYLE_MUSICAL WHERE nomSt = nomStyle;
+--     RETURN (SELECT COUNT(*) FROM GROUPE WHERE idSt = idStyleMusical);
+-- END |
+-- DELIMITER ;
 
-DELIMITER |
-CREATE OR REPLACE FUNCTION getPrixTotalBilletSpec(idSpectateur INT) RETURNS INT
-BEGIN
-    IF NOT EXISTS (SELECT * FROM SPECTATEUR WHERE idS = idSpectateur) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le spectateur n'existe pas";
-    END IF;
-    DECLARE totalPrix INT;
-    SELECT SUM(prix) INTO totalPrix FROM BILLET WHERE idS = idSpectateur;
-    RETURN totalPrix;
-END |
-DELIMITER ;
+-- DELIMITER |
+-- CREATE OR REPLACE FUNCTION getPrixTotalBilletSpec(idSpectateur INT) RETURNS INT
+-- BEGIN
+--     IF NOT EXISTS (SELECT * FROM SPECTATEUR WHERE idS = idSpectateur) THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le spectateur n'existe pas";
+--     END IF;
+--     DECLARE totalPrix INT;
+--     SELECT SUM(prix) INTO totalPrix FROM BILLET WHERE idS = idSpectateur;
+--     RETURN totalPrix;
+-- END |
+-- DELIMITER ;
 
-DELIMITER |
-CREATE OR REPLACE FUNCTION majPrixBillet(idBillet INT, nouveauPrix INT)
-BEGIN
-    IF NOT EXISTS (SELECT * FROM BILLET WHERE idB = idBillet) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le billet n'existe pas";
-    END IF;
-    UPDATE BILLET SET prix = nouveauPrix WHERE idB = idBillet;
-END |
-DELIMITER ;
+-- DELIMITER |
+-- CREATE OR REPLACE FUNCTION majPrixBillet(idBillet INT, nouveauPrix INT)
+-- BEGIN
+--     IF NOT EXISTS (SELECT * FROM BILLET WHERE idB = idBillet) THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le billet n'existe pas";
+--     END IF;
+--     UPDATE BILLET SET prix = nouveauPrix WHERE idB = idBillet;
+-- END |
+-- DELIMITER ;
 
 -- Les procédures 
 
@@ -274,20 +259,6 @@ DELIMITER ;
 CALL listeFestivals();
 
 -- Les triggers
-
--- BILLET :
--- Trigger pour vérifier la date d'achat par rapport à la fin du festival
--- delimiter |
--- create or replace trigger billetAchetable before insert on BILLET
--- for each row
--- begin
---     declare dateFinFestival DATE;
---     select dateFinF into dateFinFestival from FESTIVAL where idF = new.idF;
---     if (new.dateAchat > dateFinFestival) then
---         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Impossible d'acheter un billet pour un événement qui a déjà eu lieu";
---     end if;
--- end |
--- delimiter ;
 
 -- Trigger pour vérifier la durée du billet par rapport à la durée du festival
 delimiter |
@@ -328,7 +299,7 @@ for each row
 begin
     declare dateArriveeGroupe DATE;
     declare dateFinFestival DATE;
-    select dateArrivee into dateArriveeGroupe from PROGRAMMER where idF = new.idF and idL = new.idL and idH = new.idH;
+    select dateArrivee into dateArriveeGroupe from PROGRAMMER where idF = new.idF and idH = new.idH;
     select dateFinF into dateFinFestival from FESTIVAL where idF = new.idF;
     if (dateArriveeGroupe > dateFinFestival) then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Le groupe ne peut pas arriver après la fin du festival";
@@ -342,7 +313,7 @@ delimiter |
 create or replace trigger memeNomLieuFestival before insert on LIEU
 for each row
 begin
-    if exists (select 1 from LIEU where idF = new.idF and nomL = new.nomL) then
+    if exists (select 1 from LIEU where nomL = new.nomL) then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Un lieu avec le même nom existe déjà pour ce festival";
     end if;
 end |
@@ -397,16 +368,6 @@ end |
 delimiter ;
 
 delimiter |
-create or replace trigger emailDejaUtilise before insert on SPECTATEUR
-for each row
-begin
-    if exists (select 1 from SPECTATEUR where emailS = new.emailS) then
-        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "Cet email est déjà associé à un compte";
-    end if;
-end |
-delimiter ;
-
-delimiter |
 
 CREATE TRIGGER lieuDejaUtiliseDurantHoraire BEFORE INSERT ON EVENEMENT
 FOR EACH ROW
@@ -414,6 +375,9 @@ BEGIN
     DECLARE conflitTrouve INT DEFAULT 0;
     DECLARE tempsDemontageConcert TIME;
     DECLARE finEvenement TIME;
+    DECLARE evenementEnConflit VARCHAR(255);
+
+    -- Recherche du temps de démontage du concert au même lieu et même horaire
     SELECT IFNULL(MAX(c.tempsDemontage), '00:00:00') INTO tempsDemontageConcert
     FROM CONCERT c
     JOIN EVENEMENT e ON c.idE = e.idE
@@ -421,6 +385,8 @@ BEGIN
     AND e.dateDebutE <= NEW.dateDebutE
     AND e.dateFinE >= NEW.dateDebutE
     AND ADDTIME(e.heureFinE, c.tempsDemontage) > NEW.heureDebutE;
+
+    -- Vérification des conflits avec d'autres événements au même lieu et même horaire
     SELECT COUNT(*) INTO conflitTrouve
     FROM EVENEMENT e
     WHERE e.idL = NEW.idL
@@ -429,10 +395,22 @@ BEGIN
         (e.heureDebutE < NEW.heureFinE AND e.heureFinE > NEW.heureDebutE) OR
         (ADDTIME(e.heureFinE, tempsDemontageConcert) > NEW.heureDebutE)
     );
+
+    -- Récupération de l'événement en conflit
     IF conflitTrouve > 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Un événement ou concert est déjà prévu à ce lieu et cet horaire.";
+        SELECT CONCAT('Événement en conflit : ', e.nomE, ' à ', e.idL, ', Horaire : ', e.dateDebutE, ' ', e.heureDebutE) INTO evenementEnConflit
+        FROM EVENEMENT e
+        WHERE e.idL = NEW.idL
+        AND e.dateDebutE = NEW.dateDebutE
+        AND (
+            (e.heureDebutE < NEW.heureFinE AND e.heureFinE > NEW.heureDebutE) OR
+            (ADDTIME(e.heureFinE, tempsDemontageConcert) > NEW.heureDebutE)
+        );
+
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = evenementEnConflit;
     END IF;
 END |
+
 
 delimiter ;
 
@@ -454,11 +432,13 @@ BEGIN
     WHERE e.idG = NEW.idG
     AND e.dateDebutE = NEW.dateDebutE
     AND (
-        (NEW.heureDebutE < ADDTIME(e.heureFinE, IFNULL(c.tempsDemontage, '00:00:00'))) OR
-        (ADDTIME(NEW.heureDebutE, tempsMontageConcert) > e.heureDebutE AND ADDTIME(NEW.heureDebutE, tempsMontageConcert) < e.heureFinE)
+        (NEW.heureDebutE < ADDTIME(e.heureFinE, IFNULL(c.tempsDemontage, '00:00:00')) AND NEW.heureFinE > e.heureDebutE)
+        OR
+        (ADDTIME(NEW.heureDebutE, tempsMontageConcert) < e.heureFinE AND ADDTIME(NEW.heureFinE, tempsMontageConcert) > e.heureDebutE)
     );
     IF conflitExistant > 0 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Le groupe a déjà un événement prévu qui entre en conflit avec le nouvel horaire.";
+        SET @errorMessage = CONCAT('Le groupe (ID: ', NEW.idG, ') a déjà un événement prévu qui entre en conflit avec le nouvel horaire.');
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @errorMessage;
     END IF;
 END |
 

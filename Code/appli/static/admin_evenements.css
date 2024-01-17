@@ -181,3 +181,23 @@ button {
     margin-bottom: 1rem;
     width: 150px;
 }
+
+#modal-modifier form {
+    display: flex;
+    flex-direction: column;
+}
+
+#modal-modifier form input {
+    margin-bottom: 1rem;
+    width: 150px;
+}
+
+#modal-modifier form select {
+    margin-bottom: 1rem;
+    width: 150px;
+}
+
+#modal-modifier button {
+    margin: 0 auto;
+    display: block;
+}

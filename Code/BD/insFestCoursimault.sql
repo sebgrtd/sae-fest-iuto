@@ -3,9 +3,9 @@
 INSERT INTO FAQ (question, reponse) VALUES
     ('Quand aura lieu le festival ?', "Le festival aura lieu du 21 au 23 juin 2024."),
     ('Où aura lieu le festival ?', "Le festival aura lieu à Orléans."),
-    ('Quelles sont les horaires de chaque jour du festival ?', "Le festival aura lieu de 18h à 23h."),
+    ('Quelles sont les horaires de chaque jour du festival ?', "Le festival aura lieu de 18h à 23h chaque jour."),
     ('Y a-t-il un camping sur place ?', "Oui, un camping sera disponible à proximité du site du festival pour offrir aux festivaliers une expérience pratique et agréable."),
-    ('Les enfants sont-ils admis ?', "Le festival est ouvert à tous les âges."),
+    ('Les enfants sont-ils admis ?', "Bien sûr ! Le festival est ouvert à tous les âges."),
     ('Peut-on acheter des billets sur place ?', "Il est fortement recommandé d'acheter vos billets à l'avance. Cependant, selon la disponibilité, des billets pourraient être vendus à l'entrée du festival."),
     ('Y aura-t-il une restauration sur place ?', "Oui, il y aura une variété de stands de restauration offrant une large sélection de plats pour satisfaire tous les goûts et régimes alimentaires."),
     ('Les animaux de compagnie sont-ils autorisés ?', "Malheureusement, les animaux de compagnie ne seront pas autorisés à l'intérieur du festival pour des raisons de sécurité et de confort de tous les participants."),
@@ -15,7 +15,7 @@ INSERT INTO FAQ (question, reponse) VALUES
     ('Est-il possible de payer avec des espèces sur place ?', "Oui, des points de vente acceptant les espèces seront disponibles sur le site du festival. Cependant, nous encourageons également l'utilisation de cartes de débit ou de crédit pour plus de commodité."),
     ('Comment puis-je me porter volontaire pour travailler au festival ?', "Nous sommes toujours à la recherche de bénévoles enthousiastes pour rejoindre notre équipe. Veuillez consulter la section 'Bénévolat' sur notre site web pour plus d'informations sur la manière de postuler."),
     ('Y a-t-il des parkings disponibles près du site du festival ?', "Oui, plusieurs parkings seront disponibles aux alentours du parc des expositions de la Beaujoire pour les véhicules des festivaliers."),
-    ("Les billets sont-ils remboursables en cas d'annulation ?", "Les billets ne sont généralement pas remboursables. Cependant, veuillez consulter nos politiques d'annulation pour toute information spécifique sur les remboursements."),
+    ("Les billets sont-ils remboursables en cas d'annulation ?", "Non, les billets ne sont pas rembourçables. Vous pouvez tout de même nous contacter s'il y a besoin d'apporter des modificatios à vos billets."),
     ('Proposez-vous des activités pour les personnes à mobilité réduite ?', "Oui, nous nous efforçons de rendre le festival accessible à tous. Des installations spéciales seront mises en place pour garantir une expérience agréable aux personnes à mobilité réduite.");
 
 INSERT INTO USER (pseudoUser, mdpUser, emailUser, statutUser) VALUES
@@ -27,10 +27,16 @@ INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES
     ("FestIUT'O", 'Orléans', '2024-06-21', '2024-06-23');
 
 -- Insérer des données dans la table LIEU
-INSERT INTO LIEU (idF, nomL, adresseL, jaugeL) VALUES
-    (1, 'Cathédrale Sainte-Croix', '26 rue Saint-Etienne, 45000 Orléans', 1000),
-    (1, 'Place du Martroi', '28 place du Martroi, 45000 Orléans', 1000),
-    (1, 'Place de Loire', 'Rue de la Poterne, 45000 Orléans', 1000);
+INSERT INTO LIEU (nomL, adresseL, jaugeL) VALUES
+    ('Cathédrale Sainte-Croix', '26 rue Saint-Etienne, 45000 Orléans', 1000),
+    ('Place du Martroi', '28 place du Martroi, 45000 Orléans', 1000),
+    ('Place de Loire', 'Rue de la Poterne, 45000 Orléans', 1000);
+
+-- Insérer des données dans la table TYPE_BILLET
+INSERT INTO TYPE_BILLET(duree) VALUES
+    (1),
+    (2),
+    (3);
 
 -- Insérer des données dans la table HEBERGEMENT
 INSERT INTO HEBERGEMENT (nomH, limitePlacesH, adresseH) VALUES
@@ -45,27 +51,26 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
     Créé durant les années de collège de ces deux derniers, le groupe a fait partie intégrante du collectif Lyonzon de 2018 à 2023. 
     Il a également intégré le troisième membre Azur de 2018 à 2020 qui avait déjà collaboré avec Bushi en 2016 sous le nom Cool Kids pour un projet éponyme.'),
 
-    (2, 'Opium', "Opium est un label américain et une agence de création fondée par le rappeur et chanteur américain Playboi Carti. Le label compte actuellement parmi ses membres Carti, les rappeurs américains Ken Carson et Destroy Lonely, ainsi que le duo de hip-hop Homixide Gang.
+    (1, 'Opium', "Opium est un label américain et une agence de création fondée par le rappeur et chanteur américain Playboi Carti. Le label compte actuellement parmi ses membres Carti, les rappeurs américains Ken Carson et Destroy Lonely, ainsi que le duo de hip-hop Homixide Gang.
     Musicalement, le collectif Opium partageait un son similaire, avec des synthés sombres, grinçants et avant-gardistes mélangés à un beat rageur rappelant l'ère du punk rock des années 70 et 80. 
     Ce son expérimental s'éloignait du genre hip-hop trap actuel et s'était attiré les faveurs d'un groupe culte."),
 
-
-    (3, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
+    (1, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
     et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.'),
 
-    (3, 'IAM', "IAM est un groupe de hip-hop français, originaire de Marseille, dans les Bouches-du-Rhône. Formé en 1989, il se compose d'Akhenaton (Philippe Fragione), Shurik'n (Geoffroy Mussard), Khéops (Éric Mazel), Imhotep (Pascal Perez), Kephren (François Mendy) et Freeman (Malek Brahimi)."),
+    (1, 'IAM', "IAM est un groupe de hip-hop français, originaire de Marseille, dans les Bouches-du-Rhône. Formé en 1989, il se compose d'Akhenaton (Philippe Fragione), Shurik'n (Geoffroy Mussard), Khéops (Éric Mazel), Imhotep (Pascal Perez), Kephren (François Mendy) et Freeman (Malek Brahimi)."),
 
-    (3, "L'impératrice", "L'Impératrice est un groupe de musique français originaire de Paris. Il est composé de Charles de Boisseguin, Hagni Gwon, Achille Trocellier, David Gaugué, Tom Daveau, Flore Benguigui et Marion Brunetto. Le groupe est formé en 2012 et sort son premier album Matahari en 2018."),
+    (1, "L'impératrice", "L'Impératrice est un groupe de musique français originaire de Paris. Il est composé de Charles de Boisseguin, Hagni Gwon, Achille Trocellier, David Gaugué, Tom Daveau, Flore Benguigui et Marion Brunetto. Le groupe est formé en 2012 et sort son premier album Matahari en 2018."),
 
-    (3, "Luther", "Luther est un rappeur français originaire de Paris. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Kephren. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
+    (2, "Luther", "Luther est un rappeur français originaire de Paris. Il est membre du groupe de hip-hop marseillais IAM, qu'il a fondé en 1989 avec Akhenaton, Shurik'n, Kheops, Imhotep et Kephren. Il est également le fondateur du label indépendant Côté Obscur, créé en 1994, et du label indépendant 361 Records, créé en 2004."),
 
-    (3, "Booba", "Booba, de son vrai nom Élie Yaffa, né le 9 décembre 1976 à Boulogne-Billancourt, dans les Hauts-de-Seine, est un rappeur, producteur, entrepreneur et ancien boxeur français. Il est le fondateur du label indépendant 92i, sous-label de Tallac Records, et cofondateur du site web OKLM. Il est également le fondateur de la marque de vêtements et de lignes de parfums Ünkut."),
+    (2, "Booba", "Booba, de son vrai nom Élie Yaffa, né le 9 décembre 1976 à Boulogne-Billancourt, dans les Hauts-de-Seine, est un rappeur, producteur, entrepreneur et ancien boxeur français. Il est le fondateur du label indépendant 92i, sous-label de Tallac Records, et cofondateur du site web OKLM. Il est également le fondateur de la marque de vêtements et de lignes de parfums Ünkut."),
 
-    (3, "Damso", "Damso, de son vrai nom William Kalubi, né le 10 mai 1992 à Kinshasa, au Zaïre, est un rappeur et auteur-compositeur belge. Il est membre du 92i, un collectif de rap français dont il est considéré comme le pilier. Il commence sa carrière en tant que membre du groupe OPG en 2006, et se fait connaître en 2015 avec sa mixtape Salle d'attente."),
+    (2, "Damso", "Damso, de son vrai nom William Kalubi, né le 10 mai 1992 à Kinshasa, au Zaïre, est un rappeur et auteur-compositeur belge. Il est membre du 92i, un collectif de rap français dont il est considéré comme le pilier. Il commence sa carrière en tant que membre du groupe OPG en 2006, et se fait connaître en 2015 avec sa mixtape Salle d'attente."),
 
-    (3, "Vladimir Cauchemar", "Vladimir Cauchemar, de son vrai nom Charles de Boisseguin, né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+    (2, "Vladimir Cauchemar", "Vladimir Cauchemar, de son vrai nom Charles de Boisseguin, né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français."),
 
-    (3, "4am-Liam", "4am-Liam, de son vrai nom Liam Sottier, est un jeune informaticien et artiste indépendant qui a publié en fin 2023 son EP Aujourd'hui."),
+    (2, "4am-Liam", "4am-Liam, de son vrai nom Liam Sottier, est un jeune informaticien et artiste indépendant qui a publié en fin 2023 son EP Aujourd'hui."),
 
     (3, "Daft Punk", "Daft Punk est un groupe de musique électronique français, originaire de Paris. Composé de Thomas Bangalter et Guy-Manuel de Homem-Christo, le groupe est actif depuis 1993, et participe à la création et à la démocratisation du mouvement de musique électronique baptisé french touch. Il est considéré comme l'un des groupes de musique électronique les plus influents de l'histoire."),
 
@@ -81,18 +86,17 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
 
     (3, "Red Hot Chili Peppers", "Red Hot Chili Peppers est un groupe de rock américain, originaire de Los Angeles, en Californie. Il est formé en 1983 par Anthony Kiedis et Michael Balzary (surnommé « Flea », basse), auxquels se joignent Hillel Slovak et Jack Irons (guitares). Le groupe a connu de nombreux changements de musiciens au cours de son existence avec Kiedis et Flea comme seuls membres stables. Il est actuellement composé de Flea, Anthony Kiedis, Chad Smith et John Frusciante."),
 
-    (3, "Lana Del Rey", "Elizabeth Woolridge Grant, dite Lana Del Rey, né le 21 juin 1985 à New York, est une auteure-compositrice-interprète américaine."),
+    (4, "Lana Del Rey", "Elizabeth Woolridge Grant, dite Lana Del Rey, né le 21 juin 1985 à New York, est une auteure-compositrice-interprète américaine."),
 
-    (3, "Coldplay", "Coldplay est un groupe pop rock britannique originaire de Londres en Angleterre, formé en 1996."),
+    (4, "Coldplay", "Coldplay est un groupe pop rock britannique originaire de Londres en Angleterre, formé en 1996."),
 
-    (3, "ABBA", "ABBA est un groupe suédois de pop, originaire de Stockholm. Formé le 1er novembre 1971, le groupe est originellement composé d'Agnetha Fältskog, Benny Andersson, Björn Ulvaeus et Anni-Frid « Frida » Lyngstad. Lors de leur formation, ils sont deux couples mariés : Agnetha et Björn, Frida et Benny. Le nom du groupe est à la fois un acronyme et un palindrome, composé des initiales des prénoms des membres. Ce n'est qu'à partir de 1976 que l'ambigramme — AᗺBA, avec un B inversé — est utilisé comme logo.");
+    (4, "ABBA", "ABBA est un groupe suédois de pop, originaire de Stockholm. Formé le 1er novembre 1971, le groupe est originellement composé d'Agnetha Fältskog, Benny Andersson, Björn Ulvaeus et Anni-Frid « Frida » Lyngstad. Lors de leur formation, ils sont deux couples mariés : Agnetha et Björn, Frida et Benny. Le nom du groupe est à la fois un acronyme et un palindrome, composé des initiales des prénoms des membres. Ce n'est qu'à partir de 1976 que l'ambigramme — AᗺBA, avec un B inversé — est utilisé comme logo.");
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
     (1, 'Bushi', 'Bushi', 'Bushi', 'BUSHI, jeune rappeur de Lyon, fait énormément parler de lui ces derniers temps par rapport à ses diverses apparitions aux quatre coins du monde ainsi que sa productivité et 
     sa communication qui font tourner beaucoup de mystère autour de ce personnage. L’artiste peut paraître des plus underground. Egotrip monstre, placements particuliers, ces éléments font sa force. Il se démarque par sa prestance, 
     sa nonchalance et ses placements sortis de nulle part. Un vrai rappeur US en somme.'),
-
 
     (1, 'Mussy', 'Mussy', 'Mussy', "Mussy est un rappeur français d'origine Tutsi (Rwanda) ayant grandi à La Réunion. Il est membre du groupe Saturn Citizen et du collectif Lyonzon. Le rappeur crée Saturn Citizen avec son ami Bushi durant ses années de collège et rejoint Lyonzon en 2017. Cependant, il reste très discret et c'est réellement lors du “Freestyle Arah #3” que Mussy officialise son appartenance et signe son grand retour au sein des deux groupes, 
     avant de s'envoler à Lyon (69). L'artiste dévoile en 2020 son premier projet en solo, intitulé Jig."),
@@ -111,7 +115,6 @@ INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VAL
 
     (3, 'La Fève', 'La Fève', 'La Fève', "La Fève, de son vrai nom Louis Ambroise Germain1, est un rappeur et producteur français.
 Il est un membre du mouvement musical new wave du hip-hop français. Sa musique est jugée innovante, utilisant une sélection éclectique de flows, productions et refrains."),
-
 
     (3, 'Khali', 'Khali', 'Khali', "Khali, né à Lyon le 20 novembre 1999 et de son vrai nom Khalil Lakbir, est un rappeur, producteur et chanteur franco-marocain. Il fait partie du mouvement musical new wave du hip-hop français."),
 
@@ -154,7 +157,7 @@ En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et R
 
     (8, "Kalubi", "William", "Damso", "William Kalubi, né le 10 mai 1992 à Kinshasa, au Zaïre, est un rappeur et auteur-compositeur belge. Il est membre du 92i, un collectif de rap français dont il est considéré comme le pilier. Il commence sa carrière en tant que membre du groupe OPG en 2006, et se fait connaître en 2015 avec sa mixtape Salle d'attente."),
 
-    (9, "de Boisseguin", "Charles", "Vladimir Cauchemar", "Charles de Boisseguin, né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français. Il est le fondateur du groupe de musique L'Impératrice, dont il est le chanteur et le claviériste. Il est également le fondateur du label indépendant Microqlima, créé en 2015, et du label indépendant Cracki Records, créé en 2011."),
+    (9, "de Boisseguin", "Charles", "Vladimir Cauchemar", "Vladimir Cauchemar, de son vrai nom Charles de Boisseguin, né le 20 mai 1989 à Paris, est un musicien, producteur et réalisateur français."),
 
     (10, "Sottier", "Liam", "4am-Liam", "Liam Sottier, est un jeune informaticien et artiste indépendant qui a publié en fin 2023 son EP Aujourd'hui."),
 
@@ -190,7 +193,7 @@ En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et R
 
     (16, "Morville", "Didier", "JoeyStarr", "Didier Morville, dit JoeyStarr, né le 27 octobre 1967 à Saint-Denis, est un rappeur, producteur, entrepreneur et acteur français. Il est membre du groupe de hip-hop Suprême NTM, qu'il a fondé en 1989 avec Kool Shen. Il est également le fondateur du label indépendant IV My People, créé en 1998."),
 
-    (17, "Kiedis", "Anthony", "Anthony Kiedis est un chanteur, acteur et producteur américain né le 1er novembre 1962, à Grand Rapids, dans le Michigan. Il est chanteur principal du groupe de rock Red Hot Chili Peppers, qu'il a fondé en 1983 avec le bassiste Michael Balzary dit « Flea »."),
+    (17, "Kiedis", "Anthony", "Anthony Keidis", "Anthony Kiedis est un chanteur, acteur et producteur américain né le 1er novembre 1962, à Grand Rapids, dans le Michigan. Il est chanteur principal du groupe de rock Red Hot Chili Peppers, qu'il a fondé en 1983 avec le bassiste Michael Balzary dit « Flea »."),
 
     (17, "Balzary", "Michael", "Flea", "Michael Peter Balzary, dit Flea (« puce » en anglais), est un bassiste, pianiste, trompettiste et acteur australo-américain, né le 16 octobre 1962 à Melbourne, en Australie. Il est l'un des membres fondateurs du groupe de rock Red Hot Chili Peppers, avec le chanteur Anthony Kiedis. Son surnom vient à la fois de sa petite taille et de sa façon assez sautillante d'occuper l'espace d'une scène."),
 
@@ -200,7 +203,7 @@ En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et R
 
     (18, "Grant", "Elizabeth", "Lana Del Rey", "Elizabeth Woolridge Grant, dite Lana Del Rey, né le 21 juin 1985 à New York, est une auteure-compositrice-interprète américaine."),
 
-    (19, "Martin", "Chris", "Coldpay", "Chris Martin est un auteur-compositeur-interprète et producteur anglais, né le 2 mars 1977 à Exeter dans le Devon. Il est leader du groupe Coldplay, qu'il forme à Londres, en 1996, avec Jon Buckland (guitare), Guy Berryman (basse) et Will Champion (batterie)")
+    (19, "Martin", "Chris", "Coldpay", "Chris Martin est un auteur-compositeur-interprète et producteur anglais, né le 2 mars 1977 à Exeter dans le Devon. Il est leader du groupe Coldplay, qu'il forme à Londres, en 1996, avec Jon Buckland (guitare), Guy Berryman (basse) et Will Champion (batterie)"),
 
     (19, "Buckland", "Jonathan", "Coldplay", "Jonathan Mark Buckland, né le 11 septembre 1977, dans le quartier londonien d'Islington est un guitariste anglais, membre du groupe Coldplay."),
 
@@ -212,89 +215,283 @@ En mars 2023, il dévoile son deuxième projet, VAGALAME, où J9ueve, Khali et R
 
     (20, "Ulvaues", "Björn", "ABBA", "Björn Kristian Ulvaeus, parfois orthographié Ulvæus, né le 25 avril 1945 à Göteborg, est un guitariste, chanteur, compositeur de chansons, parolier et producteur suédois. Président de la CISAC depuis 2020, il est connu pour avoir été un membre des groupes suédois Hootenanny Singers et surtout ABBA."),
 
-    (20, "Lyngstad", "Anni-Frid", "ABBA", "Anni-Frid Lyngstad, surnommée « Frida », princesse Reuss et comtesse de Plauen par son troisième mariage, née le 15 novembre 1945 à Bjørkåsen près de Narvik en Norvège, est une chanteuse suédoise. Elle est membre du groupe pop suédois ABBA.");
+    (20, "Lyngstad", "Anni-Frid", "ABBA", "Anni-Frid Lyngstad, surnommée 'Frida', princesse Reuss et comtesse de Plauen par son troisième mariage, née le 15 novembre 1945 à Bjørkåsen près de Narvik en Norvège, est une chanteuse suédoise. Elle est membre du groupe pop suédois ABBA.");
 
 -- Insérer des données dans la table INSTRUMENT
-INSERT INTO INSTRUMENT (idMG, nomI) VALUES
-    (1, 'DJ'),
-    (2, 'Chanteur'),
-    (3, 'Chanteur'),
-    (4, 'Chanteur'),
-    (5, 'Chanteur'),
-    (6, 'Chanteur'),
-    (7, 'Chanteur'),
-    (8, 'Chanteur'),
-    (9, 'Chanteur'),
-    (10, 'Chanteur');
+INSERT INTO INSTRUMENT (nomI) VALUES
+    ('Micro'),
+    ("Platine"),
+    ("Clavier"),
+    ("Roland"),
+    ("Guitare"),
+    ("Batterie"),
+    ("Basse"),
+    ("Piano"),
+    ("Trompette");
+
+
+INSERT INTO JOUER_INSTRUMENT (idMG, idI) VALUES 
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (4, 1),
+    (5, 1),
+    (6, 1),
+    (7, 1),
+    (8, 1),
+    (9, 1),
+    (10, 1),
+    (11, 1),
+    (12, 1),
+    (13, 2),
+    (14, 2),
+    (15, 2),
+    (16, 1),
+    (17, 3),
+    (18, 3),
+    (19, 3),
+    (20, 3),
+    (21, 3),
+    (22, 1),
+    (23, 3),
+    (24, 1),
+    (25, 1),
+    (26, 1),
+    (27, 2),
+    (27, 3),
+    (28, 1),
+    (29, 4),
+    (30, 4),
+    (31, 1),
+    (32, 5),
+    (33, 5),
+    (33, 6),
+    (34, 1),
+    (35, 5),
+    (36, 6),
+    (37, 1),
+    (37, 5),
+    (38, 6),
+    (39, 5),
+    (40, 6),
+    (41, 1),
+    (42, 1),
+    (43, 1),
+    (44, 1),
+    (45, 1),
+    (46, 7),
+    (46, 8),
+    (46, 9),
+    (47, 6),
+    (48, 5),
+    (49, 1),
+    (50, 1),
+    (51, 5),
+    (52, 7),
+    (53, 1),
+    (54, 3),
+    (55, 1),
+    (56, 1);
+
 
 -- Insérer des données dans la table LIEN_RESEAUX_SOCIAUX
 INSERT INTO LIEN_RESEAUX_SOCIAUX (idG, reseau) VALUES
     (1, 'https://www.youtube.com/channel/UCQxeWQ_K8aQ0KOXMDi03H5Q'),
     (1, 'https://www.instagram.com/saturnciti/'),
-    (1, 'https://open.spotify.com/intl-fr/artist/7siKy5Wrq7TwvyJ21KushJ');
+    (1, 'https://open.spotify.com/intl-fr/artist/7siKy5Wrq7TwvyJ21KushJ'),
+    (2, "https://www.youtube.com/@playboicarti"),
+    (2, "https://www.instagram.com/playboicarti/"),
+    (2, "https://open.spotify.com/intl-fr/artist/699OTQXzgjhIYAHMy9RyPD"),
+    (3, "https://www.youtube.com/@Blackmen3781"),
+    (3, "https://www.instagram.com/lafeve7/"),
+    (3, "https://open.spotify.com/intl-fr/artist/2sBKOwN0fSjx39VtL2WpjJ"),
+    (4, "https://www.youtube.com/channel/UCucyYBZK92N79N1xT1hlEXQ"),
+    (4, "https://www.instagram.com/iam.officiel/?hl=fr"),
+    (4, "https://open.spotify.com/intl-fr/artist/56Q6weEROZ1RsVrTak8Bm7"),
+    (5, "https://www.youtube.com/@limperatrice_"),
+    (5, "https://www.instagram.com/l.imperatrice/"),
+    (5, "https://open.spotify.com/intl-fr/artist/4PwlsrN0t5mLN0C827cbEU"),
+    (6, "https://www.youtube.com/@luther3971"),
+    (6, "https://www.instagram.com/lutherantz/"),
+    (6, "https://open.spotify.com/intl-fr/artist/712cOCN3mpraX2UOgUvdHW"),
+    (7, "https://www.youtube.com/@B2ObaOfficiel"),
+    (7, "https://www.instagram.com/boobalapiraterieofficial/?hl=fr"),
+    (7, "https://open.spotify.com/intl-fr/artist/58wXmynHaAWI5hwlPZP3qL"),
+    (8, "https://www.youtube.com/channel/UCxsYR3_7CKZeRfdJpqGxmdw"),
+    (8, "https://www.instagram.com/thevie/"),
+    (8, "https://open.spotify.com/intl-fr/artist/2UwqpfQtNuhBwviIC0f2ie"),
+    (9, "https://www.youtube.com/@vladimircauchemar8737"),
+    (9, "https://www.instagram.com/vladimircauchemar/"),
+    (9, "https://open.spotify.com/intl-fr/artist/2V5xArcB3BGAHmwsK46tyU"),
+    (10, "https://www.youtube.com/@4am_music"),
+    (10, "https://www.instagram.com/4am_liam/"),
+    (10, "https://open.spotify.com/intl-fr/artist/4faOOLWKfYRDZxun5sqEGo"),
+    (11, "https://www.youtube.com/@daftpunk"),
+    (11, "https://www.instagram.com/daftpunk/"),
+    (11, "https://open.spotify.com/intl-fr/artist/4tZwfgrHOc3mvqYlEYSvVi"),
+    (12, "https://www.youtube.com/channel/UCirb9Nrr54mVqVcd-P2A2ig"),
+    (12, "https://www.instagram.com/louiseattaqueofficiel/"),
+    (12, "https://open.spotify.com/intl-fr/artist/4CAsSAU842glNKJX71ndA9"),
+    (13, "https://www.youtube.com/channel/UCNDAbwbXmmgosddFdUyRWwg"),
+    (13, "https://www.instagram.com/wearephoenix/"),
+    (13, "https://open.spotify.com/intl-fr/artist/1xU878Z1QtBldR7ru9owdU"),
+    (14, "https://www.youtube.com/@gojira"),
+    (14, "https://www.instagram.com/gojiraofficial/"),
+    (14, "https://open.spotify.com/intl-fr/artist/0GDGKpJFhVpcjIGF8N6Ewt"),
+    (15, "https://www.youtube.com/channel/UCmvtGezn6LpfUN1QW0aEaTg"),
+    (15, "https://www.instagram.com/moderntalking.official/"),
+    (15, "https://open.spotify.com/intl-fr/artist/79bxUQsBIXO8nVLB9fYKf7"),
+    (16, "https://www.youtube.com/channel/UCFPlqTVnbYhXpW1rBLTwQ5g"),
+    (16, "https://www.instagram.com/suprementm_officiel/"),
+    (16, "https://open.spotify.com/intl-fr/artist/4ko6Ysxtvx9EY9GEFslrIz"),
+    (17, "https://www.youtube.com/@RedHotChiliPeppers"),
+    (17, "https://www.instagram.com/chilipeppers/"),
+    (17, "https://open.spotify.com/intl-fr/artist/0L8ExT028jH3ddEcZwqJJ5"),
+    (18, "https://www.youtube.com/channel/UCqk3CdGN_j8IR9z4uBbVPSg"),
+    (18, "https://www.instagram.com/honeymoon/"),
+    (18, "https://open.spotify.com/intl-fr/artist/00FQb4jTyendYWaN8pK0wa"),
+    (19, "https://www.youtube.com/channel/UCDPM_n1atn2ijUwHd0NNRQw"),
+    (19, "https://www.instagram.com/coldplay/"),
+    (19, "https://open.spotify.com/intl-fr/artist/4gzpq5DPGxSnKTe4SA8HAU"),
+    (20, "https://www.youtube.com/channel/UCYPs4y5esNqx6ax1CxZws6Q"),
+    (20, "https://www.instagram.com/abba/"),
+    (20, "https://open.spotify.com/intl-fr/artist/0LcJLqbBmaGUft1e9Mm8HV");
 
--- Insérer des données dans la table SPECTATEUR
-INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES
-    ('Spectateur 1', 'Prénom 1', 2),
-    ('Spectateur 2', 'Prénom 2', 2),
-    ('Spectateur 3', 'Prénom 3', 2),
-    ('Spectateur 4', 'Prénom 4', 2),
-    ('Spectateur 5', 'Prénom 5', 2);
+
+
+
 
 -- Insérer des données dans la table STYLE_MUSICAL
 INSERT INTO STYLE_MUSICAL (nomSt) VALUES
     ("Rap"),
     ("Pop"),
-    ("New-disco"),
-    ("Electro");
-    
+    ("Disco"),
+    ("Electro"),
+    ("Musique électronique"),
+    ("House"),
+    ("Rock"),
+    ("Métal");
+
+INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
+
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (4, 1),
+    (6, 1),
+    (7, 1),
+    (8, 1),
+    (10, 1),
+    (16, 1),
+    (5, 2),
+    (5, 3),
+    (5, 4),
+    (9, 5),
+    (11, 3),
+    (11, 5),
+    (11, 6),
+    (12, 7),
+    (13, 7),
+    (14, 8),
+    (15, 2),
+    (17, 7),
+    (18, 2),
+    (18, 7),
+    (19, 2),
+    (19, 7),
+    (20, 2);
 
 
 -- Insérer des données dans la table EVENEMENT
 INSERT INTO EVENEMENT (idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
-    (1, 1, 'Concert de Saturn Citizen', '09:00:00', '10:00:00', '2024-06-21', '2024-06-21'),
-    (2, 2, 'Concert de Red Hot Chili Peppers', '09:00:00', '10:30:00', '2024-06-21', '2024-06-21'),
-    (3, 3, 'Activité Annexe de Lana Del Rey', '11:00:00', '11:45:00', '2024-06-21', '2024-06-21'),
+    -- Jour 1
+    (1, 1, 'Concert de Saturn Citizen', '18:10:00', '19:10:00', '2024-06-21', '2024-06-21'),
+    (10, 1, "Concert de 4am-Liam", "20:00:00", "20:50:00", '2024-06-21', '2024-06-21'),
+    (2, 1, "Activité Annexe d'Opium'", "21:30:00", "22:00:00", '2024-06-21', '2024-06-21'),
 
+    (17, 2, 'Concert de Red Hot Chili Peppers', '18:10:00', '19:30:00', '2024-06-21', '2024-06-21'),
+    (10, 2, "Activité annexe de 4am-Liam", "21:00:00", "21:30:00", '2024-06-21', '2024-06-21'),
+    (2, 2, "Concert d'Opium'", "22:00:00", "23:00:00", '2024-06-21', '2024-06-21'),
+    
+    (6, 3, "Concert de Luther", "18:30:00", "19:30:00", '2024-06-21', '2024-06-21'),
+    (18, 3, 'Activité Annexe de Lana Del Rey', '20:05:00', '20:50:00', '2024-06-21', '2024-06-21'),
+    (18, 3, "Concert de Lana Del Rey", "21:30:00", "22:45:00", '2024-06-21', '2024-06-21'),
 
-INSERT INTO TYPE_BILLET(duree) VALUES
-    (1),
-    (2),
-    (3);
+    -- Jour 2
+
+    (11, 1, "Concert des Daft Punk", "18:00:00", "19:30:00", '2024-06-22', '2024-06-22'),
+    (9, 1, "Concert de Vladimir Cauchemar", "20:00:00", "21:30:00", '2024-06-22', '2024-06-22'),
+    (9, 1, "Activité annexe de Vladimir Cauchemar", "22:00:00", "22:30:00", '2024-06-22', '2024-06-22'),
+
+    (3, 2, "Concert de New Wave", "18:00:00", "19:00:00", '2024-06-22', '2024-06-22'),
+    (7, 2, "Concert de Booba", "19:20:00", "20:20:00", '2024-06-22', '2024-06-22'),
+    (7, 2, "Activité annexe de Booba", "20:45:00", "21:30:00", '2024-06-22', '2024-06-22'),
+    (16, 2, "Concert de Suprême NTM", "21:45:00", "23:00:00", '2024-06-22', '2024-06-22'),
+
+    (5, 3, "Concert de L'impératrice", "18:00:00", "20:00:00", '2024-06-22', '2024-06-22'),
+    (5, 3, "Activité Annexe de L'impératrice", "20:30:00", "21:00:00", '2024-06-22', '2024-06-22'),
+    (13, 3, "Concert de Phoenix", "21:30:00", "23:00:00", '2024-06-22', '2024-06-22'),
+
+    -- Jour 3
+
+    (12, 1, "Concert de Louise Attaque", "18:00:00", "19:30:00", '2024-06-23', '2024-06-23'),
+    (12, 1, "Activité Annexe de Louise Attaque", "20:00:00", "20:30:00", '2024-06-23', '2024-06-23'),
+    (14, 1, "Concert de Gojira", "21:00:00", "22:30:00", '2024-06-23', '2024-06-23'),
+
+    (15, 2, "Concert de Modern Talking", "18:00:00", "19:30:00", '2024-06-23', '2024-06-23'),
+    (15, 2, "Activité Annexe de Modern Talking", "20:00:00", "20:30:00", '2024-06-23', '2024-06-23'),
+    (19, 2, "Concert de Coldplay", "21:00:00", "22:30:00", '2024-06-23', '2024-06-23'),
+
+    (20, 3, "Concert d'ABBA", "18:00:00", "19:30:00", '2024-06-23', '2024-06-23'),
+    (8, 3, "Concert de Damso", "20:00:00", "20:30:00", '2024-06-23', '2024-06-23'),
+    (4, 3, "Concert d'IAM", "21:00:00", "22:45:00", '2024-06-23', '2024-06-23');
+
 
 -- Insérer des données dans la table CONCERT
 INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
-    (1, '00:10:00', '00:10:00'),
-    (2, '00:30:00', '00:15:00'),
+    -- Jour 1 
+    (1,"00:10:00", "00:10:00"),
+    (2,"00:10:00", "00:10:00"),
+    (4,"00:30:00", "00:10:00"),
+    (6,"00:10:00", "00:10:00"),
+    (7,"00:10:00", "00:10:00"),
+    (9,"00:10:00", "00:10:00"),
 
-INSERT INTO ACTIVITE_ANNEXE (idE, typeA, ouvertAuPublic) VALUES
-    (3, 'Séance de dédicace', true),
+    -- Jour 2
+    (10,"00:10:00", "00:10:00"),
+    (11,"00:10:00","00:10:00"),
+    (13,"00:10:00","00:10:00"),
+    (14,"00:10:00","00:10:00"),
+    (16,"00:10:00","00:10:00"),
+    (17,"00:10:00","00:10:00"),
+    (19,"00:10:00","00:10:00"),
+
+    -- Jour 3
+    (20,"00:10:00","00:10:00"),
+    (22,"00:10:00","00:10:00"),
+    (23,"00:10:00","00:10:00"),
+    (25,"00:10:00","00:10:00"),
+    (26,"00:10:00","00:10:00"),
+    (27,"00:10:00","00:10:00"),
+    (28,"00:10:00","00:10:00");
     
 
-INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
-    (1, 1),
-    (2, 1),
-    (3, 1),
-    (4, 1);
+-- Insérer des données dans la table ACTIVITE_ANNEXE
+INSERT INTO ACTIVITE_ANNEXE (idE, typeA, ouvertAuPublic) VALUES
+    -- Jour 1
+    (3, 'Interview', false),
+    (5, 'Interview', false),
+    (8, 'Séance de dédicaces', true),
+    
 
--- Insérer des données dans la table PROGRAMMER
-INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2024-08-06', '08:00:00', '2024-08-06', '16:00:00');
+    -- Jour 2
+    (12, 'Backstage', true),
+    (15, 'Séance de dédicace', true),
+    (18, 'Activité composition', true),
 
--- test des triggers
+    -- Jour 3
+    (21, 'Session photographies', true),
+    (24, 'Backstage', true);
 
--- Impossible d'acheter un billet pour un événement qui a déjà eu lieu
-INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
-    (1, 1, 1, 50, '2024-10-01', '2024-06-21', '2024-06-21');
 
--- La durée du billet est trop grande par rapport à celle du festival
-INSERT INTO BILLET (idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB) VALUES
-    (3, 1, 1, 50, '2024-08-01', '2024-08-01', '2024-08-06');
 
--- Le groupe ne peut pas arriver avant le début du festival
-INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2024-05-06', '08:00:00', '2024-05-06', '16:00:00');
-
--- Le groupe ne peut pas arriver après la fin du festival
-INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES
-    (1, 1, 1, '2024-10-06', '08:00:00', '2024-10-06', '16:00:00');
