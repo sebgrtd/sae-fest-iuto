@@ -25,6 +25,8 @@ export default class Groupe{
     scene: string = "";
     heureFinPassage: string = "";
     reseaux: Reseaux = new Reseaux("", "", "", "", "");
+    nomStyle: any;
+    nomSt: any;
 
     constructor(idG: number, nomG: string, descriptionG: string, datePassage: string, heurePassage: string) {
         this.idG = idG;

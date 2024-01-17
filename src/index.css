@@ -1927,7 +1927,9 @@ footer .bottom-content h5{
 
 .tab-artiste table{
   border-collapse: collapse;
+  border-radius: 12px;
 }
+
 
 .tab-artiste thead tr{
   background-color: var(--color-dark);
@@ -1940,6 +1942,7 @@ footer .bottom-content h5{
 
 .tab-artiste td{
   color: var(--color-dark);
+  font-weight: 600;
 }
 
 .tab-artiste thead tr th, .tab-artiste td{
@@ -1985,6 +1988,13 @@ footer .bottom-content h5{
   max-width: 1.5rem;
   max-height: 1.5rem;
   left: 50%;
+}
+
+#Horaire .les-horaires{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
 }
 
 /* fais des media queries qui ne changent que le fontsize du body */
