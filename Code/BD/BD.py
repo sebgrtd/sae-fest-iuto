@@ -376,7 +376,7 @@ class Reseaux:
     
 
 class Groupe:
-    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False, heureFinPassage: str = None, Reseaux: Reseaux = None):
+    def __init__(self, idG: int, idH: int, nomG: str, descriptionG: str, datePassage: str = None, heurePassage: str = None, isSaved: bool = False, heureFinPassage: str = None, Reseaux: Reseaux = None, genresMusicaux: list = None, membresGroupe : list = None, evenementsAnnexes: list = None):
         self.__idG = idG
         self.__idH = idH
         self.__nomG = nomG
@@ -386,6 +386,9 @@ class Groupe:
         self.__isSaved = isSaved
         self.__heureFinPassage = heureFinPassage if heureFinPassage == None else  self.timedelta_to_time(heureFinPassage) if isinstance(heureFinPassage, timedelta) else datetime.strptime(heureFinPassage, '%H:%M').time()
         self.__Reseaux = Reseaux
+        self.__genresMusicaux = genresMusicaux
+        self.__membresGroupe = membresGroupe
+        self.__evenementsAnnexes = evenementsAnnexes
         
     @staticmethod
     def timedelta_to_time(td):
@@ -425,8 +428,35 @@ class Groupe:
             "heurePassage": self.__heurePassage.strftime("%H:%M:%S") if self.__heurePassage != None else "",
             "isSaved": self.__isSaved,
             "heureFinPassage": self.__heureFinPassage.strftime("%H:%M:%S") if self.__heureFinPassage != None else "",
-            "reseaux": self.__Reseaux.to_dict() if self.__Reseaux != None else None
+            "reseaux": self.__Reseaux.to_dict() if self.__Reseaux != None else None,
+            #genresMusicaux est une liste de string
+            "genresMusicaux": self.__genresMusicaux,
+            #membresGroupes est une liste de string
+            "membresGroupe": self.__membresGroupe,
+            #evenementsAnnexes est une liste de Evenement
+            "evenementsAnnexes": [evenement.to_dict() for evenement in self.__evenementsAnnexes] if self.__evenementsAnnexes != None else None
         }
+        
+    def set_datePassage(self, datePassage):
+        self.__datePassage = datePassage
+        
+    def set_heurePassage(self, heurePassage):
+        self.__heurePassage = heurePassage
+        
+    def set_isSaved(self, isSaved):
+        self.__isSaved = isSaved
+    
+    def set_heureFinPassage(self, heureFinPassage):
+        self.__heureFinPassage = heureFinPassage
+    
+    def set_genresMusicaux(self, genresMusicaux):
+        self.__genresMusicaux = genresMusicaux
+        
+    def set_membresGroupes(self, membresGroupes):
+        self.__membresGroupes = membresGroupes
+        
+    def set_evenementsAnnexes(self, evenementsAnnexes):
+        self.__evenementsAnnexes = evenementsAnnexes
         
     def set_nomG(self, nomG):
         self.__nomG = nomG
