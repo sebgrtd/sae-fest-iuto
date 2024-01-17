@@ -25,7 +25,7 @@ def inserer_images():
     les_images = liste_images("../img/")
     connexionBD = ConnexionBD()
     groupeBD = GroupeBD(connexionBD)
-    liste_groupes = groupeBD.get_all_groupes()
+    liste_groupes = groupeBD.get_all_groupes_bd_normal()
     if len(liste_groupes) != len(les_images):
         print("Erreur: le nombre d'images ne correspond pas au nombre de groupes")
         return

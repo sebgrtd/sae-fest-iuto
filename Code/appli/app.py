@@ -319,7 +319,7 @@ def login_admin():
 def groupes_festival():
     connexionbd = ConnexionBD()
     groupebd = GroupeBD(connexionbd)
-    liste_groupes = groupebd.get_all_groupes()
+    liste_groupes = groupebd.get_all_groupes_bd_normal()
 
     if liste_groupes is None:
         liste_groupes = []
