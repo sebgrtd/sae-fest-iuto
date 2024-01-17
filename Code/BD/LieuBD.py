@@ -9,28 +9,28 @@ class LieuBD:
         
     def get_all_lieux(self):
         try:
-            query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU")
+            query = text("SELECT idL, nomL, adresseL, jaugeL FROM LIEU")
             result = self.connexion.get_connexion().execute(query)
             liste_lieux = []
-            for idL, idF, nomL, adresseL, jaugeL in result:
-                liste_lieux.append(Lieu(idL, idF, nomL, adresseL, jaugeL))
+            for idL, nomL, adresseL, jaugeL in result:
+                liste_lieux.append(Lieu(idL, nomL, adresseL, jaugeL))
             return liste_lieux
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
     def get_lieu_by_id(self, idLieu):
         try:
-            query = text("SELECT idL, idF, nomL, adresseL, jaugeL FROM LIEU WHERE idL = :idLieu")
+            query = text("SELECT idL, nomL, adresseL, jaugeL FROM LIEU WHERE idL = :idLieu")
             result = self.connexion.get_connexion().execute(query, {"idLieu": idLieu})
-            for idL, idF, nomL, adresseL, jaugeL in result:
-                return Lieu(idL, idF, nomL, adresseL, jaugeL)
+            for idL, nomL, adresseL, jaugeL in result:
+                return Lieu(idL, nomL, adresseL, jaugeL)
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
     def insert_lieu(self, lieu):
         try:
-            query = text("INSERT INTO lieu (idF, nomL, adresseL, jaugeL) VALUES (:idF, :nomL, :adresseL, :jaugeL)")
-            result = self.connexion.get_connexion().execute(query, {"idF": lieu.get_idFestival(), "nomL": lieu.get_nomL(), "adresseL": lieu.get_adresseL(), "jaugeL": lieu.get_jaugeL()})
+            query = text("INSERT INTO lieu (nomL, adresseL, jaugeL) VALUES (:nomL, :adresseL, :jaugeL)")
+            result = self.connexion.get_connexion().execute(query, {"nomL": lieu.get_nomL(), "adresseL": lieu.get_adresseL(), "jaugeL": lieu.get_jaugeL()})
             lieu_id = result.lastrowid
             print(f"Le lieu {lieu_id} a été ajouté")
             self.connexion.get_connexion().commit()

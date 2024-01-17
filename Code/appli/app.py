@@ -52,6 +52,7 @@ def getNomsArtistes():
     connexion_bd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexion_bd)
     res = membre_groupebd.getNomsArtistes_json()
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -73,41 +74,18 @@ def getArtistes():
         return res
 
 
-@app.route('/getSocialLinksG/<int:id>')
-def getRS(id):
-    connexion_bd = ConnexionBD()
-    lienRS = LienRS_BD(connexion_bd)
-    print("test")
-    res = lienRS.get_liensRS_membre_json(id)
-    print(res)
-    if res is None:
-        return jsonify({"error": "Aucun artiste trouve"})
-    else:
-        return res
+# @app.route('/getSocialLinksG/<int:id>')
+# def getRS(id):
+#     connexion_bd = ConnexionBD()
+#     lienRS = LienRS_BD(connexion_bd)
+#     print("test")
+#     res = lienRS.get_liensRS_membre_json(id)
+#     print(res)
+#     if res is None:
+#         return jsonify({"error": "Aucun artiste trouve"})
+#     else:
+#         return res
     
-@app.route('/getSocialLinksM/<int:idMG>')
-def get_member_social_links(idMG):
-    connexion_bd = ConnexionBD()
-    lienRS = LienRS_Membre_BD(connexion_bd)
-    res = lienRS.get_liensRS_membre_json(idMG)
-    print(res)
-    if res is None:
-        return jsonify({"error": "Aucun lien de réseau social trouvé pour le membre"})
-    else:
-        return res
-    
-    
-@app.route('/getGroupesWithEvenements')
-def get_groupes_with_evenements():
-    connexion_bd = ConnexionBD()
-    evenement_bd = EvenementBD(connexion_bd)
-    groupes = evenement_bd.programmation_to_json()
-    print(groupes)
-    if not groupes:
-        return jsonify({"error": "Aucun groupe avec événement trouvé"}), 404
-    res = jsonify(groupes)
-    return res
-
 
 @app.route('/filtrerArtistes')
 def filtrerArtistes():
@@ -116,6 +94,7 @@ def filtrerArtistes():
     liste_groupes_21 = evenementbd.groupes_21_juillet_to_json()
     liste_groupes_22 = evenementbd.groupes_22_juillet_to_json()
     liste_groupes_23 = evenementbd.groupes_23_juillet_to_json()
+    connexion_bd.fermer_connexion()
     return jsonify({"21 juillet": liste_groupes_21, "22 juillet": liste_groupes_22, "23 juillet": liste_groupes_23})
 
 @app.route('/getInformationsSupplementairesArtiste/<int:id>')
@@ -123,6 +102,7 @@ def getInformationsSupplementairesArtiste(id):
     connexion_bd = ConnexionBD()
     lienRS = LienRS_BD(connexion_bd)
     res = lienRS.get_lienRS_json(id)
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -134,6 +114,7 @@ def getArtiste(id):
     membre_groupebd = Membre_GroupeBD(connexion_bd)
     mb = membre_groupebd.get_artiste_by_id(id)
     res = mb.to_dict()
+    connexion_bd.fermer_connexion()
     return jsonify({"error": "Aucun artiste trouve"}) if res is None else res
 
 
@@ -147,8 +128,10 @@ def connecter():
     password = data["password"]
     if userbd.exist_user(email, password):
 
-        return userbd.user_to_json(userbd.get_user_by_email(email))
+        res = userbd.user_to_json(userbd.get_user_by_email(email))
+        connexion_bd.fermer_connexion()
     else:
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Utilisateur non trouve"})
     
 @app.route('/inscription', methods=['POST'])
@@ -545,10 +528,10 @@ def evenements_festival():
     liste_evenements = evenementbd.get_all_evenements()
     liste_evenements_concerts = []
     liste_evenements_activites_annexes = []
-    if not liste_evenements:
-        return render_template("evenements_festival.html", liste_evenements=[], liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=[], liste_groupes=[])
     lieubd = LieuBD(connexionbd)
     liste_lieux = lieubd.get_all_lieux()
+    if not liste_evenements:
+        return render_template("evenements_festival.html", liste_evenements=[], liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=liste_lieux, liste_groupes=liste_groupes)
     for evenement in liste_evenements:
         if evenementbd.verify_id_in_concert(evenement.get_idE()):
             liste_evenements_concerts.append(evenement)
@@ -702,7 +685,7 @@ def ajouter_lieu():
     nom_lieu = request.form["nomL"]
     adresse_lieu = request.form["adresseL"]
     jauge_lieu = request.form["jaugeL"]
-    lieu = Lieu(None, 1, nom_lieu, adresse_lieu, jauge_lieu)
+    lieu = Lieu(None, nom_lieu, adresse_lieu, jauge_lieu)
     lieubd.insert_lieu(lieu)
     return redirect(url_for("lieux_festival"))
 
@@ -858,6 +841,33 @@ def instruments_festival():
     if not liste_instruments:
         return render_template("admin_instruments.html", liste_instruments=[])
     return render_template("admin_instruments.html", liste_instruments=liste_instruments)
+
+@app.route("/modifier_instrument", methods=["POST"])
+def modifier_instrument():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    id_instrument = request.form["id"]
+    nom_instrument = request.form["nom"]
+    instrument = Instrument(None, nom_instrument)
+    instrumentbd.update_instrument(instrument)
+    return redirect(url_for("instruments_festival"))
+
+@app.route("/supprimer_instrument", methods=["POST"])
+def supprimer_instrument():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    id_instrument = request.form["id"]
+    instrumentbd.delete_instrument_by_id(id_instrument)
+    return redirect(url_for("instruments_festival"))
+
+@app.route("/ajouter_instrument", methods=["POST"])
+def ajouter_instrument():
+    connexionbd = ConnexionBD()
+    instrumentbd = InstrumentBD(connexionbd)
+    nom_instrument = request.form["nom"]
+    instrument = Instrument(None, nom_instrument)
+    instrumentbd.insert_instrument(instrument)
+    return redirect(url_for("instruments_festival"))
 
 @app.route("/users_festival")
 def users_festival():

@@ -617,28 +617,29 @@ class Style_Musical:
             "idSt": self.__idSt,
             "nomSt": self.__nomSt
         }
-    
-class Lien_Video:
-    def __init__(self, idLV: int, idG: int, video: str):
-        self.__idLV = idLV
+
+class Lien_Reseaux_Sociaux:
+    def __init__(self, idLRS: int, idG: int, reseau: str):
+        self.__idLRS = idLRS
         self.__idG = idG
-        self.__video = video
+        self.__reseau = reseau
         
-    def get_idLV(self):
-        return self.__idLV
+    def get_idLRS(self):
+        return self.__idLRS
     
     def get_idGroupe(self):
         return self.__idG
     
-    def get_video(self):
-        return self.__video
+    def get_reseau(self):
+        return self.__reseau
     
     def to_dict(self):
         return {
-            "idLV": self.__idLV,
+            "idLRS": self.__idLRS,
             "idG": self.__idG,
-            "video": self.__video
+            "reseau": self.__reseau
         }
+    
 
 class Evenement:
     def __init__(self, idE: int, idG: int, idL: int, nomE: str, heureDebutE: str, heureFinE: str, dateDebutE: str, dateFinE: str):
@@ -999,18 +1000,14 @@ class Billet:
     
     
 class Lieu:
-    def __init__(self, idL: int, idF: int, nomL: str, adresseL: str, jaugeL: int):
+    def __init__(self, idL: int, nomL: str, adresseL: str, jaugeL: int):
         self.__idL = idL
-        self.__idF = idF
         self.__nomL = nomL
         self.__adresseL = adresseL
         self.__jaugeL = jaugeL
         
     def get_idL(self):
         return self.__idL
-    
-    def get_idFestival(self):
-        return self.__idF
     
     def get_nomL(self):
         return self.__nomL
@@ -1033,7 +1030,6 @@ class Lieu:
     def to_dict(self):
         return {
             "idL": self.__idL,
-            "idF": self.__idF,
             "nomL": self.__nomL,
             "adresseL": self.__adresseL,
             "jaugeL": self.__jaugeL
