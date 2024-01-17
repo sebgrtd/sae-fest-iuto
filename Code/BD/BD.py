@@ -189,9 +189,9 @@ class Billet:
     
     
 class Lieu:
-    def __init__(self, idL: int, idF: int, nomL: str, adresseL: str, jaugeL: int):
+    def __init__(self, idL: int, idE: int, nomL: str, adresseL: str, jaugeL: int):
         self.__idL = idL
-        self.__idF = idF
+        self.__idE = idE
         self.__nomL = nomL
         self.__adresseL = adresseL
         self.__jaugeL = jaugeL
@@ -199,8 +199,8 @@ class Lieu:
     def get_idL(self):
         return self.__idL
     
-    def get_idFestival(self):
-        return self.__idF
+    def get_idE(self):
+        return self.__idE
     
     def get_nomL(self):
         return self.__nomL

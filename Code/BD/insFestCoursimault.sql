@@ -59,7 +59,8 @@ INSERT INTO GROUPE (idH, nomG, descriptionG) VALUES
 
 
     (3, 'New Wave', 'La Fève, Khali, J9ueve, Sonbest, 99 ou encore DMS : tous composent cette scène avant-gardiste du rap français souvent surnommée « nouvelle vague ». Mais ici, pas question de faire du cinéma : avec une spontanéité criante, ces jeunes rappeurs construisent une musique propre à leur inspirations personnelles, 
-    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.');
+    et bâtissent ensemble une dynamique artistique pleine d’expérimentations précieuses pour le rap français.'),
+    (4, 'Nouveau Groupe', 'Description du nouveau groupe');
 
 -- Insérer des données dans la table MEMBRE_GROUPE
 INSERT INTO MEMBRE_GROUPE (idG, nomMG, prenomMG, nomDeSceneMG, descriptionA) VALUES
@@ -168,10 +169,11 @@ INSERT INTO STYLE_MUSICAL (nomSt) VALUES
 
 
 -- Insérer des données dans la table EVENEMENT
-INSERT INTO EVENEMENT (idG, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
-    (1, 'Concert Groupe 1', '9:00:00', '10:00:00', '2024-07-21', '2024-07-21'),
-    (2, 'Concert Groupe 2', '13:00:00', '14:00:00', '2024-07-21', '2024-07-21'),
-    (3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21');
+INSERT INTO EVENEMENT (idG,idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE) VALUES
+    (1,1, 'Concert Groupe 1', '9:00:00', '10:00:00', '2024-07-21', '2024-07-21'),
+    (2,2, 'Concert Groupe 2', '13:00:00', '14:00:00', '2024-07-21', '2024-07-21'),
+    (3,3, 'Concert Groupe 3', '17:00:00', '18:00:00', '2024-07-21', '2024-07-21'),
+    (4, 1, 'Concert Nouveau Groupe', '20:00:00', '21:00:00', '2024-07-22', '2024-07-22');
 
 INSERT INTO TYPE_BILLET(duree) VALUES
     (1),
@@ -187,7 +189,8 @@ INSERT INTO CONCERT (idE, tempsMontage, tempsDemontage) VALUES
 INSERT INTO GROUPE_STYLE (idG, idSt) VALUES
     (1, 1),
     (2, 2),
-    (3, 3);
+    (3, 3),
+    (4,3);
 
 -- Insérer des données dans la table PROGRAMMER
 INSERT INTO PROGRAMMER (idF, idG, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES

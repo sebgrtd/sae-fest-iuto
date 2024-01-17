@@ -129,6 +129,30 @@ class EvenementBD:
                 res.append((groupe.to_dict(), evenement.to_dict(), membre_groupe.to_dict()))
             return res
         
+    def get_all_groupes_with_evenement_and_style(self):
+        try:
+            query = text("select idG, idH, nomG, descriptionG, idE, idL, nomE, heureDebutE, heureFinE, nomSt, dateDebutE, dateFinE from EVENEMENT natural join GROUPE natural join GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL")
+            programmation = []
+            result = self.connexion.get_connexion().execute(query)
+            for idG, idH, nomG, descriptionG, idE, idL, nomE, heureDebutE, heureFinE, nomSt, dateDebutE, dateFinE in result:
+                programmation.append((Groupe(idG, idH, nomG, descriptionG), Evenement(idE, idG, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE), nomSt))
+            return programmation
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+        
+    def get_all_groupes_with_evenement_and_style_to_json(self):
+        groupes = self.get_all_groupes_with_evenement_and_style()
+        if groupes is None:
+            return None
+        else:
+            res = []
+            for groupe, evenement, nomSt in groupes:
+                merged_dict = groupe.to_dict()
+                merged_dict.update(evenement.to_dict())
+                merged_dict.update({"nomSt": nomSt})
+                res.append(merged_dict)
+            return res
+    
     def get_all_groupes_with_evenement(self):
         try:
             query = text("select idG, idH, nomG, descriptionG, idE, idL, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE from EVENEMENT natural join GROUPE")
