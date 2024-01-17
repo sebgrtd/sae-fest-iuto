@@ -7,6 +7,8 @@ export default class Groupe{
     isSaved: boolean = false;
     genresMusicaux: string[] = [];
     scene: string = "";
+    nomStyle: any;
+    nomSt: any;
 
     constructor(idG: number, nomG: string, descriptionG: string, datePassage: string, heurePassage: string) {
         this.idG = idG;

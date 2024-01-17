@@ -2,7 +2,7 @@ import {useEffect, useState, useRef, useLayoutEffect} from 'react'
 import SearchBar from '../../components/form/SearchBar';
 import Combo from '../../components/form/Combo';
 import CarteArtiste from '../../components/Artiste/CarteArtiste';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../../components/Footer';

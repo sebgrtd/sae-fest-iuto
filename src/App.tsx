@@ -10,6 +10,7 @@ import PageArtiste from './pages/Evenement/PageEvenement'
 import Billeterie from './pages/Billeterie/Billeterie'
 import Faq from './pages/faq/Faq'
 import { getCookie } from './cookies/CookiesLib'  
+import PageHoraire from './pages/Horaire/Horaire'
 interface cartContext{
   cart: any[],
   setCart: (cart: any[]) => void,
@@ -44,6 +45,7 @@ function App() {
             <Route path="/billeterie" element={<Billeterie isNavInFocus={isNavInFocus} setIsNavTransparent={setIsNavTransparent} />} />
             <Route path="/faq" element={<Faq isNavInFocus={isNavInFocus} setIsNavTransparent={setIsNavTransparent} />}/>
             <Route path="/artiste" element={<PageArtiste />}/>
+            <Route path="/horaire" element={<PageHoraire isNavInFocus={isNavInFocus} setIsNavTransparent={setIsNavTransparent}/>}/>
         </Routes>
 
       </AnimatePresence>
