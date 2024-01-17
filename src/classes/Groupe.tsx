@@ -1,3 +1,19 @@
+export class Reseaux{
+    soundcloud: string;
+    spotify: string;
+    instagram: string;
+    twitter: string;
+    youtube: string;
+
+    constructor(soundcloud: string, spotify: string, instagram: string, twitter: string, youtube: string) {
+        this.soundcloud = soundcloud;
+        this.spotify = spotify;
+        this.instagram = instagram;
+        this.twitter = twitter;
+        this.youtube = youtube;
+    }
+}
+
 export default class Groupe{
     idG: number;
     nomG: string;
@@ -8,6 +24,7 @@ export default class Groupe{
     genresMusicaux: string[] = [];
     scene: string = "";
     heureFinPassage: string = "";
+    reseaux: Reseaux = new Reseaux("", "", "", "", "");
 
     constructor(idG: number, nomG: string, descriptionG: string, datePassage: string, heurePassage: string) {
         this.idG = idG;

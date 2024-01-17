@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from 'react'
 import MarqueeScroll from '../../components/bandeau-effet-scroll-infini/MarqueeScroll'
-import Button from '../../components/form/Button';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import axios from 'axios';
 import Footer from '../../components/Footer';
@@ -117,8 +116,8 @@ export default function (props: Props) {
         type: "spring",
         stiffness: 50,
         repeatType: "reverse",
-        ease: "easeInOut"
-      }
+        ease: "easeInOut" 
+      } as any // repeatType n'est tjs pas supporté par typescript donc on passe le variant en any pour éviter l'erreur de typescript
     }
   }
 

@@ -10,9 +10,9 @@ import ChampCode from '../../form/ChampCode';
 import Combo from '../../form/Combo';
 import SearchBar from '../../form/SearchBar';
 import SelectionneurArtiste from '../../Artiste/SelectionneurArtiste';
-import Artiste from '../../../utilitaires/Artiste';
+import Artiste from '../../../classes/Artiste';
 import TabArtiste from '../../TabArtiste/TabArtiste';
-import Groupe from '../../../utilitaires/Groupe';
+import Groupe from '../../../classes/Groupe';
 
 type Props = {
   isOpen: boolean;
@@ -490,6 +490,9 @@ export default function MenuConnexion(props: Props) {
     
   }
 
+  const handleSearch = (search : string) => {
+  }
+
   return (
     <motion.div className={`side-menu connexion ${((currentMenu === "planification" || currentMenu === "affichage-planification") && !isMenuChanging) ? "large":""}`}
     variants={menuVariants}
@@ -558,7 +561,7 @@ export default function MenuConnexion(props: Props) {
                       <Combo title="DATE" choices={["Tout", "21 Juillet", "22 Juillet", "23 Juillet"]} currentChoice={filtreDate} setCurrentChoice={setFiltreDate} />
                       <Combo title="GENRE" choices={["Tout", "Rap", "Rock", "Pop"]} currentChoice={filtreGenre} setCurrentChoice={setFiltreGenre} />
                   </div>
-                  <SearchBar text="Rechercher un artiste"/>
+                  <SearchBar onSearch={handleSearch} text="Rechercher un artiste"/>
                 </header>
 
                 <div className="liste-artistes">

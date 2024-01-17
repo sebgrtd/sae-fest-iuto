@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
-import Groupe from '../../utilitaires/Groupe'
+import Groupe from '../../classes/Groupe'
 import axios from 'axios'
 import { getUserCookie } from '../../cookies/CookiesLib'
 
