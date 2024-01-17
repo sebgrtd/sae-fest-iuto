@@ -136,7 +136,7 @@ export default function TableRow(props : Props) {
         <td>{Groupe.getHeurePassage(props.artiste.heurePassage)} - {Groupe.getHeurePassage(props.artiste.heureFinPassage)}</td>
         <td>{props.artiste.nomG}</td>
         <td>{props.artiste.genresMusicaux?.join(', ')}</td>
-        <td>{props.artiste.scene}</td>
+        <td>{props.artiste.nomScene}</td>
         <td onClick={handleSupprimerArtiste}>
 
         <AnimatePresence>

@@ -17,6 +17,10 @@ export default function TabArtiste(props : Props) {
     console.log(current);
   const [isOpen, setIsOpen] = useState(true);
 
+    useEffect(() => {
+        console.log(props.artistes);
+    }, [props.artistes])
+
   const firstBarVariants={
     open:{
         opacity:0,
@@ -82,7 +86,7 @@ export default function TabArtiste(props : Props) {
             <AnimatePresence>
                 <motion.tbody layout>
                     {
-                    isOpen && props.artistes.map((artiste, index) => {
+                    (isOpen && props.artistes && props.artistes.length > 0) && props.artistes.map((artiste, index) => {
                         return (
                                 <TableRow date={props.date} setArtistes={props.setArtistes} artiste={artiste} key={artiste.idG} location={current}/>
                             )
