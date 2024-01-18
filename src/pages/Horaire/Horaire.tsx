@@ -3,7 +3,7 @@ import Footer from "../../components/Footer";
 import Combo from "../../components/form/Combo";
 import SearchBar from "../../components/form/SearchBar";
 import axios from "axios";
-import Groupe from "../../utilitaires/Groupe";
+import Groupe from "../../classes/Groupe";
 import TabArtiste from "../../components/TabArtiste/TabArtiste";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
@@ -30,12 +30,12 @@ export default function PageHoraire(props: Props) {
   >(new Map());
   let termeRechercher = "Tout";
 
-  if (filtreDate === "21 Juillet") {
-    termeRechercher = "07-21";
-  } else if (filtreDate === "22 Juillet") {
-    termeRechercher = "07-22";
-  } else if (filtreDate === "23 Juillet") {
-    termeRechercher = "07-23";
+  if (filtreDate === "21 Juin") {
+    termeRechercher = "06-21";
+  } else if (filtreDate === "22 Juin") {
+    termeRechercher = "06-22";
+  } else if (filtreDate === "23 Juin") {
+    termeRechercher = "06-23";
   }
 
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function PageHoraire(props: Props) {
             <div className="filters">
               <Combo
                 title="DATE"
-                choices={["Tout", "21 Juillet", "22 Juillet", "23 Juillet"]}
+                choices={["Tout", "21 Juin", "22 Juin", "23 Juin"]}
                 currentChoice={filtreDate}
                 setCurrentChoice={setFiltreDate}
               />

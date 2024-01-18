@@ -17,10 +17,6 @@ export default function TabArtiste(props : Props) {
     console.log(current);
   const [isOpen, setIsOpen] = useState(true);
 
-    useEffect(() => {
-        console.log(props.artistes);
-    }, [props.artistes])
-
   const firstBarVariants={
     open:{
         opacity:0,
@@ -57,44 +53,76 @@ export default function TabArtiste(props : Props) {
     
   }
 
+  const sortedArtists = props.artistes.sort((a, b) => {
+    const heurePassageA = a.heurePassage;
+    const heurePassageB = b.heurePassage;
+    return heurePassageA.localeCompare(heurePassageB); // Assuming heurePassage is in a sortable format
+  });
+
   return (
     <section className='tab-artiste'>
-        <h3>{Groupe.getJourPassage(props.date, true)}</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>HORAIRES</th>
-                    <th>ARTISTE</th>
-                    <th>GENRES MUSICAUX</th>
-                    <th>SCENE</th>
-                    <th onClick={() => setIsOpen(!isOpen)}>
-                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <motion.rect
-                            variants={firstBarVariants}
-                            animate={isOpen ? "open" : "closed"}
-                            initial={false}
-                            y="12" width="28" height="4" rx="2" fill="white"/>
-                            <motion.rect 
-                            variants={secondBarVariants}
-                            animate={isOpen ? "open" : "closed"}
-                            initial={false}
-                            y="12" width="28" height="4" rx="2" fill="white"/>
-                        </svg>
-                    </th>
-                </tr>
-            </thead>
-            <AnimatePresence>
-                <motion.tbody layout>
-                    {
-                    (isOpen && props.artistes && props.artistes.length > 0) && props.artistes.map((artiste, index) => {
-                        return (
-                                <TableRow date={props.date} setArtistes={props.setArtistes} artiste={artiste} key={artiste.idG} location={current}/>
-                            )
-                        })
-                    }
-                </motion.tbody>
-            </AnimatePresence>
-        </table>
+      <h3>{Groupe.getJourPassage(props.date, true)}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>HORAIRES</th>
+            <th>ARTISTE</th>
+            <th>GENRES MUSICAUX</th>
+            <th>SCENE</th>
+            <th>TYPE EVENEMENT</th>
+            <th
+              onClick={() => {
+                setIsOpen(!isOpen);
+              }}
+            >
+              <svg
+                width='28'
+                height='28'
+                viewBox='0 0 28 28'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <motion.rect
+                  variants={firstBarVariants}
+                  animate={isOpen ? 'open' : 'closed'}
+                  initial={false}
+                  y='12'
+                  width='28'
+                  height='4'
+                  rx='2'
+                  fill='white'
+                />
+                <motion.rect
+                  variants={secondBarVariants}
+                  animate={isOpen ? 'open' : 'closed'}
+                  initial={false}
+                  y='12'
+                  width='28'
+                  height='4'
+                  rx='2'
+                  fill='white'
+                />
+              </svg>
+            </th>
+          </tr>
+        </thead>
+        <AnimatePresence>
+          <motion.tbody layout>
+            {isOpen &&
+              sortedArtists.map((artiste, index) => {
+                return (
+                  <TableRow
+                    date={props.date}
+                    setArtistes={props.setArtistes}
+                    artiste={artiste}
+                    key={artiste.idG}
+                    location={current}
+                  />
+                );
+              })}
+          </motion.tbody>
+        </AnimatePresence>
+      </table>
     </section>
-  )
+  );
 }
