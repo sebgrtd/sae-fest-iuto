@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Groupe from "../../classes/Groupe";
 import axios from "axios";
 import { getUserCookie } from "../../cookies/CookiesLib";
@@ -35,6 +35,7 @@ export default function TableRow(props: Props) {
       },
     },
   };
+
 
   const handleSupprimerArtiste = () => {
     setIsLoading(true);
