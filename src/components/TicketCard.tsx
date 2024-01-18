@@ -136,9 +136,9 @@ export default function TicketCard({
   const displayDay = (day: string) => day.replace("Jui", "Jui");
 
   const buttonVariants: { [key: string]: TargetAndTransition } = {
-    tap: { scale: 0.95 },
-    selected: { scale: 1.1, backgroundColor: "#E45A3B" },
-    unselected: { scale: 1, backgroundColor: "#FFFFFF" },
+    tap: { padding: "0.625rem 1rem" },
+    selected: { padding: "0.8rem 1.25rem", backgroundColor: "#E45A3B" },
+    unselected: { padding: "0.625rem 1rem", backgroundColor: "#FFFFFF" },
   };
 
   const contentVariants = {

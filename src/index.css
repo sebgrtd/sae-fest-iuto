@@ -1541,7 +1541,7 @@ input[type="number"]::-ms-reveal {
 
 #Billeterie .bottom-part-left{
   display: flex;
-  gap: 20px;
+  gap: 1.25rem;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -1559,7 +1559,7 @@ input[type="number"]::-ms-reveal {
 #Billeterie .sub-menu-left-part{
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 2rem;
 }
 
 #Billeterie .article-select{
@@ -1570,7 +1570,8 @@ input[type="number"]::-ms-reveal {
 
 .day-checkbox-container {
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: 0.3125rem;
 }
 
 .day-button:hover {
