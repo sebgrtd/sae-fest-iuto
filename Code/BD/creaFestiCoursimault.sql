@@ -465,7 +465,7 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupesDate`(idUser INT, dateDebut DATE)
 BEGIN
 	SELECT idE, idG, nomG, heureDebutE,heureFinE, dateDebutE, descriptionG FROM (
-		SELECT idE, groupe.idG, nomG, heureDebutE,heureFinE, dateDebutE, descriptionG, isSaved(3, groupe.idg) as isSaved 
+		SELECT idE, groupe.idG, nomG, heureDebutE,heureFinE, dateDebutE, descriptionG, isSaved(idUser, groupe.idg) as isSaved 
 		FROM evenement 
         INNER JOIN groupe ON groupe.idG = evenement.idG
         WHERE idE in (SELECT idE FROM concert)
