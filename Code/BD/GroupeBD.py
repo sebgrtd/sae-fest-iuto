@@ -273,25 +273,41 @@ class GroupeBD:
             print(f"La requête a échoué : {e}")   
             
     def get_groupes_horaire_json(self):
-        try:
-            query = text("SELECT idE, groupe.idG, nomG, heureDebutE, heureFinE, dateDebutE, descriptionG, nomSt, nomL FROM evenement INNER JOIN groupe ON groupe.idG = evenement.idG INNER JOIN GROUPE_STYLE ON groupe.idG = GROUPE_STYLE.idG INNER JOIN STYLE_MUSICAL ON GROUPE_STYLE.idSt = STYLE_MUSICAL.idSt LEFT JOIN LIEU ON evenement.idL = LIEU.idL;")
-            groupes = []
-            result = self.connexion.get_connexion().execute(query)
-            for idE, idG, nomG, heureDebutE, heureFinE, dateDebutE, descriptionG, nomSt, nomL in result:
-                groupe = Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, None, heureFinE)
-                groupes.append((groupe, nomSt, nomL))
-            res = []
-            for groupe, nomSt, nomL in groupes:
-                print(groupe)
-                print(nomSt)
-                print(nomL)
-                merged_dict = groupe.to_dict()
-                merged_dict.update({"nomSt": nomSt, "nomL": nomL})
-                res.append(merged_dict)
-            return res
-        except SQLAlchemyError as e:
-            print(f"La requête a échoué : {e}")
-        
+        query = text("""
+            SELECT
+                evenement.idE,
+                groupe.idG,
+                nomG,
+                heureDebutE,
+                heureFinE,
+                dateDebutE,
+                descriptionG,
+                nomSt,
+                nomL,
+                ACTIVITE_ANNEXE.typeA,
+                ACTIVITE_ANNEXE.ouvertAuPublic
+            FROM evenement
+            INNER JOIN groupe ON groupe.idG = evenement.idG
+            INNER JOIN GROUPE_STYLE ON groupe.idG = GROUPE_STYLE.idG
+            INNER JOIN STYLE_MUSICAL ON GROUPE_STYLE.idSt = STYLE_MUSICAL.idSt
+            LEFT JOIN LIEU ON evenement.idL = LIEU.idL
+            LEFT JOIN ACTIVITE_ANNEXE ON evenement.idE = ACTIVITE_ANNEXE.idE
+        """)
+
+        result = self.connexion.get_connexion().execute(query)
+        res = []
+
+        for idE, idG, nomG, heureDebutE, heureFinE, dateDebutE, descriptionG, nomSt, nomL, typeA, ouvertAuPublic in result:
+            groupe = Groupe(idG, None, nomG, descriptionG, dateDebutE, heureDebutE, None, heureFinE)
+            merged_dict = groupe.to_dict()
+            merged_dict.update({
+                "nomSt": nomSt,
+                "scene": nomL,
+                "typeA": typeA,  # Add attributes from ACTIVITE_ANNEXE
+                "ouvertAuPublic": ouvertAuPublic
+            })
+            res.append(merged_dict)
+        return res
     def get_all_groupes(self):
         try:
             # on convertit la date qui est en format "22 juillet" en format "2024-07-22"
