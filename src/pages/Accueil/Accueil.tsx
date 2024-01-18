@@ -125,7 +125,9 @@ export default function (props: Props) {
   const scale = useTransform(scrollYProgress, [0,0.9], [1.5, 0])
 
   return (
-    <>
+    <section 
+    style={{overflow:props.isNavInFocus ? "hidden" : "scroll"}}
+    >
     <motion.div id="Accueil" className='page' ref={targetRef}>
         <div className="img-container">
             <img src="/images/bg.png" alt="background" />
@@ -169,6 +171,6 @@ export default function (props: Props) {
     <SectionJournal setIsNavTransparent={props.setIsNavTransparent}/>
     <SectionBilleterie/>
     <Footer/>
-    </>
+    </section>
   )
 }

@@ -150,7 +150,7 @@ export default function TableRow(props: Props) {
           ? `Activité annexe : ${props.artiste.typeA}`
           : "Concert"}
       </td>)}
-      {props.location !== "/horaire" && (
+      {props.doesntHaveTypes && (
         <td onClick={handleSupprimerArtiste}>
           <AnimatePresence>
             {isLoading && (
