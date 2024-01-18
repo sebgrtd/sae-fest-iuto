@@ -63,7 +63,8 @@ body{
 
 #Navbar{
   height:12vh;
-  width: 100%; 
+  width: 100%;
+  max-width: 100vw; 
   position: fixed;
   display: flex;
   align-items: center;
@@ -671,6 +672,8 @@ input[type="number"]::-ms-reveal {
   position: absolute;
   right:-20%;
   top: -10%;
+  height: 15rem;
+  width: 15rem;
   z-index: -1;
 }
 
@@ -720,6 +723,10 @@ input[type="number"]::-ms-reveal {
   gap: 1rem;
   transform: translateX(-2517.4px);
   transform: translateX(-2618px);
+}
+
+#Accueil .marquee .les-artistes svg{
+  height: 4rem;
 }
 
 #Accueil .marquee .container{
@@ -1434,18 +1441,18 @@ input[type="number"]::-ms-reveal {
 
 
 #Billeterie .header-billet h2{
-  font-size: 40px;
+  font-size: 2.5rem;
 }
 
 #Billeterie h3{
-  font-size: 36px;
+  font-size: 2.25rem;
 }
 
 
 #Billeterie .header-billet .lieu, .ticket-card .left-part p{
   color: var(--greytext, #4E4E4E);
   font-family: Montserrat;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   line-height: normal;
 }
@@ -1466,14 +1473,14 @@ input[type="number"]::-ms-reveal {
 }
 
 #Billeterie .billets-content{
-  margin-top: 55px;
+  margin-top: 3.4375rem;
   padding: 0 15px 0 15px;
   display: flex;
   flex-direction: column;
 }
 
 #Billeterie .achat-billets{
-  margin-top:30px;
+  margin-top:2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1488,15 +1495,15 @@ input[type="number"]::-ms-reveal {
   margin: 1rem 0;
 }
 #Billeterie .ticket-card .content{
-  padding: 20px;
+  padding: 1.25rem;
 }
 
 #Billeterie .ticket-card .content h4{
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 #Billeterie .ticket-card h4{
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 }
 
 #Billeterie .ticket-card .content{
@@ -1507,18 +1514,18 @@ input[type="number"]::-ms-reveal {
 
 #Billeterie .right-part{
   display: flex;;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 #Billeterie .ticket-card .sub-menu{
   width: 100%;
   background-color: var(--color-dark);
   display: flex;
-  height: 80px;
+  height: 5rem;
   padding: 0 10px;
   position: relative;
   box-shadow: 0px 20px 23.8px -28px rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
+  border-radius: 0.75rem;
 }
 
 
@@ -1526,8 +1533,8 @@ input[type="number"]::-ms-reveal {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  padding-top: 10px;
+  gap: 1.25rem;
+  padding-top: 0.625rem;
 }
 
 #Billeterie .bottom-partsubmenu{
