@@ -41,6 +41,7 @@ export default class Groupe{
     evenementsAnnexes: Evenement[] = [];
     nomStyle: any;
     nomSt: any;
+    typeA:any;
 
     constructor(idG: number, nomG: string, descriptionG: string, datePassage: string, heurePassage: string) {
         this.idG = idG;

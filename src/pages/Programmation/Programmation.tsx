@@ -120,6 +120,7 @@ export default function Programmation(props : Props) {
     if (searchText == ""){
       axios.get('http://localhost:8080/getArtistes').then((res) => {
         const data = res.data as Groupe[];
+        console.log(data);
         handleSetArtists(data);
       })
       return;
