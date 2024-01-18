@@ -48,6 +48,7 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
     setIsButtonDisabled(true);
     try {
       const response = await axios.post('http://localhost:8080/reserver_billets', cart);
+      console.log(cart);
       if (response.status === 200) {
         setReservationMessage('Merci pour votre achat! 🎉');
         setCart([]); // vide le panier

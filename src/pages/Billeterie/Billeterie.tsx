@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import TicketCard from "../../components/TicketCard";
-import Footer from "../../components/footer";
+import Footer from "../../components/Footer";
 import axios from 'axios';
 const videoSrc = "images/bgbilleterie.mp4"
 
@@ -23,19 +23,19 @@ export default function Billeterie(props: Props) {
   const billets: Billet[] = [
     {
       idB: 1,
-      title: "Accès Samedi 20 Juillet",
+      title: "Accès Samedi 21 Juin",
       prix: 60,
       nbTicket: 0,
     },
     {
       idB: 2,
-      title: "Accès Dimanche 21 Juillet",
+      title: "Accès Dimanche 22 Juin",
       prix: 80,
       nbTicket: 0,
     },
     {
       idB: 3,
-      title: "Accès Lundi 22 Juillet",
+      title: "Accès Lundi 23 Juin",
       prix: 90,
       nbTicket: 0,
     },
@@ -77,7 +77,7 @@ export default function Billeterie(props: Props) {
         <main className="billets">
           <section className="header-billet">
             <div>
-              <p>samedi 20 Juillet 2024 - lundi 22 Juillet 2024</p>
+              <p>samedi 21 Juin 2024 - lundi 23 Juin 2024</p>
               <h2>FESTI'IUTO ÉDITION 2024</h2>
               <div className="lieu">
                 <svg

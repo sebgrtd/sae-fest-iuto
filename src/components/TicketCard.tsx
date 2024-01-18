@@ -5,9 +5,9 @@ import { getCookie, setCookie } from "../cookies/CookiesLib.tsx";
 import { CartContext } from "../App";
 
 const initialDays = {
-  "20 Jui": false,
-  "21 Jui": false,
-  "22 Jui": false,
+  "21 Juin": false,
+  "22 Juin": false,
+  "23 Juin": false,
 };
 
 type Props = {
@@ -33,11 +33,11 @@ export default function TicketCard({
   const { cart, setCart } = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  type DayKey = "20 Jui" |"21 Jui"|"22 Jui";
+  type DayKey = "21 Juin" |"22 Juin"|"23 Juin";
   const pricesByDay:{[key in DayKey]: number} = {
-    "20 Jui": 60,
-    "21 Jui": 80,
-    "22 Jui": 90,
+    "21 Juin": 60,
+    "22 Juin": 80,
+    "23 Juin": 90,
   };
 
   
@@ -133,7 +133,7 @@ export default function TicketCard({
 };
 
 
-  const displayDay = (day: string) => day.replace("Juillet", "Juillet");
+  const displayDay = (day: string) => day.replace("Jui", "Jui");
 
   const buttonVariants: { [key: string]: TargetAndTransition } = {
     tap: { scale: 0.95 },
