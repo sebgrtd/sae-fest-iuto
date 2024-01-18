@@ -52,6 +52,7 @@ export default class Groupe{
     nomStyle: any;
     nomSt: any;
     typeA:any;
+    passagesConcurrents: Groupe[] = [];
 
     constructor(idG: number, nomG: string, descriptionG: string, datePassage: string, heurePassage: string) {
         this.idG = idG;
