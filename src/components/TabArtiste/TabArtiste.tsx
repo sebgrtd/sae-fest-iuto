@@ -17,6 +17,7 @@ export default function TabArtiste(props : Props) {
     const current = window.location.pathname;
     console.log(current);
   const [isOpen, setIsOpen] = useState(true);
+  const[sortedArtists, setSortedArtists] = useState<Groupe[]>(props.artistes);
 
   const firstBarVariants={
     open:{
@@ -54,11 +55,50 @@ export default function TabArtiste(props : Props) {
     
   }
 
-  const sortedArtists = props.artistes.sort((a, b) => {
-    const heurePassageA = a.heurePassage;
-    const heurePassageB = b.heurePassage;
-    return heurePassageA.localeCompare(heurePassageB); // Assuming heurePassage is in a sortable format
-  });
+  useEffect(() => {
+    if (!props.artistes || props.artistes.length == 0){
+        return;
+    }
+    let formatedArtists =props.artistes.sort((a, b) => {
+        const heurePassageA = a.heurePassage;
+        const heurePassageB = b.heurePassage;
+        return heurePassageA.localeCompare(heurePassageB);
+    })
+
+    formatedArtists.map((artiste) => {
+        // on va regarder pour chauqe artiste si son heure de passage est comprise dans les heures de passages que d'autres artistes
+        // si oui on va ajouter dans sa propriété passageConcurrents la liste de ces artistes
+        
+        formatedArtists.map((artiste2) => {
+            if (artiste.idG !== artiste2.idG){
+                const heure1 = new Date(0,0,0,parseInt(artiste.heurePassage.split(":")[0]), parseInt(artiste.heurePassage.split(":")[1]))
+                const heure1Fin = new Date(0,0,0,parseInt(artiste.heureFinPassage.split(":")[0]), parseInt(artiste.heureFinPassage.split(":")[1]))
+
+                const heure2 = new Date(0,0,0,parseInt(artiste2.heurePassage.split(":")[0]), parseInt(artiste2.heurePassage.split(":")[1]))
+                const heure2Fin = new Date(0,0,0,parseInt(artiste2.heureFinPassage.split(":")[0]), parseInt(artiste2.heureFinPassage.split(":")[1]))
+
+                const estComprise = (heure1 >= heure2 && heure1 <= heure2Fin) || (heure1Fin >= heure2 && heure1Fin <= heure2Fin) || (heure1 <= heure2 && heure1Fin >= heure2Fin)
+
+                if (estComprise){
+                    // si l'artiste n'est pas déjà dedans
+                    if(!artiste.passagesConcurrents?.includes(artiste2)){
+                        // on ajoute l'artiste2 dans la liste des passages concurrents de l'artiste
+                        if (! artiste.passagesConcurrents){
+                            artiste.passagesConcurrents = [];
+                        }
+                        artiste.passagesConcurrents.push(artiste2);
+                    }
+                }
+            }
+        })
+
+        setSortedArtists(formatedArtists);
+      // j'ai envie d'ajouter pour chaque artiste sa liste de passages concurrents d'autres artistes (si un artiste passe en même temps)
+  }, [props.artistes])});
+
+  useEffect(() => {
+    console.log("sortedArtists", sortedArtists)
+  }, [sortedArtists])
 
   return (
     <section className='tab-artiste'>

@@ -1990,6 +1990,7 @@ footer .bottom-content h5{
   color: var(--color-dark);
   font-weight: 600;
   max-width: 4rem;
+  position: relative;
 }
 
 .tab-artiste thead tr th, .tab-artiste td{
@@ -2012,6 +2013,28 @@ footer .bottom-content h5{
   cursor: pointer;
 }
 
+.tab-artiste td:first-of-type{
+  display: flex;
+  align-items: center;
+  gap:1rem;
+}
+
+.tab-artiste td .tool-tip{
+  position: absolute;
+  top:3rem;
+  left: 0;
+  width: 15rem;
+  left: 150%;
+  background-color: #F3D6CB;
+  z-index: 100;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.tab-artiste td:first-of-type span{
+  text-wrap: nowrap;
+}
+
 .tab-artiste td:last-of-type{
   color: var(--color-error);
   padding-right: 0;
@@ -2021,7 +2044,7 @@ footer .bottom-content h5{
   cursor: pointer;
 }
 
-.tab-artiste svg{
+.tab-artiste svg, .tab-artiste img{
   min-width: 1.5rem;
   min-height: 1.5rem;
   max-width: 1.5rem;

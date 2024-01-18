@@ -16,6 +16,7 @@ type Props = {
 
 export default function TableRow(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const[isToolTipVisible, setIsToolTipVisible] = useState(false);
   const tableRowVariant = {
     open: {
       opacity: 1,
@@ -46,11 +47,18 @@ export default function TableRow(props: Props) {
         if ((res.status = 200)) {
           props.setArtistes((oldMapArtiste: Map<string, Groupe[]>) => {
             const artistesMap = new Map(Object.entries(oldMapArtiste));
-            artistesMap.forEach((value, key) => {
+            artistesMap.forEach((value: Groupe[], key) => {
               if (key == props.date) {
                 const newValue = value.filter(
                   (groupe: Groupe) => groupe.idG !== props.artiste.idG
                 );
+                    
+                value.map((groupe: Groupe) => {
+                    if (groupe.passagesConcurrents && groupe.passagesConcurrents.length > 0){
+                        groupe.passagesConcurrents = groupe.passagesConcurrents.filter((concurrent: Groupe) => concurrent.idG !== props.artiste.idG)
+                    }
+                })
+
                 artistesMap.set(key, newValue);
               }
             });
@@ -130,6 +138,24 @@ export default function TableRow(props: Props) {
     },
   };
 
+  const toolTipVariants = {
+    hidden: {
+        opacity: 0,
+        scale: 0.9,
+        rotate: 0,
+        zIndex: -1,
+    },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        zIndex: 99,
+        transition: {
+            duration: 0.25,
+            ease: [1, 0, 0, 1],
+        },
+    },
+  }
+
   return (
     <motion.tr
       key={props.artiste.idG}
@@ -139,8 +165,24 @@ export default function TableRow(props: Props) {
       animate="open"
     >
       <td>
-        {Groupe.getHeurePassage(props.artiste.heurePassage)} -{" "}
-        {Groupe.getHeurePassage(props.artiste.heureFinPassage)}
+        <span>
+            {Groupe.getHeurePassage(props.artiste.heurePassage)} -{" "}
+            {Groupe.getHeurePassage(props.artiste.heureFinPassage)}
+        </span>
+        {(props.artiste.passagesConcurrents && props.artiste.passagesConcurrents.length > 0) && (
+            <>
+                <img className="alert" src="/icones/alert.svg" alt="alert" onMouseEnter={() => setIsToolTipVisible(true)} onMouseLeave={() => setIsToolTipVisible(false)} />
+                
+                <motion.div 
+                variants={toolTipVariants}
+                initial="hidden"
+                animate={isToolTipVisible ? "visible" : "hidden"}
+                className="tool-tip">
+                    <p>{props.artiste.nomG} passe en même temps que {props.artiste.passagesConcurrents.map((concurrent, index) => (index == (props.artiste.passagesConcurrents.length -2) ) ? (concurrent.nomG + " et ") : (index < (props.artiste.passagesConcurrents.length -1) ) ? (concurrent.nomG + ", ") : (concurrent.nomG + "")) }
+                    .</p>
+                </motion.div>
+            </>
+        )}
       </td>
       <td>{props.artiste.nomG}</td>
       <td>{props.artiste.nomSt ?? "Pas de Style défini"}</td>
