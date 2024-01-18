@@ -11,6 +11,7 @@ type Props = {
   artiste: Groupe;
   setArtistes: (mapArtiste: any) => void;
   location?: string;
+  doesntHaveTypes?:boolean;
 };
 
 export default function TableRow(props: Props) {
@@ -144,11 +145,11 @@ export default function TableRow(props: Props) {
       <td>{props.artiste.nomG}</td>
       <td>{props.artiste.nomSt ?? "Pas de Style défini"}</td>
       <td>{props.artiste.scene}</td>
-      <td>
+      {!props.doesntHaveTypes && (<td>
         {props.artiste.typeA
           ? `Activité annexe : ${props.artiste.typeA}`
           : "Concert"}
-      </td>
+      </td>)}
       {props.location !== "/horaire" && (
         <td onClick={handleSupprimerArtiste}>
           <AnimatePresence>

@@ -648,7 +648,7 @@ export default function MenuConnexion(props: Props) {
                 {
                   Object.entries(tableauxArtistes).map(([key, value]) => (
                     value.length > 0 && 
-                    <TabArtiste key={key} date={key} artistes={value} setArtistes={setTableauxArtistes} />
+                    <TabArtiste doesntHaveTypes key={key} date={key} artistes={value} setArtistes={setTableauxArtistes} />
                   ))
                 }
 

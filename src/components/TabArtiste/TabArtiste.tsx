@@ -9,7 +9,8 @@ import TableRow from './TableRow'
 type Props = {
     date: string,
     artistes : Groupe[],
-    setArtistes: (mapArtiste: any) => void
+    setArtistes: (mapArtiste: any) => void,
+    doesntHaveTypes?:boolean
 }
 
 export default function TabArtiste(props : Props) {
@@ -69,7 +70,7 @@ export default function TabArtiste(props : Props) {
             <th>ARTISTE</th>
             <th>GENRES MUSICAUX</th>
             <th>SCENE</th>
-            <th>TYPE EVENEMENT</th>
+            {! props.doesntHaveTypes && (<th>TYPE EVENEMENT</th>)}
             <th
               onClick={() => {
                 setIsOpen(!isOpen);
@@ -116,6 +117,7 @@ export default function TabArtiste(props : Props) {
                     setArtistes={props.setArtistes}
                     artiste={artiste}
                     key={artiste.idG}
+                    doesntHaveTypes={props.doesntHaveTypes}
                     location={current}
                   />
                 );

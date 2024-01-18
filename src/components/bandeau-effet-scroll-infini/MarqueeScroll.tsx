@@ -58,7 +58,7 @@ export default function MarqueeScroll(props: Props) {
                 x: {
                     repeat: Infinity,
                     repeatType: 'loop',
-                    duration: 20,
+                    duration: 100,
                     ease: 'linear'
                 }
             }
