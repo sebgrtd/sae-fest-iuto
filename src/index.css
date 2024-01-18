@@ -279,22 +279,22 @@ body{
 /* changes la barre de scroll de la liste des artistes */
 
 /* Personnalise l'ensemble de la barre de défilement */
-.liste-artistes::-webkit-scrollbar {
+.liste-artistes::-webkit-scrollbar, .le-panier::-webkit-scrollbar {
   width: 5px; /* Largeur de la barre de défilement */
 }
 
 /* Personnalise le fond de la barre de défilement */
-.liste-artistes::-webkit-scrollbar-track {
+.liste-artistes::-webkit-scrollbar-track, .le-panier::-webkit-scrollbar-track {
   background: var(--color-light-secondary); /* Couleur de fond */
 }
 
 /* Personnalise la poignée de la barre de défilement */
-.liste-artistes::-webkit-scrollbar-thumb {
+.liste-artistes::-webkit-scrollbar-thumb, .le-panier::-webkit-scrollbar-thumb {
   background: var(--color-orange); /* Couleur de la poignée */
 }
 
 /* Change la couleur de la poignée de la barre de défilement au survol */
-.liste-artistes::-webkit-scrollbar-thumb:hover {
+.liste-artistes::-webkit-scrollbar-thumb:hover, .le-panier::-webkit-scrollbar-thumb:hover {
   background: var(--color-orange-tertiary);
 }
 
@@ -441,6 +441,7 @@ body{
 #Navbar .side-menu.cart .le-panier .item-panier{
   display: flex;
   justify-content: space-between;
+  width: 95%;
 }
 
 #Navbar .side-menu.cart .le-panier .item-panier .container-image{
