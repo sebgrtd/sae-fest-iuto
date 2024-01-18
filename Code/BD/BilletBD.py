@@ -101,45 +101,57 @@ class BilletBD:
             return None
     
     def reserver_billets(self, data, idUser):
-            idType = None
-            for billet_json in data:
-                if billet_json['selectedDaysSortedString']:
-                   date_debut_b = datetime.strptime('2024 ' + billet_json['selectedDaysSortedString'].split('-')[0].replace('Jui', 'Jul'), '%Y %d %b').date()
-                   date_fin_b = datetime.strptime('2024 ' + billet_json['selectedDaysSortedString'].split('-')[1].replace('Jui', 'Jul'), '%Y %d %b').date()
-                   idType =2
-                else:
-                    date_debut_b = date_fin_b = None
-                id_festival = 4
-                if not date_debut_b or not date_fin_b:
-                    date = None
-                    if billet_json['title'] == "Accès Samedi 20 Juillet":
-                        date = datetime.strptime('2024/07/20', '%Y/%m/%d').date()
-                        idType =1
-                        date_debut_b, date_fin_b = date, date
-                    elif billet_json['title'] == "Accès Dimanche 21 Juillet":
-                        date = datetime.strptime('2024/07/21', '%Y/%m/%d').date()
-                        idType =1
-                        date_debut_b, date_fin_b = date, date
-                    elif billet_json['title'] == "Accès Lundi 22 Juillet":
-                        date = datetime.strptime('2024/07/22', '%Y/%m/%d').date()
-                        date_debut_b, date_fin_b = date, date
-                        idType =1
-                    elif billet_json['title'] == "Forfait 3 jours":
-                        idType = 3
-                        date_debut_b = datetime.strptime('2024/07/20', '%Y/%m/%d').date()
-                        date_fin_b = datetime.strptime('2024/07/20', '%Y/%m/%d').date()                    
-                for i in range(billet_json['quantity']):
-                    idBilletDisponible = self.billet_id_dispo()
-                    query = text("""INSERT INTO billet (idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB)
-                                    VALUES (:idB, :idF, :idType, :idS, :prix, :dateAchat, :dateDebutB, :dateFinB)""")
-                    self.connexion.get_connexion().execute(query, {
-                        "idB": idBilletDisponible,
-                        "idF": id_festival,
-                        "idType":idType,
-                        "idS": idUser,
-                        "prix": billet_json['price'],
-                        "dateAchat": datetime.now().date(),
-                        "dateDebutB": date_debut_b,
-                        "dateFinB": date_fin_b
-                    })
-            self.connexion.get_connexion().commit()
+        idType = None
+        for billet_json in data:
+            if billet_json['selectedDaysSortedString']:
+                date_debut_b = datetime.strptime('2024 ' + billet_json['selectedDaysSortedString'].split('-')[0].replace('Juin', 'Jul'), '%Y %d %b').date()
+                date_fin_b = datetime.strptime('2024 ' + billet_json['selectedDaysSortedString'].split('-')[1].replace('Juin', 'Jul'), '%Y %d %b').date()
+                idType = 2
+            else:
+                date_debut_b = date_fin_b = None
+            id_festival = 1
+            if not date_debut_b or not date_fin_b:
+                date = None
+                if billet_json['title'] == "Accès Samedi 21 Juin":
+                    date = datetime.strptime('2024/07/21', '%Y/%m/%d').date()
+                    idType = 1
+                    date_debut_b, date_fin_b = date, date
+                elif billet_json['title'] == "Access Dimanche 22 Juin":
+                    date = datetime.strptime('2024/07/22', '%Y/%m/%d').date()
+                    idType = 1
+                    date_debut_b, date_fin_b = date, date
+                elif billet_json['title'] == "Accès Lundi 23 Juin":
+                    date = datetime.strptime('2024/07/23', '%Y/%m/%d').date()
+                    date_debut_b, date_fin_b = date, date
+                    idType = 1
+                elif billet_json['title'] == "Forfait 3 jours":
+                    idType = 3
+                    date_debut_b = datetime.strptime('2024/07/21', '%Y/%m/%d').date()
+                    date_fin_b = datetime.strptime('2024/07/23', '%Y/%m/%d').date()
+                idType = 1
+
+            query_check_spectator = text("SELECT idS FROM SPECTATEUR WHERE idUser = :idUser")
+            result_check_spectator = self.connexion.get_connexion().execute(query_check_spectator, {"idUser": idUser}).fetchone()
+
+            if not result_check_spectator:
+                query_add_spectator = text("INSERT INTO SPECTATEUR (nomS, prenomS, idUser) VALUES (:nomS, :prenomS, :idUser)")
+                self.connexion.get_connexion().execute(query_add_spectator, {"nomS": "Nom", "prenomS": "Prenom", "idUser": idUser})
+                query_get_idS = text("SELECT idS FROM SPECTATEUR WHERE idUser = :idUser")
+                idS = self.connexion.get_connexion().execute(query_get_idS, {"idUser": idUser}).fetchone()[0]
+            else:
+                idS = result_check_spectator[0]
+            for i in range(billet_json['quantity']):
+                idBilletDisponible = self.billet_id_dispo()
+                query = text("""INSERT INTO BILLET (idB, idF, idType, idS, prix, dateAchat, dateDebutB, dateFinB)
+                                VALUES (:idB, :idF, :idType, :idS, :prix, :dateAchat, :dateDebutB, :dateFinB)""")
+                self.connexion.get_connexion().execute(query, {
+                    "idB": idBilletDisponible,
+                    "idF": id_festival,
+                    "idType": idType,
+                    "idS": idS,
+                    "prix": billet_json['price'],
+                    "dateAchat": datetime.now().date(),
+                    "dateDebutB": date_debut_b,
+                    "dateFinB": date_fin_b
+                })
+        self.connexion.get_connexion().commit()

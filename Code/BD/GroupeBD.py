@@ -149,11 +149,11 @@ class GroupeBD:
             
     def get_activites_annexe_groupe(self, idG):
         try:
-            query = text("SELECT idG, idH, nomG, descriptionG, dateDebutE, heureDebutE FROM GROUPE NATURAL JOIN evenement WHERE idE in (SELECT idE FROM activite_annexe) AND idG = :idG)")
+            query = text("SELECT idG, idE, typeA, descriptionG, dateDebutE, heureDebutE, heureFinE, dateFinE FROM GROUPE NATURAL JOIN evenement NATURAL JOIN activite_annexe WHERE idE in (SELECT idE FROM activite_annexe) AND idG = :idG")
             activites_annexe = []
             result = self.connexion.get_connexion().execute(query, {"idG": idG})
-            for idG, idE, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE in result:
-                activites_annexe.append(Evenement(idE, idG, -1, nomE, heureDebutE, heureFinE, dateDebutE, dateFinE))
+            for idG, idE, typeA, descriptionG, dateDebutE, heureDebutE, heureFinE, dateFinE in result:
+                activites_annexe.append(Evenement(idE, idG, -1, typeA, heureDebutE, heureFinE, dateDebutE, dateFinE))
             return activites_annexe
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
