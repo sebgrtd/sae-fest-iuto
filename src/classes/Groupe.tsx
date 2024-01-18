@@ -15,14 +15,24 @@ export class Reseaux{
 }
 
 export class Evenement{
-    dateDebutEvenement: string;
-    heureDebutEvenement: string;
-    nomEvenement: string;
+    dateDebutE: string;
+    dateFinE: string;
+    heureDebutE: string;
+    heureFinE: string;
+    idE: number;
+    idG: number;
+    idL: number;
+    nomE: string;
     
-    constructor(dateDebutEvenement: string, nomEvenement: string, heureDebutEvenement: string) {
-        this.dateDebutEvenement = dateDebutEvenement;
-        this.heureDebutEvenement = heureDebutEvenement;
-        this.nomEvenement = nomEvenement;
+    constructor(dateDebutE: string, dateFinE: string, heureDebutE: string, heureFinE: string, idE: number, idG: number, idL: number, nomE: string) {
+        this.dateDebutE = dateDebutE;
+        this.dateFinE = dateFinE;
+        this.heureDebutE = heureDebutE;
+        this.heureFinE = heureFinE;
+        this.idE = idE;
+        this.idG = idG;
+        this.idL = idL;
+        this.nomE = nomE;
     }
 }
 

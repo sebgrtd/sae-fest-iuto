@@ -32,7 +32,6 @@ export default function PageArtiste() {
       console.log(location.state)
       if (location.state && location != null){
         axios.get('http://localhost:8080/getInfosSupplementairesArtiste?idGroupe='+idArtiste).then((res) => {
-          console.log(res)
           const data = res.data as Groupe;
           if (res.status === 200){
             setDescription(data.descriptionG)
@@ -40,6 +39,7 @@ export default function PageArtiste() {
             setStyles(data.genresMusicaux)
             setMembresGroupe(data.membresGroupe)
             setEvenements(data.evenementsAnnexes)
+            console.log(data.evenementsAnnexes)
           }
           else{
             alert("erreur lors de la récupération des infos supplémentaires de l'artiste")
@@ -50,7 +50,7 @@ export default function PageArtiste() {
       }
       else{
         axios.get("http://localhost:8080/getInfosArtiste?idGroupe="+idArtiste).then((res) => {
-          console.log(res)
+          console.log(res.data)
           if (res.status === 200){
             const data = res.data as Groupe;
             setNomArtiste(data.nomG)
@@ -59,7 +59,6 @@ export default function PageArtiste() {
             setDescription(data.descriptionG)
             setLienReseaux(data.reseaux)
             setStyles(data.genresMusicaux)
-            console.log(data.membresGroupe)
             setMembresGroupe(data.membresGroupe)
             setEvenements(data.evenementsAnnexes)
           }
@@ -206,14 +205,14 @@ export default function PageArtiste() {
                     </svg>
                     <p>Evenements annexe: {
                         evenements.map((evenement, index) => {
-                          return evenement.nomEvenement + " - " + evenement.dateDebutEvenement + " - " + evenement.heureDebutEvenement + (index < evenements.length - 1 ? ", " : "")
+                          return evenement.nomE + " - " + Groupe.getJourPassage(evenement.dateDebutE) + " - " + Groupe.getHeurePassage(evenement.heureDebutE) + (index < evenements.length - 1 ? ", " : "")
                         })
                       }</p>
                   </div>
                   )
                 }
                 {
-                  membresGroupe && membresGroupe.length > 0 && (
+                  membresGroupe && membresGroupe.length > 1 && (
                   <div className="container-info">
                     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M19.8785 8.50244C19.7354 10.4883 18.2622 12.0181 16.6558 12.0181C15.0494 12.0181 13.5738 10.4888 13.4331 8.50244C13.2867 6.43652 14.7207 4.98682 16.6558 4.98682C18.5909 4.98682 20.0249 6.47412 19.8785 8.50244Z" stroke="#ED785B" stroke-width="1.5625" stroke-linecap="round" stroke-linejoin="round"/>
