@@ -86,7 +86,7 @@ class GroupeBD:
             # on veut la description du groupe (descriptionG) dans Groupe
             # et tous les liens des réseaux (reseau) dans lien_reseaux_sociaux
             
-            query = text("SELECT descriptionG, reseau, nomG, descriptionG, heureDebutE, dateDebutE FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN evenement WHERE idE in (SELECT idE FROM concert) AND idG = :idG") 
+            query = text("SELECT descriptionG, reseau, nomG, descriptionG, heureDebutE, dateDebutE, nomL FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN evenement NATURAL JOIN LIEU WHERE idE in (SELECT idE FROM concert) AND idG = :idG") 
             result = self.connexion.get_connexion().execute(query, {"idG": idG})
             
             print(idG)
@@ -95,13 +95,15 @@ class GroupeBD:
             nomG = ""
             heurePassage = ""
             datePassage = ""
+            scene = ""
             reseaux = Reseaux()
             
-            for description, reseau, nomG, descriptionG, heurePassageG, datePassageG in result:
+            for description, reseau, nomG, descriptionG, heurePassageG, datePassageG, nomL in result:
                 descriptionG = description
                 nomG = nomG
                 heurePassage = heurePassageG
                 datePassage = datePassageG
+                scene = nomL
                 reseaux.ajoute_reseau(reseau)
             
             lesMembres = []
@@ -114,7 +116,7 @@ class GroupeBD:
             
             lesActivitesAnnexe = self.get_activites_annexe_groupe(idG)
             
-            return Groupe(idG, None, nomG, descriptionG, datePassage, heurePassage, None, None, reseaux, lesStylesMusicaux, lesMembres, lesActivitesAnnexe).to_dict()
+            return Groupe(idG, None, nomG, descriptionG, datePassage, heurePassage, None, None, reseaux, lesStylesMusicaux, lesMembres, lesActivitesAnnexe, scene).to_dict()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
     
@@ -123,15 +125,17 @@ class GroupeBD:
             # on veut la description du groupe (descriptionG) dans Groupe
             # et tous les liens des réseaux (reseau) dans lien_reseaux_sociaux
             
-            query = text("SELECT descriptionG, reseau FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX WHERE idG = :idG") 
+            query = text("SELECT descriptionG, reseau, nomL FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN EVENEMENT NATURAL JOIN LIEU WHERE idG = :idG AND idE in (SELECT idE FROM concert)") 
             result = self.connexion.get_connexion().execute(query, {"idG": idG})
             
             descriptionG = ""
             reseaux = Reseaux()
+            scene = ""
             
-            for description, reseau in result:
+            for description, reseau, nomL in result:
                 descriptionG = description
                 reseaux.ajoute_reseau(reseau)
+                scene = nomL
                 
             lesMembres = []
             
@@ -143,7 +147,7 @@ class GroupeBD:
             
             lesActivitesAnnexe = self.get_activites_annexe_groupe(idG)
             
-            return Groupe(idG, None, None, descriptionG, None, None, None, None, reseaux, lesStylesMusicaux, lesMembres, lesActivitesAnnexe).to_dict()
+            return Groupe(idG, None, None, descriptionG, None, None, None, None, reseaux, lesStylesMusicaux, lesMembres, lesActivitesAnnexe,scene).to_dict()
         except SQLAlchemyError as e:
             print(f"La requête a échoué : {e}")
             
