@@ -15,7 +15,6 @@ type Props = {
 
 export default function TabArtiste(props : Props) {
     const current = window.location.pathname;
-    console.log(current);
   const [isOpen, setIsOpen] = useState(true);
   const[sortedArtists, setSortedArtists] = useState<Groupe[]>(props.artistes);
 
@@ -136,7 +135,7 @@ export default function TabArtiste(props : Props) {
         
         })
       // j'ai envie d'ajouter pour chaque artiste sa liste de passages concurrents d'autres artistes (si un artiste passe en même temps)
-  }, [props.artistes])});
+  })}, [props.artistes]);
 
   useEffect(() => {
     console.log("sortedArtists", sortedArtists)
@@ -198,7 +197,7 @@ export default function TabArtiste(props : Props) {
                     date={props.date}
                     setArtistes={props.setArtistes}
                     artiste={artiste}
-                    key={artiste.idG+ " " + artiste.passagesConcurrents ? artiste.passagesConcurrents?.length : -1}
+                    key={artiste.idG+ " " + (artiste.passagesConcurrents ? artiste.passagesConcurrents?.length : -1)}
                     doesntHaveTypes={props.doesntHaveTypes}
                     location={current}
                   />
