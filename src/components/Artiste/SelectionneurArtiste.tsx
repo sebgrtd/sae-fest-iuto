@@ -166,7 +166,7 @@ export default function SelectionneurArtiste(props:Props) {
             rotate:0,
             scale: 3.5,
             x:"-95%",
-            y:"55%",
+            y:"60%",
             transition:{
                 duration:0,
             }
@@ -175,7 +175,7 @@ export default function SelectionneurArtiste(props:Props) {
             rotate:0,
             scale: 3.5,
             x:"-95%",
-            y:"55%",
+            y:"60%",
             transition:{
                 duration:0.5,
                 ease:[1,0,0,1]
@@ -347,7 +347,9 @@ export default function SelectionneurArtiste(props:Props) {
                 
                 <p>{thirdTextValue}</p>
 
-                <svg width="33" height="24" viewBox="0 0 33 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                className='check'
+                width="33" height="24" viewBox="0 0 33 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <motion.rect
                     variants={checkVariants(true)}
                     animate={(hasLoaded || hasFinished) ? "visible" : "hidden"}

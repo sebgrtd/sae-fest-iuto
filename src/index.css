@@ -946,7 +946,6 @@ input[type="number"]::-ms-reveal {
 
 .searchbar{
   position: relative;
-  height: 100%;
 }
 
 .searchbar input{
@@ -974,8 +973,8 @@ input[type="number"]::-ms-reveal {
 .searchbar svg{
   z-index: 2;
   position: absolute;
-  bottom:50%;
-  transform: translateY(50%);
+  top:50%;
+  transform: translateY(-50%);
   right:1.25rem;
   height: 1.5rem;
 }
@@ -1883,12 +1882,16 @@ footer .bottom-content h5{
   right:0;
   bottom:0;
   height: 100%;
-  width: 27%;
+  width:18rem;
   z-index: 10;
 }
 
 .selectionneur-artiste svg{
-  height: 2rem;
+  max-height: 2rem;
+}
+
+.selectionneur-artiste .check{
+  max-height: 1.5rem;
 }
 
 .selectionneur-artiste .bookmark-container .bookmark{
@@ -1924,6 +1927,7 @@ footer .bottom-content h5{
   font-family: "TuskerGrotesk";
   font-weight: 700;
   line-height: 1;
+  text-wrap: nowrap;
 }
 
 .selectionneur-artiste .bookmark-container .text-feedback .arrow{
