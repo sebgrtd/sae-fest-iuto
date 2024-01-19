@@ -1380,14 +1380,15 @@ input[type="number"]::-ms-reveal {
 #Billeterie{
   padding: 12vh 0 0 0;
   min-height: 100vh;
+  display: flex;
   width: 100%;
   overflow: hidden;
-  position: relative;
-  margin-bottom: 100px;
+  margin-bottom: 6.25rem;
 }
 #Billeterie header{
   position: relative;
-  height: 316px;
+  min-height: 19.75rem;
+  max-height: 19.75rem;
 }
 
 #Billeterie .billets {
@@ -1397,14 +1398,23 @@ input[type="number"]::-ms-reveal {
   align-items: center;
 }
 
+#Billeterie .etoile{
+  height: 4rem;
+}
+
+#Billeterie .container-video{
+  height: 100vh;
+  width: 100vw;
+}
+
 #Billeterie .bgbillet{
-  position: relative;
-  padding: 0;
-  min-width: 100%;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 #Billeterie .billetExemple {
   position: absolute;
-  top: 200px;
+  bottom:-5vw;
   width: 35vw; 
 }
 
@@ -1424,7 +1434,7 @@ input[type="number"]::-ms-reveal {
   align-items: center;
   color: #000;
   font-family: Montserrat;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
@@ -1471,12 +1481,12 @@ input[type="number"]::-ms-reveal {
 
 #Billeterie .lieu{
   display: flex;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 #Billeterie .billets-content{
   margin-top: 3.4375rem;
-  padding: 0 15px 0 15px;
+  padding: 0 1rem 0 1rem;
   display: flex;
   flex-direction: column;
 }
@@ -1492,7 +1502,7 @@ input[type="number"]::-ms-reveal {
 #Billeterie .ticket-card {
   background-color: white;
   box-shadow: 0px 20px 23.8px -28px rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
+  border-radius: 0.75rem;
   width: 55vw;
   margin: 1rem 0;
 }
@@ -1515,8 +1525,18 @@ input[type="number"]::-ms-reveal {
 }
 
 #Billeterie .right-part{
-  display: flex;;
+  display: flex;
+  align-items: center;
   gap: 0.625rem;
+}
+
+#Billeterie .right-part p {
+  position: relative;
+  bottom: 0.18rem
+}
+
+#Billeterie .right-part svg{
+  height: 1.25rem;
 }
 
 #Billeterie .ticket-card .sub-menu{
@@ -1524,7 +1544,7 @@ input[type="number"]::-ms-reveal {
   background-color: var(--color-dark);
   display: flex;
   height: 5rem;
-  padding: 0 10px;
+  padding: 0 0.625rem;
   position: relative;
   box-shadow: 0px 20px 23.8px -28px rgba(0, 0, 0, 0.25);
   border-radius: 0.75rem;
@@ -1543,9 +1563,9 @@ input[type="number"]::-ms-reveal {
   width: 80%;
   display: flex;
   justify-content: space-between;
-  padding-bottom: 10px;
+  padding-bottom: 0.625rem;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 0.625rem;
 }
 
 #Billeterie .bottom-part-left{
@@ -1591,7 +1611,7 @@ input[type="number"]::-ms-reveal {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 15px;
+  padding: 0.625rem 1rem;
   border-radius: 8px; 
   color: rgb(43, 43, 43);
   cursor: pointer;
@@ -1603,17 +1623,17 @@ input[type="number"]::-ms-reveal {
 .ticket-card .rect{
   position: relative;
   background-color: white;
-  width: 166px;
-  height: 50px;
+  width: 10.375rem;
+  height: 3.125rem;
   border-radius: 12px;
 }
 
 .ticket-card .petitBillet{
   position: absolute;
-  width: 100px;
+  width: 6.25rem;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  top: calc(50% - 35px / 2); 
-  left: calc(50% - 100px / 2); 
+  top: calc(50% - 2.1875rem / 2); 
+  left: calc(50% - 6.25rem / 2); 
 }
 
 .ticket-card .sub-menu{
@@ -1622,7 +1642,7 @@ input[type="number"]::-ms-reveal {
   justify-content: space-between;
   color: var(--white, #FFF);
   font-family: Montserrat;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
@@ -1651,11 +1671,11 @@ input[type="number"]::-ms-reveal {
 }
 
 .sub-menu.forfait-2j {
-  height: 300px; 
+  height: 18.75rem; 
 }
 
 .sub-menu.forfait-2j, .sub-menu{
-  padding: 20px;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1670,8 +1690,8 @@ input[type="number"]::-ms-reveal {
   background-color: var(--color-orange); 
   border: none; 
   color: white;
-  padding: 7px 10px;
-  font-size: 16px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s; 
 }
@@ -1685,20 +1705,20 @@ input[type="number"]::-ms-reveal {
 }
 
 #Billeterie .btn{
-  font-size: 15px;
-  padding: 5px;
+  font-size: 1rem;
+  padding: 0.5rem;
 }
 
 .ticket-card .rect img{
   position: absolute;
-  width: 100px;
+  width: 6.25rem;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  top: calc(50% - 35px / 2); 
-  left: calc(50% - 100px / 2); 
+  top: calc(50% - 2.1875rem / 2); 
+  left: calc(50% - 6.25rem / 2); 
 }
 
 .ticket-card .btn-small-padding{
-  padding: 5px;
+  padding: 0.5rem;
 }
 
 footer{
@@ -2080,18 +2100,7 @@ footer .bottom-content h5{
   html {
     font-size: 14px;
   }
-  #Billeterie .billetExemple {
-    top: 250px;
-    width: 45vw; 
-  }
 
-  #Billeterie .header-billet{
-    margin-top: 5em;
-  }
-
-  .ticket-card .sub-menu{
-    font-size: 15px;
-  }
 }
 
 /* Point de rupture pour les écrans MD */
@@ -2100,11 +2109,6 @@ footer .bottom-content h5{
     font-size: 12px;
   }
 
-  #Billeterie .header-billet{
-    width: 50vw;
-    }
-
-
 }
 
 /* Point de rupture pour les écrans SM */
@@ -2112,43 +2116,6 @@ footer .bottom-content h5{
   html {
     font-size: 10px;
   }
-
-  #Billeterie .billetExemple {
-    width: 70vw; 
-  }
-
-  #Billeterie .header-billet{
-    margin-top: 7em;
-  }
-
-  #Billeterie header h2{
-    font-size: 7em;
-    left: 1em;
-  }
-  .ticket-card .rect{
-    display: none;
-  }
-
-  .ticket-card .right-part p{
-    font-size: 15px;
-  }
-
-  #Billeterie .bottom-part-left{
-    gap: 5px;
-  }
-
-  #Billeterie .sub-menu-left-part{
-    gap: 0px;
-  }
-
-  .sub-menu.forfait-2j .bottom-part-left{
-    padding-top: 17px;
-  }
-
-  .day-button{
-    padding: 3px 15px;
-  }
-
 }
 
 /* Point de rupture pour les écrans XS */
@@ -2156,54 +2123,10 @@ footer .bottom-content h5{
   html {
     font-size: 8px;
   }
-
-  #Billeterie .billetExemple {
-    top: 300px;
-    width: 66vw; 
-  }
-
-  #Billeterie .header-billet{
-    margin-top: 8em;
-    width: 80%;
-  }
-
-  .ticket-card .sub-menu{
-    font-size: 12px;
-  }
 }
 
 @media (max-width: 450px) {
   html {
     font-size: 8px;
-  }
-
-  #Billeterie .bgbillet {
-    position: relative;
-    min-width: 100%;
-  }
-
-  #Billeterie .billetExemple {
-    top: 270px;
-    width: 75vw; 
-  }
-
-  #Billeterie .header-billet{
-    margin-top: 4em;
-    width: 80%;
-  }
-
-  #Billeterie .header-billet h2{
-    font-size: 35px;
-  }
-
-  #Billeterie .ticket-card{
-    width: 75vw;
-  }
-.ticket-card .left-part p{
-    font-size: 13px;
-  }
-
-  .ticket-card .right-part p{
-    font-size: 15px;
   }
 }
