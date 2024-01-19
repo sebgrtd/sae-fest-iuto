@@ -15,11 +15,13 @@ export default function SectionJournal(props : Props) {
 
   const blur = useTransform(scrollYProgressForBlur, [0, 0.7, 0.9], ["blur(0px)", "blur(0px)", "blur(10px)"]); 
 
-  const scale = useTransform(scrollYProgress, [0, 0.25, 0.7], [1.5, 1, 0.25]);
-  const y = useTransform(scrollYProgress, [0, 0.25, 0.4, 0.5], ["0%", "5%", "20%", "20%"]);
+  // le 0.0000000000001 permet de fix un bug d'overflow sur mobile car avec le scale ça dépassait
+  // mais du coup fix ghetto c'est de réduire la valeur de départ du scale pendant une toute petite portion de scroll
+  const scale = useTransform(scrollYProgress, [0, 0.000000001, 0.25, 0.7], [0.5, 1.5, 1, 0.25]);
+  const y = useTransform(scrollYProgress, [0, 0.25, 0.4, 0.5], ["0%", "-25%", "-52%", "-52%"]);
   const x = useTransform(scrollYProgress, [0, 0.5, 0.7], ["0%", "0%", "20%"]);
   const rotate = useTransform(scrollYProgress, [0, 0.5, 0.7], ["0deg", "0deg", "-25deg"]);
-  const imagePosition = useTransform(scrollYProgress, (latest) => latest > 0.7 ? "fixed" : "sticky")
+  const imagePosition = useTransform(scrollYProgress, (latest) => latest > 0.5 ? "fixed" : "sticky")
 
   const contentX = useTransform(scrollYProgress, [0, 0.5, 0.7], ["-50%", "-50%", "-110%"]);
   const contentOpacity = useTransform(scrollYProgress, [0.49,0.5], [0, 1]);

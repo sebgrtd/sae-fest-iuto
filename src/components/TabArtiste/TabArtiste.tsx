@@ -55,7 +55,7 @@ export default function TabArtiste(props : Props) {
   }
 
   useEffect(() => {
-    if (props.artistes == undefined){
+    if (props.artistes == undefined || !props.doesntHaveTypes){
         return;
     }
     let formatedArtists =props.artistes.sort((a, b) => {

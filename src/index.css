@@ -282,6 +282,7 @@ body{
 /* Personnalise l'ensemble de la barre de défilement */
 .liste-artistes::-webkit-scrollbar, .le-panier::-webkit-scrollbar {
   width: 5px; /* Largeur de la barre de défilement */
+  height: 5px;
 }
 
 /* Personnalise le fond de la barre de défilement */
@@ -763,6 +764,7 @@ input[type="number"]::-ms-reveal {
 
 /* Section journal */
 
+
 #SectionJournal{
   height: 300vh;
   position: relative;
@@ -772,7 +774,7 @@ input[type="number"]::-ms-reveal {
 #SectionJournal > img{
   position: sticky;
   width: 100%;
-  top: -50%;
+  top: 50%;
   z-index: 2;
 }
 
@@ -1953,7 +1955,6 @@ footer .bottom-content h5{
 
 #Navbar .side-menu.large .container main  .liste-artistes.liste-planification{
   gap:2rem;
-  overflow-x: hidden;
 }
 
 .tab-artiste{
@@ -1962,6 +1963,7 @@ footer .bottom-content h5{
   gap: 1rem;
   table-layout: fixed;
   margin-right: 1rem;
+  width: 98%;
 }
 
 .tab-artiste h3{
@@ -1984,6 +1986,7 @@ footer .bottom-content h5{
 .tab-artiste thead tr th{
   color:var(--color-light);
   width: 4rem;
+  margin:0;
 }
 
 .tab-artiste td{
@@ -1991,6 +1994,7 @@ footer .bottom-content h5{
   font-weight: 600;
   max-width: 4rem;
   position: relative;
+  margin:0;
 }
 
 .tab-artiste thead tr th, .tab-artiste td{
@@ -2007,8 +2011,9 @@ footer .bottom-content h5{
 .tab-artiste thead tr th:last-of-type{
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-  padding-right: 0;
+  min-width: 3rem;
   max-width: 3rem;
+  text-align: end;
   position: relative;
   cursor: pointer;
 }
@@ -2037,9 +2042,9 @@ footer .bottom-content h5{
 
 .tab-artiste td:last-of-type{
   color: var(--color-error);
-  padding-right: 0;
   max-width: 3rem;
   height: 3rem;
+  text-align: end;
   position: relative;
   cursor: pointer;
 }
@@ -2064,8 +2069,8 @@ footer .bottom-content h5{
 #Horaire .les-horaires{
   display: flex;
   flex-direction: column;
-  gap: 25px;
-
+  gap: 1.8rem;
+  overflow-x: scroll;
 }
 
 /* fais des media queries qui ne changent que le fontsize du body */
