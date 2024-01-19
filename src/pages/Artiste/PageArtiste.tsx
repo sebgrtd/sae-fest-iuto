@@ -21,6 +21,7 @@ export default function PageArtiste() {
     const[membresGroupe, setMembresGroupe] = useState<string[]>([])
     const[styles, setStyles] = useState<string[]>([])
     const[evenements, setEvenements] = useState<Evenement[]>([])
+    const[nomScene, setNomScene] = useState<string>("")
 
     const params = new URLSearchParams(window.location.search)
     const idArtiste = params.get('id')
@@ -39,7 +40,7 @@ export default function PageArtiste() {
             setStyles(data.genresMusicaux)
             setMembresGroupe(data.membresGroupe)
             setEvenements(data.evenementsAnnexes)
-            console.log(data.evenementsAnnexes)
+            setNomScene(data.scene)
           }
           else{
             alert("erreur lors de la récupération des infos supplémentaires de l'artiste")
@@ -61,6 +62,7 @@ export default function PageArtiste() {
             setStyles(data.genresMusicaux)
             setMembresGroupe(data.membresGroupe)
             setEvenements(data.evenementsAnnexes)
+            setNomScene(data.scene)
           }
           else
           {
@@ -233,6 +235,18 @@ export default function PageArtiste() {
                     </svg>
                     <p>Style: {styles.map((style, index) => style + (index < styles.length -1 ? " - " : ""))}</p>
                   </div>
+                  )
+                }
+                {
+                  nomScene && (
+                    <div className="container-info">
+                      <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.1289 9.04932C16.0619 9.04932 17.6289 7.48231 17.6289 5.54932C17.6289 3.61632 16.0619 2.04932 14.1289 2.04932C12.1959 2.04932 10.6289 3.61632 10.6289 5.54932C10.6289 7.48231 12.1959 9.04932 14.1289 9.04932Z" stroke="#E45A3B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15.0039 9.26807C15.0039 9.13753 14.9521 9.01234 14.8597 8.92004C14.7674 8.82773 14.6423 8.77588 14.5117 8.77588H13.7461C13.6156 8.77588 13.4904 8.82773 13.3981 8.92004C13.3058 9.01234 13.2539 9.13753 13.2539 9.26807V25.3221C13.254 25.5546 13.3003 25.7847 13.3901 25.9992L13.9408 27.3117C13.9592 27.3454 13.9864 27.3736 14.0195 27.3933C14.0526 27.4129 14.0904 27.4232 14.1289 27.4232C14.1674 27.4232 14.2052 27.4129 14.2383 27.3933C14.2714 27.3736 14.2986 27.3454 14.317 27.3117L14.8677 25.9992C14.9575 25.7847 15.0038 25.5546 15.0039 25.3221V9.26807Z" fill="#E45A3B"/>
+                        <path d="M15.4414 5.54932C16.1663 5.54932 16.7539 4.96169 16.7539 4.23682C16.7539 3.51194 16.1663 2.92432 15.4414 2.92432C14.7165 2.92432 14.1289 3.51194 14.1289 4.23682C14.1289 4.96169 14.7165 5.54932 15.4414 5.54932Z" fill="#E45A3B"/>
+                      </svg>
+                      <p>{nomScene}</p>
+                    </div>
                   )
                 }
               </section>
