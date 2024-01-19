@@ -24,7 +24,7 @@ export default function SectionJournal(props : Props) {
   const imagePosition = useTransform(scrollYProgress, (latest) => latest > 0.5 ? "fixed" : "sticky")
 
   const contentX = useTransform(scrollYProgress, [0, 0.5, 0.7], ["-50%", "-50%", "-110%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0.49,0.5], [0, 1]);
+  const contentOpacity = useTransform(scrollYProgress, [0.45,0.5], [0, 1]);
 
     // fais en sorte que si le scrollYpROGRESS  est > 0.85 alors on met le nav en transparent
 

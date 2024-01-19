@@ -883,6 +883,10 @@ input[type="number"]::-ms-reveal {
   opacity: 0.8;
 }
 
+#SectionBilleterie .content .infos .info img{
+  height: 2.25rem;
+}
+
 #SectionBilleterie .btn-link{
   align-self: flex-end;
 }
@@ -2100,7 +2104,6 @@ footer .bottom-content h5{
   html {
     font-size: 14px;
   }
-
 }
 
 /* Point de rupture pour les écrans MD */
