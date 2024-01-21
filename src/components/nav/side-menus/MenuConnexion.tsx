@@ -744,7 +744,8 @@ export default function MenuConnexion(props: Props) {
                 <a href="" onClick={(e) => goTo("affichage-planification",e)} className="btn-link">
                   <Button onClick={handleDownload} text="Télécharger" isDisabled={
                     // si tous les tableaux sont vides on affiche que c'est vide
-                    Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0)
+                    // ou si il y a des passages concurrents
+                    Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0) || Object.entries(tableauxArtistes).some(([key, value]) => value.some((artiste:Groupe) => artiste.passagesConcurrents?.length > 0))
                   
                   } />
                 </a>
