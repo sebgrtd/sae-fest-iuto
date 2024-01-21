@@ -195,6 +195,24 @@ export default function MenuConnexion(props: Props) {
     
   }, [props.isOpen, currentMenu])
 
+  const handleDownload = () => {
+    axios.post('http://localhost:8080/telecharger_planif', {
+    responseType: 'blob',    
+    data: tableauxArtistes
+    })
+    .then((response) => {
+        console.log(response);
+        // sur mon serveur j'ai fait send_file('billet.pdf, as_attachment=True)
+        
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+
+        const url = window.URL.createObjectURL(blob);
+        
+        window.open(url);
+
+    })
+}
+
   const goTo = (menu : menuConnexionTabs, e? : React.MouseEvent<HTMLAnchorElement>) => {
     if(e) {e.preventDefault();}
     //reset tous les champs
