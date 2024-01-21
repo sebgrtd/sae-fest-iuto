@@ -117,6 +117,58 @@ class Type_Billet:
             "duree": self.__duree
         }
 
+class Billet_adapte:
+    # avec idB, dateAchat, dateDebutB, dateFinB, duree, prix
+    def __init__(self, idB: int, dateAchat: str, dateDebutB: str, dateFinB: str, duree: int, prix: int):
+        self.__idB = idB
+        self.__dateAchat = dateAchat if isinstance(dateAchat, date) else datetime.strptime(dateAchat, '%Y-%m-%d').date()
+        self.__dateDebutB = dateDebutB if isinstance(dateDebutB, date) else datetime.strptime(dateDebutB, '%Y-%m-%d').date()
+        self.__dateFinB = dateFinB if isinstance(dateFinB, date) else datetime.strptime(dateFinB, '%Y-%m-%d').date()
+        self.__duree = duree
+        self.__prix = prix
+    
+    def get_idB(self):
+        return self.__idB
+    
+    def get_dateAchat(self):
+        return self.__dateAchat
+    
+    def get_dateDebutB(self):
+        return self.__dateDebutB
+    
+    def get_dateFinB(self):
+        return self.__dateFinB
+    
+    def get_duree(self):
+        return self.__duree
+    
+    def get_prix(self):
+        return self.__prix
+    
+    def set_dateAchat(self, dateAchat):
+        self.__dateAchat = dateAchat
+        
+    def set_dateDebutB(self, dateDebutB):
+        self.__dateDebutB = dateDebutB
+    
+    def set_dateFinB(self, dateFinB):
+        self.__dateFinB = dateFinB
+        
+    def set_duree(self, duree):
+        self.__duree = duree
+        
+    def set_prix(self, prix):
+        self.__prix = prix
+        
+    def to_dict(self):
+        return {
+            "idB": self.__idB,
+            "dateAchat": self.__dateAchat.isoformat(),
+            "dateDebutB": self.__dateDebutB.isoformat(),
+            "dateFinB": self.__dateFinB.isoformat(),
+            "duree": self.__duree,
+            "prix": self.__prix
+        }
 
 class Billet:
     def __init__(self, idB: int, idF: int, idType: int, idS: int, prix: int, dateAchat: str, dateDebutB: str, dateFinB: str):

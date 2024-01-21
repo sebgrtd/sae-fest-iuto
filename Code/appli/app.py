@@ -63,9 +63,7 @@ def getArtistes():
     groupebd = GroupeBD(connexion_bd)
     # on regarde si l'on a passé en paramètre date et genre
     date = request.args.get("date", None)
-    print(date)
     genre = request.args.get("genre", None)
-    print(genre)
     res = groupebd.get_all_groupes_concert_json(date,genre)
     if res is None:
             return jsonify({"error": "Aucun artiste trouve"})
@@ -77,9 +75,7 @@ def getArtistes():
 def getRS(id):
     connexion_bd = ConnexionBD()
     lienRS = LienRS_BD(connexion_bd)
-    print("test")
     res = lienRS.get_liensRS_membre_json(id)
-    print(res)
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -648,6 +644,7 @@ def ajouter_billet():
     connexionbd = ConnexionBD()
     billetbd = BilletBD(connexionbd)
     id_spectateur = request.form["spectateur_billet"]
+    print(id_spectateur)
     id_type_billet = request.form["type_billet"]
     prix_billet = request.form["prix"]
     date_achat_billet = request.form["date_achat"]
@@ -913,8 +910,8 @@ def reserver_billets():
     billet_bd = BilletBD(connexion_bd)
     data = request.get_json()
     print(f"data: {data}") 
-    idUser = data[0]['id'] 
-    billet_bd.reserver_billets(data, 2)
+    idUser = data[0]['idUser']
+    billet_bd.reserver_billets(data, idUser)
     return jsonify({"success": "Les billets ont été réservés avec succès"})
 
 @app.route('/saveArtiste', methods=['POST'])
@@ -1032,3 +1029,13 @@ def searchUsersWithSave():
     groupes = groupebd.search_groupes_with_save_json(recherche, idUser, date,genre) if recherche else []
     connexion_bd.fermer_connexion()
     return groupes
+
+@app.route("/getMesBillets", methods=["GET"])
+def getMesBillets():
+    idUser = request.args.get("idUser", "")
+    connexion_bd = ConnexionBD()
+    billetbd = BilletBD(connexion_bd)
+    billets = billetbd.get_mes_billets_json(idUser)
+    connexion_bd.fermer_connexion()
+    print(billets, idUser)
+    return billets

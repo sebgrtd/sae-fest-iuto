@@ -1,5 +1,5 @@
 from datetime import datetime
-from BD import Billet
+from BD import Billet, Billet_adapte
 from ConnexionBD import ConnexionBD
 from sqlalchemy.sql.expression import text
 from sqlalchemy.exc import SQLAlchemyError
@@ -7,6 +7,24 @@ from sqlalchemy.exc import SQLAlchemyError
 class BilletBD:
     def __init__(self, conx: ConnexionBD):
         self.connexion = conx
+        
+    def get_mes_billets_json(self, idUser):
+        # SELECT idB, dateAchat, dateDebutB, dateFinB, duree, prix FROM festiuto.billet NATURAL JOIN SPECTATEUR NATURAL JOIN USER NATURAL JOIN type_Billet WHERE idUser = ?;
+        try:
+            query = text("""SELECT idB, dateAchat, dateDebutB, dateFinB, duree, prix FROM billet NATURAL JOIN SPECTATEUR NATURAL JOIN USER NATURAL JOIN type_Billet WHERE idUser = :idUser""")
+            result = self.connexion.get_connexion().execute(query, {"idUser": idUser})
+            billets = []
+            
+            for idB, dateAchat, dateDebutB, dateFinB, duree, prix in result:
+                billets.append(Billet_adapte(idB, dateAchat, dateDebutB, dateFinB, duree, prix))
+                
+            billets_json = []
+            for billet in billets:
+                billets_json.append(billet.to_dict())
+            return billets_json
+        except SQLAlchemyError as e:
+            print(f"La requête a échoué : {e}")
+            return None
         
     def get_nb_reservations(self):
         # SELECT count(*) FROM festiuto.billet;
