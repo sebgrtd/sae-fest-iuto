@@ -196,9 +196,20 @@ export default function MenuConnexion(props: Props) {
   }, [props.isOpen, currentMenu])
 
   const handleDownload = () => {
-    axios.post('http://localhost:8080/telecharger_planif', {
-    responseType: 'blob',    
-    data: tableauxArtistes
+    console.log(tableauxArtistes)
+    let newTableauxArtistes = new Map();
+    // on va refaire la même map sans l'entrée passageConcurrents
+    Object.entries(tableauxArtistes).forEach(([key, value]) => {
+      let newValue = value.map((groupe:Groupe) => {
+        let newGroupe = groupe
+        return newGroupe;
+      })
+      newTableauxArtistes.set(key, newValue);
+    })
+    console.log(Array.from(newTableauxArtistes.entries()));
+    axios.post('http://localhost:8080/telecharger_planif',{
+    responseType: 'blob',
+    data: Array.from(newTableauxArtistes.entries()),
     })
     .then((response) => {
         console.log(response);
@@ -731,7 +742,7 @@ export default function MenuConnexion(props: Props) {
                 <a href="" onClick={(e) => goTo("planification",e)}>Retour</a>
 
                 <a href="" onClick={(e) => goTo("affichage-planification",e)} className="btn-link">
-                  <Button text="Télécharger" isDisabled={
+                  <Button onClick={handleDownload} text="Télécharger" isDisabled={
                     // si tous les tableaux sont vides on affiche que c'est vide
                     Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0)
                   
