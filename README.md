@@ -10,6 +10,7 @@ FEST'IUTO est une application web dynamique d'un site  festival, il s'agit d'un 
 - Achat de billets : Achetez différents types de billets (pass journalier, pass de deux jours, accès complet au festival, etc.) de façon fluide.
 - Profils d'artistes : Découvrez des informations détaillées sur chaque groupe comprenant des descriptions, des photos, des liens vers les réseaux sociaux, des vidéos, les membres du groupe et les styles musicaux et les évènement annexes auquel il font part.
 - Gestion des favoris : Les participants peuvent enregistrer leurs artistes préférés et commencer à planifier leur propre programme de festival, tout en étant avertit de la possiblité de consulter tel artiste à tel par rapport à ceux déjà ajoutées.
+- Consulter vos billets 
 
 ### Pour les administrateurs:
 
