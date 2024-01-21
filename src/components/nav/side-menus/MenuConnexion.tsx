@@ -13,6 +13,8 @@ import SelectionneurArtiste from '../../Artiste/SelectionneurArtiste';
 import Artiste from '../../../classes/Artiste';
 import TabArtiste from '../../TabArtiste/TabArtiste';
 import Groupe from '../../../classes/Groupe';
+import AfficheurMonBillet from './AfficheurMonBillet';
+import Billet from '../../../classes/Billet';
 
 type Props = {
   isOpen: boolean;
@@ -34,6 +36,7 @@ export default function MenuConnexion(props: Props) {
   const[isLoading, setIsLoading] = useState(false);
   const[filtreDate, setFiltreDate] = useState("Tout");
   const[filtreGenre, setFiltreGenre] = useState("Tout");
+  const[mesBillets, setMesBillets] = useState<Billet[]>([]);
 
   useEffect(() => {
     setCurrentMenu(isConnected() ? "connecte" : "connexion");
@@ -133,6 +136,40 @@ export default function MenuConnexion(props: Props) {
       
       if (currentMenu === "planification"){
         handleResetArtists();
+      }
+
+      if (currentMenu === "connecte"){
+        axios.get("http://localhost:8080/getMesBillets?idUser="+getUserCookie().idUser).then((res) => {
+          if (res.status === 200){
+            const data = res.data as Billet[];
+            console.log(data);
+            setMesBillets([]);
+            setMesBillets((oldBillets:Billet[]) => {
+              let newBillets:Billet[] = [...oldBillets];
+              // j'ai envie de faire en sorte que si l'on a deux billets pareils
+              // (c'est à dire même durée et même date de début)
+              // on les fusionne en un seul billet avec une quantité de 2
+
+              data.forEach((billet:Billet) => {
+                let found = false;
+                newBillets.forEach((billet2:Billet) => {
+                  if (billet.dateDebutB === billet2.dateDebutB && billet.duree === billet2.duree){
+                    billet2.quantite++;
+                    found = true;
+                  }
+                })
+                if (found === false){
+                  billet.quantite= 1;
+                  newBillets.push(billet);
+                }
+              })
+
+              return newBillets;
+            });
+          }
+        }).catch((err:any) => {
+          console.log(err)
+        })
       }
 
       if (currentMenu === "affichage-planification"){
@@ -579,9 +616,19 @@ export default function MenuConnexion(props: Props) {
               key={currentMenu}
             >  
               <h2>Bonjour {getUserCookie().pseudoUser}</h2>
-              {
-                // todo billets achetés
-              }
+              <div className="mes-billets">
+                {
+                  mesBillets.length > 0 ? (
+                    mesBillets.map((billet) => {
+                      return (
+                        <AfficheurMonBillet key={billet.idB} billet={billet}/>
+                      )
+                    })
+                  ) : (
+                    <p className="empty">Vous n'avez pas encore de billets</p>
+                  )
+                }
+              </div>
               <div className="other">
                 <a href="" onClick={(e) => goTo("modifierInfos",e)}>Modifier mes informations</a>
                 <a href="" onClick={(e) => goTo("planification",e)}>Planifier mon festival</a>

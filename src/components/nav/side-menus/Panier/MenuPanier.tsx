@@ -4,7 +4,7 @@ import { ItemPanier } from './ItemPanier';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../../../components/form/Button';
 import axios from 'axios';
-import { removeCookie} from '../../../../cookies/CookiesLib.tsx';
+import { getUserCookie, removeCookie} from '../../../../cookies/CookiesLib.tsx';
 
 
 type Props = {
@@ -47,7 +47,13 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
   const handleReservation = async () => {
     setIsButtonDisabled(true);
     try {
-      const response = await axios.post('http://localhost:8080/reserver_billets', cart);
+      // ajoutes idUser dans cart
+      const user = getUserCookie();
+      const newCart = cart.map((item) => {
+        item.idUser = user.idUser;
+        return item;
+      })
+      const response = await axios.post('http://localhost:8080/reserver_billets', newCart);
       console.log(cart);
       if (response.status === 200) {
         setReservationMessage('Merci pour votre achat! 🎉');
