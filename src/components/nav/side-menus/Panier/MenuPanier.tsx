@@ -53,7 +53,7 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
         item.idUser = user.idUser;
         return item;
       })
-      const response = await axios.post('http://localhost:8080/reserver_billets', newCart);
+      const response = await axios.post('http://51.178.46.205:8080/reserver_billets', newCart);
       console.log(cart);
       if (response.status === 200) {
         setReservationMessage('Merci pour votre achat! 🎉');

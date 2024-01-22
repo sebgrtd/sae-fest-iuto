@@ -32,7 +32,7 @@ export default function PageArtiste() {
     useEffect(() => {
       console.log(location.state)
       if (location.state && location != null){
-        axios.get('http://localhost:8080/getInfosSupplementairesArtiste?idGroupe='+idArtiste).then((res) => {
+        axios.get('http://51.178.46.205:8080/getInfosSupplementairesArtiste?idGroupe='+idArtiste).then((res) => {
           const data = res.data as Groupe;
           if (res.status === 200){
             setDescription(data.descriptionG)
@@ -50,7 +50,7 @@ export default function PageArtiste() {
         })
       }
       else{
-        axios.get("http://localhost:8080/getInfosArtiste?idGroupe="+idArtiste).then((res) => {
+        axios.get("http://51.178.46.205:8080/getInfosArtiste?idGroupe="+idArtiste).then((res) => {
           console.log(res.data)
           if (res.status === 200){
             const data = res.data as Groupe;
@@ -162,7 +162,7 @@ export default function PageArtiste() {
                 RETOUR
         </Link>
 
-      <img src={"http://localhost:8080/getImageArtiste/"+idArtiste} alt="image de fond" />
+      <img src={"http://51.178.46.205:8080/getImageArtiste/"+idArtiste} alt="image de fond" />
       <div className="content"
       style={{
         columnGap: infosGridPosition === "top" ? "0" : "5rem",

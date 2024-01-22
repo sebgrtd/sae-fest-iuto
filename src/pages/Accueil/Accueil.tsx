@@ -21,7 +21,7 @@ export default function (props: Props) {
     window.scrollTo(0,0)
     
     const fetchArtistes = async () => {
-      const res = await axios.get('http://localhost:8080/getNomsArtistes')
+      const res = await axios.get('http://51.178.46.205:8080/getNomsArtistes')
       const data = res.data
       // data : ["Vladimir Cauchemar", "Booba", "Freeze Corleone", "Damso", "Ashe 22", "Heuss l'Enfoiré", "Zola", "Sch", "H Jeunecrack", "Luther"]
       const listeNomArtistes : string[] = []

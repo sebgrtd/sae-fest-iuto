@@ -21,7 +21,7 @@ export default function Faq(props: Props) {
     window.scrollTo(0, 0)
     props.setIsNavTransparent(false);
 
-    axios.get('http://localhost:8080/getFaq').then((res) => {
+    axios.get('http://51.178.46.205:8080/getFaq').then((res) => {
       const data = res.data;
       const listeFaq : Faq[] = [];
       data.forEach((faq: Faq) => {

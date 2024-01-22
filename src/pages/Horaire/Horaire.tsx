@@ -43,7 +43,7 @@ export default function PageHoraire(props: Props) {
     props.setIsNavTransparent(false);
 
     axios
-      .get("http://localhost:8080/getArtistesWithSaveHoraire")
+      .get("http://51.178.46.205:8080/getArtistesWithSaveHoraire")
       .then((res) => {
         const artistesData: Groupe[] = res.data; // Présumé que les données correspondent à la structure de la classe Artiste
         console.log(res.data);
