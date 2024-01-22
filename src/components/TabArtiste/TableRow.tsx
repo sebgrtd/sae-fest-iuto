@@ -186,7 +186,7 @@ export default function TableRow(props: Props) {
         )}
       </td>
       <td>{props.artiste.nomG}</td>
-      <td>{props.artiste.nomSt ?? "Pas de Style défini"}</td>
+      <td>{props.doesntHaveTypes ? props.artiste.genresMusicaux : props.artiste.nomSt ?? "Pas de Style défini"}</td>
       <td>{props.artiste.scene}</td>
       {!props.doesntHaveTypes && (<td>
         {props.artiste.typeA
