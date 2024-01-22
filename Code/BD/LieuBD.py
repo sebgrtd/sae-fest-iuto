@@ -29,7 +29,7 @@ class LieuBD:
             
     def insert_lieu(self, lieu):
         try:
-            query = text("INSERT INTO lieu (nomL, adresseL, jaugeL) VALUES (:nomL, :adresseL, :jaugeL)")
+            query = text("INSERT INTO LIEU (nomL, adresseL, jaugeL) VALUES (:nomL, :adresseL, :jaugeL)")
             result = self.connexion.get_connexion().execute(query, {"nomL": lieu.get_nomL(), "adresseL": lieu.get_adresseL(), "jaugeL": lieu.get_jaugeL()})
             lieu_id = result.lastrowid
             print(f"Le lieu {lieu_id} a été ajouté")
@@ -39,7 +39,7 @@ class LieuBD:
             
     def delete_lieu_by_id(self, idLieu):
         try:
-            query = text("DELETE FROM lieu WHERE idL = :idLieu")
+            query = text("DELETE FROM LIEU WHERE idL = :idLieu")
             self.connexion.get_connexion().execute(query, {"idLieu": idLieu})
             self.connexion.get_connexion().commit()
             print(f"Le lieu {idLieu} a été supprimé")
@@ -48,7 +48,7 @@ class LieuBD:
             
     def update_lieu(self, lieu):
         try:
-            query = text("UPDATE lieu SET nomL = :nomL, adresseL = :adresseL, jaugeL = :jaugeL WHERE idL = :idL")
+            query = text("UPDATE LIEU SET nomL = :nomL, adresseL = :adresseL, jaugeL = :jaugeL WHERE idL = :idL")
             self.connexion.get_connexion().execute(query, {"nomL": lieu.get_nomL(), "adresseL": lieu.get_adresseL(), "jaugeL": lieu.get_jaugeL(), "idL": lieu.get_idL()})
             print(f"Le lieu {lieu.get_idL()} a été modifié")
             self.connexion.get_connexion().commit()

@@ -9,7 +9,7 @@ class Groupe_StyleBD:
         
     def get_groupes_selon_style(self, idStyle):
         try:
-            query = text("SELECT idG, idSt, idH, nomG, descriptionG FROM groupe_style natural join groupe WHERE idSt = :idStyle")
+            query = text("SELECT idG, idSt, idH, nomG, descriptionG FROM GROUPE_STYLE natural join GROUPE WHERE idSt = :idStyle")
             result = self.connexion.get_connexion().execute(query, {"idStyle": idStyle})
             groupes = []
             for idG, idSt, idH, nomG, descriptionG in result:

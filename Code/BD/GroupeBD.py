@@ -23,7 +23,7 @@ class GroupeBD:
                 # ajoutes l'année (2024)
                 date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
                 date = datetime.strptime(date, '%d %m %Y').date()
-            requete = "select idE, GROUPE.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH, isSaved(:idUser, groupe.idg) as isSaved from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT) AND nomG LIKE :search" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            requete = "select idE, GROUPE.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH, isSaved(:idUser, groupe.idg) as isSaved from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT) AND nomG LIKE :search" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE nomSt = :genre)" if genre else "")
             query = text(requete)
             groupes = []
             result = []
@@ -54,7 +54,7 @@ class GroupeBD:
                 # ajoutes l'année (2024)
                 date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
                 date = datetime.strptime(date, '%d %m %Y').date()
-            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert) AND nomG LIKE :search" + (" AND dateDebutE = :date" if date else "") + (" AND groupe.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT) AND nomG LIKE :search" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
             query = text(requete)
             groupes = []
             result = []
@@ -86,7 +86,7 @@ class GroupeBD:
             # on veut la description du groupe (descriptionG) dans Groupe
             # et tous les liens des réseaux (reseau) dans lien_reseaux_sociaux
             
-            query = text("SELECT descriptionG, reseau, nomG, descriptionG, heureDebutE, dateDebutE, nomL FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN evenement NATURAL JOIN LIEU WHERE idE in (SELECT idE FROM concert) AND idG = :idG") 
+            query = text("SELECT descriptionG, reseau, nomG, descriptionG, heureDebutE, dateDebutE, nomL FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN EVENEMENT NATURAL JOIN LIEU WHERE idE in (SELECT idE FROM CONCERT) AND idG = :idG") 
             result = self.connexion.get_connexion().execute(query, {"idG": idG})
             
             print(idG)
@@ -125,7 +125,7 @@ class GroupeBD:
             # on veut la description du groupe (descriptionG) dans Groupe
             # et tous les liens des réseaux (reseau) dans lien_reseaux_sociaux
             
-            query = text("SELECT descriptionG, reseau, nomL FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN EVENEMENT NATURAL JOIN LIEU WHERE idG = :idG AND idE in (SELECT idE FROM concert)") 
+            query = text("SELECT descriptionG, reseau, nomL FROM GROUPE NATURAL JOIN LIEN_RESEAUX_SOCIAUX NATURAL JOIN EVENEMENT NATURAL JOIN LIEU WHERE idG = :idG AND idE in (SELECT idE FROM CONCERT)") 
             result = self.connexion.get_connexion().execute(query, {"idG": idG})
             
             descriptionG = ""
@@ -153,7 +153,7 @@ class GroupeBD:
             
     def get_activites_annexe_groupe(self, idG):
         try:
-            query = text("SELECT idG, idE, typeA, descriptionG, dateDebutE, heureDebutE, heureFinE, dateFinE FROM GROUPE NATURAL JOIN evenement NATURAL JOIN activite_annexe WHERE idE in (SELECT idE FROM activite_annexe) AND idG = :idG")
+            query = text("SELECT idG, idE, typeA, descriptionG, dateDebutE, heureDebutE, heureFinE, dateFinE FROM GROUPE NATURAL JOIN EVENEMENT NATURAL JOIN ACTIVITE_ANNEXE WHERE idE in (SELECT idE FROM ACTIVITE_ANNEXE) AND idG = :idG")
             activites_annexe = []
             result = self.connexion.get_connexion().execute(query, {"idG": idG})
             for idG, idE, typeA, descriptionG, dateDebutE, heureDebutE, heureFinE, dateFinE in result:
@@ -207,7 +207,7 @@ class GroupeBD:
     def get_nom_scene(self, idE):
         #select nomL from evenement natural join lieu WHERE....;
         try:
-            query = text("SELECT nomL FROM evenement natural join lieu WHERE idE = :idE")
+            query = text("SELECT nomL FROM EVENEMENT natural join LIEU WHERE idE = :idE")
             result = self.connexion.get_connexion().execute(query, {"idE": idE})
             for nomL in result:
                 return nomL[0]
@@ -224,7 +224,7 @@ class GroupeBD:
                 date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
                 date = datetime.strptime(date, '%d %m %Y').date()
             # select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(#IDUSER, groupe.idg) as isSaved from evenement INNER JOIN groupe ON groupe.idG = evenement.idG;
-            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(:idUser, groupe.idg) as isSaved from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert)" + (" AND dateDebutE = :date" if date else "") + (" AND groupe.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(:idUser, groupe.idg) as isSaved from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT)" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE nomSt = :genre)" if genre else "")
             query = text(requete)
             groupes = []
             result = None
@@ -254,7 +254,7 @@ class GroupeBD:
                 # ajoutes l'année (2024)
                 date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
                 date = datetime.strptime(date, '%d %m %Y').date()
-            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert)" + (" AND dateDebutE = :date" if date else "") + (" AND groupe.idG in (SELECT idG FROM groupe_style NATURAL JOIN style_musical WHERE nomSt = :genre)" if genre else "")
+            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT)" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE nomSt = :genre)" if genre else "")
             print(requete)
             query = text(requete)
             groupes = []
@@ -279,8 +279,8 @@ class GroupeBD:
     def get_groupes_horaire_json(self):
         query = text("""
             SELECT
-                evenement.idE,
-                groupe.idG,
+                EVENEMENT.idE,
+                GROUPE.idG,
                 nomG,
                 heureDebutE,
                 heureFinE,
@@ -290,12 +290,12 @@ class GroupeBD:
                 nomL,
                 ACTIVITE_ANNEXE.typeA,
                 ACTIVITE_ANNEXE.ouvertAuPublic
-            FROM evenement
-            INNER JOIN groupe ON groupe.idG = evenement.idG
+            FROM EVENEMENT
+            INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG
             INNER JOIN GROUPE_STYLE ON groupe.idG = GROUPE_STYLE.idG
             INNER JOIN STYLE_MUSICAL ON GROUPE_STYLE.idSt = STYLE_MUSICAL.idSt
-            LEFT JOIN LIEU ON evenement.idL = LIEU.idL
-            LEFT JOIN ACTIVITE_ANNEXE ON evenement.idE = ACTIVITE_ANNEXE.idE
+            LEFT JOIN LIEU ON EVENEMENT.idL = LIEU.idL
+            LEFT JOIN ACTIVITE_ANNEXE ON EVENEMENT.idE = ACTIVITE_ANNEXE.idE
         """)
 
         result = self.connexion.get_connexion().execute(query)
@@ -315,7 +315,7 @@ class GroupeBD:
     def get_all_groupes(self):
         try:
             # on convertit la date qui est en format "22 juillet" en format "2024-07-22"
-            query = text("select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from evenement INNER JOIN groupe ON groupe.idG = evenement.idG WHERE idE in (SELECT idE FROM concert);")
+            query = text("select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT);")
             groupes = []
             result = self.connexion.get_connexion().execute(query)
             for idE, idG, nomG, heureDebutE, dateDebutE, descriptionG, idH in result:

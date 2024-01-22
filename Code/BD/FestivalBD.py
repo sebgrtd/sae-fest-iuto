@@ -47,7 +47,7 @@ class FestivalBD:
             
     def insert_festival(self, festival):
         try:
-            query = text("INSERT INTO festival (nomF, villeF, dateDebutF, dateFinF) VALUES (:nomF, :villeF, :dateDebutF, :dateFinF)")
+            query = text("INSERT INTO FESTIVAL (nomF, villeF, dateDebutF, dateFinF) VALUES (:nomF, :villeF, :dateDebutF, :dateFinF)")
             result = self.connexion.get_connexion().execute(query, {"nomF": festival.get_nomF(), "villeF": festival.get_villeF(), "dateDebutF": festival.get_dateDebutF(), "dateFinF": festival.get_dateFinF()})
             festival_id = result.lastrowid
             print(f"Le festival {festival.get_nomF()} a été ajouté avec l'id {festival_id}")
@@ -57,7 +57,7 @@ class FestivalBD:
 
     def delete_festival_by_name(self, festival):
         try:
-            query = text("DELETE FROM festival WHERE nomF = :nomF")
+            query = text("DELETE FROM FESTIVAL WHERE nomF = :nomF")
             self.connexion.get_connexion().execute(query, {"nomF": festival.get_nomF()})
             print(f"Le festival {festival.get_nomF()} a été supprimé")
             self.connexion.get_connexion().commit()

@@ -31,7 +31,7 @@ class ProgrammerBD:
             
     def insert_programmation(self, programmer):
         try:
-            query = text("INSERT INTO programmer (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES (:idF, :idL, :idH, :dateArrivee, :heureArrivee, :dateDepart, :heureDepart)")
+            query = text("INSERT INTO PROGRAMMER (idF, idL, idH, dateArrivee, heureArrivee, dateDepart, heureDepart) VALUES (:idF, :idL, :idH, :dateArrivee, :heureArrivee, :dateDepart, :heureDepart)")
             result = self.connexion.get_connexion().execute(query, {"idF": programmer.get_idFestival(), "idL": programmer.get_idLieu(), "idH": programmer.get_idHebergement(), "dateArrivee": programmer.get_dateArrivee(), "heureArrivee": programmer.get_heureArrivee(), "dateDepart": programmer.get_dateDepart(), "heureDepart": programmer.get_heureDepart()})
             programmer_id = result.lastrowid
             print(f"Le programmer {programmer_id} a été ajouté")
@@ -41,7 +41,7 @@ class ProgrammerBD:
             
     def delete_programmation_by_date(self, programmer, date):
         try:
-            query = text("DELETE FROM programmer WHERE idF = :idF AND idL = :idL AND idH = :idH AND dateArrivee = :date")
+            query = text("DELETE FROM PROGRAMMER WHERE idF = :idF AND idL = :idL AND idH = :idH AND dateArrivee = :date")
             self.connexion.get_connexion().execute(query, {"idF": programmer.get_idFestival(), "idL": programmer.get_idLieu(), "idH": programmer.get_idHebergement(), "date": date})
             print(f"Le programmer {programmer.get_idFestival()} a été supprimé")
             self.connexion.get_connexion().commit()
