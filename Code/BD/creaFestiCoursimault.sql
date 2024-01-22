@@ -288,7 +288,7 @@ begin
     select duree into dureeType from TYPE_BILLET where idType = new.idType;
     select dateDebutF into dateDebutFestival from FESTIVAL where idF = new.idF;
     select dateFinF into dateFinFestival from FESTIVAL where idF = new.idF;
-    if (dureeType > (DATEDIFF(dateFinFestival, dateDebutFestival))) then
+    if (dureeType > (DATEDIFF(dateFinFestival, dateDebutFestival)+1)) then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = "La durée du billet est trop grande par rapport à celle du festival";
     end if;
 end |

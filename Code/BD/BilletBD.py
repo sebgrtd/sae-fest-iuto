@@ -134,7 +134,7 @@ class BilletBD:
                     date = datetime.strptime('2024/07/21', '%Y/%m/%d').date()
                     idType = 1
                     date_debut_b, date_fin_b = date, date
-                elif billet_json['title'] == "Access Dimanche 22 Juin":
+                elif billet_json['title'] == "Accès Dimanche 22 Juin":
                     date = datetime.strptime('2024/07/22', '%Y/%m/%d').date()
                     idType = 1
                     date_debut_b, date_fin_b = date, date
@@ -146,7 +146,6 @@ class BilletBD:
                     idType = 3
                     date_debut_b = datetime.strptime('2024/07/21', '%Y/%m/%d').date()
                     date_fin_b = datetime.strptime('2024/07/23', '%Y/%m/%d').date()
-                idType = 1
 
             query_check_spectator = text("SELECT idS FROM SPECTATEUR WHERE idUser = :idUser")
             result_check_spectator = self.connexion.get_connexion().execute(query_check_spectator, {"idUser": idUser}).fetchone()
