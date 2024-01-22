@@ -32,7 +32,7 @@ from gen_pdf.Generateur import *
 
 from BD import *
 
-from wekrzeug.middleware import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
