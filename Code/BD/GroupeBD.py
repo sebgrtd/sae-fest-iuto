@@ -254,7 +254,7 @@ class GroupeBD:
                 # ajoutes l'année (2024)
                 date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
                 date = datetime.strptime(date, '%d %m %Y').date()
-            requete = "select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT)" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE nomSt = :genre)" if genre else "")
+            requete = "select idE, GROUPE.idG, nomG, heureDebutE, dateDebutE, descriptionG, idH from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT)" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE nomSt = :genre)" if genre else "")
             print(requete)
             query = text(requete)
             groupes = []
