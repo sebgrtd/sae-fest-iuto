@@ -224,7 +224,7 @@ class GroupeBD:
                 date = date[0] + " " + moisVersChiffre[date[1]] + " 2024"
                 date = datetime.strptime(date, '%d %m %Y').date()
             # select idE, groupe.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(#IDUSER, groupe.idg) as isSaved from evenement INNER JOIN groupe ON groupe.idG = evenement.idG;
-            requete = "select idE, GROUPE.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(:idUser, groupe.idg) as isSaved from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT)" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE nomSt = :genre)" if genre else "")
+            requete = "select idE, GROUPE.idG, nomG, heureDebutE, dateDebutE, descriptionG, isSaved(:idUser, GROUPE.idg) as isSaved from EVENEMENT INNER JOIN GROUPE ON GROUPE.idG = EVENEMENT.idG WHERE idE in (SELECT idE FROM CONCERT)" + (" AND dateDebutE = :date" if date else "") + (" AND GROUPE.idG in (SELECT idG FROM GROUPE_STYLE NATURAL JOIN STYLE_MUSICAL WHERE nomSt = :genre)" if genre else "")
             query = text(requete)
             groupes = []
             result = None
