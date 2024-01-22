@@ -11,7 +11,7 @@ class BilletBD:
     def get_mes_billets_json(self, idUser):
         # SELECT idB, dateAchat, dateDebutB, dateFinB, duree, prix FROM festiuto.billet NATURAL JOIN SPECTATEUR NATURAL JOIN USER NATURAL JOIN type_Billet WHERE idUser = ?;
         try:
-            query = text("""SELECT idB, dateAchat, dateDebutB, dateFinB, duree, prix FROM BILLET NATURAL JOIN SPECTATEUR NATURAL JOIN USER NATURAL JOIN type_Billet WHERE idUser = :idUser""")
+            query = text("""SELECT idB, dateAchat, dateDebutB, dateFinB, duree, prix FROM BILLET NATURAL JOIN SPECTATEUR NATURAL JOIN USER NATURAL JOIN TYPE_BILLET WHERE idUser = :idUser""")
             result = self.connexion.get_connexion().execute(query, {"idUser": idUser})
             billets = []
             
