@@ -793,6 +793,7 @@ input[type="number"]::-ms-reveal {
   font-family: 'TuskerGrotesk';
   font-weight: bold;
   text-wrap: nowrap;
+  white-space: nowrap;
   font-size: 6.25rem;
   color:transparent;
   -webkit-text-stroke: 0.22375rem var(--color-orange);
@@ -1981,6 +1982,7 @@ footer .bottom-content h5{
   font-weight: 700;
   line-height: 1;
   text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .selectionneur-artiste .bookmark-container .text-feedback .arrow{
@@ -2119,6 +2121,7 @@ footer .bottom-content h5{
 
 .tab-artiste td:first-of-type span{
   text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .tab-artiste td:last-of-type{
