@@ -35,7 +35,7 @@ export default function SelectionneurArtiste(props:Props) {
 
         let newSavedState = false;
 
-        axios.post("http://51.178.46.205:8080/saveArtiste", {
+        axios.post("https://www.festiuto.sebastien-gratade.fr:8080/saveArtiste", {
             idArtiste: props.idArtiste,
             idUser: getUserCookie().idUser
         }).then((res) => {
@@ -277,7 +277,7 @@ export default function SelectionneurArtiste(props:Props) {
     return (
     <button className='selectionneur-artiste'>
         
-        <img src={"http://51.178.46.205:8080/getImageArtiste/"+props.idArtiste} alt="image de l'artiste"/>
+        <img src={"https://www.festiuto.sebastien-gratade.fr:8080/getImageArtiste/"+props.idArtiste} alt="image de l'artiste"/>
         <div className="image-mask"></div>
 
         <div className="content">

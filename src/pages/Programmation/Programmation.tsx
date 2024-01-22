@@ -51,7 +51,7 @@ export default function Programmation(props : Props) {
 
   useEffect(() => {
     if (!location.state || oldGroupes == undefined){
-      axios.get('http://51.178.46.205:8080/getArtistes').then((res) => {
+      axios.get('https://www.festiuto.sebastien-gratade.fr:8080/getArtistes').then((res) => {
         const data = res.data as Groupe[];
         handleSetArtists(data);
     })
@@ -76,7 +76,7 @@ export default function Programmation(props : Props) {
     console.log("filtreDate:", filtreDate);
     console.log("filtreGenre:", filtreGenre);
     if (filtreDate !== "Tout" || filtreGenre !== "Tout"){
-      const requete = "http://51.178.46.205:8080/getArtistes" + (filtreDate !== "Tout" ? "?date="+filtreDate : "") + (filtreDate !== "Tout" ? "&" : "?") + (filtreGenre !== "Tout" ? "genre="+filtreGenre : "");
+      const requete = "https://www.festiuto.sebastien-gratade.fr:8080/getArtistes" + (filtreDate !== "Tout" ? "?date="+filtreDate : "") + (filtreDate !== "Tout" ? "&" : "?") + (filtreGenre !== "Tout" ? "genre="+filtreGenre : "");
       console.log(requete);
       axios.get(requete).then((res) => {
         if (res.status === 200){
@@ -91,7 +91,7 @@ export default function Programmation(props : Props) {
       })
     }
     else{
-      axios.get('http://51.178.46.205:8080/getArtistes').then((res) => {
+      axios.get('https://www.festiuto.sebastien-gratade.fr:8080/getArtistes').then((res) => {
         const data = res.data as Groupe[];
         handleSetArtists(data);
       })
@@ -126,7 +126,7 @@ export default function Programmation(props : Props) {
 
   const handleSearch = (searchText: string) => {
     if (searchText == ""){
-      axios.get('http://51.178.46.205:8080/getArtistes').then((res) => {
+      axios.get('https://www.festiuto.sebastien-gratade.fr:8080/getArtistes').then((res) => {
         const data = res.data as Groupe[];
         console.log(data);
         handleSetArtists(data);
@@ -134,7 +134,7 @@ export default function Programmation(props : Props) {
       return;
     }
     // on ajoute les filtres dans la requete comme toute à l'heure
-    const requete = "http://51.178.46.205:8080/searchUsers?recherche="+searchText + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
+    const requete = "https://www.festiuto.sebastien-gratade.fr:8080/searchUsers?recherche="+searchText + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
     axios.get(requete).then((res) => {
       if (res.status === 200){
         const data = res.data as Groupe[];

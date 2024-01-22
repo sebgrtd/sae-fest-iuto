@@ -40,7 +40,7 @@ export default function TableRow(props: Props) {
   const handleSupprimerArtiste = () => {
     setIsLoading(true);
     axios
-      .post("http://51.178.46.205:8080/saveArtiste", {
+      .post("https://www.festiuto.sebastien-gratade.fr:8080/saveArtiste", {
         idArtiste: props.artiste.idG,
         idUser: getUserCookie().idUser,
       })
