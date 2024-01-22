@@ -43,7 +43,7 @@ export default function PageHoraire(props: Props) {
     props.setIsNavTransparent(false);
 
     axios
-      .get("https://www.festiuto.sebastien-gratade.fr:8080/getArtistesWithSaveHoraire")
+      .get("https://www.api.festiuto.sebastien-gratade.fr:8080/getArtistesWithSaveHoraire")
       .then((res) => {
         const artistesData: Groupe[] = res.data; // Présumé que les données correspondent à la structure de la classe Artiste
         console.log(res.data);

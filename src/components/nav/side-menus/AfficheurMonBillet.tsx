@@ -8,7 +8,7 @@ type Props = {
 export default function AfficheurMonBillet(props:Props) {
  
     const handleDownload = () => {
-        axios.post('https://www.festiuto.sebastien-gratade.fr:8080/telecharger_billet', {
+        axios.post('https://www.api.festiuto.sebastien-gratade.fr:8080/telecharger_billet', {
         responseType: 'blob',    
         data: props.billet
         })
