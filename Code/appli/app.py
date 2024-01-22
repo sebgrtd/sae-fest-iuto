@@ -32,11 +32,13 @@ from gen_pdf.Generateur import *
 
 from BD import *
 
+from wekrzeug.middleware import ProxyFix
 
 MAIL_FESTIUTO = "festiuto@gmail.com"
 MDP_FESTIUTO = "xutxiocjikqolubq"
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://coursimault:coursimault@servinfo-mariadb/DBcoursimault'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/festiuto'
 CORS(app, resources={r"/*": {"origins": "*"}})
