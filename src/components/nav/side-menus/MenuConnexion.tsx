@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import {useState, useEffect, useRef} from 'react';
 import TextField from '../../form/TextField';
 import Button from '../../form/Button';
@@ -10,7 +9,6 @@ import ChampCode from '../../form/ChampCode';
 import Combo from '../../form/Combo';
 import SearchBar from '../../form/SearchBar';
 import SelectionneurArtiste from '../../Artiste/SelectionneurArtiste';
-import Artiste from '../../../classes/Artiste';
 import TabArtiste from '../../TabArtiste/TabArtiste';
 import Groupe from '../../../classes/Groupe';
 import AfficheurMonBillet from './AfficheurMonBillet';
@@ -730,7 +728,7 @@ export default function MenuConnexion(props: Props) {
 
                 {
                   // si tous les tableaux sont vides on affiche que c'est vide
-                  Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0) && (
+                  Object.entries(tableauxArtistes).every(([_, value]) => value.length === 0) && (
                     <p className="empty">Votre planification est vide. <br></br> Ajoutez des artistes dans votre liste d'artistes à voir en allant dans le menu précédent (bouton "Retour").</p>
                   )
                 }
@@ -745,7 +743,7 @@ export default function MenuConnexion(props: Props) {
                   <Button onClick={handleDownload} text="Télécharger" isDisabled={
                     // si tous les tableaux sont vides on affiche que c'est vide
                     // ou si il y a des passages concurrents
-                    Object.entries(tableauxArtistes).every(([key, value]) => value.length === 0) || Object.entries(tableauxArtistes).some(([key, value]) => value.some((artiste:Groupe) => artiste.passagesConcurrents?.length > 0))
+                    Object.entries(tableauxArtistes).every(([_, value]) => value.length === 0) || Object.entries(tableauxArtistes).some(([_, value]) => value.some((artiste:Groupe) => artiste.passagesConcurrents?.length > 0))
                   
                   } />
                 </a>

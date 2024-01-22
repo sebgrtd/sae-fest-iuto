@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import TicketCard from "../../components/TicketCard";
 import Footer from "../../components/Footer";
-import axios from 'axios';
 const videoSrc = "images/bgbilleterie.mp4"
 
 

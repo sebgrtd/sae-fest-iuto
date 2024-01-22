@@ -85,9 +85,6 @@ const MenuPanier: React.FC<Props> = ({ isOpen, setIsOpen }) => {
   }, [cart.length, buttonText]);
 
 
-
-  const isCartEmpty = cart.length === 0;
-
   const menuVariants = {
     hidden: {
       x: '42rem',

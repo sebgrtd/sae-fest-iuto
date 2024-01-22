@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
-import React, { useRef } from 'react'
+import  { useRef } from 'react'
 import Button from '../../components/form/Button';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,6 @@ export default function SectionJournal(props : Props) {
     const targetRef = useRef(null);
   const{ scrollYProgress } = useScroll({target:targetRef, offset:["start end", "end start"]});
   const scrollYProgressForBlur = useScroll({target:targetRef, offset:["end end", "start end"]}).scrollYProgress;
-  const scrollYProgressForScale = useScroll({target:targetRef, offset:["end end", "start start"]}).scrollYProgress;
 
   const blur = useTransform(scrollYProgressForBlur, [0, 0.7, 0.9], ["blur(0px)", "blur(0px)", "blur(10px)"]); 
 

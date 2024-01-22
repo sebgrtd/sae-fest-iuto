@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../../../../App.tsx'; 
 import { setCookie } from '../../../../cookies/CookiesLib.tsx';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 
 
 
-export const ItemPanier: React.FC<Props> = ({ typeBillet, price, quantite, title, selectedDays, uniqueId}) => {
+export const ItemPanier: React.FC<Props> = ({ price, quantite, title, selectedDays, uniqueId}) => {
   const { cart, setCart } = useContext(CartContext);
 
   // Fonction pour enlever un billet du panier

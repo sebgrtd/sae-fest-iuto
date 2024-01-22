@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import Billet from '../../../classes/Billet'
 import axios from 'axios';
 

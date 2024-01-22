@@ -1,7 +1,5 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
-import { useState,useEffect } from 'react'
-import { Variant, Variants, motion } from 'framer-motion';
+import { Variants, motion } from 'framer-motion';
 
 type Props = {
     linkTo: string;

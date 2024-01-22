@@ -1,7 +1,7 @@
 import { TargetAndTransition, motion } from "framer-motion";
 import { useContext, useState } from "react";
 import Button from "../components/form/Button";
-import { getCookie, setCookie } from "../cookies/CookiesLib.tsx";
+import { setCookie } from "../cookies/CookiesLib.tsx";
 import { CartContext } from "../App";
 
 const initialDays = {

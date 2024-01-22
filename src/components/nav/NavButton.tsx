@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { motion, useAnimation } from 'framer-motion';
 import { easeOut } from 'framer-motion/dom';
-import { setCookie, getCookie } from '../../cookies/CookiesLib';
+import { getCookie } from '../../cookies/CookiesLib';
 import { CartContext } from '../../App';
 
 
@@ -14,7 +14,7 @@ type Props =
 
 export default function NavButton(props:Props) {
     const [cartItemCount, setCartItemCount] = useState(0);
-    const {cart, setCart} = useContext(CartContext);
+    const {cart} = useContext(CartContext);
     const controls = useAnimation();
 
     

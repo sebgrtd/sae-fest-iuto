@@ -1,11 +1,6 @@
 import Cookies from 'js-cookie';
 
 // Définition des types pour les données que vous souhaitez stocker dans les cookies
-interface UserData {
-  username: string;
-  email: string;
-  // ... autres champs
-}
 
 // Fonction pour définir un cookie
 export const setCookie = (key: string, value: any, options?: Cookies.CookieAttributes) => {

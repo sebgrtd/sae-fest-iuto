@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import FaqCard from '../../components/FaqCard';
-import Footer from '../../components/footer';
+import Footer from '../../components/Footer';
 import axios from 'axios';
 
 type Props = {

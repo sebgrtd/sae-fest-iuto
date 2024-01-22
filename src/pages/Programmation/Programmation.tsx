@@ -1,8 +1,8 @@
-import {useEffect, useState, useRef, useLayoutEffect} from 'react'
+import {useEffect, useState, useRef} from 'react'
 import SearchBar from '../../components/form/SearchBar';
 import Combo from '../../components/form/Combo';
 import CarteArtiste from '../../components/Artiste/CarteArtiste';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../../components/Footer';
@@ -174,7 +174,7 @@ export default function Programmation(props : Props) {
         </header>
         <main className='liste-artistes'>
             {
-              lesGroupes && lesGroupes.map((groupe, index) => {
+              lesGroupes && lesGroupes.map((groupe) => {
                 return(
                   <CarteArtiste oldGroupes={lesGroupes} key={groupe.idG} id={groupe.idG} oldX={idArtistComingFrom == groupe.idG ? oldX : null} oldY={idArtistComingFrom == groupe.idG ? oldY : null} comesFromPageArtist={idArtistComingFrom == groupe.idG} nomArtiste={groupe.nomG} date={groupe.datePassage} heure={groupe.heurePassage} setIsNavTransparent={props.setIsNavTransparent} />
                 )

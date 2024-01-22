@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import {useState, useRef, useEffect} from 'react'
+import {useState} from 'react'
 
 
 type Props = {

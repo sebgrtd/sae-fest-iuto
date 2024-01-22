@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import Artiste from '../../classes/Artiste'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Groupe from '../../classes/Groupe'
-import axios from 'axios'
-import { getUserCookie } from '../../cookies/CookiesLib'
 import TableRow from './TableRow'
 
 type Props = {
@@ -191,7 +188,7 @@ export default function TabArtiste(props : Props) {
         <AnimatePresence>
           <motion.tbody layout>
             {(isOpen && sortedArtists) &&
-              sortedArtists.map((artiste, index) => {
+              sortedArtists.map((artiste) => {
                 return (
                   <TableRow
                     date={props.date}

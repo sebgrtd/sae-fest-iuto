@@ -22,7 +22,7 @@ export default function PageHoraire(props: Props) {
   const [filtreGenre, setFiltreGenre] = useState("Tout");
   const [filtreDate, setFiltreDate] = useState("Tout");
   const [searchTerm, setSearchTerm] = useState("");
-  const [tableauxArtistes, setTableauxArtistes] = useState<
+  const [_, setTableauxArtistes] = useState<
     Map<string, Groupe[]>
   >(new Map());
   const [filteredArtistes, setFilteredArtistes] = useState<

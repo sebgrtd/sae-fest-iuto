@@ -45,7 +45,7 @@ export default function PageArtiste() {
           else{
             alert("erreur lors de la récupération des infos supplémentaires de l'artiste")
           }
-        }).catch((err) => {
+        }).catch((_) => {
           alert("erreur lors de la récupération des infos supplémentaires de l'artiste")
         })
       }
@@ -69,7 +69,7 @@ export default function PageArtiste() {
             console.log("erreur lors de la récupération des infos de l'artiste")
           }
         })
-        .catch((err) => {
+        .catch((_) => {
           console.log("erreur lors de la récupération des infos de l'artiste")
         })
       }

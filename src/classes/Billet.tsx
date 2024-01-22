@@ -1,4 +1,3 @@
-import Artiste from "./Artiste";
 import Groupe from "./Groupe";
 
 function toTitleCase(str: string): string {

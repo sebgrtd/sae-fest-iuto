@@ -16,7 +16,7 @@ export default function SectionBilleterie() {
             else{
                 //alert("erreur lors de la récupération du nombre de réservations")
             }
-            }).catch((err) => {
+            }).catch((_) => {
                 //alert("erreur lors de la récupération du nombre de réservations")
             }
         )

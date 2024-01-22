@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { getUserCookie } from '../../cookies/CookiesLib';
 
 type Props = {
@@ -70,7 +70,7 @@ export default function SelectionneurArtiste(props:Props) {
             else{
                 alert("Erreur lors de la sauvegarde de l'artiste");
             }
-        }).catch((err) => {
+        }).catch((_) => {
             // si la requete était mauvaise
             setIsLoading(false);
             alert("Erreur lors de la sauvegarde de l'artiste");
