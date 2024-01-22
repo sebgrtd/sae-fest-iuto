@@ -62,7 +62,7 @@ export default function MenuConnexion(props: Props) {
   const[tableauxArtistes, setTableauxArtistes] = useState<Map<string, Groupe[]>>(new Map());
 
   const handleResetArtists = () => {
-    axios.get("https://www.api.festiuto.sebastien-gratade.fr:8080/getArtistesWithSave?idUser="+getUserCookie().idUser+ (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "")
+    axios.get("https://www.api.festiuto.sebastien-gratade.fr/getArtistesWithSave?idUser="+getUserCookie().idUser+ (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "")
     ).then(((res) => {
           if (res.status === 200){
             const data = res.data;
@@ -83,7 +83,7 @@ export default function MenuConnexion(props: Props) {
       return;
     }
     // on ajoute les filtres dans la requete comme toute à l'heure
-    const requete = "https://www.api.festiuto.sebastien-gratade.fr:8080/searchUsersWithSave?recherche="+searchText+"&idUser="+getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
+    const requete = "https://www.api.festiuto.sebastien-gratade.fr/searchUsersWithSave?recherche="+searchText+"&idUser="+getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
     axios.get(requete).then((res) => {
       console.log(res)
       if (res.status === 200){
@@ -103,7 +103,7 @@ export default function MenuConnexion(props: Props) {
     console.log("filtreGenre:", filtreGenre);
     if (currentMenu === "planification"){
       if (filtreDate !== "Tout" || filtreGenre !== "Tout"){
-        const requete = "https://www.api.festiuto.sebastien-gratade.fr:8080/getArtistesWithSave?idUser=" + getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
+        const requete = "https://www.api.festiuto.sebastien-gratade.fr/getArtistesWithSave?idUser=" + getUserCookie().idUser + (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "");
         console.log(requete);
         axios.get(requete).then((res) => {
           if (res.status === 200){
@@ -137,7 +137,7 @@ export default function MenuConnexion(props: Props) {
       }
 
       if (currentMenu === "connecte"){
-        axios.get("https://www.api.festiuto.sebastien-gratade.fr:8080/getMesBillets?idUser="+getUserCookie().idUser).then((res) => {
+        axios.get("https://www.api.festiuto.sebastien-gratade.fr/getMesBillets?idUser="+getUserCookie().idUser).then((res) => {
           if (res.status === 200){
             const data = res.data as Billet[];
             console.log(data);
@@ -171,7 +171,7 @@ export default function MenuConnexion(props: Props) {
       }
 
       if (currentMenu === "affichage-planification"){
-        axios.get("https://www.api.festiuto.sebastien-gratade.fr:8080/getMonPlanning?idUser="+getUserCookie().idUser).then((res) => {
+        axios.get("https://www.api.festiuto.sebastien-gratade.fr/getMonPlanning?idUser="+getUserCookie().idUser).then((res) => {
           if (res.status === 200){
             const data = res.data;
             for (let key in data){
@@ -205,7 +205,7 @@ export default function MenuConnexion(props: Props) {
       newTableauxArtistes.set(key, newValue);
     })
     console.log(Array.from(newTableauxArtistes.entries()));
-    axios.post('https://www.api.festiuto.sebastien-gratade.fr:8080/telecharger_planif',{
+    axios.post('https://www.api.festiuto.sebastien-gratade.fr/telecharger_planif',{
     responseType: 'blob',
     data: Array.from(newTableauxArtistes.entries()),
     })
@@ -355,7 +355,7 @@ export default function MenuConnexion(props: Props) {
       statUser: "user"
     }
 
-    axios.post("https://www.api.festiuto.sebastien-gratade.fr:8080/connecter", data).then((res) => {
+    axios.post("https://www.api.festiuto.sebastien-gratade.fr/connecter", data).then((res) => {
       const data = res.data;
       if (data.error){
         setErreur("email", data.error);
@@ -394,7 +394,7 @@ export default function MenuConnexion(props: Props) {
       password
     }
 
-    axios.post("https://www.api.festiuto.sebastien-gratade.fr:8080/inscription", data).then((res) => {
+    axios.post("https://www.api.festiuto.sebastien-gratade.fr/inscription", data).then((res) => {
       const data = res.data;
 
       if (data.error){
@@ -425,7 +425,7 @@ export default function MenuConnexion(props: Props) {
       email
     }
 
-    axios.post("https://www.api.festiuto.sebastien-gratade.fr:8080/envoyerCodeVerification", data).then((res) => {
+    axios.post("https://www.api.festiuto.sebastien-gratade.fr/envoyerCodeVerification", data).then((res) => {
       const dataRes = res.data;
       if (res.data.error){
         setErreur("email", dataRes.error);
@@ -457,7 +457,7 @@ export default function MenuConnexion(props: Props) {
       code:codeVerification
     }
 
-    axios.post("https://www.api.festiuto.sebastien-gratade.fr:8080/testerCodeVerification", data).then((res) =>{
+    axios.post("https://www.api.festiuto.sebastien-gratade.fr/testerCodeVerification", data).then((res) =>{
       const dataRes = res.data;
       if(dataRes.error){
         setErreur("codeVerification", dataRes.error);
@@ -499,7 +499,7 @@ export default function MenuConnexion(props: Props) {
       oldPassword
     } 
 
-    axios.post("https://www.api.festiuto.sebastien-gratade.fr:8080/modifierProfil", data).then((res) => {
+    axios.post("https://www.api.festiuto.sebastien-gratade.fr/modifierProfil", data).then((res) => {
       const data = res.data;
 
       if (data.error){
@@ -531,7 +531,7 @@ export default function MenuConnexion(props: Props) {
       code: codeVerification
     }
 
-    axios.post("https://www.api.festiuto.sebastien-gratade.fr:8080/modifierMdp", data).then((res) => {
+    axios.post("https://www.api.festiuto.sebastien-gratade.fr/modifierMdp", data).then((res) => {
       const dataRes = res.data;
 
       if (dataRes.error){

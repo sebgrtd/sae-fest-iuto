@@ -8,7 +8,7 @@ export default function SectionBilleterie() {
 
   useEffect(() => {
         // on recupere le nb de reservations : /getNbReservations
-        axios.get('https://www.api.festiuto.sebastien-gratade.fr:8080/getNbReservations').then((res) => {
+        axios.get('https://www.api.festiuto.sebastien-gratade.fr/getNbReservations').then((res) => {
             console.log(res)
             if (res.status === 200){
                 setNbReservations(res.data)

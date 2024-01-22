@@ -216,7 +216,7 @@ export default function CarteProgrammation(props: Props) {
         onClick={() => {props.setIsNavTransparent(true); setIsSwitching(true)}}
         >
             <motion.img 
-            src={"https://www.api.festiuto.sebastien-gratade.fr:8080/getImageArtiste/" + props.id} 
+            src={"https://www.api.festiuto.sebastien-gratade.fr/getImageArtiste/" + props.id} 
             alt="image de l'artiste" 
             variants={imageVariants}
             initial="default"

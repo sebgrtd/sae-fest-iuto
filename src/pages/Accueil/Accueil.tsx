@@ -21,7 +21,7 @@ export default function (props: Props) {
     window.scrollTo(0,0)
     
     const fetchArtistes = async () => {
-      const res = await axios.get('https://www.api.festiuto.sebastien-gratade.fr:8080/getNomsArtistes')
+      const res = await axios.get('https://www.api.festiuto.sebastien-gratade.fr/getNomsArtistes')
       const data = res.data
       // data : ["Vladimir Cauchemar", "Booba", "Freeze Corleone", "Damso", "Ashe 22", "Heuss l'Enfoiré", "Zola", "Sch", "H Jeunecrack", "Luther"]
       const listeNomArtistes : string[] = []
