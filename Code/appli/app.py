@@ -44,6 +44,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/fes
 CORS(app, resources={r"/*": {"origins": "*"}})
 db = SQLAlchemy(app)
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, ssl_context=('fullchain.pem', 'privkey.pem'))
+
 app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
 @app.route('/')
