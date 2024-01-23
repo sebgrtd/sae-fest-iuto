@@ -58,6 +58,7 @@ def getNomsArtistes():
     connexion_bd = ConnexionBD()
     membre_groupebd = Membre_GroupeBD(connexion_bd)
     res = membre_groupebd.getNomsArtistes_json()
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -71,6 +72,7 @@ def getArtistes():
     date = request.args.get("date", None)
     genre = request.args.get("genre", None)
     res = groupebd.get_all_groupes_concert_json(date,genre)
+    connexion_bd.fermer_connexion()
     if res is None:
             return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -82,6 +84,7 @@ def getRS(id):
     connexion_bd = ConnexionBD()
     lienRS = LienRS_BD(connexion_bd)
     res = lienRS.get_liensRS_membre_json(id)
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -92,6 +95,7 @@ def get_member_social_links(idMG):
     connexion_bd = ConnexionBD()
     lienRS = LienRS_Membre_BD(connexion_bd)
     res = lienRS.get_liensRS_membre_json(idMG)
+    connexion_bd.fermer_connexion()
     print(res)
     if res is None:
         return jsonify({"error": "Aucun lien de réseau social trouvé pour le membre"})
@@ -104,6 +108,7 @@ def get_groupes_with_evenements():
     connexion_bd = ConnexionBD()
     evenement_bd = EvenementBD(connexion_bd)
     groupes = evenement_bd.programmation_to_json()
+    connexion_bd.fermer_connexion()
     print(groupes)
     if not groupes:
         return jsonify({"error": "Aucun groupe avec événement trouvé"}), 404
@@ -118,6 +123,7 @@ def filtrerArtistes():
     liste_groupes_21 = evenementbd.groupes_21_juillet_to_json()
     liste_groupes_22 = evenementbd.groupes_22_juillet_to_json()
     liste_groupes_23 = evenementbd.groupes_23_juillet_to_json()
+    connexion_bd.fermer_connexion()
     return jsonify({"21 juillet": liste_groupes_21, "22 juillet": liste_groupes_22, "23 juillet": liste_groupes_23})
 
 @app.route('/getInformationsSupplementairesArtiste/<int:id>')
@@ -125,6 +131,7 @@ def getInformationsSupplementairesArtiste(id):
     connexion_bd = ConnexionBD()
     lienRS = LienRS_BD(connexion_bd)
     res = lienRS.get_lienRS_json(id)
+    connexion_bd.fermer_connexion()
     if res is None:
         return jsonify({"error": "Aucun artiste trouve"})
     else:
@@ -136,6 +143,7 @@ def getArtiste(id):
     membre_groupebd = Membre_GroupeBD(connexion_bd)
     mb = membre_groupebd.get_artiste_by_id(id)
     res = mb.to_dict()
+    connexion_bd.fermer_connexion()
     return jsonify({"error": "Aucun artiste trouve"}) if res is None else res
 
 
@@ -147,10 +155,13 @@ def connecter():
     print(data)
     email = data["email"]
     password = data["password"]
-    if userbd.exist_user(email, password):
-
-        return userbd.user_to_json(userbd.get_user_by_email(email))
+    res = userbd.exist_user(email, password)
+    if res:
+        send = userbd.user_to_json(userbd.get_user_by_email(email))
+        connexion_bd.fermer_connexion()
+        return send
     else:
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Utilisateur non trouve"})
     
 @app.route('/inscription', methods=['POST'])
@@ -163,26 +174,31 @@ def inscription():
     email = data["email"]
     password = data["password"]
     if userbd.exist_user(email, password):
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Utilisateur déjà existant"})
     else:
         res = userbd.add_user(pseudo, email, password)
         if res:
             user = userbd.get_user_by_email(email)
             if user is not None:
-                return userbd.user_to_json(user)
+                send = userbd.user_to_json(user)
+                connexion_bd.fermer_connexion()
+                return send
             else:
+                connexion_bd.fermer_connexion()
                 return jsonify({"error": "Utilisateur ajouté mais non retrouvé"})  # Nouvelle gestion d'erreur
         elif res == "emailErr":
-                return jsonify({"error": "Email déjà existant"})
+            connexion_bd.fermer_connexion()
+            return jsonify({"error": "Email déjà existant"})
         else:
-                return jsonify({"error": "Erreur lors de l'ajout de l'utilisateur"})
+            connexion_bd.fermer_connexion()
+            return jsonify({"error": "Erreur lors de l'ajout de l'utilisateur"})
         
 @app.route('/modifierProfil', methods=['POST'])
 def modifierProfil():
     connexion_bd = ConnexionBD()
     userbd = UserBD(connexion_bd)
     data = request.get_json()
-    print(data)
     idUser =data['id']
     pseudo = data["pseudo"]
     email = data["email"]
@@ -191,12 +207,17 @@ def modifierProfil():
     if userbd.exist_user_with_id(idUser, ancien_mdp):
         res = userbd.update_user(idUser, email, pseudo, password)
         if res:
-            return userbd.user_to_json(userbd.get_user_by_email(email))
+            send = userbd.user_to_json(userbd.get_user_by_email(email))
+            connexion_bd.fermer_connexion()
+            return send
         elif res == "emailErr":
+            connexion_bd.fermer_connexion()
             return jsonify({"error": "Email déjà existant"})
         else:
+            connexion_bd.fermer_connexion()
             return jsonify({"error": "Erreur lors de la modification de l'utilisateur"})
     else:
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Utilisateur non trouve"})
 
 @app.route('/envoyerCodeVerification', methods=['POST'])
@@ -208,6 +229,7 @@ def envoyerCodeVerification():
     userbd = UserBD(connexion_bd)
     
     if not userbd.email_exists(emailUser):
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Email non existant"})
     
     code = genererCode()
@@ -215,8 +237,10 @@ def envoyerCodeVerification():
     res = email_sender.sendCodeVerification(emailUser, code)
     if res:
         resAjout = userbd.ajouterCodeVerification(emailUser, code)
+        connexion_bd.fermer_connexion()
         if resAjout:
             return jsonify({"success": "code envoyé"})
+    connexion_bd.fermer_connexion()
     return jsonify({"error": "erreur lors de l'envoi du code"})
 
 @app.route('/testerCodeVerification', methods=['POST'])
@@ -229,11 +253,14 @@ def tester_code_verification():
     userbd = UserBD(connexion_bd)
     
     if not userbd.email_exists(emailUser):
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Email non existant"})
     
     if userbd.tester_code_verification(emailUser, code):
+        connexion_bd.fermer_connexion()
         return jsonify({"success": "code correct"})
     else:
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "code incorrect"})
 
 @app.route("/modifierMdp", methods=['POST'])
@@ -247,14 +274,17 @@ def modifierMdp():
     userbd = UserBD(connexion_bd)
     
     if not userbd.email_exists(emailUser):
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Email non existant"})
     
     if userbd.tester_code_verification(emailUser, code):
         res = userbd.update_password(emailUser, nouveauMdp)
+        connexion_bd.fermer_connexion()
         if res:
             return jsonify({"success": "mot de passe modifié"})
         else:
             return jsonify({"error": "erreur lors de la modification du mot de passe"})
+    connexion_bd.fermer_connexion()
 
 @app.route('/ajouterImage', methods=['POST'])
 def ajouterImage():
@@ -280,13 +310,15 @@ def getImageArtiste(id):
         groupebd = GroupeBD(connexion_bd)
         image_blob = groupebd.get_image(id)
         if image_blob is None:
+            connexion_bd.fermer_connexion()
             return jsonify({"error": "Aucune image trouve"})
         else:
                 image = io.BytesIO(image_blob)
                 image.seek(0)
+                connexion_bd.fermer_connexion()
                 return send_file(image, mimetype='image/jpeg')
     except Exception as e:
-        print(e)
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "erreur lors de la récupération de l'image"})
 
 @app.route('/getFaq')
@@ -295,8 +327,10 @@ def get_faq():
     faqbd = FaqBD(connexion_bd)
     res = faqbd.get_faqs_json()
     if res is None:
+        connexion_bd.fermer_connexion()
         return jsonify({"error": "Aucune faq trouve"})
     else:
+        connexion_bd.fermer_connexion()
         return res
     
 @app.route("/recherche/", methods=["GET", "POST"])
@@ -310,6 +344,7 @@ def recherche():
     membre_groupebd = Membre_GroupeBD(connexion_bd)
     groupes = groupebd.search_groupes(recherche) if recherche else []
     artistes = membre_groupebd.search_membres_groupe(recherche) if recherche else []
+    connexion_bd.fermer_connexion()
     return render_template("recherche.html", recherche=recherche, groupes=groupes, artistes=artistes)
 
 @app.route("/styles_musicaux", methods=["GET", "POST"])
@@ -324,6 +359,7 @@ def filtrer_styles():
         if idStyle is not None:
             groupe_stylebd = Groupe_StyleBD(connexion_bd)
             liste_groupes = groupe_stylebd.get_groupes_selon_style(idStyle)
+    connexion_bd.fermer_connexion()
     return render_template("styles_musicaux.html", styles_musicaux=styles_musicaux, liste_groupes=liste_groupes)
 
 @app.route("/menu_admin/", methods=["GET", "POST"])
@@ -342,7 +378,7 @@ def groupes_festival():
 
     if liste_groupes is None:
         liste_groupes = []
-
+    connexionbd.fermer_connexion()
     return render_template("groupes_festival.html", liste_groupes=liste_groupes)
 
 @app.route("/hebergements_festival")
@@ -353,7 +389,7 @@ def hebergements_festival():
 
     if liste_hebergements is None:
         liste_hebergements = []
-
+    connexionbd.fermer_connexion()
     return render_template("hebergements_festival.html", liste_hebergements=liste_hebergements)
 
 
@@ -369,6 +405,7 @@ def modifier_groupe():
     groupe.set_descriptionG(description_groupe)
     groupebd.modifier_img(id_groupe, request.files['image_groupe'].read())
     succes = groupebd.update_groupe(groupe)
+    connexionbd.fermer_connexion()
     if succes:
         print(f"Le groupe {id_groupe} a été mis à jour.")
     else:
@@ -388,6 +425,7 @@ def modifier_hebergement():
     hebergement.set_adresseH(adresse_hebergement)
     hebergement.set_limitePlacesH(limite_places_hebergement)
     succes = hebergementbd.update_hebergement(hebergement)
+    connexionbd.fermer_connexion()
     if succes:
         print(f"L'hebergement {id_hebergement} a été mis à jour.")
     else:
@@ -402,6 +440,7 @@ def supprimer_groupe():
     groupe = groupebd.get_groupe_by_id(id_groupe)
     nom_groupe = groupe.get_nomG()
     groupebd.delete_groupe_by_name(groupe, nom_groupe)
+    connexionbd.fermer_connexion()
     return redirect(url_for("groupes_festival"))
 
 @app.route("/supprimer_hebergement", methods=["POST"])
@@ -410,6 +449,7 @@ def supprimer_hebergement():
     hebergementbd = HebergementBD(connexionbd)
     id_hebergement = request.form["id_hebergement"]
     hebergementbd.delete_hebergement_by_id(id_hebergement)
+    connexionbd.fermer_connexion()
     return redirect(url_for("hebergements_festival"))
 
 @app.route("/ajouter_groupe", methods=["POST"])
@@ -433,6 +473,7 @@ def ajouter_groupe():
         else:
             print("erreur lors de l'ajout de l'image")
 
+    connexionbd.fermer_connexion()
     return redirect(url_for("groupes_festival"))
 
 @app.route("/ajouter_hebergement", methods=["POST"])
@@ -444,6 +485,7 @@ def ajouter_hebergement():
     limite_places_hebergement = request.form["limite_places"]
     hebergement = Hebergement(None, nom_hebergement, limite_places_hebergement, adresse_hebergement)
     hebergementbd.insert_hebergement(hebergement)
+    connexionbd.fermer_connexion()
     return redirect(url_for("hebergements_festival"))
 
 @app.route("/consulter_groupe/<int:id_groupe>")
@@ -452,6 +494,7 @@ def consulter_groupe(id_groupe):
     groupebd = GroupeBD(connexionbd)
     groupe = groupebd.get_groupe_by_id(id_groupe)
     membres_groupe = groupebd.get_membres_groupe(id_groupe)
+    connexionbd.fermer_connexion()
     if not membres_groupe:
         return render_template("membres_groupe.html", groupe=groupe, membres_groupe=[])
     return render_template("membres_groupe.html", groupe=groupe, membres_groupe=membres_groupe)
@@ -470,6 +513,7 @@ def consulter_hebergement(id_hebergement):
         nom_hebergement_groupe = hebergementbd.get_hebergement_by_id(id_hebergement_groupe).get_nomH() if id_hebergement_groupe is not None else None
         dict_groupes_not_in_hebergement[groupe] = nom_hebergement_groupe
 
+    connexionbd.fermer_connexion()
     return render_template("groupes_hebergement.html", hebergement=hebergement, groupes_hebergement=groupes_hebergement, dict_groupes_not_in_hebergement=dict_groupes_not_in_hebergement)
 
 @app.route("/modifier_membre", methods=["POST"])
@@ -486,6 +530,7 @@ def modifier_membre_groupe():
     membre_groupe.set_nomDeSceneMG(nom_scene_membre_groupe)
     membre_groupe.set_descriptionA(request.form["description_membre"])
     succes = membre_groupebd.update_membre_groupe(membre_groupe)
+    connexionbd.fermer_connexion()
     if succes:
         print(f"Le membre {id_membre_groupe} a été mis à jour.")
     else:
@@ -500,6 +545,7 @@ def supprimer_membre_groupe():
     membre_groupe = membre_groupebd.get_artiste_by_id(id_membre_groupe)
     nom_scene_membre_groupe = membre_groupe.get_nomDeSceneMG()
     membre_groupebd.delete_membre_groupe_by_name_scene(membre_groupe, nom_scene_membre_groupe)
+    connexionbd.fermer_connexion()
     return redirect(url_for("consulter_groupe", id_groupe=membre_groupe.get_idGroupe()))
 
 @app.route("/supprimer_groupe_hebergement", methods=["POST"])
@@ -512,6 +558,7 @@ def supprimer_groupe_hebergement():
     groupe.set_idHebergement(None)
     print(groupe.get_idHebergement())
     groupebd.update_groupe(groupe)
+    connexionbd.fermer_connexion()
     return redirect(url_for("consulter_hebergement", id_hebergement=id_hebergement))
 
 @app.route("/ajouter_membre", methods=["POST"])
@@ -525,6 +572,7 @@ def ajouter_membre_groupe():
     description_membre_groupe = request.form["description_nouveau_membre"] if request.form["description_nouveau_membre"] else None
     membre_groupe = Membre_Groupe(None, id_groupe, nom_membre_groupe, prenom_membre_groupe, nom_scene_membre_groupe, description_membre_groupe)
     membre_groupebd.insert_membre_groupe(membre_groupe)
+    connexionbd.fermer_connexion()
     return redirect(url_for("consulter_groupe", id_groupe=id_groupe))
 
 @app.route("/ajouter_groupe_hebergement", methods=["POST"])
@@ -536,6 +584,7 @@ def ajouter_groupe_hebergement():
     groupe = groupebd.get_groupe_by_id(id_groupe)
     groupe.set_idHebergement(id_hebergement)
     groupebd.update_groupe(groupe)
+    connexion_bd.fermer_connexion()
     return redirect(url_for("consulter_hebergement", id_hebergement=id_hebergement))
 
 @app.route("/evenements_festival")
@@ -548,6 +597,7 @@ def evenements_festival():
     liste_evenements_concerts = []
     liste_evenements_activites_annexes = []
     if not liste_evenements:
+        connexionbd.fermer_connexion()
         return render_template("evenements_festival.html", liste_evenements=[], liste_evenements_concerts=[], liste_evenements_activites_annexes=[], liste_lieux=[], liste_groupes=[])
     lieubd = LieuBD(connexionbd)
     liste_lieux = lieubd.get_all_lieux()
@@ -556,6 +606,7 @@ def evenements_festival():
             liste_evenements_concerts.append(evenement)
         elif evenementbd.verify_id_in_activite_annexe(evenement.get_idE()):
             liste_evenements_activites_annexes.append(evenement)
+    connexionbd.fermer_connexion()
     return render_template("evenements_festival.html", liste_evenements=liste_evenements, liste_evenements_concerts=liste_evenements_concerts, liste_evenements_activites_annexes=liste_evenements_activites_annexes, liste_lieux=liste_lieux, liste_groupes=liste_groupes)
 
 @app.route("/modifier_evenement", methods=["POST"])
@@ -579,6 +630,7 @@ def modifier_evenement():
     evenement.set_heureDebutE(heure_debut)
     evenement.set_heureFinE(heure_fin)
     succes = evenementbd.update_evenement(evenement)
+    connexionbd.fermer_connexion()
     if succes:
         print(f"L'événement {id_evenement} a été mis à jour.")
     else:
@@ -599,6 +651,7 @@ def supprimer_evenement():
         activite_annexe_bd = Activite_AnnexeBD(connexionbd)
         activite_annexe_bd.delete_activite_annexe_by_id(id_evenement)
     evenementbd.delete_evenement_by_name(evenement, nom_evenement)
+    connexionbd.fermer_connexion()
     return redirect(url_for("evenements_festival"))
 
 @app.route("/ajouter_evenement", methods=["POST"])
@@ -630,6 +683,8 @@ def ajouter_evenement():
         activite_annexe = Activite_Annexe(id_evenement, type_activite, ouvert_public)
         print(activite_annexe.get_ouvertAuPublic())
         activite_annexebd.insert_activite_annexe(activite_annexe)
+        
+    connexionbd.fermer_connexion()
     return redirect(url_for("evenements_festival"))
 
 @app.route("/billets_festival")
@@ -641,6 +696,7 @@ def billets_festival():
     liste_billets = billetbd.get_all_billets()
     liste_types = type_billetbd.get_all_types_billets()
     liste_spectateurs = spectateurbd.get_all_spectateurs()
+    connexionbd.fermer_connexion()
     if not liste_billets:
         return render_template("admin_billets.html", liste_billets=[], liste_types=[], liste_spectateurs=[])
     return render_template("admin_billets.html", liste_billets=liste_billets, liste_types=liste_types, liste_spectateurs=liste_spectateurs)
@@ -658,6 +714,7 @@ def ajouter_billet():
     date_fin_billet = request.form["date_fin"]
     billet = Billet(None, 1, id_type_billet, id_spectateur, prix_billet, date_achat_billet, date_debut_billet, date_fin_billet)
     billetbd.insert_billet(billet)
+    connexionbd.fermer_connexion()
     return redirect(url_for("billets_festival"))
 
 @app.route("/modifier_billet", methods=["POST"])
@@ -679,6 +736,7 @@ def modifier_billet():
     billet.set_dateDebutB(date_debut_billet)
     billet.set_dateFinB(date_fin_billet)
     billetbd.update_billet(billet)
+    connexionbd.fermer_connexion()
     return redirect(url_for("billets_festival"))
 
 @app.route("/supprimer_billet", methods=["POST"])
@@ -687,6 +745,7 @@ def supprimer_billet():
     billetbd = BilletBD(connexionbd)
     id_billet = request.form["id_billet"]
     billetbd.delete_billet_by_id(id_billet)
+    connexionbd.fermer_connexion()
     return redirect(url_for("billets_festival"))
 
 @app.route("/lieux_festival")
@@ -694,6 +753,7 @@ def lieux_festival():
     connexionbd = ConnexionBD()
     lieubd = LieuBD(connexionbd)
     liste_lieux = lieubd.get_all_lieux()
+    connexionbd.fermer_connexion()
     if not liste_lieux:
         return render_template("admin_lieux.html", liste_lieux=[])
     return render_template("admin_lieux.html", liste_lieux=liste_lieux)
@@ -707,6 +767,7 @@ def ajouter_lieu():
     jauge_lieu = request.form["jaugeL"]
     lieu = Lieu(None, 1, nom_lieu, adresse_lieu, jauge_lieu)
     lieubd.insert_lieu(lieu)
+    connexionBD.fermer_connexion()
     return redirect(url_for("lieux_festival"))
 
 @app.route("/modifier_lieu", methods=["POST"])
@@ -722,6 +783,7 @@ def modifier_lieu():
     lieu.set_adresseL(adresse_lieu)
     lieu.set_jaugeL(jauge_lieu)
     lieubd.update_lieu(lieu)
+    connexionBD.fermer_connexion()
     return redirect(url_for("lieux_festival"))
 
 @app.route("/supprimer_lieu", methods=["POST"])
@@ -730,6 +792,7 @@ def supprimer_lieu():
     lieubd = LieuBD(connexionBD)
     id_lieu = request.form["idL"]
     lieubd.delete_lieu_by_id(id_lieu)
+    connexionBD.fermer_connexion()
     return redirect(url_for("lieux_festival"))
 
 @app.route("/types_billet_festival")
@@ -737,6 +800,7 @@ def types_billet_festival():
     connexionbd = ConnexionBD()
     type_billetbd = Type_BilletBD(connexionbd)
     liste_types_billet = type_billetbd.get_all_types_billets()
+    connexionbd.fermer_connexion()
     if not liste_types_billet:
         return render_template("admin_types_billet.html", liste_types_billet=[])
     return render_template("admin_types_billet.html", liste_types_billet=liste_types_billet)
@@ -748,6 +812,7 @@ def ajouter_type_billet():
     duree = request.form["duree"]
     type_billet = Type_Billet(None, duree)
     type_billetbd.insert_type_billet(type_billet)
+    connexionbd.fermer_connexion()
     return redirect(url_for("types_billet_festival"))
 
 @app.route("/modifier_type_billet", methods=["POST"])
@@ -759,6 +824,7 @@ def modifier_type_billet():
     type_billet = type_billetbd.get_type_billet_by_id(id_type_billet)
     type = Type_Billet(id_type_billet, duree)
     type_billetbd.update_type_billet(type)
+    connexionbd.fermer_connexion()
     return redirect(url_for("types_billet_festival"))
 
 @app.route("/supprimer_type_billet", methods=["POST"])
@@ -767,6 +833,7 @@ def supprimer_type_billet():
     type_billetbd = Type_BilletBD(connexionbd)
     id_type_billet = request.form["idType"]
     type_billetbd.delete_type_billet_by_id(id_type_billet)
+    connexionbd.fermer_connexion()
     return redirect(url_for("types_billet_festival"))
 
 @app.route("/spectateurs_festival")
@@ -776,6 +843,7 @@ def spectateurs_festival():
     userbd = UserBD(connexionbd)
     liste_spectateurs = spectateurbd.get_all_spectateurs()
     liste_users = userbd.get_all_users()
+    connexionbd.fermer_connexion()
     if not liste_spectateurs:
         return render_template("admin_spectateurs.html", liste_spectateurs=[], liste_users=[])
     return render_template("admin_spectateurs.html", liste_spectateurs=liste_spectateurs, liste_users=liste_users)
@@ -791,6 +859,7 @@ def modifier_spectateur():
     spectateur.set_nomS(nom_spectateur)
     spectateur.set_prenomS(prenom_spectateur)
     succes = spectateurbd.update_spectateur(spectateur)
+    connexionbd.fermer_connexion()
     if succes:
         print(f"Le spectateur {id_spectateur} a été mis à jour.")
     else:
@@ -803,6 +872,7 @@ def supprimer_spectateur():
     spectateurbd = SpectateurBD(connexionbd)
     id_spectateur = request.form["idS"] if request.form["idS"] else None
     spectateurbd.delete_spectateur_by_id(id_spectateur)
+    connexionbd.fermer_connexion()
     return redirect(url_for("spectateurs_festival"))
 
 @app.route("/ajouter_spectateur", methods=["POST"])
@@ -814,6 +884,7 @@ def ajouter_spectateur():
     prenom_spectateur = request.form["prenomS"] if request.form["prenomS"] else None
     spectateur = Spectateur(None, id_user, nom_spectateur, prenom_spectateur)
     spectateurbd.insert_spectateur(spectateur)
+    connexionbd.fermer_connexion()
     return redirect(url_for("spectateurs_festival"))
 
 @app.route("/styles_musicaux_festival")
@@ -821,6 +892,7 @@ def styles_musicaux_festival():
     connexionbd = ConnexionBD()
     style_musicalbd = Style_MusicalBD(connexionbd)
     liste_styles_musicaux = style_musicalbd.get_all_styles()
+    connexionbd.fermer_connexion()
     if not liste_styles_musicaux:
         return render_template("admin_styles.html", liste_styles_musicaux=[])
     return render_template("admin_styles.html", liste_styles_musicaux=liste_styles_musicaux)
@@ -834,6 +906,7 @@ def modifier_style_musical():
     style_musical = style_musicalbd.get_style_by_id(id_style_musical)
     style = Style_Musical(id_style_musical, nom_style_musical)
     style_musicalbd.update_style(style)
+    connexionbd.fermer_connexion()
     return redirect(url_for("styles_musicaux_festival"))
 
 @app.route("/supprimer_style_musical", methods=["POST"])
@@ -842,6 +915,7 @@ def supprimer_style_musical():
     style_musicalbd = Style_MusicalBD(connexionbd)
     id_style_musical = request.form["idSt"]
     style_musicalbd.delete_style_by_id(id_style_musical)
+    connexionbd.fermer_connexion()
     return redirect(url_for("styles_musicaux_festival"))
 
 @app.route("/ajouter_style_musical", methods=["POST"])
@@ -851,6 +925,7 @@ def ajouter_style_musical():
     nom_style_musical = request.form["nomSt"]
     style_musical = Style_Musical(None, nom_style_musical)
     style_musicalbd.insert_style(style_musical)
+    connexionbd.fermer_connexion()
     return redirect(url_for("styles_musicaux_festival"))
 
 @app.route("/instruments_festival")
@@ -858,6 +933,7 @@ def instruments_festival():
     connexionbd = ConnexionBD()
     instrumentbd = InstrumentBD(connexionbd)
     liste_instruments = instrumentbd.get_all_instruments()
+    connexionbd.fermer_connexion()
     if not liste_instruments:
         return render_template("admin_instruments.html", liste_instruments=[])
     return render_template("admin_instruments.html", liste_instruments=liste_instruments)
@@ -867,6 +943,7 @@ def users_festival():
     connexionbd = ConnexionBD()
     userbd = UserBD(connexionbd)
     liste_users = userbd.get_all_users()
+    connexionbd.fermer_connexion()
     if not liste_users:
         return render_template("admin_users.html", liste_users=[])
     return render_template("admin_users.html", liste_users=liste_users)
@@ -881,6 +958,7 @@ def ajouter_user():
     statut_user = request.form["statut_user"]
     user = User(None, pseudo_user, mdp_user, email_user, statut_user)
     userbd.insert_user_admin(user)
+    connexionbd.fermer_connexion()
     return redirect(url_for("users_festival"))
 
 @app.route("/supprimer_user", methods=["POST"])
@@ -889,6 +967,7 @@ def supprimer_user():
     userbd = UserBD(connexionbd)
     id_user = request.form["id_user"]
     userbd.delete_user_by_id(id_user)
+    connexionbd.fermer_connexion()
     return redirect(url_for("users_festival"))
 
 @app.route("/modifier_user", methods=["POST"])
@@ -904,6 +983,7 @@ def modifier_user():
     user.set_emailUser(email_user)
     user.set_mdpUser(mdp_user)
     success = userbd.update_user_admin(user)
+    connexionbd.fermer_connexion()
     if success:
         print(f"L'utilisateur {id_user} a été mis à jour.")
     else:
@@ -918,6 +998,7 @@ def reserver_billets():
     print(f"data: {data}") 
     idUser = data[0]['idUser']
     billet_bd.reserver_billets(data, idUser)
+    connexion_bd.fermer_connexion()
     return jsonify({"success": "Les billets ont été réservés avec succès"})
 
 @app.route('/saveArtiste', methods=['POST'])
@@ -967,7 +1048,7 @@ def getMonPlanning():
     groupebd = GroupeBD(connexion_bd)
     idUser = request.args.get("idUser", "")
     res = groupebd.get_mon_planning_json(idUser)
-    print(res)
+    connexion_bd.fermer_connexion()
     
     if res is None:
             return jsonify({"error": "Aucun evenement trouve"})
@@ -980,7 +1061,7 @@ def getInfosSupplementairesArtiste():
     groupebd = GroupeBD(connexion_bd)
     idGroupe = request.args.get("idGroupe", "")
     res = groupebd.get_infos_supplementaires_artiste_json(idGroupe)
-    print(res)
+    connexion_bd.fermer_connexion()
     
     if res is None:
             return jsonify({"error": "Aucun evenement trouve"})
@@ -993,7 +1074,7 @@ def getInfosArtiste():
     groupebd = GroupeBD(connexion_bd)
     idGroupe = request.args.get("idGroupe", "")
     res = groupebd.get_infos_artiste_json(idGroupe)
-    print(res)
+    connexion_bd.fermer_connexion()
     
     if res is None:
             return jsonify({"error": "Aucun evenement trouve"})
@@ -1006,6 +1087,7 @@ def getNbReservations():
     billetbd = BilletBD(connexion_bd)
     res = billetbd.get_nb_reservations()
 
+    connexion_bd.fermer_connexion()
     
     if res is None:
             return jsonify({"error": "Aucun evenement trouve"})
@@ -1043,7 +1125,6 @@ def getMesBillets():
     billetbd = BilletBD(connexion_bd)
     billets = billetbd.get_mes_billets_json(idUser)
     connexion_bd.fermer_connexion()
-    print(billets, idUser)
     return billets
 
 @app.route('/telecharger_billet', methods=['POST'])
