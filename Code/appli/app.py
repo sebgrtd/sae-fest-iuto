@@ -1048,11 +1048,12 @@ def getMonPlanning():
     groupebd = GroupeBD(connexion_bd)
     idUser = request.args.get("idUser", "")
     res = groupebd.get_mon_planning_json(idUser)
-    connexion_bd.fermer_connexion()
     
     if res is None:
-            return jsonify({"error": "Aucun evenement trouve"})
+        connexion_bd.fermer_connexion()
+        return jsonify({"error": "Aucun evenement trouve"})
     else:
+        connexion_bd.fermer_connexion()
         return res
     
 @app.route('/getInfosSupplementairesArtiste')
