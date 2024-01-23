@@ -90,7 +90,7 @@ export default function TabArtiste(props : Props) {
       // j'ai envie d'ajouter pour chaque artiste sa liste de passages concurrents d'autres artistes (si un artiste passe en même temps)
   })
 
-  setSortedArtists((oldArtists : Groupe[]) => {
+  setSortedArtists((_) => {
             let newArtists = [...formatedArtists];
             // il faut ajouter les formattedArtists dans les newArtists si ils n'y sont pas déjà
 

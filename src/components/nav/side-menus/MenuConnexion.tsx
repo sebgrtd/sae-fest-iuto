@@ -202,7 +202,7 @@ export default function MenuConnexion(props: Props) {
       setIsDownloadDisabled(true);
       return;
     }
-    Object.entries(tableauxArtistes).forEach(([key, value]) => {
+    Object.entries(tableauxArtistes).forEach(([_, value]) => {
       const artists = value as Groupe[];
       artists.forEach((artiste) => {
         if (artiste.passagesConcurrents && artiste.passagesConcurrents.length > 0){
