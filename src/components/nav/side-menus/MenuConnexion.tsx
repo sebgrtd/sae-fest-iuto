@@ -60,6 +60,7 @@ export default function MenuConnexion(props: Props) {
   const[artistes, setArtistes] = useState<Groupe[]>([]);
   // j'ai envie d'avoir une sdd de type Map <String> : Groupe[]
   const[tableauxArtistes, setTableauxArtistes] = useState<Map<string, Groupe[]>>(new Map());
+  const[isDownloadDisabled, setIsDownloadDisabled] = useState(false);
 
   const handleResetArtists = () => {
     axios.get("https://www.api.festiuto.sebastien-gratade.fr/getArtistesWithSave?idUser="+getUserCookie().idUser+ (filtreDate !== "Tout" ? "&date="+filtreDate : "") + (filtreGenre !== "Tout" ? "&genre="+filtreGenre : "")
@@ -192,6 +193,25 @@ export default function MenuConnexion(props: Props) {
     }
     
   }, [props.isOpen, currentMenu])
+
+  useEffect(() => {
+    setIsDownloadDisabled(false);
+    // si tableauxArtistes est vide
+    const empty = Object.entries(tableauxArtistes).every(([_, value]) => value.length === 0);
+    if (empty){
+      setIsDownloadDisabled(true);
+      return;
+    }
+    Object.entries(tableauxArtistes).forEach(([key, value]) => {
+      const artists = value as Groupe[];
+      artists.forEach((artiste) => {
+        if (artiste.passagesConcurrents && artiste.passagesConcurrents.length > 0){
+          setIsDownloadDisabled(true);
+          return;
+        }
+      })
+    })
+  }, [tableauxArtistes])
 
   const handleDownload = () => {
     console.log(tableauxArtistes)
@@ -740,12 +760,7 @@ export default function MenuConnexion(props: Props) {
                 <a href="" onClick={(e) => goTo("planification",e)}>Retour</a>
 
                 <a href="" onClick={(e) => goTo("affichage-planification",e)} className="btn-link">
-                  <Button onClick={handleDownload} text="Télécharger" isDisabled={
-                    // si tous les tableaux sont vides on affiche que c'est vide
-                    // ou si il y a des passages concurrents
-                    Object.entries(tableauxArtistes).every(([_, value]) => value.length === 0) || Object.entries(tableauxArtistes).some(([_, value]) => value.some((artiste:Groupe) => artiste.passagesConcurrents?.length > 0))
-                  
-                  } />
+                  <Button onClick={handleDownload} text="Télécharger" isDisabled={isDownloadDisabled} />
                 </a>
               </div>
               

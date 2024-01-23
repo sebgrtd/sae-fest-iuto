@@ -87,11 +87,12 @@ export default function TabArtiste(props : Props) {
                 }
             }
         })
+      // j'ai envie d'ajouter pour chaque artiste sa liste de passages concurrents d'autres artistes (si un artiste passe en même temps)
+  })
 
-        setSortedArtists(formatedArtists);
-
-        setSortedArtists((oldArtists : Groupe[]) => {
-            let newArtists = [...oldArtists];
+  setSortedArtists((oldArtists : Groupe[]) => {
+            let newArtists = [...formatedArtists];
+            // il faut ajouter les formattedArtists dans les newArtists si ils n'y sont pas déjà
 
             // on ajoute les artistes concurrents
 
@@ -131,12 +132,7 @@ export default function TabArtiste(props : Props) {
             return newArtists;
         
         })
-      // j'ai envie d'ajouter pour chaque artiste sa liste de passages concurrents d'autres artistes (si un artiste passe en même temps)
-  })}, [props.artistes]);
-
-  useEffect(() => {
-    console.log("sortedArtists", sortedArtists)
-  }, [sortedArtists])
+  }, [props.artistes]);
 
   return (
     <section className='tab-artiste'>
