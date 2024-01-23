@@ -23,7 +23,9 @@ FEST'IUTO est une application web dynamique d'un site  festival, il s'agit d'un 
 - Ajout d'instrument : Ajouter ou supprimer de nouveaux instruments encore non référencé dans la base de données.
 - Consultation des comptes : Consulter les informations des comptes connecté tel que le pseudo, l'adresse mail, le mot de passe, avec possibilité de modification ou de suppression.
 
+# Accéder au site depuis internet
 
+pour acceder au site depuis internet vous pouvez consulter ce lien : [festiuto](https://www.festiuto.sebastien-gratade.fr)
 
 ## Installation
 
