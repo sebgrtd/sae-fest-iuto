@@ -2,6 +2,28 @@
 
 FEST'IUTO est une application web dynamique d'un site  festival, il s'agit d'un festival fictif et fut un projet d'entrainement à la conception d'une BD répondant aux exigences. Développée avec React pour le front-end et Flask pour le back-end, FESTI'UTO simplifie la programmation des festivals, la vente de billets, s'adressant aussi bien aux spectateurs, avec une attention particulière à l'expérience utilisateur qu'à l'association organisatrice, en fournissant un ensemble complet d'outils coté serveur pour la gestion du festival.
 
+## Demo 
+
+### Landing Page
+
+https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/fdcf2398-a505-4914-a247-a1e14d0e700b
+
+### Side-Menu
+
+https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/2f8bb143-419c-46df-9911-d2a828c41c02
+
+### Programmation
+
+https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/1589acc1-abc5-4b04-8c91-9f6f8775cac8
+
+### Billeterie
+
+https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/449ff7f0-8980-4b70-87ac-0ac478728bec
+
+### FAQ
+
+https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/c26907f1-72a3-4ac9-93a7-13c2815a1762
+
 ## Fonctionnalités
 
 ### Pour les internautes:
