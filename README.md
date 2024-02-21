@@ -12,6 +12,14 @@ https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/fdcf2398-a505-4914-a247
 
 https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/2f8bb143-419c-46df-9911-d2a828c41c02
 
+### Ajout d'un artiste à sa planification (connecté uniquement)
+
+https://github.com/sebgrtd/sae-fest-iuto/assets/96087993/4f192fed-234d-4ca5-89eb-0cba8b018b3b
+
+### Consultation de sa planification personnalisée et téléchargement en pdf
+
+https://github.com/sebgrtd/sae-fest-iuto/assets/96087993/ccc01eb0-a12f-4c11-9311-2ce7ea07c3cb
+
 ### Programmation
 
 https://github.com/sebgrtd/sae-fest-iuto/assets/91952388/1589acc1-abc5-4b04-8c91-9f6f8775cac8
